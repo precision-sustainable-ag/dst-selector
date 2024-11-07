@@ -144,8 +144,9 @@ const App = () => (
                             apiUrl="https://developfeedback.covercrop-data.org/v1/issues"
                             submitMessage="Feedback submitted successfully"
                             headerTitle="Cover Crop Species Selector Feedback"
-                            textFields={[
+                            fields={[
                               {
+                                type: 'text',
                                 label: 'Title',
                                 description: 'Give your feedback a short descriptive title.',
                                 props: {
@@ -157,6 +158,7 @@ const App = () => (
                                 required: true,
                               },
                               {
+                                type: 'text',
                                 label: 'Message',
                                 description: 'Explain your feedback as thoroughly as you can. Your feedback will help us improve the experience.',
                                 props: {
@@ -171,27 +173,10 @@ const App = () => (
                                 required: true,
                               },
                               {
-                                label: 'Name',
-                                props: {
-                                  placeholder: 'Enter Name',
-                                  variant: 'outlined',
-                                  'data-test': 'feedback_name',
-                                },
-                                name: 'feedback_name',
-                              },
-                              {
-                                label: 'Email',
-                                props: {
-                                  placeholder: 'Enter Email',
-                                  variant: 'outlined',
-                                  'data-test': 'feedback_email',
-                                },
-                                name: 'feedback_email',
-                              },
-                            ]}
-                            checkboxes={[
-                              {
-                                title: 'Topic',
+                                type: 'checkbox',
+                                label: 'Topic',
+                                description: 'Select the type of feedback you are providing.',
+                                name: 'feedback_checkbox',
                                 required: true,
                                 options: [
                                   {
@@ -217,6 +202,28 @@ const App = () => (
                                   },
                                 ],
                               },
+                              {
+                                type: 'text',
+                                label: 'Name',
+                                description: 'Provide your name',
+                                props: {
+                                  placeholder: 'Enter Name',
+                                  variant: 'outlined',
+                                  'data-test': 'feedback_name',
+                                },
+                                name: 'feedback_name',
+                              },
+                              {
+                                type: 'text',
+                                label: 'Email',
+                                description: 'Provide your email',
+                                props: {
+                                  placeholder: 'Enter Email',
+                                  variant: 'outlined',
+                                  'data-test': 'feedback_email',
+                                },
+                                name: 'feedback_email',
+                              },
                             ]}
                             buttons={[
                               {
@@ -231,7 +238,6 @@ const App = () => (
                             ]}
                             pirschAnalytics={pirschAnalytics}
                           />
-
                         )}
                         exact
                       />
