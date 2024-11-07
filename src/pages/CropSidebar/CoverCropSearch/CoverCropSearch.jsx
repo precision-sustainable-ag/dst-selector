@@ -4,13 +4,12 @@ import {
 import { Clear, Search } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSATextField } from 'shared-react-components/src';
 import { cropSearch } from '../../../reduxStore/filterSlice';
-import PSATextField from '../../../components/PSAComponents/PSATextField';
-// import PSATextField from '../../../components/PSAComponents/PSATextField';
 
 const CoverCropSearch = () => {
   const dispatchRedux = useDispatch();
-  const cropSearchRedux = useSelector((stateRedux) => stateRedux.filterData.cropSearch);
+  const cropSearchRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropSearch);
   const clearCoverCropSearch = (value = '') => {
     dispatchRedux(cropSearch(value));
   };
@@ -20,9 +19,8 @@ const CoverCropSearch = () => {
       <ListItemText>
         <PSATextField
           style={{ width: '100%' }}
-          color="secondary"
           label={(
-            <Typography>
+            <Typography sx={{ display: 'flex' }}>
               <Search />
               Cover Crop Name
             </Typography>
@@ -38,7 +36,6 @@ const CoverCropSearch = () => {
               </InputAdornment>
             ),
           }}
-          data-cy="crop-search-input"
         />
       </ListItemText>
     </ListItem>
