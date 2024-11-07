@@ -210,7 +210,6 @@ const App = () => (
                               {
                                 type: 'text',
                                 label: 'Name',
-                                description: 'Provide your name',
                                 props: {
                                   placeholder: 'Enter Name',
                                   variant: 'outlined',
@@ -221,7 +220,6 @@ const App = () => (
                               {
                                 type: 'text',
                                 label: 'Email',
-                                description: 'Provide your email',
                                 props: {
                                   placeholder: 'Enter Email',
                                   variant: 'outlined',
