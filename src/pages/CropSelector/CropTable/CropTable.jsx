@@ -107,26 +107,6 @@ const CropTable = ({
     }
   };
 
-  const tooltipContent = (goal, index) => (
-    <PSAButton
-      buttonType=""
-      onClick={() => sortByGoal(goal, index, `goal${index}`)}
-      variant="body1"
-      sx={{ textTransform: 'none' }}
-      title={(
-        <>
-          {`Goal ${index + 1}`}
-          {columnSort === `goal${index}` && (
-          <StraightIcon
-            style={{ margin: '0px' }}
-            className={currentGoalSortFlag ? '' : 'rotate180'}
-          />
-          )}
-        </>
-)}
-    />
-  );
-
   useEffect(() => {
     sortByAverageGoals();
   }, []);
@@ -217,7 +197,25 @@ const CropTable = ({
                       title={(
                         <p>{goal}</p>
                           )}
-                      tooltipContent={tooltipContent(goal, index)}
+                      tooltipContent={(
+                        <PSAButton
+                          buttonType=""
+                          onClick={() => sortByGoal(goal, index, `goal${index}`)}
+                          variant="body1"
+                          sx={{ textTransform: 'none' }}
+                          title={(
+                            <>
+                              {`Goal ${index + 1}`}
+                              {columnSort === `goal${index}` && (
+                              <StraightIcon
+                                style={{ margin: '0px' }}
+                                className={currentGoalSortFlag ? '' : 'rotate180'}
+                              />
+                              )}
+                            </>
+                           )}
+                        />
+                      )}
                     />
                   </TableCell>
                 ))}

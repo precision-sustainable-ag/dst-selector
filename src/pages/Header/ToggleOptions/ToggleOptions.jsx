@@ -9,23 +9,6 @@ import {
   setMyCoverCropReset,
 } from '../../../reduxStore/sharedSlice';
 
-const tooltipContent = (setSpeciesSelectorActivationFlag, stateLabelRedux, pathname) => (
-  <span>
-    <PSAButton
-      onClick={setSpeciesSelectorActivationFlag}
-      disabled={stateLabelRedux === null}
-      selected={pathname === '/explorer'}
-      buttonType="ToggleOptions"
-      data-test="browse-covercrops-btn"
-      title={(
-        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-          BROWSE COVER CROPS
-        </Typography>
-    )}
-    />
-  </span>
-);
-
 const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();
   const history = useHistory();
@@ -101,7 +84,22 @@ const ToggleOptions = ({ pathname }) => {
             : ''
         }
         enterTouchDelay={0}
-        tooltipContent={tooltipContent(setSpeciesSelectorActivationFlag, stateLabelRedux, pathname)}
+        tooltipContent={(
+          <span>
+            <PSAButton
+              onClick={setSpeciesSelectorActivationFlag}
+              disabled={stateLabelRedux === null}
+              selected={pathname === '/explorer'}
+              buttonType="ToggleOptions"
+              data-test="browse-covercrops-btn"
+              title={(
+                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                  BROWSE COVER CROPS
+                </Typography>
+            )}
+            />
+          </span>
+        )}
       />
 
       {selectedCropIdsRedux.length > 0 && (

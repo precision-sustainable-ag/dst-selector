@@ -128,51 +128,6 @@ const CropCalendarView = ({
     }
   };
 
-  const renderIcon = (typeOfIcon) => {
-    switch (typeOfIcon) {
-      case 'AcUnit':
-        return <AcUnit sx={growthIcon} />;
-      case 'LocalFlorist':
-        return <LocalFlorist sx={growthIcon} />;
-      case 'WbSunny':
-        return <WbSunny sx={growthIcon} />;
-      default:
-        return null; // Return null if no icon matches
-    }
-  };
-
-  const tooltipContent = (typeOfIcon, colSpan) => (
-    <TableCell
-      sx={{
-        backgroundColor: CustomStyles().darkGreen,
-        padding: 0,
-      }}
-      colSpan={colSpan}
-    >
-      <Typography variant="body1">
-        {renderIcon(typeOfIcon)}
-      </Typography>
-    </TableCell>
-  );
-
-  const tooltipContentSorted = (goal, index) => (
-    <PSAButton
-      onClick={() => sortByGoal(goal, index, `goal${index}`)}
-      variant="body1"
-      buttonType=""
-      sx={{
-        textTransform: 'none',
-        padding: '0px',
-      }}
-      title={(
-        <>
-          {`Goal ${index + 1}`}
-          {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-        </>
-      )}
-    />
-  );
-
   useEffect(() => {
     if (cropDataRedux.length !== 0) sortByAverageGoals();
   }, [cropDataRedux]);
@@ -229,7 +184,19 @@ const CropCalendarView = ({
                         placement="top"
                         title="Winter"
                         enterTouchDelay={0}
-                        tooltipContent={tooltipContent(AcUnit, 2)}
+                        tooltipContent={(
+                          <TableCell
+                            sx={{
+                              backgroundColor: CustomStyles().darkGreen,
+                              padding: 0,
+                            }}
+                            colSpan="2"
+                          >
+                            <Typography variant="body1">
+                              <AcUnit sx={growthIcon} />
+                            </Typography>
+                          </TableCell>
+                        )}
                       />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="2" />
@@ -239,7 +206,20 @@ const CropCalendarView = ({
                         placement="top"
                         title="Spring"
                         enterTouchDelay={0}
-                        tooltipContent={tooltipContent(LocalFlorist, 3)}
+                        tooltipContent={(
+                          <TableCell
+                            sx={{
+                              backgroundColor: CustomStyles().darkGreen,
+                              padding: 0,
+                            }}
+                            colSpan="3"
+                          >
+                            <Typography variant="body1">
+                              <LocalFlorist sx={growthIcon} />
+                            </Typography>
+                          </TableCell>
+
+                        )}
                       />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
@@ -249,7 +229,19 @@ const CropCalendarView = ({
                         placement="top"
                         title="Summer"
                         enterTouchDelay={0}
-                        tooltipContent={tooltipContent(WbSunny, 3)}
+                        tooltipContent={(
+                          <TableCell
+                            sx={{
+                              backgroundColor: CustomStyles().darkGreen,
+                              padding: 0,
+                            }}
+                            colSpan="3"
+                          >
+                            <Typography variant="body1">
+                              <WbSunny sx={growthIcon} />
+                            </Typography>
+                          </TableCell>
+                        )}
                       />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
@@ -259,7 +251,19 @@ const CropCalendarView = ({
                         placement="top"
                         title="Fall"
                         enterTouchDelay={0}
-                        tooltipContent={tooltipContent('Eco', 3)}
+                        tooltipContent={(
+                          <TableCell
+                            sx={{
+                              backgroundColor: CustomStyles().darkGreen,
+                              padding: 0,
+                            }}
+                            colSpan="3"
+                          >
+                            <Typography variant="body1">
+                              {/* <Eco style={growthIcon} /> */}
+                            </Typography>
+                          </TableCell>
+                        )}
                       />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
@@ -269,7 +273,19 @@ const CropCalendarView = ({
                         placement="top"
                         title="Winter"
                         enterTouchDelay={0}
-                        tooltipContent={tooltipContent('AcUnit', 1)}
+                        tooltipContent={(
+                          <TableCell
+                            sx={{
+                              backgroundColor: CustomStyles().darkGreen,
+                              padding: 0,
+                            }}
+                            colSpan="1"
+                          >
+                            <Typography variant="body1">
+                              <AcUnit sx={growthIcon} />
+                            </Typography>
+                          </TableCell>
+                        )}
                       />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="1" />
@@ -345,7 +361,23 @@ const CropCalendarView = ({
                       title={(
                         <p>{goal}</p>
                           )}
-                      tooltipContent={tooltipContentSorted(goal, index)}
+                      tooltipContent={(
+                        <PSAButton
+                          onClick={() => sortByGoal(goal, index, `goal${index}`)}
+                          variant="body1"
+                          buttonType=""
+                          sx={{
+                            textTransform: 'none',
+                            padding: '0px',
+                          }}
+                          title={(
+                            <>
+                              {`Goal ${index + 1}`}
+                              {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
+                            </>
+                          )}
+                        />
+                      )}
                     />
                   </TableCell>
                 ))}

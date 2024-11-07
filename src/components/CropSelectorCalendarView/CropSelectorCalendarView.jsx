@@ -5,30 +5,6 @@ import {
 import '../../styles/cropSelectorCalendarView.scss';
 import { PSATooltip } from 'shared-react-components/src';
 
-const tooltipContent = (classNames, index, hessianDate, from) => (
-  <Box
-    className={classNames}
-    key={index}
-  >
-    {hessianDate && from !== 'listView'
-      ? (
-        <Grid
-          item
-          container
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          height="100%"
-        >
-          <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polygon points="50,0 100,50 50,100 0,50" fill="green" strokeWidth={0} />
-          </svg>
-        </Grid>
-      )
-      : null}
-  </Box>
-);
-
 const isHessianDate = (item) => {
   if (item.info.includes('Hessian Fly Free Date')) {
     return true;
@@ -78,7 +54,29 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
             ) : null
           }
             enterTouchDelay={0}
-            tooltipContent={tooltipContent(classNames, index, hessianDate, from)}
+            tooltipContent={(
+              <Box
+                className={classNames}
+                key={index}
+              >
+                {hessianDate && from !== 'listView'
+                  ? (
+                    <Grid
+                      item
+                      container
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      height="100%"
+                    >
+                      <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polygon points="50,0 100,50 50,100 0,50" fill="green" strokeWidth={0} />
+                      </svg>
+                    </Grid>
+                  )
+                  : null}
+              </Box>
+            )}
           />
         </Box>
 

@@ -37,44 +37,6 @@ const RenderFilters = ({
     dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
   };
 
-  const tooltipContentFormControl = (val) => (
-    <FormControlLabel
-      control={(
-        <Checkbox
-          checked={comparisonKeys.includes(val.alternateName ? val.alternateName : val.name)}
-          onChange={() => {
-            updateCheckboxStatus(val.alternateName ? val.alternateName : val.name);
-          }}
-          name={val.name}
-          color="primary"
-          data-test={`${val.name}-checkbox`}
-        />
-      )}
-      label={<small>{val.name}</small>}
-    />
-  );
-
-  const tooltipContent = (filter, index) => (
-    <ListItem
-      sx={{ backgroundColor: filterValues[index].open ? '#add08f' : 'white' }}
-      component="div"
-      onClick={() => toggleSidebarFilterItems(index)}
-    >
-      <ListItemText
-        primary={(
-          <Typography variant="body2" data-test={`${filter.name.toUpperCase()}`}>
-            {filter.name.toUpperCase()}
-          </Typography>
-        )}
-      />
-      {filterValues[index].open ? (
-        <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
-      ) : (
-        <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
-      )}
-    </ListItem>
-  );
-
   return filterValues.map((filter, index) => {
     if (
       filter.name === 'Soil Conditions'
@@ -92,7 +54,26 @@ const RenderFilters = ({
             enterTouchDelay={0}
             title={<p>{filter.description}</p>}
             key={`tooltip-outer-${index}`}
-            tooltipContent={tooltipContent(filter, index)}
+            tooltipContent={(
+              <ListItem
+                sx={{ backgroundColor: filterValues[index].open ? '#add08f' : 'white' }}
+                component="div"
+                onClick={() => toggleSidebarFilterItems(index)}
+              >
+                <ListItemText
+                  primary={(
+                    <Typography variant="body2" data-test={`${filter.name.toUpperCase()}`}>
+                      {filter.name.toUpperCase()}
+                    </Typography>
+                  )}
+                />
+                {filterValues[index].open ? (
+                  <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
+                ) : (
+                  <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
+                )}
+              </ListItem>
+            )}
           />
         ) : (
           <ListItem
@@ -154,7 +135,22 @@ const RenderFilters = ({
                         enterTouchDelay={0}
                         title={<p>{val.description}</p>}
                         key={`tooltip${index}`}
-                        tooltipContent={tooltipContentFormControl(val)}
+                        tooltipContent={(
+                          <FormControlLabel
+                            control={(
+                              <Checkbox
+                                checked={comparisonKeys.includes(val.alternateName ? val.alternateName : val.name)}
+                                onChange={() => {
+                                  updateCheckboxStatus(val.alternateName ? val.alternateName : val.name);
+                                }}
+                                name={val.name}
+                                color="primary"
+                                data-test={`${val.name}-checkbox`}
+                              />
+                            )}
+                            label={<small>{val.name}</small>}
+                          />
+                        )}
                       />
                     </Grid>
                   ) : (
