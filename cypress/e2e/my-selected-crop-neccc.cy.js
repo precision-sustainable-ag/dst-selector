@@ -10,7 +10,7 @@ describe('Test for adding a crop to cart and viewing the crop in "My Selected Cr
     cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
     cy.beforeEachVisitBaseUrl();
     cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-selector-dropdown-22').click();
+    cy.get("[data-test='state-selector-dropdown-NEW YORK']").click();
     cy.getByTestId('state-selector-dropdown').first().find('input').should('have.value', 'NY');
     cy.getByTestId('next-btn').first().click();
     cy.assertByTestId('field-location-title');
@@ -26,12 +26,12 @@ describe('Test for adding a crop to cart and viewing the crop in "My Selected Cr
 
     cy.getByTestId('next-btn').first().should('not.be.disabled').click();
     cy.assertByTestId('site-conditions-title');
-    cy.get("[data-cy='next-btn']").first().click();
+    cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('title-goals');
     cy.intercept('GET', '**/v1/states/36/crops?minimal=true&regions=3', {
       fixture: 'cropData-NECCC.json',
     }).as('apiRequest');
-    cy.get("[data-cy='next-btn']").first().click().then(() => {
+    cy.get("[data-test='next-btn']").first().click().then(() => {
       cy.wait('@apiRequest');
     });
   });
@@ -46,11 +46,11 @@ describe('Test for adding a crop to cart and viewing the crop in "My Selected Cr
       btnIdx.forEach((idx) => {
         cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
       });
-      cy.get("[data-cy='my selected crops-btn']")
+      cy.get("[data-test='my selected crops-btn']")
         .first()
         .click({ force: true })
         .then(() => {
-          cy.get("[data-cy='comparison-view-btn']")
+          cy.get("[data-test='comparison-view-btn']")
             .should('be.visible')
             .click();
         });
@@ -68,16 +68,16 @@ describe('Test for adding a crop to cart and viewing the crop in "My Selected Cr
         // eslint-disable-next-line no-continue
         if (i === 17) continue;
 
-        cy.get(`[data-cy='${filterTypes[i]}-checkbox']`)
+        cy.get(`[data-test='${filterTypes[i]}-checkbox']`)
           .click()
           .then(() => {
             cy.assertByTestId(`"${filterTypes[i]}-row"`);
           });
 
-        cy.get(`[data-cy='${filterTypes[i]}-checkbox']`)
+        cy.get(`[data-test='${filterTypes[i]}-checkbox']`)
           .click()
           .then(() => {
-            cy.get(`[data-cy="${filterTypes[i]}-row"]`).should('not.exist');
+            cy.get(`[data-test="${filterTypes[i]}-row"]`).should('not.exist');
           });
       }
     });
@@ -93,7 +93,7 @@ describe('Test for adding a crop to cart and viewing the crop in "My Selected Cr
       for (let i = 0; i <= 28; i++) {
         // eslint-disable-next-line no-continue
         if (i === 17) continue;
-        cy.getByTestId(`"${filterTypes[i]}-row"`).should('not.exist');
+        cy.getByTestId(`${filterTypes[i]}-row`).should('not.exist');
       }
     });
   });

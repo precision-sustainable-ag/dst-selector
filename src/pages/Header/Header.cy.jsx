@@ -17,26 +17,16 @@ describe('Header Component', () => {
   });
 
   it('should have correct navigation tabs and links', () => {
-    const headerTabs = ['profile', 'about', 'help', 'feedback'];
+    const headerTabs = ['Profile', 'About', 'Help', 'Feedback', 'Release Notes'];
+    cy.getByTestId('open_menu').click();
 
     headerTabs.forEach((tab) => {
-      cy.contains(new RegExp(`${tab}`, 'i'));
-      cy.log(`Checking tab: ${tab}`);
-      if (tab === 'help') {
-        cy.assertByTestId(tab).should('be.disabled').find('a').should('have.attr', 'href', `/${tab}`);
-      } else {
-        // Click on the tab except for 'help'
-        cy.assertByTestId(tab)
-          .find('a').should('have.attr', 'href', `/${tab}`);
-      }
+      cy.getByTestId(`navbar-${tab}`).should('exist');
     });
-  });
-
-  it('should display auth button correctly', () => {
-    cy.assertByTestId('auth-btn').should('have.text', 'Login');
+    cy.getByTestId('auth_button').should('have.text', 'LOGIN');
   });
 
   it('should initially display PSA logo', () => {
-    cy.assertByTestId('header-logo').find('img').invoke('attr', 'src').should('equal', 'images/PSA_logo.png');
+    cy.assertByTestId('header_logo_button').find('img').invoke('attr', 'src').should('equal', 'images/PSA_logo.png');
   });
 });

@@ -283,7 +283,7 @@ const Landing = () => {
                     },
                   },
                   error: false,
-                  'data-cy': 'state-selector-dropdown',
+                  'data-test': 'state-selector-dropdown',
                 }}
               />
             </Grid>
@@ -333,7 +333,7 @@ const Landing = () => {
             initLon={-90}
             initLat={41}
             initStartZoom={2.5}
-            data-cy="state-map"
+            data-test="state-map"
             mapboxToken={mapboxToken}
           />
         </Box>
