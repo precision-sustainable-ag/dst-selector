@@ -22,10 +22,6 @@ import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
 
-const tooltipRatingContent = (crop, goal, councilShorthandRedux) => (
-  getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
-);
-
 const CheckBoxIcon = ({ style }) => (
   <Box sx={style}>
     <CheckRounded style={{
@@ -175,7 +171,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       {goal}
                     </p>
                   )}
-                  tooltipContent={tooltipRatingContent(crop, goal, councilShorthandRedux)}
+                  tooltipContent={(
+                    getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
+                  )}
                 />
               </div>
             </TableCell>

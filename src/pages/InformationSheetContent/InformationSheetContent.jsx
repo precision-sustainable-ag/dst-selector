@@ -46,42 +46,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
-  const tooltipContent = (att) => (
-    <Typography sx={{ fontWeight: 'bold' }} variant="body1">
-      {att.label}
-    </Typography>
-  );
-
-  const tooltipContentCategorize = (cat, att) => (
-    cat.label !== 'Extended Comments' ? (
-      <Box xs={12} variant="body1">
-        <Typography
-          display="flex"
-          justifyContent="center"
-          sx={{ fontWeight: 'bold' }}
-        >
-          {att.label}
-        </Typography>
-        <Typography display="flex" justifyContent="center">
-          {att.values[0]?.value}
-        </Typography>
-      </Box>
-    ) : (
-      <Box xs={12} variant="body1">
-        <Typography
-          display="flex"
-          justifyContent="left"
-          sx={{ fontWeight: 'bold' }}
-        >
-          {att.label}
-        </Typography>
-        <Typography display="flex" justifyContent="left">
-          {att.values[0]?.value}
-        </Typography>
-      </Box>
-    )
-  );
-
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
       callCoverCropApi(
@@ -139,7 +103,11 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               enterTouchDelay={0}
                               title={att.description}
                               arrow
-                              tooltipContent={tooltipContent(att)}
+                              tooltipContent={(
+                                <Typography sx={{ fontWeight: 'bold' }} variant="body1">
+                                  {att.label}
+                                </Typography>
+                              )}
                             />
                           </Grid>
                           <Grid item xs={12}>
@@ -160,7 +128,35 @@ const InformationSheetContent = ({ crop, modalData }) => {
                             enterTouchDelay={0}
                             title={att.description}
                             arrow
-                            tooltipContent={tooltipContentCategorize(cat, att)}
+                            tooltipContent={(
+                              cat.label !== 'Extended Comments' ? (
+                                <Box xs={12} variant="body1">
+                                  <Typography
+                                    display="flex"
+                                    justifyContent="center"
+                                    sx={{ fontWeight: 'bold' }}
+                                  >
+                                    {att.label}
+                                  </Typography>
+                                  <Typography display="flex" justifyContent="center">
+                                    {att.values[0]?.value}
+                                  </Typography>
+                                </Box>
+                              ) : (
+                                <Box xs={12} variant="body1">
+                                  <Typography
+                                    display="flex"
+                                    justifyContent="left"
+                                    sx={{ fontWeight: 'bold' }}
+                                  >
+                                    {att.label}
+                                  </Typography>
+                                  <Typography display="flex" justifyContent="left">
+                                    {att.values[0]?.value}
+                                  </Typography>
+                                </Box>
+                              )
+                            )}
                           />
                         </Grid>
                       )))}

@@ -11,10 +11,6 @@ import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
 
-const tooltipContent = (currCrop, goal, councilShorthandRedux) => (
-  getRating(currCrop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
-);
-
 const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const dispatchRedux = useDispatch();
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
@@ -49,7 +45,9 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                     {goal}
                   </p>
                 )}
-                tooltipContent={tooltipContent(crop, goal, councilShorthandRedux)}
+                tooltipContent={(
+                  getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
+                )}
               />
             </div>
           </TableCell>
