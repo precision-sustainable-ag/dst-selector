@@ -17,9 +17,8 @@ import { createTheme } from '@mui/material/styles';
 import React, { Suspense } from 'react';
 import { useDispatch, useSelector, Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { PSAFeedback, PSATheme } from 'shared-react-components/src';
+import { PSATheme } from 'shared-react-components/src';
 import { deepmerge } from '@mui/utils';
-import pirschAnalytics from './shared/analytics';
 
 import configureStore from './reduxStore/store';
 import { CustomStyles } from './shared/constants';
@@ -43,6 +42,7 @@ import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
 import Profile from './pages/Profile/Profile';
+import Feedback from './pages/Feedback/Feedback';
 
 import './styles/App.scss';
 // bootstrap import
@@ -142,17 +142,7 @@ const App = () => (
                       <Route path="/explorer" component={CoverCropExplorer} exact />
                       <Route path="/about" component={About} exact />
                       <Route path="/help" component={Help} exact />
-                      <Route
-                        path="/feedback"
-                        render={() => (
-                          <PSAFeedback
-                            label="cc-selector"
-                            title="Cover Crop Species Selector Feedback"
-                            pirschAnalytics={pirschAnalytics}
-                          />
-                        )}
-                        exact
-                      />
+                      <Route path="/feedback" render={Feedback} exact />
                       <Route path="/profile" component={Profile} exact />
                       <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
                       <Route
