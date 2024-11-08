@@ -17,7 +17,7 @@ import { createTheme } from '@mui/material/styles';
 import React, { Suspense } from 'react';
 import { useDispatch, useSelector, Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { PSAForm, PSATheme } from 'shared-react-components/src';
+import { PSATheme } from 'shared-react-components/src';
 import { deepmerge } from '@mui/utils';
 
 import configureStore from './reduxStore/store';
@@ -42,6 +42,7 @@ import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
 import Profile from './pages/Profile/Profile';
+import Feedback from './pages/Feedback/Feedback';
 
 import './styles/App.scss';
 // bootstrap import
@@ -141,108 +142,7 @@ const App = () => (
                       <Route path="/explorer" component={CoverCropExplorer} exact />
                       <Route path="/about" component={About} exact />
                       <Route path="/help" component={Help} exact />
-                      <Route
-                        path="/feedback"
-                        render={() => (
-                          <PSAForm
-                            apiUrl="https://developfeedback.covercrop-data.org/v1/issues"
-                            submitMessage="Feedback submitted successfully"
-                            headerTitle="Cover Crop Species Selector Feedback"
-                            repository="dst-feedback"
-                            fields={[
-                              {
-                                type: 'text',
-                                label: 'Title',
-                                description: 'Give your feedback a short descriptive title.',
-                                props: {
-                                  placeholder: 'Enter Your Title',
-                                  variant: 'outlined',
-                                  'data-test': 'feedback_title',
-                                },
-                                name: 'title',
-                                required: true,
-                              },
-                              {
-                                type: 'text',
-                                label: 'Message',
-                                description: 'Explain your feedback as thoroughly as you can. Your feedback will help us improve the experience.',
-                                props: {
-                                  placeholder: 'Enter Your Feedback',
-                                  multiline: true,
-                                  variant: 'outlined',
-                                  fullWidth: true,
-                                  minRows: 3,
-                                  'data-test': 'feedback_message',
-                                },
-                                name: 'comments',
-                                required: true,
-                              },
-                              {
-                                type: 'checkbox',
-                                label: 'Topic',
-                                description: 'Select the type of feedback you are providing.',
-                                name: 'feedback_checkbox',
-                                required: true,
-                                options: [
-                                  {
-                                    label: 'About the Cover Crop Data',
-                                    props: {
-                                      name: 'About the Cover Crop Data',
-                                      'data-test': 'feedback_data',
-                                    },
-                                  },
-                                  {
-                                    label: 'About the Website',
-                                    props: {
-                                      name: 'About the Website',
-                                      'data-test': 'feedback_website',
-                                    },
-                                  },
-                                  {
-                                    label: 'Other',
-                                    props: {
-                                      name: 'Other',
-                                      'data-test': 'feedback_other',
-                                    },
-                                  },
-                                ],
-                              },
-                              {
-                                type: 'text',
-                                label: 'Name',
-                                props: {
-                                  placeholder: 'Enter Name',
-                                  variant: 'outlined',
-                                  'data-test': 'feedback_name',
-                                },
-                                name: 'name',
-                              },
-                              {
-                                type: 'text',
-                                label: 'Email',
-                                props: {
-                                  placeholder: 'Enter Email',
-                                  variant: 'outlined',
-                                  'data-test': 'feedback_email',
-                                },
-                                name: 'email',
-                              },
-                            ]}
-                            buttons={[
-                              {
-                                props: {
-                                  title: 'Submit',
-                                  variant: 'contained',
-                                  color: 'primary',
-                                  children: 'Submit',
-                                },
-                                action: 'submit',
-                              },
-                            ]}
-                          />
-                        )}
-                        exact
-                      />
+                      <Route path="/feedback" render={Feedback} exact />
                       <Route path="/profile" component={Profile} exact />
                       <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
                       <Route
