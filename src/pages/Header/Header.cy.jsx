@@ -23,7 +23,7 @@ describe('Header Component', () => {
     headerTabs.forEach((tab) => {
       cy.getByTestId(`navbar-${tab}`).should('exist');
     });
-    cy.getByTestId('auth_button').should('have.text', 'LOGIN');
+    cy.getByTestId('auth_button').find('p').invoke('text').should('equal', 'LOGIN');
   });
 
   it('should initially display PSA logo', () => {
