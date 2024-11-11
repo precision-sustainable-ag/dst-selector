@@ -12,7 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Grid, Box } from '@mui/material';
-import { PSAHeader } from 'shared-react-components/src';
+import { PSAHeader, PSAAuthButton } from 'shared-react-components/src';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -97,8 +97,9 @@ const Header = () => {
     setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
   }, [tableWidth, sidebarWidth, windowSize]);
 
-  const navButtons = [
+  const navContent = [
     {
+      type: 'button',
       variant: 'text',
       text: 'Profile',
       icon: <AccountBoxOutlinedIcon />,
@@ -107,6 +108,7 @@ const Header = () => {
       textSx: { fontSize: '1rem' },
     },
     {
+      type: 'button',
       variant: 'text',
       text: 'About',
       icon: <InfoOutlinedIcon />,
@@ -115,6 +117,7 @@ const Header = () => {
       textSx: { fontSize: '1rem' },
     },
     {
+      type: 'button',
       variant: 'text',
       text: 'Help',
       icon: <HelpOutlineIcon />,
@@ -123,6 +126,7 @@ const Header = () => {
       textSx: { fontSize: '1rem' },
     },
     {
+      type: 'button',
       variant: 'text',
       text: 'Feedback',
       icon: <ChatBubbleOutlineIcon />,
@@ -131,6 +135,7 @@ const Header = () => {
       textSx: { fontSize: '1rem' },
     },
     {
+      type: 'button',
       variant: 'text',
       text: 'Release Notes',
       icon: <TextSnippetOutlinedIcon />,
@@ -138,6 +143,10 @@ const Header = () => {
       onClick: () => window.open(releaseNotesURL),
       style: { fontSize: '1rem' },
       textSx: { fontSize: '1rem' },
+    },
+    {
+      type: 'component',
+      component: <PSAAuthButton />,
     },
   ];
 
@@ -148,7 +157,7 @@ const Header = () => {
           <PSAHeader
             title="Cover Crop Selector"
             council={councilShorthandRedux}
-            navButtons={navButtons}
+            navContent={navContent}
             onLogoClick={handleLogoClick}
           />
           <Grid container sx={{ pb: isMdOrSmaller ? '3rem' : '1rem' }}>
