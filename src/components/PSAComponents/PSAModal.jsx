@@ -13,7 +13,7 @@ const PSAModal = ({
     open={open}
     style={style}
     onClose={onClose}
-    closeAfterTrantion={closeAfterTransition}
+    closeAfterTransition={closeAfterTransition}
     disableEscapeKeyDown={disableEscapeKeyDown}
   >
     {modalContent}
