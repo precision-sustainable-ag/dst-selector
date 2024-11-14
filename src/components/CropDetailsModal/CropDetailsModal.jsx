@@ -9,11 +9,10 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSAModal } from 'shared-react-components/src';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
-import PSAModal from '../PSAComponents/PSAModal';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
@@ -74,9 +73,10 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
         overflow: 'scroll',
         marginTop: '2%',
         marginBottom: '1%',
+        maxWidth: '70%',
+        marginLeft: '15%',
       }}
       open={modalOpen}
-      style={{ maxWidth: '70%', marginLeft: '15%' }}
       onClose={handleModalClose}
       closeAfterTransition
       disableEscapeKeyDown={false}
