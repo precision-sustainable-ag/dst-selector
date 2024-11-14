@@ -7,8 +7,8 @@ import {
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { PSAModal } from 'shared-react-components/src';
 import AuthButton from '../../../components/Auth/AuthButton/AuthButton';
-import PSAModal from '../../../components/PSAComponents/PSAModal';
 
 const localStorageKey = 'notShowAuth';
 
