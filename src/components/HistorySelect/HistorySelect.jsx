@@ -4,7 +4,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSAButton, PSADropdown } from 'shared-react-components/src';
+import { PSAButton, PSADropdown, PSAModal } from 'shared-react-components/src';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import {
@@ -19,7 +19,6 @@ import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
-import PSAModal from '../PSAComponents/PSAModal';
 
 const menuProps = {
   PaperProps: {

@@ -3,9 +3,8 @@ import {
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSAModal } from 'shared-react-components/src';
 import { updateConsent } from '../../../reduxStore/userSlice';
-import PSAModal from '../../../components/PSAComponents/PSAModal';
 
 const localStorageKey = 'consent';
 
