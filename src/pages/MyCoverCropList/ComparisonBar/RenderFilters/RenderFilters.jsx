@@ -3,7 +3,6 @@
 */
 
 import {
-  Checkbox,
   Collapse,
   FormControlLabel,
   Grid,
@@ -15,12 +14,12 @@ import {
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
-import { PSATooltip } from 'shared-react-components/src';
+import { PSATooltip, PSACheckbox } from 'shared-react-components/src';
 import { updateComparisonKeys } from '../../../../reduxStore/sharedSlice';
 
 const RenderFilters = ({
   filterValues = [],
-  toggleSidebarFilterItems = () => {},
+  toggleSidebarFilterItems = () => { },
   comparisonKeys = [],
 }) => {
   const dispatchRedux = useDispatch();
@@ -103,26 +102,23 @@ const RenderFilters = ({
                 {filter.name === 'Cover Crop Type' ? (
                   <FormControlLabel
                     control={(
-                      <Checkbox
-                        //   checked={checkIfSelected(val.name)}
+                      <PSACheckbox
                         checked={comparisonKeys.includes('Cover Crop Group')}
-                        //   onChange={handleChange}
+                        name={filter.name}
+                        dataTest={`${filter.name}-checkbox`}
+                        color="primary"
                         onChange={() => {
                           const comparisonKeysCopy = comparisonKeys;
                           const indexOfValue = comparisonKeysCopy.indexOf('Cover Crop Group');
                           if (indexOfValue === -1) {
-                            // doesn't exist
                             comparisonKeysCopy.push('Cover Crop Group');
                           } else {
                             comparisonKeysCopy.splice(indexOfValue, 1);
                           }
-
                           dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
                         }}
-                        name={filter.name}
-                        color="primary"
-                        data-test={`${filter.name}-checkbox`}
                       />
+
                     )}
                     label={<small>{filter.name}</small>}
                   />
@@ -138,14 +134,14 @@ const RenderFilters = ({
                         tooltipContent={(
                           <FormControlLabel
                             control={(
-                              <Checkbox
-                                checked={comparisonKeys.includes(val.alternateName ? val.alternateName : val.name)}
+                              <PSACheckbox
+                                checked={comparisonKeys.includes(val.alternateName || val.name)}
+                                name={val.name}
+                                dataTest={`${val.name}-checkbox`}
+                                color="primary"
                                 onChange={() => {
                                   updateCheckboxStatus(val.alternateName ? val.alternateName : val.name);
                                 }}
-                                name={val.name}
-                                color="primary"
-                                data-test={`${val.name}-checkbox`}
                               />
                             )}
                             label={<small>{val.name}</small>}
