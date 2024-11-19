@@ -3,7 +3,6 @@
 */
 
 import {
-  Checkbox,
   Collapse,
   FormControlLabel,
   Grid,
@@ -15,6 +14,7 @@ import {
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { PSACheckbox } from 'shared-react-components/src';
 import { updateComparisonKeys } from '../../../../reduxStore/sharedSlice';
 
 const RenderGoals = ({
@@ -43,23 +43,20 @@ const RenderGoals = ({
                 <Grid item xs={12} key={`goals-inner-${index}`}>
                   <FormControlLabel
                     control={(
-                      <Checkbox
+                      <PSACheckbox
                         checked={comparisonKeys.includes(goal.name)}
+                        name={goal.name}
+                        color="primary"
                         onChange={() => {
-                        // check if value exists, add else remove if exists
                           const comparisonKeysCopy = comparisonKeys;
                           const indexOfValue = comparisonKeysCopy.indexOf(goal.name);
                           if (indexOfValue === -1) {
-                          // doesn't exist
                             comparisonKeysCopy.push(goal.name);
                           } else {
                             comparisonKeysCopy.splice(indexOfValue, 1);
                           }
-
                           dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
                         }}
-                        name={goal.name}
-                        color="primary"
                       />
                     )}
                     label={<small>{goal.name}</small>}
