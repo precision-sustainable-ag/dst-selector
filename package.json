@@ -16,7 +16,6 @@
     "@vitejs/plugin-react": "^4.3.1",
     "cypress": "^13.13.0",
     "dayjs": "^1.11.8",
-    "decision-support-tool": "file:",
     "mdbreact": "^4.24.0",
     "moment": "^2.24.0",
     "react": "^18.2.0",
