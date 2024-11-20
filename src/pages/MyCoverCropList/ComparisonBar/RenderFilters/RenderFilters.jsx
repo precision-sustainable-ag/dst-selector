@@ -19,7 +19,7 @@ import { updateComparisonKeys } from '../../../../reduxStore/sharedSlice';
 
 const RenderFilters = ({
   filterValues = [],
-  toggleSidebarFilterItems = () => { },
+  toggleSidebarFilterItems = () => {},
   comparisonKeys = [],
 }) => {
   const dispatchRedux = useDispatch();
@@ -105,7 +105,7 @@ const RenderFilters = ({
                       <PSACheckbox
                         checked={comparisonKeys.includes('Cover Crop Group')}
                         name={filter.name}
-                        dataTest={`${filter.name}-checkbox`}
+                        data-test={`${filter.name}-checkbox`}
                         color="primary"
                         onChange={() => {
                           const comparisonKeysCopy = comparisonKeys;
@@ -118,7 +118,6 @@ const RenderFilters = ({
                           dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
                         }}
                       />
-
                     )}
                     label={<small>{filter.name}</small>}
                   />
@@ -137,16 +136,18 @@ const RenderFilters = ({
                               <PSACheckbox
                                 checked={comparisonKeys.includes(val.alternateName || val.name)}
                                 name={val.name}
-                                dataTest={`${val.name}-checkbox`}
+                                data-test={`${val.name}-checkbox`}
                                 color="primary"
                                 onChange={() => {
-                                  updateCheckboxStatus(val.alternateName ? val.alternateName : val.name);
+                                  updateCheckboxStatus(
+                                    val.alternateName ? val.alternateName : val.name,
+                                  );
                                 }}
                               />
-                            )}
+                              )}
                             label={<small>{val.name}</small>}
                           />
-                        )}
+                          )}
                       />
                     </Grid>
                   ) : (
