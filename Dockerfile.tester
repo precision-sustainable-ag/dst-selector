@@ -8,7 +8,7 @@ WORKDIR /e2e
 COPY . .
 
 # Install any additional dependencies (if required)
-RUN rm -rf node_modules && npm install
+RUN npm install
 
 # Set the base URL for Cypress tests
 ENV CYPRESS_baseUrl="http://localhost/"
