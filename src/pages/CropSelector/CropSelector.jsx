@@ -117,7 +117,7 @@ const CropSelector = (props) => {
   }, [dispatchRedux, sidebarRef]);
   return (
     <Grid container spacing={3}>
-      <Grid item xl={3} lg={3} md={3} sm={12} xs={12} ref={sidebarRef}>
+      <Grid item xl={3} lg={5} md={5} sm={12} xs={12} ref={sidebarRef}>
         {(size.width < 1680) && (
           <PSAButton
             startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
@@ -140,7 +140,7 @@ const CropSelector = (props) => {
         )}
       </Grid>
 
-      <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 9 : 12} md={showSidebar ? 9 : 12} sm={12} xs={12}>
+      <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 7 : 12} md={showSidebar ? 7 : 12} sm={12} xs={12}>
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {speciesSelectorActivationFlagRedux ? (
           listView ? (
