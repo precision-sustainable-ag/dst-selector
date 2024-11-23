@@ -300,11 +300,21 @@ const CropSidebar = ({
   }); // filters
 
   const filtersList = () => (
-    <List component="div" disablePadding className="cropFilters">
+    <List
+      component="div"
+      disablePadding
+      className="cropFilters"
+      style={{
+        overflow: 'auto',
+        display: 'block',
+      }}
+    >
       <div>
         {filtersSelected && (
         <ListItem style={{
           textAlign: 'center',
+          paddingBottom: '0px',
+          paddingTop: '8px',
         }}
         >
           <ListItemText
@@ -321,8 +331,18 @@ const CropSidebar = ({
         </ListItem>
         )}
       </div>
-      <SoloFilter>
-        <ListItemText>
+      <SoloFilter style={{
+        marginBottom: '8px',
+        paddingBottom: '0px',
+        paddingTop: '0px',
+        paddingLeft: '10px',
+      }}
+      >
+        <ListItemText style={{
+          paddingBottom: '0px',
+          paddingRight: '3%',
+        }}
+        >
           Soil Drainage Filter
         </ListItemText>
         <ListItemText
@@ -344,8 +364,18 @@ const CropSidebar = ({
                   )}
         />
       </SoloFilter>
-      <SoloFilter>
-        <ListItemText>
+      <SoloFilter style={{
+        marginBottom: '0px',
+        paddingBottom: '0px',
+        paddingTop: '0px',
+        marginTop: '8px',
+        paddingLeft: '10px',
+      }}
+      >
+        <ListItemText style={{
+          paddingBottom: '0px',
+        }}
+        >
           Irrigation Dates Filter
         </ListItemText>
         <ListItemText
