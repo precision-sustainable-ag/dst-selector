@@ -8,6 +8,7 @@
 import { Grid, useTheme, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { PSALoadingspinner } from 'shared-react-components/src';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
@@ -193,11 +194,40 @@ const SoilCondition = () => {
 
   return (
     <Grid item container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
-      <Grid item xs={12} md={10} sx={{ mb: '1rem' }}>
-        {drainageOptions.length > 0 && <SoilDrainage drainageOptions={drainageOptions} />}
+      <Grid
+        item
+        xs={12}
+        md={10}
+        sx={{
+          mb: '1rem',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100px',
+        }}
+      >
+        {drainageOptions.length > 0 ? (
+          <SoilDrainage drainageOptions={drainageOptions} />
+        ) : (
+          <PSALoadingspinner />
+        )}
       </Grid>
-      <Grid item xs={12} md={10}>
-        {floodingOptions.length > 0 && <SoilFloodingFrequency floodingOptions={floodingOptions} /> }
+      <Grid
+        item
+        xs={12}
+        md={10}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100px',
+        }}
+      >
+        {floodingOptions.length > 0 ? (
+          <SoilFloodingFrequency floodingOptions={floodingOptions} />
+        ) : (
+          <PSALoadingspinner />
+        )}
       </Grid>
     </Grid>
   );

@@ -5,7 +5,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -13,12 +12,12 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Box,
+  Grid,
 } from '@mui/material';
 import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
 import StraightIcon from '@mui/icons-material/Straight';
-import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import { PSAButton, PSATooltip, PSALoadingspinner } from 'shared-react-components/src';
 import {
   sortCrops, sudotype,
 } from '../../../shared/constants';
@@ -167,18 +166,18 @@ const CropTable = ({
                 />
               </TableCell>
               {cropDataRedux[0].keyTraits.length > 0
-              && (
-              <TableCell
-                sx={{ padding: 0 }}
-                style={{
-                  backgroundColor: '#abd08f',
-                }}
-              >
-                <Typography variant="body1" style={sudotype}>
-                  Key Traits
-                </Typography>
-              </TableCell>
-              )}
+                && (
+                  <TableCell
+                    sx={{ padding: 0 }}
+                    style={{
+                      backgroundColor: '#abd08f',
+                    }}
+                  >
+                    <Typography variant="body1" style={sudotype}>
+                      Key Traits
+                    </Typography>
+                  </TableCell>
+                )}
               {selectedGoalsRedux.length > 0
                 && selectedGoalsRedux.map((goal, index) => (
                   <TableCell
@@ -196,7 +195,7 @@ const CropTable = ({
                       enterTouchDelay={0}
                       title={(
                         <p>{goal}</p>
-                          )}
+                      )}
                       tooltipContent={(
                         <PSAButton
                           buttonType=""
@@ -207,13 +206,13 @@ const CropTable = ({
                             <>
                               {`Goal ${index + 1}`}
                               {columnSort === `goal${index}` && (
-                              <StraightIcon
-                                style={{ margin: '0px' }}
-                                className={currentGoalSortFlag ? '' : 'rotate180'}
-                              />
+                                <StraightIcon
+                                  style={{ margin: '0px' }}
+                                  className={currentGoalSortFlag ? '' : 'rotate180'}
+                                />
                               )}
                             </>
-                           )}
+                          )}
                         />
                       )}
                     />
@@ -295,9 +294,21 @@ const CropTable = ({
       />
     </>
   ) : (
-    <Box>
-      <CircularProgress size="6em" />
-    </Box>
+    <Grid
+      item
+      container
+      spacing={1}
+      justifyContent="center"
+      alignItems="center"
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100px',
+      }}
+    >
+      <PSALoadingspinner />
+    </Grid>
   );
 };
 
