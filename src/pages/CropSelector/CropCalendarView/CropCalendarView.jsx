@@ -5,7 +5,6 @@
 */
 
 import {
-  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -14,6 +13,7 @@ import {
   TableRow,
   Typography,
   Box,
+  Grid,
 } from '@mui/material';
 import ListIcon from '@mui/icons-material/List';
 import { tableCellClasses } from '@mui/material/TableCell';
@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import { PSAButton, PSATooltip, PSALoadingspinner } from 'shared-react-components/src';
 import StraightIcon from '@mui/icons-material/Straight';
 import {
   allMonths,
@@ -144,9 +144,21 @@ const CropCalendarView = ({
   return (
     <>
       {ajaxInProgressRedux ? (
-        <Box>
-          <CircularProgress size="6em" />
-        </Box>
+        <Grid
+          item
+          container
+          spacing={1}
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100px',
+          }}
+        >
+          <PSALoadingspinner />
+        </Grid>
       ) : (
         <TableContainer component="div" sx={{ lineHeight: '0.5', overflowX: 'initial' }}>
           <Table
@@ -342,45 +354,45 @@ const CropCalendarView = ({
                   />
                 </TableCell>
                 {selectedGoalsRedux.length > 0
-                && selectedGoalsRedux.map((goal, index) => (
-                  <TableCell
-                    key={index}
-                    style={{
-                      wordBreak: 'break-word',
-                      backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',
-                      textAlign: 'center',
-                      borderRight: '5px solid white',
-                      padding: 0,
-                      width: '75px',
-                    }}
-                  >
-                    <PSATooltip
-                      placement="bottom"
-                      arrow
-                      enterTouchDelay={0}
-                      title={(
-                        <p>{goal}</p>
-                          )}
-                      tooltipContent={(
-                        <PSAButton
-                          onClick={() => sortByGoal(goal, index, `goal${index}`)}
-                          variant="body1"
-                          buttonType=""
-                          sx={{
-                            textTransform: 'none',
-                            padding: '0px',
-                          }}
-                          title={(
-                            <>
-                              {`Goal ${index + 1}`}
-                              {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-                            </>
-                          )}
-                        />
-                      )}
-                    />
-                  </TableCell>
-                ))}
+                  && selectedGoalsRedux.map((goal, index) => (
+                    <TableCell
+                      key={index}
+                      style={{
+                        wordBreak: 'break-word',
+                        backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',
+                        textAlign: 'center',
+                        borderRight: '5px solid white',
+                        padding: 0,
+                        width: '75px',
+                      }}
+                    >
+                      <PSATooltip
+                        placement="bottom"
+                        arrow
+                        enterTouchDelay={0}
+                        title={(
+                          <p>{goal}</p>
+                        )}
+                        tooltipContent={(
+                          <PSAButton
+                            onClick={() => sortByGoal(goal, index, `goal${index}`)}
+                            variant="body1"
+                            buttonType=""
+                            sx={{
+                              textTransform: 'none',
+                              padding: '0px',
+                            }}
+                            title={(
+                              <>
+                                {`Goal ${index + 1}`}
+                                {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
+                              </>
+                            )}
+                          />
+                        )}
+                      />
+                    </TableCell>
+                  ))}
                 {allMonths.map((month, index) => {
                   const growthMonth = checkIfGrowthMonth(month);
                   const growthMonthSeparator = growthMonth
@@ -390,8 +402,7 @@ const CropCalendarView = ({
                     <TableCell
                       sx={{ padding: 1, backgroundColor: '#abd08f', cursor: 'pointer' }}
                       key={`monthskey${index}`}
-                      className={`calendarSecondHeadMonth ${
-                        growthMonth ? 'activeGrowthMonth' : ''
+                      className={`calendarSecondHeadMonth ${growthMonth ? 'activeGrowthMonth' : ''
                       } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
                       onClick={() => sortByPlantingWindow()}
                     >

@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { PSALoadingspinner } from 'shared-react-components/src';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
@@ -85,39 +86,61 @@ const GoalsSelector = () => {
               </Typography>
             </Grid>
             {/* chips */}
-            {allGoals?.length > 0 && (
-              <Grid item container spacing={1} justifyContent="center" alignItems="center">
-                {allGoals
-                  .slice()
-                  // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
-                  .sort(
-                    (a, b) => (selectedGoalsRedux.indexOf(a.label) === -1
-                      ? 3
-                      : selectedGoalsRedux.indexOf(a.label))
-                      - (selectedGoalsRedux.indexOf(b.label) === -1
+            <Grid
+              item
+              container
+              spacing={1}
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '100px',
+              }}
+            >
+              {allGoals?.length > 0 ? (
+                <Grid
+                  item
+                  container
+                  spacing={1}
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  {allGoals
+                    .slice()
+                    // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
+                    .sort(
+                      (a, b) => (selectedGoalsRedux.indexOf(a.label) === -1
                         ? 3
-                        : selectedGoalsRedux.indexOf(b.label)),
-                  )
-                  .map((goal, key) => (
-                    <Grid
-                      item
-                      key={key}
-                      display="flex"
-                      xs={isMobile ? 12 : 'auto'}
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <GoalTag
+                        : selectedGoalsRedux.indexOf(a.label))
+                        - (selectedGoalsRedux.indexOf(b.label) === -1
+                          ? 3
+                          : selectedGoalsRedux.indexOf(b.label)),
+                    )
+                    .map((goal, key) => (
+                      <Grid
+                        item
                         key={key}
-                        goal={goal}
-                        id={key}
-                        goaltTitle={goal.label}
-                        goalDescription={goal.description}
-                      />
-                    </Grid>
-                  ))}
-              </Grid>
-            )}
+                        display="flex"
+                        xs={isMobile ? 12 : 'auto'}
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <GoalTag
+                          key={key}
+                          goal={goal}
+                          id={key}
+                          goaltTitle={goal.label}
+                          goalDescription={goal.description}
+                        />
+                      </Grid>
+                    ))}
+                </Grid>
+              ) : (
+                <PSALoadingspinner />
+              )}
+            </Grid>
           </Grid>
         </Grid>
         {/* holds the date selector */}
