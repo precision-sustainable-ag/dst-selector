@@ -1,5 +1,5 @@
-import { Badge, Typography } from '@mui/material';
 import React from 'react';
+import { Badge } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
@@ -57,8 +57,8 @@ const ToggleOptions = ({ pathname }) => {
     <>
       <PSAButton
         component={NavLink}
-        buttonType=""
         onClick={() => openMyCoverCropReset('selector')}
+        buttonType="ToggleOptions"
         exact
         to="/"
         sx={{
@@ -69,13 +69,10 @@ const ToggleOptions = ({ pathname }) => {
             backgroundColor: pathname === '/' ? '#598444' : 'white',
             color: pathname === '/' ? 'white' : '#8abc62',
           },
+          fontWeight: 'bold',
         }}
         data-test="get-recommendation-btn"
-        title={(
-          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            Get A Recommendation
-          </Typography>
-        )}
+        title="Get A Recommendation"
       />
       <PSATooltip
         title={
@@ -92,11 +89,8 @@ const ToggleOptions = ({ pathname }) => {
               selected={pathname === '/explorer'}
               buttonType="ToggleOptions"
               data-test="browse-covercrops-btn"
-              title={(
-                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                  BROWSE COVER CROPS
-                </Typography>
-            )}
+              sx={{ fontWeight: 'bold' }}
+              title="BROWSE COVER CROPS"
             />
           </span>
         )}
@@ -108,11 +102,8 @@ const ToggleOptions = ({ pathname }) => {
             selected={pathname === '/my-cover-crop-list'}
             buttonType="ToggleOptions"
             onClick={setMyCoverCropActivationFlag}
-            title={(
-              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                MY SELECTED CROPS
-              </Typography>
-            )}
+            sx={{ fontWeight: 'bold' }}
+            title="MY SELECTED CROPS"
           />
         </Badge>
       )}
