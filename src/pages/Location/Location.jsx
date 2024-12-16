@@ -276,61 +276,60 @@ const Location = () => {
         alignItems: 'center',
       }}
     >
-      <Grid container spacing={2}>
-        <Grid item xs={12} xl={12}>
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Typography variant="h4" data-test="field-location-title">
-              Field Location
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Typography variant="body1">
-              Find your address or ZIP code using the search bar on the map and hit
-              <Search fontSize="inherit" />
-              to determine your location. If needed, adjust your
-              {' '}
-              {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
-              {' '}
-              in the dropdown.
-            </Typography>
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <PlantHardinessZone from="Location" />
-          </Grid>
-
+      <Grid container>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h4" data-test="field-location-title">
+            Field Location
+          </Typography>
         </Grid>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="body1">
+            Find your address or ZIP code using the search bar on the map and hit
+            <Search fontSize="inherit" />
+            to determine your location. If needed, adjust your
+            {' '}
+            {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
+            {' '}
+            in the dropdown.
+          </Typography>
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <PlantHardinessZone from="Location" />
+        </Grid>
+
         {stateLabelRedux !== 'Ontario' && (
-        <Grid item s={9} xs={12}>
+        <Grid container>
           <Container maxWidth="md">
             <Map
               setAddress={setSelectedToEditSite}
               setFeatures={setCurrentGeometry}
               initWidth="100%"
-              initHeight="500px"
+              initHeight="450px"
               initLat={getLatLng[0]}
               initLon={getLatLng[1]}
               initFeatures={mapFeatures}

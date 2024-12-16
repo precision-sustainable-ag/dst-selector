@@ -231,11 +231,7 @@ const Landing = () => {
       <Grid
         style={backgroundSyles.frostedGlassEffect}
         mt={1}
-        sx={{
-          maxWidth: {
-            xl: '500px', lg: '800px', md: '800px', sm: '800px', sx: '500px',
-          },
-        }}
+        sx={{ maxWidth: '800px' }}
       >
         <Box mr={1} ml={1} mb={1} mt={1}>
           <Grid container spacing={1}>
@@ -318,11 +314,7 @@ const Landing = () => {
             marginTop: '15px',
             marginBottom: '15px',
           }}
-          sx={{
-            maxWidth: {
-              xl: '500px', lg: '800px', md: '800px', sm: '800px', sx: '500px',
-            },
-          }}
+          sx={{ maxWidth: '800px' }}
         >
           <RegionSelectorMap
             selectorFunction={setMapState}
