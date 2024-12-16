@@ -699,6 +699,13 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
   ];
+  // const WCCClegendData = [
+  //   { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
+  //   { className: 'temperatureRisk', label: 'Temperature Risk To Establishment', color: '#f2c94c' },
+  //   { className: 'frostPossible', label: 'Frost Seeding Possible', color: '#2f80ed' },
+  //   { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
+  //   { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
+  // ];
   switch (councilShorthand) {
     case 'MCCC':
       return MCCClegendData;
@@ -728,8 +735,8 @@ export const callCoverCropApi = async (url) => fetch(url)
 export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashCropEndDate = '') => {
   const formatYearArr = (yearArr = []) => {
     const result = [];
-    let i = 0; let
-      j = 0;
+    let i = 0;
+    let j = 0;
     while (i < yearArr.length) {
       while (j < yearArr.length && arrayEquals(yearArr[i].info, yearArr[j].info)) {
         j += 1;
@@ -758,6 +765,8 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
   };
 
   const monthStringBuilder = (vals) => {
+    console.log('vals', vals);
+
     const val = vals;
     let yearArr = Array.from({ length: 365 }, () => ({
       info: [],

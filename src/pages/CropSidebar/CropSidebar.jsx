@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /*
   This file contains the CropSidebar and its styles
@@ -249,7 +250,8 @@ const CropSidebar = ({
     if (stateIdRedux && regionIdRedux) {
       dispatchRedux(setAjaxInProgress(true));
       setLoading(true);
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
+      // callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/9/filters?regions=1222&regions=1317`).then((data) => {
         const allFilters = [];
         data.data.forEach((category) => {
           allFilters.push(category.attributes);
@@ -257,9 +259,19 @@ const CropSidebar = ({
         setSidebarFiltersData(allFilters);
         setSidebarCategoriesData(data.data);
       });
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
+      console.log('query', query);
+      // callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
+      //   console.log('OTHER data crops', data);
+      //   const { startDate, endDate } = cashCropDataRedux.dateRange;
+      //   const start = startDate ? moment(startDate).format('MM/DD') : '';
+      //   const end = endDate ? moment(endDate).format('MM/DD') : '';
+      //   cropDataFormatter(data.data, start, end);
+      //   dispatchRedux(updateCropData(data.data));
+      //   dispatchRedux(setAjaxInProgress(false));
+      // });
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/9/crops?minimal=true&regions=1222&regions=1317`).then((data) => {
+        console.log('NEWdata crops', data);
         const { startDate, endDate } = cashCropDataRedux.dateRange;
-
         const start = startDate ? moment(startDate).format('MM/DD') : '';
         const end = endDate ? moment(endDate).format('MM/DD') : '';
         cropDataFormatter(data.data, start, end);
