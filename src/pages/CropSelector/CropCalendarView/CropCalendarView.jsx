@@ -374,21 +374,23 @@ const CropCalendarView = ({
                           <p>{goal}</p>
                         )}
                         tooltipContent={(
-                          <PSAButton
-                            onClick={() => sortByGoal(goal, index, `goal${index}`)}
-                            variant="body1"
-                            buttonType=""
-                            sx={{
-                              textTransform: 'none',
-                              padding: '0px',
-                            }}
-                            title={(
-                              <>
-                                {`Goal ${index + 1}`}
-                                {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-                              </>
+                          <Box>
+                            <PSAButton
+                              onClick={() => sortByGoal(goal, index, `goal${index}`)}
+                              variant="body1"
+                              buttonType=""
+                              sx={{
+                                textTransform: 'none',
+                                padding: '0px',
+                              }}
+                              title={(
+                                <>
+                                  {`Goal ${index + 1}`}
+                                  {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
+                                </>
                             )}
-                          />
+                            />
+                          </Box>
                         )}
                       />
                     </TableCell>

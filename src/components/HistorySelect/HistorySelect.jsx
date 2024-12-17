@@ -164,7 +164,7 @@ const HistorySelect = () => {
                   label="Select History"
                   items={userHistoryList.map((history) => ({ value: history.label, label: history.label }))}
                   SelectProps={{
-                    value: { value },
+                    value,
                     onChange: (e) => setValue(e.target.value),
                     MenuProps: menuProps,
                     sx: selectStyles,

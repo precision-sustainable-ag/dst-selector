@@ -13,6 +13,7 @@ import {
   TableRow,
   Typography,
   Grid,
+  Box,
 } from '@mui/material';
 import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
@@ -197,23 +198,25 @@ const CropTable = ({
                         <p>{goal}</p>
                       )}
                       tooltipContent={(
-                        <PSAButton
-                          buttonType=""
-                          onClick={() => sortByGoal(goal, index, `goal${index}`)}
-                          variant="body1"
-                          sx={{ textTransform: 'none' }}
-                          title={(
-                            <>
-                              {`Goal ${index + 1}`}
-                              {columnSort === `goal${index}` && (
+                        <Box>
+                          <PSAButton
+                            buttonType=""
+                            onClick={() => sortByGoal(goal, index, `goal${index}`)}
+                            variant="body1"
+                            sx={{ textTransform: 'none' }}
+                            title={(
+                              <>
+                                {`Goal ${index + 1}`}
+                                {columnSort === `goal${index}` && (
                                 <StraightIcon
                                   style={{ margin: '0px' }}
                                   className={currentGoalSortFlag ? '' : 'rotate180'}
                                 />
-                              )}
-                            </>
+                                )}
+                              </>
                           )}
-                        />
+                          />
+                        </Box>
                       )}
                     />
                   </TableCell>
