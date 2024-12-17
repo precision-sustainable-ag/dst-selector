@@ -166,6 +166,7 @@ const Header = () => {
               sx={{
                 position: 'absolute',
                 top: isMdOrSmaller ? '85px' : '120px',
+                display: 'flex',
               }}
             >
               {/* get a recommendation / browse cover crops */}
