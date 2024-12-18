@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { PSALoadingspinner } from 'shared-react-components/src';
+import { PSALoadingSpinner } from 'shared-react-components/src';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
@@ -138,7 +138,7 @@ const GoalsSelector = () => {
                     ))}
                 </Grid>
               ) : (
-                <PSALoadingspinner />
+                <PSALoadingSpinner />
               )}
             </Grid>
           </Grid>
