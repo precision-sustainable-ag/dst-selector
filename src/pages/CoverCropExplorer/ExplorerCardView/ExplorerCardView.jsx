@@ -11,7 +11,7 @@ import React, {
   useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSALoadingspinner } from 'shared-react-components/src';
+import { PSALoadingSpinner } from 'shared-react-components/src';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
@@ -43,7 +43,7 @@ const ExplorerCardView = ({ activeCropData }) => {
           minHeight: '100px',
         }}
       >
-        <PSALoadingspinner />
+        <PSALoadingSpinner />
       </Grid>
     ) : (
       <>

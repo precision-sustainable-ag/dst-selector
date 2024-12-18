@@ -18,7 +18,7 @@ import {
 import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
 import StraightIcon from '@mui/icons-material/Straight';
-import { PSAButton, PSATooltip, PSALoadingspinner } from 'shared-react-components/src';
+import { PSAButton, PSATooltip, PSALoadingSpinner } from 'shared-react-components/src';
 import {
   sortCrops, sudotype,
 } from '../../../shared/constants';
@@ -310,7 +310,7 @@ const CropTable = ({
         minHeight: '100px',
       }}
     >
-      <PSALoadingspinner />
+      <PSALoadingSpinner />
     </Grid>
   );
 };

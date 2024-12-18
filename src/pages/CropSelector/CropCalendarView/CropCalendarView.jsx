@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { PSAButton, PSATooltip, PSALoadingspinner } from 'shared-react-components/src';
+import { PSAButton, PSATooltip, PSALoadingSpinner } from 'shared-react-components/src';
 import StraightIcon from '@mui/icons-material/Straight';
 import {
   allMonths,
@@ -157,7 +157,7 @@ const CropCalendarView = ({
             minHeight: '100px',
           }}
         >
-          <PSALoadingspinner />
+          <PSALoadingSpinner />
         </Grid>
       ) : (
         <TableContainer component="div" sx={{ lineHeight: '0.5', overflowX: 'initial' }}>
