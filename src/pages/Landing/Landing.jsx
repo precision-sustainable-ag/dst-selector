@@ -31,7 +31,6 @@ const Landing = () => {
 
   // redux vars
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
@@ -237,7 +236,7 @@ const Landing = () => {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography variant="h4" gutterBottom align="center">
-                {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ' Cover Crop'} Species Selector`}
+                Welcome to the Cover Crop Species Selector
               </Typography>
             </Grid>
             <Grid item xs={12}>
