@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import { Stack, Badge } from '@mui/material';
+import { Stack, Badge, Box } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
@@ -57,19 +57,21 @@ const ProgressButtonsInner = ({
             <p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>
           }
           tooltipContent={(
-            <PSAButton
-              style={{
-                maxWidth: '90px',
-                minWidth: '70px',
-                marginLeft: progressRedux === 4 ? '-75px' : '0px',
-              }}
-              onClick={() => changeProgress('increment')}
-              disabled={isDisabledNext || progressRedux === 4}
-              buttonType="PillButton"
-              data-test="next-btn"
-            >
-              Next
-            </PSAButton>
+            <Box>
+              <PSAButton
+                style={{
+                  maxWidth: '90px',
+                  minWidth: '70px',
+                  marginLeft: progressRedux === 4 ? '-75px' : '0px',
+                }}
+                onClick={() => changeProgress('increment')}
+                disabled={isDisabledNext || progressRedux === 4}
+                buttonType="PillButton"
+                data-test="next-btn"
+              >
+                Next
+              </PSAButton>
+            </Box>
           )}
         />
       ) : (

@@ -16,7 +16,7 @@ const InformationSheetReferences = ({ currentSources }) => {
           <Typography>
             {currentSources.length > 0
               && currentSources.map((source, index) => (
-                <Fragment key={index} sx={{ mt: '0.5rem' }}>
+                <Fragment key={index}>
                   <a
                     style={{ textDecoration: 'underline', fontWeight: '500' }}
                     href={source.url}

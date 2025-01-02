@@ -13,11 +13,12 @@ import {
   TableRow,
   Typography,
   Grid,
+  Box,
 } from '@mui/material';
 import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
 import StraightIcon from '@mui/icons-material/Straight';
-import { PSAButton, PSATooltip, PSALoadingspinner } from 'shared-react-components/src';
+import { PSAButton, PSATooltip, PSALoadingSpinner } from 'shared-react-components/src';
 import {
   sortCrops, sudotype,
 } from '../../../shared/constants';
@@ -197,23 +198,25 @@ const CropTable = ({
                         <p>{goal}</p>
                       )}
                       tooltipContent={(
-                        <PSAButton
-                          buttonType=""
-                          onClick={() => sortByGoal(goal, index, `goal${index}`)}
-                          variant="body1"
-                          sx={{ textTransform: 'none' }}
-                          title={(
-                            <>
-                              {`Goal ${index + 1}`}
-                              {columnSort === `goal${index}` && (
+                        <Box>
+                          <PSAButton
+                            buttonType=""
+                            onClick={() => sortByGoal(goal, index, `goal${index}`)}
+                            variant="body1"
+                            sx={{ textTransform: 'none' }}
+                            title={(
+                              <>
+                                {`Goal ${index + 1}`}
+                                {columnSort === `goal${index}` && (
                                 <StraightIcon
                                   style={{ margin: '0px' }}
                                   className={currentGoalSortFlag ? '' : 'rotate180'}
                                 />
-                              )}
-                            </>
+                                )}
+                              </>
                           )}
-                        />
+                          />
+                        </Box>
                       )}
                     />
                   </TableCell>
@@ -307,7 +310,7 @@ const CropTable = ({
         minHeight: '100px',
       }}
     >
-      <PSALoadingspinner />
+      <PSALoadingSpinner />
     </Grid>
   );
 };
