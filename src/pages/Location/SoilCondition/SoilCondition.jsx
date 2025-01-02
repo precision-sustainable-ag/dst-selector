@@ -8,7 +8,7 @@
 import { Grid, useTheme, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { PSALoadingspinner } from 'shared-react-components/src';
+import { PSALoadingSpinner } from 'shared-react-components/src';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
@@ -209,7 +209,7 @@ const SoilCondition = () => {
         {drainageOptions.length > 0 ? (
           <SoilDrainage drainageOptions={drainageOptions} />
         ) : (
-          <PSALoadingspinner />
+          <PSALoadingSpinner />
         )}
       </Grid>
       <Grid
@@ -226,7 +226,7 @@ const SoilCondition = () => {
         {floodingOptions.length > 0 ? (
           <SoilFloodingFrequency floodingOptions={floodingOptions} />
         ) : (
-          <PSALoadingspinner />
+          <PSALoadingSpinner />
         )}
       </Grid>
     </Grid>

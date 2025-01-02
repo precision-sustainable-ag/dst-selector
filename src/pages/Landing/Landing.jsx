@@ -31,7 +31,6 @@ const Landing = () => {
 
   // redux vars
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
@@ -231,17 +230,13 @@ const Landing = () => {
       <Grid
         style={backgroundSyles.frostedGlassEffect}
         mt={1}
-        sx={{
-          maxWidth: {
-            xl: '500px', lg: '800px', md: '800px', sm: '800px', sx: '500px',
-          },
-        }}
+        sx={{ maxWidth: '800px' }}
       >
         <Box mr={1} ml={1} mb={1} mt={1}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography variant="h4" gutterBottom align="center">
-                {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ' Cover Crop'} Species Selector`}
+                Welcome to the Cover Crop Species Selector
               </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -318,11 +313,7 @@ const Landing = () => {
             marginTop: '15px',
             marginBottom: '15px',
           }}
-          sx={{
-            maxWidth: {
-              xl: '500px', lg: '800px', md: '800px', sm: '800px', sx: '500px',
-            },
-          }}
+          sx={{ maxWidth: '800px' }}
         >
           <RegionSelectorMap
             selectorFunction={setMapState}

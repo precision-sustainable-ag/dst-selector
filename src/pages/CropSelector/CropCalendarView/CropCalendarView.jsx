@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { PSAButton, PSATooltip, PSALoadingspinner } from 'shared-react-components/src';
+import { PSAButton, PSATooltip, PSALoadingSpinner } from 'shared-react-components/src';
 import StraightIcon from '@mui/icons-material/Straight';
 import {
   allMonths,
@@ -157,7 +157,7 @@ const CropCalendarView = ({
             minHeight: '100px',
           }}
         >
-          <PSALoadingspinner />
+          <PSALoadingSpinner />
         </Grid>
       ) : (
         <TableContainer component="div" sx={{ lineHeight: '0.5', overflowX: 'initial' }}>
@@ -374,21 +374,23 @@ const CropCalendarView = ({
                           <p>{goal}</p>
                         )}
                         tooltipContent={(
-                          <PSAButton
-                            onClick={() => sortByGoal(goal, index, `goal${index}`)}
-                            variant="body1"
-                            buttonType=""
-                            sx={{
-                              textTransform: 'none',
-                              padding: '0px',
-                            }}
-                            title={(
-                              <>
-                                {`Goal ${index + 1}`}
-                                {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-                              </>
+                          <Box>
+                            <PSAButton
+                              onClick={() => sortByGoal(goal, index, `goal${index}`)}
+                              variant="body1"
+                              buttonType=""
+                              sx={{
+                                textTransform: 'none',
+                                padding: '0px',
+                              }}
+                              title={(
+                                <>
+                                  {`Goal ${index + 1}`}
+                                  {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
+                                </>
                             )}
-                          />
+                            />
+                          </Box>
                         )}
                       />
                     </TableCell>
