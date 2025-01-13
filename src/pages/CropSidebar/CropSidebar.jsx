@@ -14,7 +14,7 @@ import {
   // ListSubheader,
   Typography,
   Grid,
-  Switch,
+  // Switch,
   Chip,
 } from '@mui/material';
 import {
@@ -27,7 +27,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
   callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
@@ -39,14 +39,17 @@ import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import {
-  clearFilters, setSoilDrainageFilter, setIrrigationFilter, setCropGroupFilter,
+  clearFilters,
+  // setSoilDrainageFilter,
+  // setIrrigationFilter,
+  setCropGroupFilter,
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
-const SoloFilter = styled(ListItem)({
-  paddingLeft: '25px',
-});
+// const SoloFilter = styled(ListItem)({
+//   paddingLeft: '25px',
+// });
 
 const CropSidebar = ({
   comparisonView,
@@ -68,8 +71,8 @@ const CropSidebar = ({
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
-  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
+  // const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  // const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -109,13 +112,13 @@ const CropSidebar = ({
     setShowFilters(value);
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
 
-  const handleSoilDrainageFilter = () => {
-    dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
-  };
+  // const handleSoilDrainageFilter = () => {
+  //   dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
+  // };
 
-  const handleIrrigationFilter = () => {
-    dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
-  };
+  // const handleIrrigationFilter = () => {
+  //   dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
+  // };
 
   const handleCropGroupFilter = (val) => {
     dispatchRedux(cropGroupFilterRedux === val ? setCropGroupFilter('') : setCropGroupFilter(val));
@@ -331,7 +334,7 @@ const CropSidebar = ({
         </ListItem>
         )}
       </div>
-      <SoloFilter style={{
+      {/* <SoloFilter style={{
         marginBottom: '8px',
         paddingBottom: '0px',
         paddingTop: '0px',
@@ -396,7 +399,7 @@ const CropSidebar = ({
             </Grid>
                   )}
         />
-      </SoloFilter>
+      </SoloFilter> */}
       <ListItem
         component="div"
       >
