@@ -5,12 +5,13 @@
 */
 
 import {
-  Grid, Typography, CircularProgress,
+  Grid, Typography,
 } from '@mui/material';
 import React, {
   useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSALoadingSpinner } from 'shared-react-components/src';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
@@ -29,7 +30,21 @@ const ExplorerCardView = ({ activeCropData }) => {
 
   return (
     ajaxInProgressRedux ? (
-      <CircularProgress style={{ marginLeft: '60px' }} size="6em" />
+      <Grid
+        item
+        container
+        spacing={1}
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100px',
+        }}
+      >
+        <PSALoadingSpinner />
+      </Grid>
     ) : (
       <>
         <Grid container spacing={2} justifyContent="center">
