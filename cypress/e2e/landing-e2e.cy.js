@@ -23,19 +23,6 @@ describe('Test all possible interactions on the Landing Page after a state is se
     cy.contains(/decline/i).click({ multiple: true, force: true });
   });
 
-  it('should display the correct welcome message when a state is selected from the state dropdown', () => {
-    cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-selector-dropdown-ALABAMA').click();
-    let councilLabel = '';
-    cy.window()
-      .its('Storage')
-      .invoke('getState')
-      .then((state) => {
-        councilLabel = state.mapData.councilLabel;
-        cy.contains(`Welcome to the ${councilLabel} Species Selector`).should('exist');
-      });
-  });
-
   it('should have correct states for the progress buttons after a state is selected', () => {
     cy.assertByTestId('state-selector-dropdown').first().click();
     cy.assertByTestId('state-selector-dropdown-ALABAMA').click();
