@@ -475,7 +475,7 @@ const getAverageGoals = (crop, selectedItems) => {
 };
 
 export const sortByAverageGoals = (crops, { selectedItems }) => {
-  crops.sort((a, b) => compareValues(getAverageGoals(b, selectedItems), getAverageGoals(a, selectedItems), ''));
+  crops.sort((a, b) => compareValues(getAverageGoals(b, selectedItems), getAverageGoals(a, selectedItems), false));
 };
 
 export const sortByGoal = (crops, { goal, sortFlag }) => {
