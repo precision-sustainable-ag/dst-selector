@@ -50,14 +50,12 @@ const InformationSheetContent = ({ crop, modalData }) => {
     callCoverCropApi(
       `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?regions=1222&regions=1317`,
     ).then((data) => {
-      console.log('Resources', data);
       setCurrentSources(data.data);
     });
 
     callCoverCropApi(
       `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?regions=1222&regions=1317`,
     ).then((data) => {
-      console.log('Images', data);
       setAllThumbs(data.data);
       setDataDone(true);
     });
@@ -85,8 +83,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
     const open = accordionOpen[cat];
     setAccordionOpen({ ...accordionOpen, [cat]: !open });
   };
-  console.log('modalData', modalData);
-  console.log('dataDone', dataDone);
   return (
     dataDone === true && (
       <>

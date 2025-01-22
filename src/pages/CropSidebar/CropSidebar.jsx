@@ -84,6 +84,11 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
+  const [westFlag, setWestFlag] = useState(false);
+  const [query, setQuery] = useState(`${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`);
+
+  const latRedux = useSelector((stateRedux) => stateRedux.mapData.lat);
+  const lonRedux = useSelector((stateRedux) => stateRedux.mapData.lon);
 
   const coverCropGroup = [{ label: 'Brassica' }, { label: 'Legume' }, { label: 'Grass' }, { label: 'Broadleaf' }];
 
@@ -98,7 +103,22 @@ const CropSidebar = ({
 
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+  // const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+  // const queryWCCC = `${encodeURIComponent('regions')}=${encodeURIComponent(latRedux)} '&' ${encodeURIComponent(lonRedux)}`;
+
+  const queryWCCCLatLon = [`lat=${latRedux}`, `lon=${lonRedux}`].map((i) => i).join('&');
+
+  useEffect(() => {
+    if (councilShorthandRedux === 'WCCC') {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?${queryWCCCLatLon}`).then((data) => {
+        // query = data.data.map((i) => `${encodeURIComponent('regions')}=${encodeURIComponent(i.id)}`).join('&');
+        setQuery(data.data.map((i) => `regions=${i.id}`).join('&'));
+        console.log(query);
+        setWestFlag(true);
+      });
+    }
+    console.log('this is query', query);
+  }, [councilShorthandRedux, queryWCCCLatLon]);
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -247,21 +267,44 @@ const CropSidebar = ({
   }, [sidebarCategoriesData]);
 
   useEffect(() => {
+    console.log('here 1');
     if (stateIdRedux && regionIdRedux) {
+      console.log('here 2');
       dispatchRedux(setAjaxInProgress(true));
       setLoading(true);
-      // callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/9/filters?regions=1222&regions=1317`).then((data) => {
-        const allFilters = [];
-        data.data.forEach((category) => {
-          allFilters.push(category.attributes);
+      if (councilShorthandRedux !== 'WCCC') {
+        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
+          const allFilters = [];
+          data.data.forEach((category) => {
+            allFilters.push(category.attributes);
+          });
+          setSidebarFiltersData(allFilters);
+          setSidebarCategoriesData(data.data);
         });
-        setSidebarFiltersData(allFilters);
-        setSidebarCategoriesData(data.data);
-      });
+      } else {
+        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
+          const allFilters = [];
+          data.data.forEach((category) => {
+            allFilters.push(category.attributes);
+          });
+          setSidebarFiltersData(allFilters);
+          setSidebarCategoriesData(data.data);
+        });
+      }
+      console.log('here 3');
       console.log('query', query);
-      // callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
-      //   console.log('OTHER data crops', data);
+      if (councilShorthandRedux === 'WCCC' ? westFlag : query) {
+        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
+          console.log('Crops Data', data);
+          const { startDate, endDate } = cashCropDataRedux.dateRange;
+          const start = startDate ? moment(startDate).format('MM/DD') : '';
+          const end = endDate ? moment(endDate).format('MM/DD') : '';
+          cropDataFormatter(data.data, start, end);
+          dispatchRedux(updateCropData(data.data));
+          dispatchRedux(setAjaxInProgress(false));
+        });
+      }
+      // callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/9/crops?minimal=true&regions=1222&regions=1317`).then((data) => {
       //   const { startDate, endDate } = cashCropDataRedux.dateRange;
       //   const start = startDate ? moment(startDate).format('MM/DD') : '';
       //   const end = endDate ? moment(endDate).format('MM/DD') : '';
@@ -269,18 +312,9 @@ const CropSidebar = ({
       //   dispatchRedux(updateCropData(data.data));
       //   dispatchRedux(setAjaxInProgress(false));
       // });
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/9/crops?minimal=true&regions=1222&regions=1317`).then((data) => {
-        console.log('NEWdata crops', data);
-        const { startDate, endDate } = cashCropDataRedux.dateRange;
-        const start = startDate ? moment(startDate).format('MM/DD') : '';
-        const end = endDate ? moment(endDate).format('MM/DD') : '';
-        cropDataFormatter(data.data, start, end);
-        dispatchRedux(updateCropData(data.data));
-        dispatchRedux(setAjaxInProgress(false));
-      });
     }
   }, [
-    cashCropDataRedux, regionIdRedux,
+    cashCropDataRedux, regionIdRedux, query,
   ]);
 
   // TODO: Can we use Reducer instead of localStorage?

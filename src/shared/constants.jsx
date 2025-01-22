@@ -765,8 +765,6 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
   };
 
   const monthStringBuilder = (vals) => {
-    console.log('vals', vals);
-
     const val = vals;
     let yearArr = Array.from({ length: 365 }, () => ({
       info: [],

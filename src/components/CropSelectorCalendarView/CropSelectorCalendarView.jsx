@@ -34,7 +34,6 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
       const classNames = `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'
       } ${isMultiple && !hessianDate ? 'Multiple' : info.join(' ')
       } ${isCashCropTime ? 'cashCropMonth' : ''}`;
-      console.log('classNames', classNames);
       return (
         <Box flex={length} key={index}>
           <PSATooltip

@@ -26,7 +26,7 @@ import {
 } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
-import { updateRegion } from '../../reduxStore/mapSlice';
+import { updateRegion, updateLatLon } from '../../reduxStore/mapSlice';
 import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
@@ -46,6 +46,8 @@ const Location = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const latRedux = useSelector((stateRedux) => stateRedux.mapData.lat);
+  const lonRedux = useSelector((stateRedux) => stateRedux.mapData.lon);
 
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
@@ -87,13 +89,17 @@ const Location = () => {
       if (type === 'Point') return [coordinates[1], coordinates[0]];
       if (type === 'GeometryCollection') return [geometries[0].coordinates[1], geometries[0].coordinates[0]];
     }
+    console.log('markersRedux', markersRedux);
+    console.log('stateLabelRedux', stateLabelRedux);
     if (markersRedux) {
-      return [markersRedux[0][0], markersRedux[0][1]];
+      dispatchRedux(updateLatLon({ lat: markersRedux[0][0], lon: markersRedux[0][1] }));
+      // return [markersRedux[0][0], markersRedux[0][1]];
+    } else if (stateLabelRedux) {
+      dispatchRedux(updateLatLon({ lat: statesLatLongDict[stateLabelRedux][0], lon: statesLatLongDict[stateLabelRedux][1] }));
+      // return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
-    if (stateLabelRedux) {
-      return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
-    }
-    return [47, -122];
+    console.log(latRedux, lonRedux);
+    return [latRedux, lonRedux];
   }, [stateLabelRedux]);
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
