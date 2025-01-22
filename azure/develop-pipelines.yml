@@ -71,6 +71,12 @@ stages:
         exit $TEST_EXIT_CODE
       displayName: "Run Cypress Tests"
 
+    - script: |
+        rm -rf cypress/screenshots
+        rm -rf cypress/videos
+        echo "Cleaned up old artifacts."
+      displayName: "Clean Up Artifacts"
+
     # Publish Cypress screenshots as artifacts
     - task: PublishPipelineArtifact@1
       inputs:
@@ -82,7 +88,7 @@ stages:
       inputs:
         targetPath: 'cypress/videos'
         artifact: 'cypress-videos'
-      condition: always()
+      condition: failed()
 
     - upload: manifests
       artifact: manifests
