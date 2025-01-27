@@ -179,7 +179,7 @@ const Header = () => {
             xs={12}
             height={pathname !== '/' ? '50px' : 'auto'}
             sx={{
-              backgroundColor: '#598445',
+              backgroundColor: 'white',
             }}
           >
             <InformationBar pathname={pathname} />

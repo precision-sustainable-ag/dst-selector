@@ -12,7 +12,7 @@ import { LocationOn } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React from 'react';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAStepper } from 'shared-react-components/src';
 import ProgressButtons from '../../../shared/ProgressButtons';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
 
@@ -26,25 +26,16 @@ const InformationBar = ({ pathname }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // redux vars
-  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const regionRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
-  // functions
-  const handleBtnClick = (type) => {
-    const options = {
-      location: 1,
-      site: 2,
-      goals: 3,
-    };
-
-    const progress = options[type];
+  const handleStepClick = (step) => {
+    const progress = step + 1;
 
     dispatchRedux(gotoProgress(progress));
   };
-
   const getSelectedValues = (type) => {
     switch (type) {
       case 'location':
@@ -87,66 +78,48 @@ const InformationBar = ({ pathname }) => {
     }
   };
 
-  const getData = (type) => {
-    // TODO: is the if block needed?
-    if (type === 'address' && addressRedux === '') {
-      return '';
-    }
-
-    return (
-      <PSAButton
-        onClick={() => handleBtnClick(type)}
-        buttonType="PillButton"
-        style={{
-          borderRadius: '200px',
-          color: 'black',
-          width: '100%',
-
-        }}
-        transparent={!((type === 'location' && progressRedux > 0)
-        || (type === 'site' && progressRedux > 1)
-        || (type === 'goals' && progressRedux > 2))}
-        title={getIconInfo(type)}
-      />
-    );
-  };
-
   return (
     pathname === speciesSelectorToolName && (
       <Grid
         container
-        item
         sx={{
-          backgroundColor: '#598445',
+          backgroundColor: 'white',
           marginBottom: '7px',
+          maxWidth: '100%',
         }}
-        justifyContent="right"
-        xs={12}
+        alignItems="center"
         spacing={1}
       >
-        {progressRedux > 0 && !isMobile && (
-          <Grid item container xs={12} sm={12} md={12} lg={9.5} spacing={1}>
-            <Grid item xs={12} sm={6} md={6} lg={2.5}>
-              {getData('location')}
-            </Grid>
-            <Grid item xs={12} sm={6} md={6} lg={3.5}>
-              {getData('site')}
-            </Grid>
-            <Grid item xs={12} sm={6} md={6} lg={2.5}>
-              {getData('goals')}
-            </Grid>
+        {progressRedux > 0 && !isMobile ? (
+          <Grid
+            item
+            xs={12}
+            lg={9}
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+            }}
+          >
+            <PSAStepper
+              steps={[getIconInfo('location'), getIconInfo('site'), getIconInfo('goals')]}
+              strokeColor="#fffff2"
+              sx={{ width: '100%' }}
+              onStepClick={(index) => handleStepClick(index)}
+              stepperProps={{ activeStep: progressRedux - 1 }}
+              mobile={isMobile}
+            />
           </Grid>
-        )}
+        ) : null}
 
         <Grid
-          container
           item
-          sx={{
-            backgroundColor: '#598445',
-          }}
-          justifyContent="center"
           xs={12}
-          lg={2.5}
+          lg={progressRedux > 0 && !isMobile ? 3 : 12}
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}
         >
           <ProgressButtons />
         </Grid>
