@@ -175,7 +175,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                 ) : (
                   <Typography
                     sx={{
-                      color: '#ff961c',
+                      color: '#C73200',
                       fontSize: '0.8rem',
                       textTransform: 'none',
                     }}
