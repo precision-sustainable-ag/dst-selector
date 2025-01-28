@@ -47,7 +47,6 @@ const InformationBar = ({ pathname }) => {
             item
             xs={12}
             sx={{
-              display: 'flex',
               justifyContent: 'center', // Center-align the stepper
               width: '100%', // Ensure the grid item takes full width
             }}

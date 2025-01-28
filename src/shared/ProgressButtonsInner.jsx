@@ -43,20 +43,19 @@ const ProgressButtonsInner = ({
       justifyContent="space-between"
       style={{ width: '100%' }}
     >
-      {progressRedux !== 0 && (
-        <PSAButton
-          style={{
-            maxWidth: '90px',
-            minWidth: '70px',
-            // marginLeft: progressRedux === 4 ? '-75px' : '0px',
-          }}
-          onClick={() => changeProgress('decrement')}
-          disabled={isDisabledBack}
-          buttonType="PillButton"
-          data-test="back-btn"
-          title="BACK"
-        />
-      )}
+      <PSAButton
+        style={{
+          maxWidth: '90px',
+          minWidth: '70px',
+          // marginLeft: progressRedux === 4 ? '-75px' : '0px',
+        }}
+        onClick={() => changeProgress('decrement')}
+        disabled={isDisabledBack}
+        buttonType="PillButton"
+        data-test="back-btn"
+        title="BACK"
+      />
+
       <div
         style={{
           textAlign: 'center',
