@@ -49,14 +49,9 @@ const Footer = () => {
         height={pathname !== '/' ? '50px' : 'auto'}
       >
         {pathname === '/' && (
-        <Grid
-          item
-          xs={12}
-          mt={0.6}
-          mb={0.6}
-        >
-          <ProgressButtons />
-        </Grid>
+          <Grid item xs={12} mt={0.6} mb={0.6} padding={1} sx={{ width: '100%' }}>
+            <ProgressButtons />
+          </Grid>
         )}
       </Grid>
     </Box>
