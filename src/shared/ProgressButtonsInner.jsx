@@ -37,19 +37,35 @@ const ProgressButtonsInner = ({
   };
 
   return (
-    <Stack direction="row" style={{ width: '100%' }}>
-      <PSAButton
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+      style={{ width: '100%' }}
+    >
+      {progressRedux !== 0 && (
+        <PSAButton
+          style={{
+            maxWidth: '90px',
+            minWidth: '70px',
+            // marginLeft: progressRedux === 4 ? '-75px' : '0px',
+          }}
+          onClick={() => changeProgress('decrement')}
+          disabled={isDisabledBack}
+          buttonType="PillButton"
+          data-test="back-btn"
+          title="BACK"
+        />
+      )}
+      <div
         style={{
-          maxWidth: '90px',
-          minWidth: '70px',
-          marginLeft: progressRedux === 4 ? '-75px' : '0px',
+          textAlign: 'center',
+          fontWeight: 'bold',
+          flex: 1,
         }}
-        onClick={() => changeProgress('decrement')}
-        disabled={isDisabledBack}
-        buttonType="PillButton"
-        data-test="back-btn"
-        title="BACK"
-      />
+      >
+        {/* {steps[progressRedux]} */}
+      </div>
       {toolTip && isDisabledNext ? (
         <PSATooltip
           enterTouchDelay={0}

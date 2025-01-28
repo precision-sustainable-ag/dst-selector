@@ -21,7 +21,7 @@ const SiteConditions = () => {
 
   return (
     <Box>
-      <Grid container spacing={4}>
+      <Grid container>
         <Grid item sx={{ flexGrow: 1, textAlign: 'center' }}>
           {/* <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
             Site Conditions

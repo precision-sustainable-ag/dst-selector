@@ -8,13 +8,11 @@ import { Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { LocationOn } from '@mui/icons-material';
-import CheckIcon from '@mui/icons-material/Check';
-import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React from 'react';
 import { PSAStepper } from 'shared-react-components/src';
-import ProgressButtons from '../../../shared/ProgressButtons';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
+import ProgressButtons from '../../../shared/ProgressButtons';
+import { steps } from '../../../shared/constants';
 
 const speciesSelectorToolName = '/';
 
@@ -26,56 +24,12 @@ const InformationBar = ({ pathname }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // redux vars
-  const regionRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
-  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const handleStepClick = (step) => {
-    const progress = step + 1;
+    const progress = step;
 
     dispatchRedux(gotoProgress(progress));
-  };
-  const getSelectedValues = (type) => {
-    switch (type) {
-      case 'location':
-        return councilShorthandRedux === 'MCCC' ? `${regionRedux} County` : `Zone ${regionRedux}`;
-      // TODO: is goals needed?
-      case 'goals':
-        return selectedGoalsRedux.toString().split(',').join(', ');
-      default:
-        return '';
-    }
-  };
-
-  const getIconInfo = (type) => {
-    switch (type) {
-      case 'location':
-        return (
-          <>
-            <LocationOn />
-            &nbsp;Location:
-            {' '}
-            {getSelectedValues('location')}
-          </>
-        );
-      case 'site':
-        return (
-          <>
-            <FilterHdrIcon />
-            &nbsp; Site Conditions
-          </>
-        );
-      case 'goals':
-        return (
-          <>
-            <CheckIcon />
-            &nbsp;Goals
-          </>
-        );
-      default:
-        return null;
-    }
   };
 
   return (
@@ -83,44 +37,50 @@ const InformationBar = ({ pathname }) => {
       <Grid
         container
         sx={{
-          backgroundColor: 'white',
           marginBottom: '7px',
           maxWidth: '100%',
         }}
-        alignItems="center"
-        spacing={1}
       >
-        {progressRedux > 0 && !isMobile ? (
+        {/* Stepper */}
+        {progressRedux >= 0 && !isMobile ? (
           <Grid
             item
             xs={12}
-            lg={9}
             sx={{
               display: 'flex',
-              justifyContent: 'flex-start',
+              justifyContent: 'center', // Center-align the stepper
+              width: '100%', // Ensure the grid item takes full width
             }}
           >
             <PSAStepper
-              steps={[getIconInfo('location'), getIconInfo('site'), getIconInfo('goals')]}
+              steps={steps}
+              maxAvailableStep={progressRedux === 0 ? 0 : steps.length}
               strokeColor="#fffff2"
-              sx={{ width: '100%' }}
+              sx={{
+                width: '100%', // Stepper takes full width of its container
+                maxWidth: '100%', // Ensure it doesn't restrict itself
+              }}
               onStepClick={(index) => handleStepClick(index)}
-              stepperProps={{ activeStep: progressRedux - 1 }}
+              stepperProps={{
+                activeStep: progressRedux,
+              }}
+              stepButtonProps={{
+                sx: {
+                  background: 'transparent',
+                  '.MuiStepLabel-label': {
+                    '&.Mui-active, &.Mui-completed': {
+                      color: '#77b400',
+                    },
+                  },
+                },
+              }}
               mobile={isMobile}
             />
           </Grid>
         ) : null}
 
-        <Grid
-          item
-          xs={12}
-          lg={progressRedux > 0 && !isMobile ? 3 : 12}
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}
-        >
+        {/* Buttons */}
+        <Grid item xs={12} sx={{ background: '#527B3F', padding: 1 }}>
           <ProgressButtons />
         </Grid>
       </Grid>
