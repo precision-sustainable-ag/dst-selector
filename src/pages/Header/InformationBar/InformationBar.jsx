@@ -8,7 +8,7 @@ import { Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PSAStepper } from 'shared-react-components/src';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
 import ProgressButtons from '../../../shared/ProgressButtons';
@@ -25,10 +25,17 @@ const InformationBar = ({ pathname }) => {
 
   // redux vars
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const [maxStepReached, setMaxStepReached] = useState(0);
+
+  // Update maxStepReached when progressing through steps
+  useEffect(() => {
+    if (progressRedux > maxStepReached) {
+      setMaxStepReached(progressRedux);
+    }
+  }, [progressRedux, maxStepReached, dispatchRedux]);
 
   const handleStepClick = (step) => {
     const progress = step;
-
     dispatchRedux(gotoProgress(progress));
   };
 
@@ -47,17 +54,17 @@ const InformationBar = ({ pathname }) => {
             item
             xs={12}
             sx={{
-              justifyContent: 'center', // Center-align the stepper
-              width: '100%', // Ensure the grid item takes full width
+              justifyContent: 'center',
+              width: '100%',
             }}
           >
             <PSAStepper
               steps={steps}
-              maxAvailableStep={progressRedux === 0 ? 0 : steps.length}
-              strokeColor="#fffff2"
+              maxAvailableStep={maxStepReached > 0 ? steps.length : 0}
+              strokeColor="white"
               sx={{
-                width: '100%', // Stepper takes full width of its container
-                maxWidth: '100%', // Ensure it doesn't restrict itself
+                width: '100%',
+                maxWidth: '100%',
               }}
               onStepClick={(index) => handleStepClick(index)}
               stepperProps={{
