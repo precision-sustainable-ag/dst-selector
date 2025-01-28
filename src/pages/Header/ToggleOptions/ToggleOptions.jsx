@@ -62,13 +62,6 @@ const ToggleOptions = ({ pathname }) => {
         exact
         to="/"
         sx={{
-          backgroundColor: pathname === '/' ? '#598444' : 'white',
-          color: pathname === '/' ? 'white' : '#8abc62',
-          border: '10px',
-          '&:hover': {
-            backgroundColor: pathname === '/' ? '#598444' : 'white',
-            color: pathname === '/' ? 'white' : '#8abc62',
-          },
           fontWeight: 'bold',
         }}
         data-test="get-recommendation-btn"

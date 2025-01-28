@@ -33,7 +33,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
             key={`${crop.id} index`}
             id={crop.id}
             style={{
-              opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
+              opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.55',
               outline: '2px solid #598344',
               backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
             }}
