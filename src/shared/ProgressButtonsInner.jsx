@@ -47,7 +47,6 @@ const ProgressButtonsInner = ({
         style={{
           maxWidth: '90px',
           minWidth: '70px',
-          // marginLeft: progressRedux === 4 ? '-75px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
@@ -62,9 +61,7 @@ const ProgressButtonsInner = ({
           fontWeight: 'bold',
           flex: 1,
         }}
-      >
-        {/* {steps[progressRedux]} */}
-      </div>
+      />
       {toolTip && isDisabledNext ? (
         <PSATooltip
           enterTouchDelay={0}
