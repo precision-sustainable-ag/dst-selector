@@ -44,7 +44,6 @@ const InformationBar = ({ pathname }) => {
       <Grid
         container
         sx={{
-          marginBottom: '7px',
           maxWidth: '100%',
         }}
       >
@@ -54,6 +53,7 @@ const InformationBar = ({ pathname }) => {
             item
             xs={12}
             sx={{
+              background: 'white',
               justifyContent: 'center',
               width: '100%',
             }}
@@ -71,7 +71,7 @@ const InformationBar = ({ pathname }) => {
                 activeStep: progressRedux,
               }}
               stepButtonProps={{
-                sx: {
+                styles: {
                   background: 'transparent',
                   '.MuiStepLabel-label': {
                     '&.Mui-active, &.Mui-completed': {
@@ -86,7 +86,7 @@ const InformationBar = ({ pathname }) => {
         ) : null}
 
         {/* Buttons */}
-        <Grid item xs={12} sx={{ background: '#527B3F', padding: 1 }}>
+        <Grid item xs={12} sx={{ padding: 1 }}>
           <ProgressButtons />
         </Grid>
       </Grid>

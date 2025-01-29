@@ -178,6 +178,7 @@ const Header = () => {
             item
             xs={12}
             height={pathname !== '/' ? '50px' : 'auto'}
+            sx={{ background: '#527B3F' }}
           >
             <InformationBar pathname={pathname} />
             <MyCoverCropReset />
