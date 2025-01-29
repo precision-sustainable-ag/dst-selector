@@ -66,7 +66,7 @@ const CoverCropGoals = () => {
                         <Typography
                           key={index}
                           variant="body1"
-                          sx={{ fontWeight: 'normal', fontSize: '10pt', color: '#48a8ab' }}
+                          sx={{ fontWeight: 'normal', fontSize: '10pt', color: '#367F81' }}
                         >
                           <br />
                           {index + 1}
