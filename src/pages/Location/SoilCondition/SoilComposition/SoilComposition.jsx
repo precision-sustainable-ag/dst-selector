@@ -51,7 +51,7 @@ const SoilComposition = () => {
             <Grid item>
               <Typography
                 variant="body1"
-                style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#598445' }}
+                style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#51783F' }}
                 data-test="map-unit-name-text"
               >
                 {soilDataRedux?.mapUnitName}

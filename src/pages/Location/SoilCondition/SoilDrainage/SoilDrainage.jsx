@@ -171,7 +171,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                 }}
                 data-test="drainage-reset-button"
                 title={isMobile ? (
-                  <RestartAltIcon sx={{ color: '#ff961c' }} />
+                  <RestartAltIcon sx={{ color: '#C73200' }} />
                 ) : (
                   <Typography
                     sx={{
