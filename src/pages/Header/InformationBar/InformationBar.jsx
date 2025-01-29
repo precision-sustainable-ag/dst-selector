@@ -8,9 +8,9 @@ import { Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { PSAStepper } from 'shared-react-components/src';
-import { gotoProgress } from '../../../reduxStore/sharedSlice';
+import { gotoProgress, updateMaxStepReached } from '../../../reduxStore/sharedSlice';
 import ProgressButtons from '../../../shared/ProgressButtons';
 import { steps } from '../../../shared/constants';
 
@@ -25,12 +25,12 @@ const InformationBar = ({ pathname }) => {
 
   // redux vars
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const [maxStepReached, setMaxStepReached] = useState(0);
+  const maxStepReached = useSelector((stateRedux) => stateRedux.sharedData.maxStepReached);
 
   // Update maxStepReached when progressing through steps
   useEffect(() => {
     if (progressRedux > maxStepReached) {
-      setMaxStepReached(progressRedux);
+      dispatchRedux(updateMaxStepReached(progressRedux));
     }
   }, [progressRedux, maxStepReached, dispatchRedux]);
 
