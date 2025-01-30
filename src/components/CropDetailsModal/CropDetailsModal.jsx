@@ -18,7 +18,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  // const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -26,7 +26,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // useState vars
   const [dataDone, setDataDone] = useState(false);
   const [modalData, setModalData] = useState([]);
-  const [printEnabled, setPrintEnabled] = useState(false);
+  // const [printEnabled, setPrintEnabled] = useState(false);
 
   useEffect(() => {
     const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
@@ -43,9 +43,9 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
       .then((res) => {
         if (res.status !== 404) {
-          setPrintEnabled(true);
+          // setPrintEnabled(true);
         } else {
-          setPrintEnabled(false);
+          // setPrintEnabled(false);
         }
       });
   }, [crop]);
@@ -54,7 +54,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     setModalOpen(!modalOpen);
   };
 
-  const print = () => {
+  const print = async () => {
     if (consentRedux === true) {
       pirschAnalytics('Information Sheet', {
         meta: {
@@ -64,8 +64,67 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
         },
       });
     }
-    window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, '_blank');
+
+    document.querySelectorAll('img').forEach((img) => {
+      img.src = new URL(img.getAttribute('src'), window.location.origin).href;
+    });
+
+    const extractCSS = () => {
+      let styles = '';
+
+      // Get styles from <style> and <link>
+      document.querySelectorAll('style, link[rel="stylesheet"]').forEach((node) => {
+        if (node.tagName === 'STYLE') {
+          styles += node.innerHTML;
+        } else if (node.tagName === 'LINK') {
+          try {
+            const request = new XMLHttpRequest();
+            request.open('GET', node.href, false);
+            request.send(null);
+            styles += request.responseText;
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.warn('Could not load CSS file:', node.href);
+          }
+        }
+      });
+
+      return styles.replace(/@media \(min-width:1536px\)/g, '@media (min-width:0px)');
+    };
+
+    const html = document.querySelector('[id^=cropDetailModal]').outerHTML;
+    const fullHtml = `
+      <html>
+        <head>
+          <style>${extractCSS()}</style>
+        </head>
+        <body>${html}</body>
+      </html>
+    `;
+
+    const response = await fetch('https://developweather.covercrop-data.org/generate-pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ html: fullHtml }),
+    });
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
   }; // print
+
+  // const print = () => {
+  //   if (consentRedux === true) {
+  //     pirschAnalytics('Information Sheet', {
+  //       meta: {
+  //         category: 'Information Sheet',
+  //         action: 'Print',
+  //         label: document.title,
+  //       },
+  //     });
+  //   }
+  //   window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, '_blank');
+  // }; // print
 
   return dataDone === true && (
     <PSAModal
@@ -105,7 +164,15 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     title="Terminology Definitions"
                   />
                 </Grid>
-                {(printEnabled && councilShorthandRedux === 'NECCC') && (
+                <Grid item>
+                  <PSAButton
+                    startIcon={<Print />}
+                    buttonType="ModalLink"
+                    onClick={print}
+                    title="Print"
+                  />
+                </Grid>
+                {/* {(printEnabled && councilShorthandRedux === 'NECCC') && (
                   <Grid item>
                     <PSAButton
                       startIcon={<Print />}
@@ -114,7 +181,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                       title="Print"
                     />
                   </Grid>
-                )}
+                )} */}
               </Grid>
 
               <Grid item xs={1}>
