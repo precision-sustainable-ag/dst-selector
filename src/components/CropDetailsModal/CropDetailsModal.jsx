@@ -65,10 +65,6 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       });
     }
 
-    document.querySelectorAll('img').forEach((img) => {
-      img.src = new URL(img.getAttribute('src'), window.location.origin).href;
-    });
-
     const extractCSS = () => {
       let styles = '';
 
@@ -92,25 +88,30 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       return styles.replace(/@media \(min-width:1536px\)/g, '@media (min-width:0px)');
     };
 
-    const html = document.querySelector('[id^=cropDetailModal]').outerHTML;
-    const fullHtml = `
-      <html>
-        <head>
-          <style>${extractCSS()}</style>
-        </head>
-        <body>${html}</body>
-      </html>
-    `;
+    document.body.classList.add('printing');
 
-    const response = await fetch('https://developweather.covercrop-data.org/generate-pdf', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ html: fullHtml }),
-    });
+    setTimeout(async () => {
+      const html = document.querySelector('[id^=cropDetailModal]').outerHTML;
+      const fullHtml = `
+        <html>
+          <head>
+            <style>${extractCSS()}</style>
+          </head>
+          <body>${html}</body>
+        </html>
+      `;
 
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
+      const response = await fetch('https://developweather.covercrop-data.org/generate-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ html: fullHtml }),
+      });
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      document.body.classList.remove('printing');
+    }, 100);
   }; // print
 
   // const print = () => {
