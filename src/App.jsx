@@ -91,6 +91,9 @@ const theme = createTheme(
             boxShadow: '0 0 3px 0 black',
           },
           border: '1px solid #777',
+          '&:focus': {
+            boxShadow: '0 0 0 2px black',
+          },
         },
         colorSecondary: {
           '&, &&:hover, &&:focus': {

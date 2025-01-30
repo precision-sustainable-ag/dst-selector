@@ -3,6 +3,7 @@ import {
   Box,
   Collapse,
   List,
+  ListItemButton,
   ListItem,
   ListItemText,
   Typography,
@@ -33,23 +34,16 @@ const CoverCropGoals = () => {
       }}
     >
       {' '}
-      <ListItem
-        button
-        onClick={() => setGoalsOpen(!goalsOpen)}
-        style={{
-          backgroundColor: 'inherit',
-          borderTop: '4px solid white',
-        }}
-      >
+      <ListItemButton onClick={() => setGoalsOpen(!goalsOpen)}>
         <ListItemText primary="GOALS" sx={{ fontWeight: 'bold' }} />
         {goalsOpen ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
+      </ListItemButton>
       <Collapse in={goalsOpen} timeout="auto" unmountOnExit>
         {selectedGoalsRedux.length === 0 ? (
           <List component="div" disablePadding>
-            <ListItem button sx={{ paddingLeft: 3 }}>
+            <ListItemButton sx={{ paddingLeft: 3 }}>
               <ListItemText primary="No Goals Selected" />
-            </ListItem>
+            </ListItemButton>
             <ListItem sx={{ paddingLeft: 3 }}>
               <PSAButton onClick={() => changeProgress()} title="click to edit" buttonType="" />
             </ListItem>

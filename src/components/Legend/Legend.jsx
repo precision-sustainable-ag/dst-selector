@@ -4,8 +4,8 @@
 */
 
 import {
-  Grid,
   ListItem,
+  ListItemButton,
   ListItemText,
   Collapse,
   List,
@@ -17,21 +17,11 @@ const Legend = ({ legendData, modal }) => {
   const [legendOpen, setLegendOpen] = useState(false);
 
   return (
-    <Grid
-      container
-    >
-      <ListItem
-        onClick={() => setLegendOpen(!legendOpen)}
-        style={{
-          marginBottom: '15px',
-          backgroundColor: 'inherit',
-
-        }}
-      >
+    <>
+      <ListItemButton onClick={() => setLegendOpen(!legendOpen)}>
         <ListItemText primary="LEGEND" />
-
         {legendOpen ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
+      </ListItemButton>
       <Collapse in={legendOpen} timeout="auto" unmountOnExit>
 
         {legendData.length > 0
@@ -68,7 +58,7 @@ const Legend = ({ legendData, modal }) => {
       )}
       </Collapse>
 
-    </Grid>
+    </>
   );
 };
 

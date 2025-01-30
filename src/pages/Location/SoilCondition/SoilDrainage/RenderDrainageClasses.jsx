@@ -106,6 +106,11 @@ const RenderDrainageClasses = ({
             onClick={() => {
               updateDrainageClass(index);
             }}
+            sx={{
+              '&:focus': {
+                boxShadow: '0 0 0 2px black',
+              },
+            }}
           />
         </Box>
       ))}

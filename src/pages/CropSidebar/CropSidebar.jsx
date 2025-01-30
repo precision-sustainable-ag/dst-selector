@@ -287,6 +287,7 @@ const CropSidebar = ({
     }
   }, [cashCropDataRedux.dateRange, setGrowthWindow]);
 
+  console.log('sidebarFilters', sidebarFilters);
   const getFilters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${filter.name}`;
     return (
@@ -520,17 +521,10 @@ const CropSidebar = ({
                     border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
                   }}
                 >
-                  <ListItem
-                    onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
-                    style={{
-                      backgroundColor: 'inherit',
-
-                    }}
-                  >
+                  <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
                     <ListItemText primary="FILTERS" />
-
                     {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                  </ListItem>
+                  </ListItemButton>
                   <Collapse in={cropFiltersOpen} timeout="auto">
                     {filtersList()}
                   </Collapse>

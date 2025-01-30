@@ -1,5 +1,5 @@
 import {
-  Collapse, List, ListItem, ListItemText, Typography,
+  Collapse, List, ListItem, ListItemButton, ListItemText, Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -29,7 +29,7 @@ const SidebarFilter = ({
           title={<p>{filter.description}</p>}
           key={`tooltip${index}`}
           tooltipContent={(
-            <ListItem
+            <ListItemButton
               key={index}
               sx={{ paddingLeft: 3, backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
               component="div"
@@ -41,11 +41,11 @@ const SidebarFilter = ({
               ) : (
                 <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
               )}
-            </ListItem>
+            </ListItemButton>
           )}
         />
       ) : (
-        <ListItem
+        <ListItemButton
           key={index}
           sx={{ backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
           component="div"
@@ -63,7 +63,7 @@ const SidebarFilter = ({
           ) : (
             <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
           )}
-        </ListItem>
+        </ListItemButton>
       )}
 
       <Collapse in={filterDataRedux[sectionFilter]} timeout="auto">
