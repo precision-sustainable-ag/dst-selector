@@ -41,12 +41,7 @@ const InformationBar = ({ pathname }) => {
 
   return (
     pathname === speciesSelectorToolName && (
-      <Grid
-        container
-        sx={{
-          maxWidth: '100%',
-        }}
-      >
+      <Grid container sx={{ maxWidth: '100%', justifyContent: 'center' }}>
         {/* Stepper */}
         {progressRedux >= 0 && !isMobile ? (
           <Grid
@@ -54,8 +49,9 @@ const InformationBar = ({ pathname }) => {
             xs={12}
             sx={{
               background: 'white',
-              justifyContent: 'center',
               width: '100%',
+              pb: 1,
+              textAlign: 'center', // Centers the stepper
             }}
           >
             <PSAStepper
@@ -63,8 +59,9 @@ const InformationBar = ({ pathname }) => {
               maxAvailableStep={maxStepReached > 0 ? steps.length : 0}
               strokeColor="white"
               sx={{
-                width: '100%',
-                maxWidth: '100%',
+                width: '100%', // Allow it to take full width
+                maxWidth: '800px', // Consistent width with buttons
+                mx: 'auto', // Centering
               }}
               onStepClick={(index) => handleStepClick(index)}
               stepperProps={{
@@ -86,8 +83,8 @@ const InformationBar = ({ pathname }) => {
         ) : null}
 
         {/* Buttons */}
-        <Grid item xs={12} sx={{ padding: 1 }}>
-          <ProgressButtons />
+        <Grid item xs={12} sx={{ width: '100%', textAlign: 'center', padding: 1 }}>
+          <ProgressButtons sx={{ maxWidth: '800px', width: '100%', mx: 'auto' }} />
         </Grid>
       </Grid>
     )

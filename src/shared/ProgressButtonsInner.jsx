@@ -41,12 +41,15 @@ const ProgressButtonsInner = ({
       direction="row"
       alignItems="center"
       justifyContent="space-between"
-      style={{ width: '100%' }}
+      style={{ width: '100%', maxWidth: '80%', mx: 'auto' }}
     >
       <PSAButton
         style={{
           maxWidth: '90px',
           minWidth: '70px',
+          padding: '4px 10px', // Reduced padding for less height
+          marginTop: '2px', // Adds spacing above
+          marginBottom: '2px', // Adds spacing below
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
@@ -75,14 +78,16 @@ const ProgressButtonsInner = ({
                   maxWidth: '90px',
                   minWidth: '70px',
                   marginLeft: progressRedux === 4 ? '-75px' : '0px',
+                  padding: '4px 10px', // Reduced padding for less height
+                  marginTop: '2px', // Adds spacing above
+                  marginBottom: '2px', // Adds spacing below
                 }}
                 onClick={() => changeProgress('increment')}
                 disabled={isDisabledNext || progressRedux === 4}
                 buttonType="PillButton"
                 data-test="next-btn"
-              >
-                Next
-              </PSAButton>
+                title="NEXT"
+              />
             </Box>
           )}
         />
@@ -96,6 +101,9 @@ const ProgressButtonsInner = ({
               maxWidth: '90px',
               minWidth: progressRedux === 4 ? 'max-content' : '70px',
               marginLeft: '3%',
+              padding: '4px 10px', // Reduced padding for less height
+              marginTop: '2px', // Adds spacing above
+              marginBottom: '2px', // Adds spacing below
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
@@ -111,6 +119,9 @@ const ProgressButtonsInner = ({
           maxWidth: '90px',
           minWidth: '90px',
           marginLeft: '3%',
+          padding: '4px 10px', // Reduced padding for less height
+          marginTop: '2px', // Adds spacing above
+          marginBottom: '2px', // Adds spacing below
         }}
         onClick={() => {
           if (selectedCropIdsRedux.length > 0) {
