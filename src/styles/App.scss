@@ -24,3 +24,16 @@ code {
   justify-content: space-between;
 }
 
+@media print {
+  @page {
+    margin: 0.25in;
+  }
+
+  .nopagebreak {
+    break-inside: avoid;
+  }
+
+  .noprint, .MuiAccordionSummary-expandIconWrapper {
+    display: none;
+  }
+}
