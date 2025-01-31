@@ -8,6 +8,7 @@ import {
   Grid,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   Typography,
 } from '@mui/material';
@@ -26,14 +27,14 @@ const RenderGoals = ({
   const dispatchRedux = useDispatch();
   return (
     <>
-      <ListItem
+      <ListItemButton
         sx={{ backgroundColor: goalsOpen ? '#add08f' : 'white' }}
         component="div"
         onClick={() => setGoalsOpen(!goalsOpen)}
       >
         <ListItemText primary={<Typography variant="body2">COVER CROP GOALS</Typography>} />
         {goalsOpen ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
+      </ListItemButton>
 
       <Collapse in={goalsOpen} timeout="auto">
         <List component="div" disablePadding>
