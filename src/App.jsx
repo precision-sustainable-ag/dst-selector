@@ -48,6 +48,7 @@ import './styles/App.scss';
 import 'mdbreact/dist/css/mdb.css';
 import SiteConditions from './pages/Location/LocationConfirmation/SiteConditions';
 import '@fontsource/ibm-plex-sans';
+import SkipContent from './components/SkipContent/SkipContent';
 
 const store = configureStore();
 
@@ -136,8 +137,9 @@ const App = () => (
           <Auth0ProviderWithHistory>
             <Suspense fallback={<div>Loading..</div>}>
               <Box>
+                <SkipContent href="#main-content" text="Skip to content" />
                 <Header />
-                <Container disableGutters maxWidth={false}>
+                <Container disableGutters maxWidth={false} id="main-content">
                   <Box mr={1} ml={1} mt={1} mb={1}>
                     <Switch>
                       <Route path="/" render={() => <LoadRelevantRoute />} exact />
