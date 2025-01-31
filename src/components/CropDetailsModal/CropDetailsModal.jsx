@@ -8,13 +8,15 @@ import {
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSAModal } from 'shared-react-components/src';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
+import { updatePrinting } from '../../reduxStore/sharedSlice';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
+  const dispatchRedux = useDispatch();
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
@@ -88,7 +90,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       return styles.replace(/@media \(min-width:1536px\)/g, '@media (min-width:0px)');
     };
 
-    document.body.classList.add('printing');
+    dispatchRedux(updatePrinting(true));
 
     setTimeout(async () => {
       const html = document.querySelector('[id^=cropDetailModal]').outerHTML;
@@ -104,13 +106,16 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       const response = await fetch('https://developweather.covercrop-data.org/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ html: fullHtml }),
+        body: JSON.stringify({
+          html: fullHtml,
+          filename: `${crop.label}%20Zone%20${regionShorthandRedux}.pdf`,
+        }),
       });
 
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
-      document.body.classList.remove('printing');
+      const { fileUrl } = await response.json();
+      window.open(fileUrl, '_blank');
+
+      dispatchRedux(updatePrinting(false));
     }, 100);
   }; // print
 
@@ -148,7 +153,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
           id={`cropDetailModal-${modalData.id}`}
         >
           <Grid container>
-            <Grid container item xs={12} sx={{ backgroundColor: '#2D7B7B' }}>
+            <Grid container item xs={12} sx={{ backgroundColor: '#2D7B7B' }} className="noprint">
               <Grid container display="flex" alignItems="center" item xs={11}>
                 <Grid item>
                   <Typography color="white" sx={{ marginLeft: '2em' }}>

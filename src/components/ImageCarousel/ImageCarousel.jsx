@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
@@ -14,6 +15,7 @@ const ImageCarousel = ({ images }) => {
   const [maxSteps, setMaxSteps] = useState(images.length);
   const [imagesData, setImagesData] = useState([]);
   const [loaded, setLoaded] = useState([]);
+  const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
 
   useEffect(() => {
     async function makeImages(n) {
@@ -29,18 +31,12 @@ const ImageCarousel = ({ images }) => {
       setMaxSteps(imgsData.length);
     }
 
-    makeImages(-1);
-
-    const observer = new MutationObserver(() => {
-      if (document.body.classList.contains('printing')) {
-        makeImages(1);
-      }
-    });
-
-    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-
-    return () => observer.disconnect();
-  }, []);
+    if (printing) {
+      makeImages(1);
+    } else {
+      makeImages(-1);
+    }
+  }, [printing]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -106,6 +102,7 @@ const ImageCarousel = ({ images }) => {
       <MobileStepper
         steps={maxSteps}
         position="static"
+        className="noprint"
         activeStep={activeStep}
         nextButton={(
           <PSAButton

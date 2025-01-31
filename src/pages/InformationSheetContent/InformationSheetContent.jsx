@@ -75,7 +75,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
         <CoverCropInformation allThumbs={allThumbs} crop={modalData} />
         {modalData
           && modalData.data.map((cat, index) => (
-            <Grid item key={index} xs={12}>
+            <Grid item key={index} xs={12} className="nopagebreak">
               <PSAAccordion
                 expanded={accordionOpen[cat.label]}
                 onChange={() => handleAccordion(cat.label)}
