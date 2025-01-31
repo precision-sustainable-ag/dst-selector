@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '@mui/material';
 
-const SkipContent = ({ href, text }) => (
+const SkipContent = ({ href, text, sx }) => (
   <Link
     href={href}
     underline="none"
@@ -27,6 +27,7 @@ const SkipContent = ({ href, text }) => (
         color: 'black',
         backgroundColor: '#f0f7eb',
       },
+      ...sx,
     }}
   >
     {text}

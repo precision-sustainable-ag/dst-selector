@@ -168,6 +168,18 @@ const App = () => (
                 </Container>
               </Box>
               <SnackbarComponent />
+              <SkipContent
+                href="#main-content"
+                text="Skip to content"
+                sx={{
+                  top: 'auto',
+                  bottom: '-80px',
+                  '&:focus': {
+                    bottom: '60px',
+                    transition: 'bottom 225ms cubic-bezier(0, 0, 0.2, 1)',
+                  },
+                }}
+              />
               <Footer />
             </Suspense>
           </Auth0ProviderWithHistory>

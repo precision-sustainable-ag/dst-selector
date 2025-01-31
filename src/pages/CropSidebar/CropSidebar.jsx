@@ -287,7 +287,6 @@ const CropSidebar = ({
     }
   }, [cashCropDataRedux.dateRange, setGrowthWindow]);
 
-  console.log('sidebarFilters', sidebarFilters);
   const getFilters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${filter.name}`;
     return (
