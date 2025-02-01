@@ -6,6 +6,7 @@ import {
   Box, Grid, Typography,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +25,8 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+
+  const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
 
   // useState vars
   const [dataDone, setDataDone] = useState(false);
@@ -170,14 +173,27 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     title="Terminology Definitions"
                   />
                 </Grid>
-                <Grid item>
-                  <PSAButton
-                    startIcon={<Print />}
-                    buttonType="ModalLink"
-                    onClick={print}
-                    title="Print"
-                  />
-                </Grid>
+                {
+                  printing
+                    ? (
+                      <Grid item>
+                        <PSAButton
+                          buttonType="ModalLink"
+                          startIcon={<CircularProgress size={20} />}
+                        />
+                      </Grid>
+                    )
+                    : (
+                      <Grid item>
+                        <PSAButton
+                          startIcon={<Print />}
+                          buttonType="ModalLink"
+                          onClick={print}
+                          title="Print"
+                        />
+                      </Grid>
+                    )
+                }
                 {/* {(printEnabled && councilShorthandRedux === 'NECCC') && (
                   <Grid item>
                     <PSAButton
