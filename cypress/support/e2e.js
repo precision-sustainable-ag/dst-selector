@@ -2,6 +2,8 @@
 import { flipCoverCropName } from '../../src/shared/constants';
 import './commands';
 
+const rowOpacity = 0.55;
+
 Cypress.Commands.add('assertByTestId', (testId) => {
   cy.get(`[data-test=${testId}]`).should('exist');
 });
@@ -50,15 +52,15 @@ const checkRows = (filterType, filterIndex, filterResult) => {
               cy.log('One row found.');
               cy.contains(/No cover crops match your selected Cover Crop Property filters./i).should('exist');
             } else {
-              const visibleRows = Cypress.$(allRows).not('[style*="opacity: 0.3"]');
+              const visibleRows = Cypress.$(allRows).not(`[style*="opacity: ${rowOpacity}"]`);
               // eslint-disable-next-line no-console
               cy.log(`Visible rows: ${visibleRows.length}`);
               if (filterResult[filterIdx] === 'all') {
-                cy.get('tr[style*="opacity: 0.3"]').should('not.exist');
+                cy.get(`tr[style*="opacity: ${rowOpacity}"]`).should('not.exist');
                 return;
               }
               if (visibleRows.length <= 0) {
-                cy.get('tr:not([style*="opacity: 0.3"])').should('not.exist');
+                cy.get(`tr:not([style*="opacity: ${rowOpacity}"])`).should('not.exist');
                 return;
               }
               expect(filterResult[filterIdx].length).to.equal(visibleRows.length);
