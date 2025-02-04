@@ -446,6 +446,7 @@ const CropSidebar = ({
     filtersList();
   }, [sidebarFilters]);
 
+  // eslint-disable-next-line no-nested-ternary
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
@@ -473,69 +474,60 @@ const CropSidebar = ({
       </Grid>
     </Grid>
   ) : (
-    <Grid container>
-      <Grid item>
-        {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
-          <Box
-            id="Filters"
-          >
-            <List
-              component="nav"
-              aria-labelledby="nested-list-subheader"
-            >
-              {from === 'table' && (
-              <>
-                {showFilters && speciesSelectorActivationFlagRedux && !listView && (
-                  <CoverCropSearch />
-                )}
-
-                {!listView && (
-                  <CoverCropGoals style={style} />
-                )}
-
-              </>
-              )}
-              {showFilters && (
-              <>
-                {from === 'explorer' && (
-                  <>
-                    <List component="div" disablePadding>
-                      <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
-                        <ListItemText
-                          primary={(
-                            <Typography variant="body2">
-                              PLANT HARDINESS ZONE
-                            </Typography>
+    (speciesSelectorActivationFlagRedux || from === 'explorer') ? (
+      <Box
+        id="Filters"
+      >
+        <List
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+        >
+          {from === 'table' && (
+          <>
+            {showFilters && speciesSelectorActivationFlagRedux && !listView && (
+            <CoverCropSearch />
             )}
-                        />
-                        {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
-                      </ListItemButton>
-                    </List>
-                    <PlantHardinessZone from="Browse Cover Crops" />
-                    <CoverCropSearch />
-                  </>
-                )}
-                <Box
-                  sx={{
-                    border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
-                  }}
-                >
-                  <ListItem
-                    onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
-                    style={{
-                      backgroundColor: 'inherit',
 
-                    }}
-                  >
-                    <ListItemText primary="FILTERS" />
+            {!listView && (
+            <CoverCropGoals style={style} />
+            )}
 
-                    {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                  </ListItem>
-                  <Collapse in={cropFiltersOpen} timeout="auto">
-                    {filtersList()}
-                  </Collapse>
-                </Box>
-                {from !== 'explorer'
+          </>
+          )}
+          {showFilters && (
+          <>
+            {from === 'explorer' && (
+            <>
+              <List component="div" disablePadding>
+                <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
+                  <ListItemText
+                    primary={(
+                      <Typography variant="body2">
+                        PLANT HARDINESS ZONE
+                      </Typography>
+            )}
+                  />
+                  {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+              </List>
+              <PlantHardinessZone from="Browse Cover Crops" />
+              <CoverCropSearch />
+            </>
+            )}
+            <Box
+              sx={{
+                border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+              }}
+            >
+              <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
+                <ListItemText primary="FILTERS" />
+                {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={cropFiltersOpen} timeout="auto">
+                {filtersList()}
+              </Collapse>
+            </Box>
+            {from !== 'explorer'
                 && (
                 <Box
                   sx={{
@@ -545,23 +537,19 @@ const CropSidebar = ({
                   <Legend legendData={legendData} modal />
                 </Box>
                 )}
-              </>
-              )}
-            </List>
-          </Box>
-        ) : (
-          <Grid>
-            <ComparisonBar
-              filterData={sidebarFilters}
-              goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-              comparisonKeys={comparisonKeysRedux}
-              comparisonView={comparisonView}
-            />
-          </Grid>
-        )}
-      </Grid>
+          </>
+          )}
+        </List>
+      </Box>
+    ) : (
+      <ComparisonBar
+        filterData={sidebarFilters}
+        goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+        comparisonKeys={comparisonKeysRedux}
+        comparisonView={comparisonView}
+      />
+    )
 
-    </Grid>
   );
 };
 
