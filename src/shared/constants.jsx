@@ -335,7 +335,7 @@ export const CropImage = ({
   alt = '',
   view = '',
   className = '',
-  onClick = () => {},
+  onClick = () => { },
 }) => {
   const placeholder = '//placehold.it/100x100';
   let imageStyle = {};
@@ -457,6 +457,132 @@ export const BinaryButton = ({ action }) => (
   </>
 );
 
+const compareValues = (aValue, bValue, sortFlag) => {
+  if (aValue > bValue) return sortFlag ? -1 : 1;
+  if (aValue < bValue) return sortFlag ? 1 : -1;
+  return 0;
+};
+
+const getAverageGoals = (crop, selectedItems) => {
+  let total = 0;
+  selectedItems.slice().reverse().forEach((g) => {
+    const goalData = crop.goals.find((data) => data.label === g);
+    if (goalData?.values.length > 0) {
+      total += +goalData.values[0].value;
+    }
+  });
+  return total / selectedItems.length;
+};
+
+export const sortByAverageGoals = (crops, { selectedItems }) => {
+  crops.sort((a, b) => compareValues(getAverageGoals(b, selectedItems), getAverageGoals(a, selectedItems), false));
+};
+
+export const sortByGoal = (crops, { goal, sortFlag }) => {
+  crops.sort((a, b) => {
+    const aGoal = a.goals.find((data) => data.label === goal);
+    const bGoal = b.goals.find((data) => data.label === goal);
+
+    if (aGoal?.values.length > 0 && bGoal?.values.length > 0) {
+      const aGoalValue = aGoal.values[0].value;
+      const bGoalValue = bGoal.values[0].value;
+      return compareValues(aGoalValue, bGoalValue, sortFlag);
+    }
+
+    if (aGoal?.values.length > 0) {
+      return sortFlag ? -1 : 1;
+    }
+
+    if (bGoal?.values.length > 0) {
+      return sortFlag ? 1 : -1;
+    }
+
+    return 0;
+  });
+};
+
+const cropNameSorting = (a, b, sortFlag) => {
+  const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(/\s+/g, '');
+  const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(/\s+/g, '');
+  return sortFlag
+    ? secondCropName.localeCompare(firstCropName)
+    : firstCropName.localeCompare(secondCropName);
+};
+
+export const sortByCropName = (crops, { sortFlag }) => {
+  crops.sort((a, b) => cropNameSorting(a, b, sortFlag));
+};
+
+const getReliableEstablishmentDate = (plantingDates, sortFlag) => {
+  const reliableEstablishmentData = plantingDates.filter((date) => date.label === 'Reliable Establishment');
+  if (reliableEstablishmentData.length === 0) return null;
+
+  const { values } = reliableEstablishmentData[0];
+  if (values.length === 0) return null;
+
+  const dateString = sortFlag
+    ? values[values.length - 1].value.split(' - ')[sortFlag ? 0 : 1]
+    : values[values.length - 1].value.split(' - ')[1];
+
+  return new Date(dateString)
+    .toLocaleDateString('en-GB')
+    .split('/')
+    .reverse()
+    .join('');
+};
+
+export const sortByPlantingWindow = (crops, { sortFlag }) => {
+  if (crops.length > 0) {
+    crops.sort((a, b) => {
+      const firstDate = getReliableEstablishmentDate(a.plantingDates, sortFlag);
+      const secondDate = getReliableEstablishmentDate(b.plantingDates, sortFlag);
+
+      if (firstDate && secondDate) {
+        return sortFlag ? secondDate.localeCompare(firstDate) : firstDate.localeCompare(secondDate);
+      }
+
+      if (firstDate) {
+        return sortFlag ? -1 : 1;
+      }
+
+      return sortFlag ? 1 : -1;
+    });
+  }
+};
+
+export const sortBySelectedCrops = (crops, { selectedItems, sortFlag }) => {
+  if (selectedItems.length > 0) {
+    crops.sort((a, b) => {
+      if (selectedItems.includes(a.id)) return sortFlag ? -1 : 1;
+      if (selectedItems.includes(b.id)) return sortFlag ? 1 : -1;
+      return 0;
+    });
+  }
+};
+
+export const sortByCropGroup = (crops, { sortFlag }) => {
+  crops.sort((a, b) => {
+    const firstGroup = a.group.toLowerCase().replace(/\s+/g, '');
+    const secondGroup = b.group.toLowerCase().replace(/\s+/g, '');
+    const groupComparison = firstGroup.localeCompare(secondGroup);
+
+    if (groupComparison === 0) {
+      cropNameSorting(firstGroup, secondGroup, sortFlag);
+    }
+
+    return groupComparison;
+  });
+};
+
+export const sortFunctions = {
+  'Average Goals': sortByAverageGoals,
+  Goal: sortByGoal,
+  'Crop Name': sortByCropName,
+  'Planting Window': sortByPlantingWindow,
+  'Selected Crops': sortBySelectedCrops,
+  'Crop Group': sortByCropGroup,
+};
+
 export const sortCrops = (
   type = 'Average Goals',
   crops = [],
@@ -464,145 +590,8 @@ export const sortCrops = (
   selectedItems = [],
   goal = '',
 ) => {
-  if (type === 'Average Goals') {
-    crops.sort((a, b) => {
-      let aAvg = 0;
-      let bAvg = 0;
-      selectedItems
-        .slice()
-        .reverse()
-        .forEach((g) => {
-          if (b.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
-            bAvg = +b.goals.filter((data) => data.label === g)[0].values[0].value + bAvg;
-          }
-          if (a.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
-            aAvg = +a.goals.filter((data) => data.label === g)[0].values[0].value + aAvg;
-          }
-        });
-      aAvg /= selectedItems.length;
-      bAvg /= selectedItems.length;
-      if (aAvg > bAvg) {
-        return -1;
-      }
-      if (aAvg === bAvg) {
-        return 0;
-      }
-      return 1;
-    });
-  }
-  if (type === 'Goal') {
-    crops.sort((a, b) => {
-      if (a.goals.filter((data) => data.label === goal)[0]?.values.length > 0 && b.goals.filter((data) => data.label === goal)[0]?.values.length > 0) {
-        if (a.goals.filter((data) => data.label === goal)[0].values[0].value > b.goals.filter((data) => data.label === goal)[0].values[0].value) {
-          return sortFlag ? -1 : 1;
-        }
-        return sortFlag ? 1 : -1;
-      }
-      if (a.goals.filter((data) => data.label === goal).length > 0) {
-        return sortFlag ? -1 : 1;
-      }
-      return sortFlag ? 1 : -1;
-    });
-  }
-  if (type === 'Crop Name') {
-    if (crops.length > 0) {
-      crops.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(/\s+/g, '');
-        const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(/\s+/g, '');
-        return sortFlag
-          ? secondCropName.localeCompare(firstCropName)
-          : firstCropName.localeCompare(secondCropName);
-      });
-    }
-  }
-  if (type === 'Planting Window') {
-    if (crops.length > 0) {
-      crops.sort((a, b) => {
-        let firstDate;
-        let secondDate;
-        const firstLength = a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values.length;
-        const secondLength = b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values.length;
-        if (firstLength && secondLength) {
-          // sorting by last reliable establishment date for descending and first for ascending
-          if (!sortFlag) {
-            firstDate = new Date(
-              a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
-                firstLength - 1
-              ].value.split(' - ')[1],
-            )
-              .toLocaleDateString('en-GB')
-              .split('/')
-              .reverse()
-              .join('');
-            secondDate = new Date(
-              b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
-                secondLength - 1
-              ].value.split(' - ')[1],
-            )
-              .toLocaleDateString('en-GB')
-              .split('/')
-              .reverse()
-              .join('');
-          } else {
-            firstDate = new Date(
-              a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
-                firstLength - 1
-              ].value.split(' - ')[0],
-            )
-              .toLocaleDateString('en-GB')
-              .split('/')
-              .reverse()
-              .join('');
-            secondDate = new Date(
-              b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
-                secondLength - 1
-              ].value.split(' - ')[0],
-            )
-              .toLocaleDateString('en-GB')
-              .split('/')
-              .reverse()
-              .join('');
-          }
-          return sortFlag
-            ? secondDate.localeCompare(firstDate)
-            : firstDate.localeCompare(secondDate);
-        }
-        if (firstLength) {
-          return sortFlag ? -1 : 1;
-        }
-        return sortFlag ? 1 : -1;
-        // should there be other conditions here to accomodate if either firstLength or secondLength is 0 (have no planting data)
-        // return 1;
-      });
-    }
-  }
-  if (type === 'Selected Crops') {
-    if (selectedItems.length > 0) {
-      crops.sort((a, b) => {
-        if (selectedItems.includes(a.id)) return sortFlag ? -1 : 1;
-        if (selectedItems.includes(b.id)) return sortFlag ? 1 : -1;
-        return 0;
-      });
-    }
-  }
-  if (type === 'Crop Group') {
-    if (crops.length > 0) {
-      crops.sort((a, b) => {
-        const firstGroup = a.group.toLowerCase().replace(/\s+/g, '');
-        const secondGroup = b.group.toLowerCase().replace(/\s+/g, '');
-        const groupStringComparsion = firstGroup.localeCompare(secondGroup);
-        // to ensure same order every time, if the group names are same then sort by crop name
-        if (groupStringComparsion === 0) {
-          // reused code piece
-          const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(/\s+/g, '');
-          const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(/\s+/g, '');
-          return sortFlag
-            ? secondCropName.localeCompare(firstCropName)
-            : firstCropName.localeCompare(secondCropName);
-        }
-        return groupStringComparsion;
-      });
-    }
+  if (sortFunctions[type]) {
+    sortFunctions[type](crops, { sortFlag, selectedItems, goal });
   }
 };
 
@@ -779,7 +768,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
         }
         if (
           moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD'))
-              && date.label !== 'Hessian Fly Free Date'
+          && date.label !== 'Hessian Fly Free Date'
         ) {
           // Average Frost date should be divided into two years
           const tempStart = '01/01';
@@ -1142,8 +1131,8 @@ export const getExpertsData = (councilId) => {
           <a
             target="_blank"
             style={
-          { fontSize: '20px', display: 'flex', justifyContent: 'center' }
-          }
+              { fontSize: '20px', display: 'flex', justifyContent: 'center' }
+            }
             href="https://midwestcovercrops.org/decision-tool-collaborators/"
             rel="noreferrer"
           >
