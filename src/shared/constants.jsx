@@ -37,7 +37,7 @@ export const ReferenceTooltip = ({
       )}
       arrow
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} />
+        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
       )}
     />
   ) : sourceType === 'html' ? (
@@ -47,7 +47,7 @@ export const ReferenceTooltip = ({
       dangerouslySetInnerHTML={{ content }}
       enterTouchDelay={0}
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} />
+        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
       )}
     />
   ) : link ? (
@@ -57,7 +57,7 @@ export const ReferenceTooltip = ({
       arrow
       enterTouchDelay={0}
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} />
+        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
       )}
     />
   ) : (
@@ -71,7 +71,7 @@ export const ReferenceTooltip = ({
       placement="right"
       arrow
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} />
+        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
       )}
     />
   );
@@ -84,7 +84,7 @@ export const DataTooltip = ({ data, placement = 'top-start' }) => (
     arrow
     enterTouchDelay={0}
     tooltipContent={(
-      <Info sx={{ fontSize: '1rem' }} />
+      <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
     )}
   />
 );

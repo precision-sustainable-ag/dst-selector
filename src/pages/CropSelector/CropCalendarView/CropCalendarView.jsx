@@ -374,7 +374,7 @@ const CropCalendarView = ({
                           <p>{goal}</p>
                         )}
                         tooltipContent={(
-                          <Box>
+                          <Box tabIndex="0">
                             <PSAButton
                               onClick={() => sortByGoal(goal, index, `goal${index}`)}
                               variant="body1"

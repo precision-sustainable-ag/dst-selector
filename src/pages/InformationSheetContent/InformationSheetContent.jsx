@@ -104,7 +104,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               title={att.description}
                               arrow
                               tooltipContent={(
-                                <Typography sx={{ fontWeight: 'bold' }} variant="body1">
+                                <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
                                   {att.label}
                                 </Typography>
                               )}
@@ -130,7 +130,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                             arrow
                             tooltipContent={(
                               cat.label !== 'Extended Comments' ? (
-                                <Box xs={12} variant="body1">
+                                <Box xs={12} variant="body1" tabIndex="0">
                                   <Typography
                                     display="flex"
                                     justifyContent="center"
@@ -143,7 +143,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                   </Typography>
                                 </Box>
                               ) : (
-                                <Box xs={12} variant="body1">
+                                <Box xs={12} variant="body1" tabIndex="0">
                                   <Typography
                                     display="flex"
                                     justifyContent="left"

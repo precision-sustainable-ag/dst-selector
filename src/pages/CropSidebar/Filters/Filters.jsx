@@ -129,7 +129,7 @@ const Tip = ({ filter }) => (
     tooltipContent={(
       <span>
         {filter.name}
-        <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+        <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} tabIndex="0" />
       </span>
     )}
   />
