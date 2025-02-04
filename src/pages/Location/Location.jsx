@@ -27,7 +27,7 @@ import {
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion, updateLatLon } from '../../reduxStore/mapSlice';
-import { snackHandler } from '../../reduxStore/sharedSlice';
+import { setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
@@ -41,8 +41,10 @@ const Location = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
@@ -53,6 +55,8 @@ const Location = () => {
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState({});
   const [mapFeatures, setMapFeatures] = useState([]);
+  const [queryWCCCLatLon, setQueryWCCCLatLon] = useState([]);
+  const query = `regions=${regionIdRedux}`;
 
   // if user field exists, return field, else return state capitol
   const getFeatures = () => {
@@ -63,6 +67,24 @@ const Location = () => {
     }
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
+
+  useEffect(() => {
+    setQueryWCCCLatLon([`lat=${latRedux}`, `lon=${lonRedux}`].map((i) => i).join('&'));
+  }, [latRedux, lonRedux]);
+
+  useEffect(() => {
+    if (councilShorthandRedux === 'WCCC') {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?${queryWCCCLatLon}`).then((data) => {
+        // query = data.data.map((i) => `${encodeURIComponent('regions')}=${encodeURIComponent(i.id)}`).join('&');
+        // setQuery(data.data.map((i) => `regions=${i.id}`).join('&'));
+        dispatchRedux(setQueryString(data.data.map((i) => `regions=${i.id}`).join('&')));
+        console.log('Query data from the API', data.data.map((i) => `regions=${i.id}`).join('&'));
+      });
+    } else {
+      console.log(query);
+      dispatchRedux(setQueryString(query));
+    }
+  }, [councilShorthandRedux, queryWCCCLatLon]);
 
   // set map features, update selectedFieldIdRedux
   useEffect(() => {
@@ -89,8 +111,6 @@ const Location = () => {
       if (type === 'Point') return [coordinates[1], coordinates[0]];
       if (type === 'GeometryCollection') return [geometries[0].coordinates[1], geometries[0].coordinates[0]];
     }
-    console.log('markersRedux', markersRedux);
-    console.log('stateLabelRedux', stateLabelRedux);
     if (markersRedux) {
       dispatchRedux(updateLatLon({ lat: markersRedux[0][0], lon: markersRedux[0][1] }));
       // return [markersRedux[0][0], markersRedux[0][1]];
