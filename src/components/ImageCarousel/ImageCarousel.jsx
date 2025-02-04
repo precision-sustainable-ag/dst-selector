@@ -104,6 +104,7 @@ const ImageCarousel = ({ images }) => {
                 )}
               </>
             )}
+            sx={{ color: activeStep === maxSteps - 1 ? '#757575' : '#5C8136' }}
           />
         )}
         backButton={(
@@ -122,6 +123,7 @@ const ImageCarousel = ({ images }) => {
                 Back
               </>
             )}
+            sx={{ color: activeStep === 0 ? '#757575' : '#5C8136' }}
           />
         )}
       />

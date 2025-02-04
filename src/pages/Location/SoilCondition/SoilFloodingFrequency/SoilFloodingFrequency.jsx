@@ -107,11 +107,11 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                   resetFloodingOptions();
                 }}
                 title={isMobile ? (
-                  <RestartAltIcon sx={{ color: '#ff961c' }} />
+                  <RestartAltIcon sx={{ color: '#C73200' }} />
                 ) : (
                   <Typography
                     sx={{
-                      color: '#ff961c',
+                      color: '#C73200',
                       fontSize: '0.8rem',
                       textTransform: 'none',
                     }}

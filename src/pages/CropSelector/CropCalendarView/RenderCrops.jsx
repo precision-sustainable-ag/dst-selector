@@ -49,7 +49,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
       <TableRow
         key={`cropRow${index}`}
         style={{
-          opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
+          opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.55',
           backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
         }}
         data-test={`crop-list-tr-${index}`}

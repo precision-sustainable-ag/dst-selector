@@ -66,6 +66,17 @@ const GoalTag = ({
             size="medium"
             variant="outlined"
             data-test={`goal-tag-${key}`}
+            sx={{
+              '&.MuiChip-root:focus': {
+                '&.Mui-disabled': {
+                  color: '#757575',
+                },
+              },
+              '&.Mui-disabled': {
+                opacity: 1,
+                color: '#757575',
+              },
+            }}
           />
         </span>
       )}

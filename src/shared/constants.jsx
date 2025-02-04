@@ -232,7 +232,7 @@ export const CustomStyles = () => ({
   darkGreen: '#598444',
   defaultFontSize: '1em',
   lighterGreen: '#598445',
-  lightGreen: '#add08f',
+  lightGreen: '#5c8136',
   greenishWhite: '#f0f7eb',
   primaryProgressBtnColor: '#49a8ab',
   primaryProgressBtnBorderColor: '#62b8bc',
