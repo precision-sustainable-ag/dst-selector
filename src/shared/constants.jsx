@@ -261,6 +261,7 @@ export const getRating = (rating, councilShorthand) => {
       strokeWidth="1"
       strokeLinecap="round"
       strokeLinejoin="miter"
+      aria-label={`Rating: ${ratingInt}`}
     >
       {councilShorthand !== 'MCCC' && <line x1="22" y1="3" x2="22" y2="21" stroke={ratingInt >= 5 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />}
       <line x1="17" y1="7" x2="17" y2="21" stroke={ratingInt >= 4 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />

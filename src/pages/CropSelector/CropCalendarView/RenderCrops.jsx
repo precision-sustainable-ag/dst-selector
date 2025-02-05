@@ -210,6 +210,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 setSaveHistory,
               );
             }}
+            aria-label={selectedBtns.includes(crop.id) ? 'Delete' : 'Add to List'}
             data-test={`cart-btn-${index}`}
             title={selectedBtns.includes(crop.id)
               ? <DeleteForever data-test={`delete-forever-icon-${index}`} />
