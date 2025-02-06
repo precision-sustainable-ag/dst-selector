@@ -1,5 +1,5 @@
 /* eslint-disable prefer-destructuring */
-import { sidebarFilters, filterResult, filterTypes } from '../../src/test-data/neccc';
+import { sidebarFilters, filterResult, filterTypes } from '../test-data/neccc';
 
 /* eslint-disable no-undef */
 

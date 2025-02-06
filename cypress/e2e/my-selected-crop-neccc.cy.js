@@ -1,4 +1,4 @@
-import { sidebarFilters, filterTypes } from '../../src/test-data/neccc';
+import { sidebarFilters, filterTypes } from '../test-data/neccc';
 import { mySelectedCropsCommonTests } from '../support/e2e';
 
 /* eslint-disable no-undef */

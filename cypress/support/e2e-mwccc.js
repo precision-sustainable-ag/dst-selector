@@ -1,4 +1,4 @@
-import { sidebarFilters, filterResult, filterTypes } from '../../src/test-data/mwccc';
+import { sidebarFilters, filterResult, filterTypes } from '../test-data/mwccc';
 import { checkComparisonTableRows, presenceOfFiltersTests } from './e2e';
 
 /* eslint-disable no-undef */
