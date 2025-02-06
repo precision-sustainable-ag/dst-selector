@@ -87,7 +87,7 @@ const Chips = ({ filter }) => {
         <Grid key={filter.name + val.value + i} item>
           <Chip
             key={filter.name + val.value + i}
-            data-test={`${filter.name}-${val.value === '0' ? 'No' : 'Yes'}`}
+            data-test={`${filter.name}-${val.value}`}
             onClick={() => chipChange(filter.name, val.value)}
             component="li"
             size="medium"

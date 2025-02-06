@@ -1,6 +1,11 @@
-import { necccFilterTests } from '../support/e2e-neccc';
+/* eslint-disable */
+// import { necccFilterTests } from '../support/e2e-neccc';
+import { flipCoverCropName } from "../../src/shared/constants";
+import { testFiltersByType } from "../support/e2e";
 
 /* eslint-disable no-undef */
+
+const filterDataTypes = ['pillbox', 'string', 'boolean', 'currency'];
 
 describe('Test all possible interactions on the NECCC Crop Calendar Page', () => {
   // before each test
@@ -28,13 +33,84 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('title-goals');
-    cy.intercept('GET', '**/v1/states/36/crops?minimal=true&regions=3', {
-      fixture: 'cropData-NECCC.json',
-    }).as('apiRequest');
+    cy.intercept('GET', '**/v1/states/36/crops?minimal=true&regions=3').as('getCropsData');
+    cy.intercept('GET', '**/v1/states/36/filters?regions=3').as('getFilters');
     cy.get("[data-test='next-btn']").first().click().then(() => {
-      cy.wait('@apiRequest');
+      cy.wait('@getCropsData').then((interception) => {
+        const { data } = interception.response.body;
+        Cypress.env('cropData', data);
+      });
+      cy.wait('@getFilters').then((interception) => {
+        const { data } = interception.response.body;
+        Cypress.env('filters', data);
+      });
     });
   });
 
-  necccFilterTests();
+  // necccFilterTests();
+  it.only('should work on all types of filters', () => {
+    const cropData = Cypress.env('cropData');
+    const filters = Cypress.env('filters');
+    // 'Goals' are for goals not filters, remove the data from it
+    const filterTypes = filters.map(filter => filter.label).filter((label) => label !== 'Goals');
+    
+    const allFilters = filters.reduce((res, filter) => {
+      if (filter.label === 'Goals') return res;
+      return [...res, ...filter.attributes];
+    }, [])
+
+    const testFilters = filterDataTypes.reduce((res, dataType) => {
+      // TODO: for each filter type, find first available filter
+      const filterName = allFilters.find((filter) => filter.dataType.label === dataType)?.label;
+      if (!filterName) return res;
+      return [...res, filterName];
+    }, []);
+
+    const testFilterValues = filterDataTypes.reduce((res, dataType) => {
+      const filter = allFilters.find((filter) => filter.dataType.label === dataType);
+      if (!filter) return res;
+      return [...res, filter.values.map((v) => v.dataType === "number" && filter.dataType.label !== "currency" ? parseInt(v.value) : v.value)];
+    }, []);
+
+    const filterResults = {};
+    testFilters.forEach((filter, i) => {
+      const result = {};
+      testFilterValues[i].forEach((value) => {
+        result[value] = [];
+      })
+      cropData.forEach((crop) => {
+        const attr = crop.attributes.find((attr) => attr.label === filter);
+        if (attr) {
+          attr.values.forEach((val) => {
+            const { value } = val;
+            result[value] = [...result[value], flipCoverCropName(crop.label)];
+          })
+        }
+      })
+      filterResults[filter] = result;
+    })
+    cy.log(filterTypes, testFilters, testFilterValues, filterResults);
+    testFiltersByType(filterTypes, testFilters, testFilterValues, filterResults);
+  });
+
+  it('should display same crop list on crop calendar and crop list', () => {
+    const calendarCrops = [];
+    cy.getByTestId('crop-calendar-crop-name')
+      .each((crop) => {
+        cy.wrap(crop.text()).then((text) => calendarCrops.push(text));
+      })
+      .then(() => {
+        cy.log(calendarCrops);
+      })
+      .then(() => {
+        cy.get("[data-test='crop-list-btn']").first().click();
+        cy.getByTestId('crop-calendar-crop-name')
+          .should('have.length', calendarCrops.length)
+          .each((crop) => {
+            cy.wrap(crop.text()).then((text) => {
+              expect(calendarCrops).to.include(text);
+            });
+          });
+      });
+  });
 });

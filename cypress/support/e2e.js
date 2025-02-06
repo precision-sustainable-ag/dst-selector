@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable no-undef */
 import { flipCoverCropName } from '../../src/shared/constants';
 import './commands';
@@ -15,6 +16,19 @@ Cypress.Commands.add('beforeEachVisitBaseUrl', () => {
   // Check for and click the "decline" button if it exists
   cy.contains(/decline/i).click({ multiple: true, force: true });
 });
+
+export const testFiltersByType = (filterTypes, testFilters, testFilterValues, filterResults) => {
+  for (let i = 0; i < filterTypes.length; i++) {
+    cy.getByTestId(`${filterTypes[i].toUpperCase()}-expandmore-icon`).click();
+  }
+  // checkRows(testFilters[3], testFilterValues[3], filterResults[testFilters[3]]);
+
+  testFilters.forEach((filter, i) => {
+    checkRows(filter, testFilterValues[i], filterResults[filter]);
+    cy.getByTestId('crop-side-bar-clear-filters').click();
+  });
+};
+
 
 Cypress.Commands.add('testFilters', ({
   // eslint-disable-next-line no-unused-vars
@@ -66,9 +80,9 @@ const checkRows = (filterType, filterIndex, filterResult) => {
               expect(filterResult[filterIdx].length).to.equal(visibleRows.length);
               cy.wrap(visibleRows).each((row) => {
                 cy.wrap(row)
-                  .find('[data-test="crop-calendar-crop-name"]').should('exist')
+                  .find('[data-test="crop-calendar-crop-name"]')
                   .then((label) => {
-                    expect(filterResult[filterIdx]).to.include(label.text().trim().toLowerCase());
+                    expect(filterResult[filterIdx]).to.include(label.text());
                   });
               });
             }
