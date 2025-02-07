@@ -71,14 +71,14 @@ const CoverCropExplorer = () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item lg={3} md={4} xs={12}>
+      <Grid item xl={3} lg={4} md={4} sm={12} xs={12}>
         <CropSidebar
           from="explorer"
           activeCropData={activeCropIdsRedux?.length > 0 ? cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)) : cropDataRedux}
           listView
         />
       </Grid>
-      <Grid item lg={9} md={8} xs={12}>
+      <Grid item xl={9} lg={8} md={8} sm={12} xs={12}>
         <ExplorerCardView
           activeCropData={updatedActiveCropData}
         />
