@@ -5,8 +5,6 @@ import { testFiltersByType } from "../support/e2e";
 
 /* eslint-disable no-undef */
 
-const filterDataTypes = ['pillbox', 'string', 'boolean', 'currency'];
-
 describe('Test all possible interactions on the NECCC Crop Calendar Page', () => {
   // before each test
   beforeEach(() => {
@@ -59,14 +57,20 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
       return [...res, ...filter.attributes];
     }, [])
 
-    const testFilters = filterDataTypes.reduce((res, dataType) => {
+    const allFilterDataTypes = allFilters.reduce((res, filter) => {
+      const dataType = filter.dataType.label;
+      if (res.includes(dataType)) return res;
+      return [...res, dataType];
+    }, []);
+
+    const testFilters = allFilterDataTypes.reduce((res, dataType) => {
       // TODO: for each filter type, find first available filter
       const filterName = allFilters.find((filter) => filter.dataType.label === dataType)?.label;
       if (!filterName) return res;
       return [...res, filterName];
     }, []);
 
-    const testFilterValues = filterDataTypes.reduce((res, dataType) => {
+    const testFilterValues = allFilterDataTypes.reduce((res, dataType) => {
       const filter = allFilters.find((filter) => filter.dataType.label === dataType);
       if (!filter) return res;
       return [...res, filter.values.map((v) => v.dataType === "number" && filter.dataType.label !== "currency" ? parseInt(v.value) : v.value)];
@@ -89,7 +93,7 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
       })
       filterResults[filter] = result;
     })
-    cy.log(filterTypes, testFilters, testFilterValues, filterResults);
+    cy.log(filterTypes, allFilterDataTypes, testFilters, testFilterValues, filterResults);
     testFiltersByType(filterTypes, testFilters, testFilterValues, filterResults);
   });
 
