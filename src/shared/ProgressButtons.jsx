@@ -67,7 +67,7 @@ const ProgressButtons = () => {
     if (progress < 0) return '';
 
     return (
-      <Grid item>
+      <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <ProgressButtonsInner
           toolTip={toolTip}
           isDisabledBack={disabledBack}

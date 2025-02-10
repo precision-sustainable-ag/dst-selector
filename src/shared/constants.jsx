@@ -1292,3 +1292,5 @@ const useWindowSize = () => { // Initialize state with undefined width/height so
   return windowSize;
 };
 export default useWindowSize;
+
+export const steps = ['Landing', 'Location', 'Site Conditions', 'Goals', 'Crop Selection'];

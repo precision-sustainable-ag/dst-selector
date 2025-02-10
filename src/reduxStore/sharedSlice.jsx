@@ -1,5 +1,6 @@
 const initialState = {
   progress: 0,
+  maxStepReached: 0,
   snackOpen: false,
   snackMessage: '',
   ajaxInProgress: false,
@@ -31,6 +32,13 @@ export const gotoProgress = (value) => ({
   },
 });
 
+export const updateMaxStepReached = (value) => ({
+  type: 'UPDATE_MAX_STEP_REACHED',
+  payload: {
+    value,
+  },
+});
+
 export const snackHandler = ({ snackOpen, snackMessage }) => ({
   type: 'SNACK',
   payload: {
@@ -53,7 +61,10 @@ export const updateComparisonKeys = (value) => ({
   },
 });
 
-export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
+export const activateMyCoverCropListTile = ({
+  myCoverCropActivationFlag,
+  speciesSelectorActivationFlag,
+}) => ({
   type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
   payload: {
     myCoverCropActivationFlag,
@@ -61,7 +72,10 @@ export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, species
   },
 });
 
-export const activateSpeicesSelectorTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
+export const activateSpeicesSelectorTile = ({
+  myCoverCropActivationFlag,
+  speciesSelectorActivationFlag,
+}) => ({
   type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
   payload: {
     myCoverCropActivationFlag,
@@ -114,6 +128,12 @@ const sharedReducer = (state = initialState, action = null) => {
       return {
         ...state,
         progress: action.payload.value,
+      };
+
+    case 'UPDATE_MAX_STEP_REACHED':
+      return {
+        ...state,
+        maxStepReached: Math.max(state.maxStepReached, action.payload.value),
       };
 
     case 'SNACK':
