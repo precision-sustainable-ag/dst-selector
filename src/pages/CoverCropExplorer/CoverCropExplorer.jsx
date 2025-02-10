@@ -14,6 +14,7 @@ import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 import pirschAnalytics from '../../shared/analytics';
+import SkipContent from '../../components/SkipContent/SkipContent';
 
 const CoverCropExplorer = () => {
   const history = useHistory();
@@ -72,13 +73,39 @@ const CoverCropExplorer = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
+
+        <SkipContent
+          href="#crop-list"
+          text="Skip to crop list"
+          sx={{
+            '&:focus': {
+              top: '16px',
+              transition: 'top 225ms cubic-bezier(0, 0, 0.2, 1)',
+            },
+          }}
+        />
+
         <CropSidebar
           from="explorer"
           activeCropData={activeCropIdsRedux?.length > 0 ? cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)) : cropDataRedux}
           listView
         />
       </Grid>
-      <Grid item xl={9} lg={9} md={9} sm={12} xs={12}>
+
+      <SkipContent
+        href="#page-footer"
+        text="Skip to bottom"
+        sx={{
+          left: 'auto',
+          right: '16px',
+          '&:focus': {
+            top: '16px',
+            transition: 'top 225ms cubic-bezier(0, 0, 0.2, 1)',
+          },
+        }}
+      />
+
+      <Grid item xl={9} lg={9} md={9} sm={12} xs={12} id="crop-list">
         <ExplorerCardView
           activeCropData={updatedActiveCropData}
         />

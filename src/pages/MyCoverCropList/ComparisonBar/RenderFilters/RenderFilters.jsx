@@ -8,6 +8,7 @@ import {
   Grid,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   Typography,
 } from '@mui/material';
@@ -54,7 +55,7 @@ const RenderFilters = ({
             title={<p>{filter.description}</p>}
             key={`tooltip-outer-${index}`}
             tooltipContent={(
-              <ListItem
+              <ListItemButton
                 sx={{ backgroundColor: filterValues[index].open ? '#add08f' : 'white' }}
                 component="div"
                 onClick={() => toggleSidebarFilterItems(index)}
@@ -71,11 +72,11 @@ const RenderFilters = ({
                 ) : (
                   <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
                 )}
-              </ListItem>
+              </ListItemButton>
             )}
           />
         ) : (
-          <ListItem
+          <ListItemButton
             sx={{ backgroundColor: filterValues[index].open ? '#add08f' : 'white' }}
             component="div"
             onClick={() => toggleSidebarFilterItems(index)}
@@ -92,7 +93,7 @@ const RenderFilters = ({
             ) : (
               <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
             )}
-          </ListItem>
+          </ListItemButton>
         )}
 
         <Collapse in={filterValues[index].open} timeout="auto">

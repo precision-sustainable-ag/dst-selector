@@ -411,7 +411,7 @@ const CropSidebar = ({
           tooltipContent={(
             <span>
               Cover Crop Group Filter
-              <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+              <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} tabIndex="0" />
             </span>
           )}
         />
@@ -520,17 +520,10 @@ const CropSidebar = ({
                     border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
                   }}
                 >
-                  <ListItem
-                    onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
-                    style={{
-                      backgroundColor: 'inherit',
-
-                    }}
-                  >
+                  <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
                     <ListItemText primary="FILTERS" />
-
                     {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                  </ListItem>
+                  </ListItemButton>
                   <Collapse in={cropFiltersOpen} timeout="auto">
                     {filtersList()}
                   </Collapse>
