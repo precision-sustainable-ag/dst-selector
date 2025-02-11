@@ -29,11 +29,24 @@ code {
     margin: 0.25in;
   }
 
-  .nopagebreak {
+  .avoid-break {
     break-inside: avoid;
   }
 
-  .noprint, .MuiAccordionSummary-expandIconWrapper {
-    display: none;
+  .page-break {
+    break-after: page;
+  }
+
+  .no-print, .MuiAccordionSummary-expandIconWrapper {
+    visibility: hidden !important;
+  }
+
+  .attribute-label {
+    width: 170px;
+  }
+
+  .attribute-value {
+    text-align: right;
+    width: 170px;
   }
 }

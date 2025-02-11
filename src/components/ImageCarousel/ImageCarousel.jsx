@@ -102,7 +102,7 @@ const ImageCarousel = ({ images }) => {
       <MobileStepper
         steps={maxSteps}
         position="static"
-        className="noprint"
+        className="no-print"
         activeStep={activeStep}
         nextButton={(
           <PSAButton

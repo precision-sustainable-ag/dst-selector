@@ -3,9 +3,9 @@ import { Typography, Grid } from '@mui/material';
 import ImageCarousel from '../../../components/ImageCarousel/ImageCarousel';
 
 const CoverCropInformation = ({
-  crop, allThumbs,
+  crop, allThumbs, className,
 }) => (
-  <Grid container spacing={3} ml="1%" mr="1%">
+  <Grid container spacing={3} ml="1%" mr="1%" className={className}>
     <Grid item md={6} sm={12}>
       <Grid item>
         <Typography variant="h5">
