@@ -56,7 +56,13 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
                 </div>
               )}
               tooltipContent={(
-                <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+                <span
+                  role="button"
+                  aria-label="Five-year average monthly and annual precipitation from the Precision Sustainable
+                  Agriculture Weather API powered by NSSL MRMS and NASA NLDAS-2 weather data."
+                >
+                  <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+                </span>
               )}
             />
           </Typography>

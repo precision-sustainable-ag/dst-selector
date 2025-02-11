@@ -59,6 +59,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
                 className={classNames}
                 key={index}
                 tabIndex="0"
+                aria-label={`${generateToolTipText(growthWindow)} ${hessianDate ? `${startTime}` : `${startTime} - ${endTime}`}`}
               >
                 {hessianDate && from !== 'listView'
                   ? (

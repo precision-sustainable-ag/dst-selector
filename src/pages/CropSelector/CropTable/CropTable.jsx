@@ -194,9 +194,7 @@ const CropTable = ({
                       placement="bottom"
                       arrow
                       enterTouchDelay={0}
-                      title={(
-                        <p>{goal}</p>
-                      )}
+                      title={goal}
                       tooltipContent={(
                         <Box>
                           <PSAButton

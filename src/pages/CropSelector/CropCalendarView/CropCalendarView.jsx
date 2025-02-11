@@ -370,9 +370,7 @@ const CropCalendarView = ({
                         placement="bottom"
                         arrow
                         enterTouchDelay={0}
-                        title={(
-                          <p>{goal}</p>
-                        )}
+                        title={goal}
                         tooltipContent={(
                           <Box tabIndex="0">
                             <PSAButton

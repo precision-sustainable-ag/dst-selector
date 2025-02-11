@@ -37,7 +37,12 @@ export const ReferenceTooltip = ({
       )}
       arrow
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        <span
+          role="button"
+          aria-label={`Source:${sourceName}`}
+        >
+          <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        </span>
       )}
     />
   ) : sourceType === 'html' ? (
@@ -57,7 +62,9 @@ export const ReferenceTooltip = ({
       arrow
       enterTouchDelay={0}
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        <span role="button" aria-label={title}>
+          <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        </span>
       )}
     />
   ) : (
@@ -71,7 +78,12 @@ export const ReferenceTooltip = ({
       placement="right"
       arrow
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        <span
+          role="button"
+          aria-label={sourceContent}
+        >
+          <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        </span>
       )}
     />
   );
@@ -84,7 +96,12 @@ export const DataTooltip = ({ data, placement = 'top-start' }) => (
     arrow
     enterTouchDelay={0}
     tooltipContent={(
-      <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+      <span
+        role="button"
+        aria-label={data}
+      >
+        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+      </span>
     )}
   />
 );

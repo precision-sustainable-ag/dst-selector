@@ -405,11 +405,9 @@ const CropSidebar = ({
       >
         <PSATooltip
           enterTouchDelay={0}
-          title={(
-            <p>Use the Cover Crop Group Filter to select specific cover crop groups to filter by.</p>
-        )}
+          title="Use the Cover Crop Group Filter to select specific cover crop groups to filter by."
           tooltipContent={(
-            <span>
+            <span role="button">
               Cover Crop Group Filter
               <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} tabIndex="0" />
             </span>

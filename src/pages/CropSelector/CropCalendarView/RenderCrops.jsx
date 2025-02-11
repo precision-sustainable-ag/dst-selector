@@ -139,10 +139,12 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
                     arrow
                     tooltipContent={(
-                      <AcUnit
-                        sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
-                        tabIndex="0"
-                      />
+                      <span role="button" aria-label={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}>
+                        <AcUnit
+                          sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
+                          tabIndex="0"
+                        />
+                      </span>
                     )}
                   />
                 </Grid>

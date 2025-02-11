@@ -26,7 +26,7 @@ const SidebarFilter = ({
           arrow
           placement="right-start"
           enterTouchDelay={0}
-          title={<p>{filter.description}</p>}
+          title={filter.description}
           key={`tooltip${index}`}
           tooltipContent={(
             <ListItemButton
