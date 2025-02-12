@@ -6,27 +6,30 @@ import {
   Box, Grid, Typography,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSAModal } from 'shared-react-components/src';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
+import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
+  const dispatch = useDispatch();
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
 
+  const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
+
   // useState vars
   const [dataDone, setDataDone] = useState(false);
   const [modalData, setModalData] = useState([]);
-  const [printEnabled, setPrintEnabled] = useState(false);
 
   useEffect(() => {
     const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
@@ -39,22 +42,13 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
           setDataDone(true);
         });
     }
-
-    fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
-      .then((res) => {
-        if (res.status !== 404) {
-          setPrintEnabled(true);
-        } else {
-          setPrintEnabled(false);
-        }
-      });
   }, [crop]);
 
   const handleModalClose = () => {
     setModalOpen(!modalOpen);
   };
 
-  const print = () => {
+  const print = async () => {
     if (consentRedux === true) {
       pirschAnalytics('Information Sheet', {
         meta: {
@@ -64,8 +58,70 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
         },
       });
     }
-    window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, '_blank');
-  }; // print
+
+    const extractCSS = async () => {
+      let styles = '';
+
+      // Get styles from <style> and <link>
+      document.querySelectorAll('style, link[rel="stylesheet"]').forEach((node) => {
+        if (node.tagName === 'STYLE') {
+          styles += node.innerHTML;
+        } else if (node.tagName === 'LINK') {
+          try {
+            const request = new XMLHttpRequest();
+            request.open('GET', node.href, false);
+            request.send(null);
+            styles += request.responseText;
+          } catch (error) {
+            throw new Error(`Could not load CSS file: ${node.href}`);
+          }
+        }
+      });
+
+      return styles.replace(/@media \(min-width:1536px\)/g, '@media (min-width:0px)');
+    };
+
+    try {
+      dispatch(updatePrinting(true));
+
+      const cropDetailModal = document.querySelector('[id^=cropDetailModal]');
+      const clonedModal = cropDetailModal.cloneNode(true);
+      clonedModal.querySelectorAll('.attribute-value').forEach((el) => {
+        if (!el.querySelector('svg')) {
+          el.style.paddingRight = '32px';
+        }
+      });
+
+      const fullHtml = `
+        <html>
+          <head>
+            <style>${await extractCSS()}</style>
+          </head>
+          <body>${clonedModal.outerHTML}</body>
+        </html>
+      `;
+
+      const response = await fetch('https://developweather.covercrop-data.org/generate-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          html: fullHtml,
+          filename: `${crop.label}%20Zone%20${regionShorthandRedux}.pdf`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF');
+      }
+
+      const { fileUrl } = await response.json();
+      window.open(fileUrl, '_blank');
+    } catch (err) {
+      dispatch(snackHandler({ snackOpen: true, snackMessage: `Error generating PDF: ${err}` }));
+    } finally {
+      dispatch(updatePrinting(false));
+    }
+  };
 
   return dataDone === true && (
     <PSAModal
@@ -88,7 +144,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
           id={`cropDetailModal-${modalData.id}`}
         >
           <Grid container>
-            <Grid container item xs={12} sx={{ backgroundColor: '#2D7B7B' }}>
+            <Grid container item xs={12} sx={{ backgroundColor: '#2D7B7B' }} className="no-print">
               <Grid container display="flex" alignItems="center" item xs={11}>
                 <Grid item>
                   <Typography color="white" sx={{ marginLeft: '2em' }}>
@@ -105,16 +161,27 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     title="Terminology Definitions"
                   />
                 </Grid>
-                {(printEnabled && councilShorthandRedux === 'NECCC') && (
-                  <Grid item>
-                    <PSAButton
-                      startIcon={<Print />}
-                      buttonType="ModalLink"
-                      onClick={print}
-                      title="Print"
-                    />
-                  </Grid>
-                )}
+                {
+                  printing
+                    ? (
+                      <Grid item>
+                        <PSAButton
+                          buttonType="ModalLink"
+                          startIcon={<CircularProgress size={20} />}
+                        />
+                      </Grid>
+                    )
+                    : (
+                      <Grid item>
+                        <PSAButton
+                          startIcon={<Print />}
+                          buttonType="ModalLink"
+                          onClick={print}
+                          title="Print"
+                        />
+                      </Grid>
+                    )
+                }
               </Grid>
 
               <Grid item xs={1}>

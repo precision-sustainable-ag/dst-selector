@@ -72,10 +72,10 @@ const InformationSheetContent = ({ crop, modalData }) => {
   return (
     dataDone === true && (
       <>
-        <CoverCropInformation allThumbs={allThumbs} crop={modalData} />
+        <CoverCropInformation allThumbs={allThumbs} crop={modalData} className="page-break" />
         {modalData
           && modalData.data.map((cat, index) => (
-            <Grid item key={index} xs={12}>
+            <Grid item key={index} xs={12} className="avoid-break">
               <PSAAccordion
                 expanded={accordionOpen[cat.label]}
                 onChange={() => handleAccordion(cat.label)}
@@ -97,20 +97,20 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           sm={12}
                           direction={isMobile ? 'row' : 'column'}
                         >
-                          <Grid item xs={12}>
+                          <Grid item xs={12} className="attribute-label">
                             <PSATooltip
                               placement="top-end"
                               enterTouchDelay={0}
                               title={att.description}
                               arrow
                               tooltipContent={(
-                                <Typography sx={{ fontWeight: 'bold' }} variant="body1">
+                                <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
                                   {att.label}
                                 </Typography>
                               )}
                             />
                           </Grid>
-                          <Grid item xs={12}>
+                          <Grid item xs={12} className="attribute-value">
                             <Typography
                               style={{ paddingRight: '2rem' }}
                               display="flex"
@@ -130,7 +130,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                             arrow
                             tooltipContent={(
                               cat.label !== 'Extended Comments' ? (
-                                <Box xs={12} variant="body1">
+                                <Box xs={12} variant="body1" tabIndex="0">
                                   <Typography
                                     display="flex"
                                     justifyContent="center"
@@ -143,7 +143,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                   </Typography>
                                 </Box>
                               ) : (
-                                <Box xs={12} variant="body1">
+                                <Box xs={12} variant="body1" tabIndex="0">
                                   <Typography
                                     display="flex"
                                     justifyContent="left"

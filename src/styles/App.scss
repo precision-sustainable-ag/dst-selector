@@ -24,3 +24,29 @@ code {
   justify-content: space-between;
 }
 
+@media print {
+  @page {
+    margin: 0.25in;
+  }
+
+  .avoid-break {
+    break-inside: avoid;
+  }
+
+  .page-break {
+    break-after: page;
+  }
+
+  .no-print, .MuiAccordionSummary-expandIconWrapper {
+    visibility: hidden !important;
+  }
+
+  .attribute-label {
+    width: 170px;
+  }
+
+  .attribute-value {
+    text-align: right;
+    width: 170px;
+  }
+}

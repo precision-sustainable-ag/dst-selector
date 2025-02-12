@@ -40,6 +40,7 @@ const Footer = () => {
         width: footerWidth,
       }}
       className="primaryFooter"
+      id="page-footer"
     >
       <Grid
         container
