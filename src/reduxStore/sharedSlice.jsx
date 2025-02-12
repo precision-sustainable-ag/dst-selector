@@ -11,11 +11,19 @@ const initialState = {
   apiBaseUrl: /(localhost|dev)/i.test(window.location)
     ? 'developapi'
     : 'api',
+  queryString: null,
   openMyCoverCropReset: {
     open: false,
     goBack: true,
   },
 };
+
+export const setQueryString = (value) => ({
+  type: 'SET_QUERY',
+  payload: {
+    value,
+  },
+});
 
 export const updateProgress = (value) => ({
   type: 'UPDATE_PROGRESS',
@@ -109,6 +117,12 @@ const sharedReducer = (state = initialState, action = null) => {
         return { ...state, progress: 0 };
       }
       return { ...state };
+
+    case 'SET_QUERY':
+      return {
+        ...state,
+        queryString: action.payload.value,
+      };
 
     case 'GOTO_PROGRESS':
       return {

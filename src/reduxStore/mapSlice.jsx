@@ -6,6 +6,8 @@ const initialState = {
   stateLabel: null,
   councilShorthand: null,
   councilLabel: null,
+  lat: 47,
+  lon: -122,
 };
 
 export const updateRegions = (value) => ({
@@ -32,6 +34,14 @@ export const updateStateInfo = ({
     stateId,
     councilShorthand,
     councilLabel,
+  },
+});
+
+export const updateLatLon = ({ lat, lon }) => ({
+  type: 'UPDATE_LAT_LON',
+  payload: {
+    lat,
+    lon,
   },
 });
 
@@ -63,6 +73,13 @@ const mapReducer = (state = initialState, action = null) => {
         councilLabel: payload.councilLabel,
         councilShorthand: payload.councilShorthand,
         stateId: payload.stateId,
+      };
+
+    case 'UPDATE_LAT_LON':
+      return {
+        ...state,
+        lat: payload.lat,
+        lon: payload.lon,
       };
 
     case 'SET_MAP_REDUX':

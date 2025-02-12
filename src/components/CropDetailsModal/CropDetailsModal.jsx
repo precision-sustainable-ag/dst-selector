@@ -16,7 +16,7 @@ import pirschAnalytics from '../../shared/analytics';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  // const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
@@ -29,8 +29,8 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const [printEnabled, setPrintEnabled] = useState(false);
 
   useEffect(() => {
-    const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${regionQuery}`;
+    // const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?regions=1222&regions=1317`;
     if (crop.id !== undefined) {
       callCoverCropApi(url).then((data) => {
         setModalData(data);
@@ -40,15 +40,39 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
         });
     }
 
-    fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
-      .then((res) => {
-        if (res.status !== 404) {
-          setPrintEnabled(true);
-        } else {
-          setPrintEnabled(false);
-        }
-      });
+    setPrintEnabled(false);
+    // fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
+    //   .then((res) => {
+    //     if (res.status !== 404) {
+    //       setPrintEnabled(true);
+    //     } else {
+    //       setPrintEnabled(false);
+    //     }
+    //   });
   }, [crop]);
+
+  // useEffect(() => {
+  //   const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+  //   const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${regionQuery}`;
+  //   if (crop.id !== undefined) {
+  //     callCoverCropApi(url).then((data) => {
+  //       setModalData(data);
+  //     })
+  //       .then(() => {
+  //         setDataDone(true);
+  //       });
+  //   }
+
+  //   setPrintEnabled(false);
+  //   fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
+  //     .then((res) => {
+  //       if (res.status !== 404) {
+  //         setPrintEnabled(true);
+  //       } else {
+  //         setPrintEnabled(false);
+  //       }
+  //     });
+  // }, [crop]);
 
   const handleModalClose = () => {
     setModalOpen(!modalOpen);

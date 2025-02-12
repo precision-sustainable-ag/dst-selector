@@ -26,8 +26,8 @@ import {
 } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
-import { updateRegion } from '../../reduxStore/mapSlice';
-import { snackHandler } from '../../reduxStore/sharedSlice';
+import { updateRegion, updateLatLon } from '../../reduxStore/mapSlice';
+import { setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
@@ -41,16 +41,22 @@ const Location = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const latRedux = useSelector((stateRedux) => stateRedux.mapData.lat);
+  const lonRedux = useSelector((stateRedux) => stateRedux.mapData.lon);
 
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState({});
   const [mapFeatures, setMapFeatures] = useState([]);
+  const [queryWCCCLatLon, setQueryWCCCLatLon] = useState([]);
+  const query = `regions=${regionIdRedux}`;
 
   // if user field exists, return field, else return state capitol
   const getFeatures = () => {
@@ -61,6 +67,24 @@ const Location = () => {
     }
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
+
+  useEffect(() => {
+    setQueryWCCCLatLon([`lat=${latRedux}`, `lon=${lonRedux}`].map((i) => i).join('&'));
+  }, [latRedux, lonRedux]);
+
+  useEffect(() => {
+    if (councilShorthandRedux === 'WCCC') {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?${queryWCCCLatLon}`).then((data) => {
+        // query = data.data.map((i) => `${encodeURIComponent('regions')}=${encodeURIComponent(i.id)}`).join('&');
+        // setQuery(data.data.map((i) => `regions=${i.id}`).join('&'));
+        dispatchRedux(setQueryString(data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&')));
+        console.log('Query data', data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&'));
+      });
+    } else {
+      console.log(query);
+      dispatchRedux(setQueryString(query));
+    }
+  }, [councilShorthandRedux, queryWCCCLatLon]);
 
   // set map features, update selectedFieldIdRedux
   useEffect(() => {
@@ -88,12 +112,14 @@ const Location = () => {
       if (type === 'GeometryCollection') return [geometries[0].coordinates[1], geometries[0].coordinates[0]];
     }
     if (markersRedux) {
-      return [markersRedux[0][0], markersRedux[0][1]];
+      dispatchRedux(updateLatLon({ lat: markersRedux[0][0], lon: markersRedux[0][1] }));
+      // return [markersRedux[0][0], markersRedux[0][1]];
+    } else if (stateLabelRedux) {
+      dispatchRedux(updateLatLon({ lat: statesLatLongDict[stateLabelRedux][0], lon: statesLatLongDict[stateLabelRedux][1] }));
+      // return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
-    if (stateLabelRedux) {
-      return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
-    }
-    return [47, -122];
+    console.log(latRedux, lonRedux);
+    return [latRedux, lonRedux];
   }, [stateLabelRedux]);
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
@@ -323,32 +349,32 @@ const Location = () => {
         </Grid>
 
         {stateLabelRedux !== 'Ontario' && (
-        <Grid container>
-          <Container maxWidth="md">
-            <Map
-              setAddress={setSelectedToEditSite}
-              setFeatures={setCurrentGeometry}
-              initWidth="100%"
-              initHeight="450px"
-              initLat={getLatLng[0]}
-              initLon={getLatLng[1]}
-              initFeatures={mapFeatures}
-              initStartZoom={12}
-              initMinZoom={4}
-              initMaxZoom={18}
-              hasSearchBar
-              hasMarker
-              hasNavigation
-              hasCoordBar
-              hasDrawing
-              hasGeolocate
-              hasFullScreen
-              hasMarkerPopup
-              hasMarkerMovable
-              mapboxToken={mapboxToken}
-            />
-          </Container>
-        </Grid>
+          <Grid container>
+            <Container maxWidth="md">
+              <Map
+                setAddress={setSelectedToEditSite}
+                setFeatures={setCurrentGeometry}
+                initWidth="100%"
+                initHeight="450px"
+                initLat={getLatLng[0]}
+                initLon={getLatLng[1]}
+                initFeatures={mapFeatures}
+                initStartZoom={12}
+                initMinZoom={4}
+                initMaxZoom={18}
+                hasSearchBar
+                hasMarker
+                hasNavigation
+                hasCoordBar
+                hasDrawing
+                hasGeolocate
+                hasFullScreen
+                hasMarkerPopup
+                hasMarkerMovable
+                mapboxToken={mapboxToken}
+              />
+            </Container>
+          </Grid>
         )}
       </Grid>
     </Box>
