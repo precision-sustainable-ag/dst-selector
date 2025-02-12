@@ -48,6 +48,7 @@ import './styles/App.scss';
 import 'mdbreact/dist/css/mdb.css';
 import SiteConditions from './pages/Location/LocationConfirmation/SiteConditions';
 import '@fontsource/ibm-plex-sans';
+import SkipContent from './components/SkipContent/SkipContent';
 
 const store = configureStore();
 
@@ -91,6 +92,9 @@ const theme = createTheme(
             boxShadow: '0 0 3px 0 black',
           },
           border: '1px solid #777',
+          '&:focus': {
+            boxShadow: '0 0 0 2px black',
+          },
         },
         colorSecondary: {
           '&, &&:hover, &&:focus': {
@@ -133,8 +137,9 @@ const App = () => (
           <Auth0ProviderWithHistory>
             <Suspense fallback={<div>Loading..</div>}>
               <Box>
+                <SkipContent href="#main-content" text="Skip to content" />
                 <Header />
-                <Container disableGutters maxWidth={false}>
+                <Container disableGutters maxWidth={false} id="main-content">
                   <Box mr={1} ml={1} mt={1} mb={1}>
                     <Switch>
                       <Route path="/" render={() => <LoadRelevantRoute />} exact />
@@ -163,6 +168,18 @@ const App = () => (
                 </Container>
               </Box>
               <SnackbarComponent />
+              <SkipContent
+                href="#main-content"
+                text="Skip to content"
+                sx={{
+                  top: 'auto',
+                  bottom: '-80px',
+                  '&:focus': {
+                    bottom: '60px',
+                    transition: 'bottom 225ms cubic-bezier(0, 0, 0.2, 1)',
+                  },
+                }}
+              />
               <Footer />
             </Suspense>
           </Auth0ProviderWithHistory>
