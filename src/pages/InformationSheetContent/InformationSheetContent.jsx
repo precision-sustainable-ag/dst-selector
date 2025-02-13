@@ -96,6 +96,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           md={6}
                           sm={12}
                           direction={isMobile ? 'row' : 'column'}
+                          className="info-sheet-item"
                         >
                           <Grid item xs={12} className="attribute-label">
                             <PSATooltip

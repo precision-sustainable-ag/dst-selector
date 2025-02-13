@@ -24,15 +24,20 @@ code {
   justify-content: space-between;
 }
 
+/**
+ * Print-specific styles - These styles are applied only when printing or generating a PDF.
+ */
 @media print {
   @page {
     margin: 0.25in;
   }
 
+  /* Prevent elements from breaking across pages */
   .avoid-break {
     break-inside: avoid;
   }
 
+   /* Force a page break after this element */
   .page-break {
     break-after: page;
   }
@@ -41,12 +46,18 @@ code {
     visibility: hidden !important;
   }
 
-  .attribute-label {
-    width: 170px;
+  .attribute-label, .attribute-value {
+    flex-basis: 50% !important;
+    max-width: 50% !important;
   }
 
-  .attribute-value {
-    text-align: right;
-    width: 170px;
+  .attribute-value .MuiTypography-root {
+    text-align: right !important;
+    justify-content: right !important;
+  }
+
+  .info-sheet-item {
+    flex-direction: row !important;
+    padding-bottom: 15px !important;
   }
 }
