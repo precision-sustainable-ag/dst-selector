@@ -141,6 +141,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     tooltipContent={(
                       <AcUnit
                         sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
+                        tabIndex="0"
                       />
                     )}
                   />

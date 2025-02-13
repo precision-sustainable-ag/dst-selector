@@ -24,6 +24,7 @@ import CropTable from './CropTable/CropTable';
 import { setSidebarWidth } from '../../reduxStore/pageSlice';
 import pirschAnalytics from '../../shared/analytics';
 import useWindowSize from '../../shared/constants';
+import SkipContent from '../../components/SkipContent/SkipContent';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -117,7 +118,19 @@ const CropSelector = (props) => {
   }, [dispatchRedux, sidebarRef]);
   return (
     <Grid container spacing={3}>
-      <Grid item xl={3} lg={5} md={5} sm={12} xs={12} ref={sidebarRef}>
+      <Grid item xl={3} lg={4} md={4} sm={12} xs={12} ref={sidebarRef}>
+
+        <SkipContent
+          href="#crop-form"
+          text="Skip to form"
+          sx={{
+            '&:focus': {
+              top: '16px',
+              transition: 'top 225ms cubic-bezier(0, 0, 0.2, 1)',
+            },
+          }}
+        />
+
         {(size.width < 1680) && (
           <PSAButton
             startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
@@ -140,7 +153,20 @@ const CropSelector = (props) => {
         )}
       </Grid>
 
-      <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 7 : 12} md={showSidebar ? 7 : 12} sm={12} xs={12}>
+      <SkipContent
+        href="#page-footer"
+        text="Skip to bottom"
+        sx={{
+          left: 'auto',
+          right: '16px',
+          '&:focus': {
+            top: '16px',
+            transition: 'top 225ms cubic-bezier(0, 0, 0.2, 1)',
+          },
+        }}
+      />
+
+      <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12} sm={12} xs={12} id="crop-form">
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {speciesSelectorActivationFlagRedux ? (
           listView ? (

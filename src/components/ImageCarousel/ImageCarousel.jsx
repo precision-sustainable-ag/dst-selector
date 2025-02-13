@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
@@ -11,23 +12,31 @@ import { PSAButton } from 'shared-react-components/src';
 const ImageCarousel = ({ images }) => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
-  const maxSteps = images.length;
+  const [maxSteps, setMaxSteps] = useState(images.length);
   const [imagesData, setImagesData] = useState([]);
+  const [loaded, setLoaded] = useState([]);
+  const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
 
   useEffect(() => {
-    const imgsData = [];
-    async function makeImages() {
-      await images.forEach((image) => {
+    async function makeImages(n) {
+      const imgsData = [];
+      await images.slice(0, n).forEach((image) => {
         const imgData = { label: '', imgPath: '' };
         imgData.label = `Source: ${image.source ? image.source : ''}, ${image.year_taken ? image.year_taken : ''}, CC BY-ND 4.0 License`;
         imgData.imgPath = image.url;
         imgsData.push(imgData);
       });
-      await setImagesData(imgsData);
+      setImagesData(imgsData);
+      setActiveStep(0);
+      setMaxSteps(imgsData.length);
     }
 
-    makeImages();
-  }, []);
+    if (printing) {
+      makeImages(1);
+    } else {
+      makeImages(-1);
+    }
+  }, [printing]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -41,11 +50,12 @@ const ImageCarousel = ({ images }) => {
     setActiveStep(step);
   };
 
-  setTimeout(() => {
-    setActiveStep(
-      activeStep === images.length - 1 ? 0 : activeStep + 1,
-    );
-  }, 2000);
+  const nextStep = (activeStep + 1) % imagesData.length;
+  if (loaded[nextStep]) {
+    setTimeout(() => {
+      setActiveStep(nextStep);
+    }, 2000);
+  }
 
   return (
     maxSteps > 0 && (
@@ -74,6 +84,11 @@ const ImageCarousel = ({ images }) => {
                 }}
                 style={{ cursor: 'pointer' }}
                 onClick={() => { window.open(step.imgPath); }}
+                onLoad={() => {
+                  const l = [...loaded];
+                  l[index] = true;
+                  setLoaded(l);
+                }}
                 src={step.imgPath}
                 alt={step.label}
               />
@@ -87,6 +102,7 @@ const ImageCarousel = ({ images }) => {
       <MobileStepper
         steps={maxSteps}
         position="static"
+        className="no-print"
         activeStep={activeStep}
         nextButton={(
           <PSAButton

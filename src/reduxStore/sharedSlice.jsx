@@ -1,5 +1,6 @@
 const initialState = {
   progress: 0,
+  printing: false,
   snackOpen: false,
   snackMessage: '',
   ajaxInProgress: false,
@@ -27,6 +28,13 @@ export const setQueryString = (value) => ({
 
 export const updateProgress = (value) => ({
   type: 'UPDATE_PROGRESS',
+  payload: {
+    value,
+  },
+});
+
+export const updatePrinting = (value) => ({
+  type: 'UPDATE_PRINTING',
   payload: {
     value,
   },
@@ -117,11 +125,16 @@ const sharedReducer = (state = initialState, action = null) => {
         return { ...state, progress: 0 };
       }
       return { ...state };
-
     case 'SET_QUERY':
       return {
         ...state,
         queryString: action.payload.value,
+      };
+
+    case 'UPDATE_PRINTING':
+      return {
+        ...state,
+        printing: action.payload.value,
       };
 
     case 'GOTO_PROGRESS':

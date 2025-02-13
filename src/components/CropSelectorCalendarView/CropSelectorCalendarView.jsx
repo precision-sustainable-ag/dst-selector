@@ -58,6 +58,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
               <Box
                 className={classNames}
                 key={index}
+                tabIndex="0"
               >
                 {hessianDate && from !== 'listView'
                   ? (

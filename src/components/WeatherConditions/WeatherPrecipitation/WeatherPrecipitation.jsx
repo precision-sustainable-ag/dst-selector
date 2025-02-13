@@ -56,7 +56,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
                 </div>
               )}
               tooltipContent={(
-                <Info sx={{ fontSize: '1rem' }} />
+                <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
               )}
             />
           </Typography>
