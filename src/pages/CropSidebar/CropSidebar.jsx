@@ -506,28 +506,28 @@ const CropSidebar = ({
                         PLANT HARDINESS ZONE
                       </Typography>
             )}
-                        />
-                        {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
-                      </ListItemButton>
-                    </List>
-                    <PlantHardinessZone from="Browse Cover Crops" />
-                    <CoverCropSearch />
-                  </>
-                )}
-                <Box
-                  sx={{
-                    border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
-                  }}
-                >
-                  <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
-                    <ListItemText primary="FILTERS" />
-                    {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                  </ListItemButton>
-                  <Collapse in={cropFiltersOpen} timeout="auto">
-                    {filtersList()}
-                  </Collapse>
-                </Box>
-                {from !== 'explorer'
+                  />
+                  {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+              </List>
+              <PlantHardinessZone from="Browse Cover Crops" />
+              <CoverCropSearch />
+            </>
+            )}
+            <Box
+              sx={{
+                border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+              }}
+            >
+              <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
+                <ListItemText primary="FILTERS" />
+                {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={cropFiltersOpen} timeout="auto">
+                {filtersList()}
+              </Collapse>
+            </Box>
+            {from !== 'explorer'
                 && (
                 <Box
                   sx={{
