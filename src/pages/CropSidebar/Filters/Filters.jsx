@@ -120,14 +120,9 @@ const Chips = ({ filter }) => {
 const Tip = ({ filter }) => (
   <PSATooltip
     enterTouchDelay={0}
-    title={(
-      <>
-        <p>{filter.description}</p>
-        <p>{filter.details}</p>
-      </>
-      )}
+    title={`${filter.description} \n ${filter.details}`}
     tooltipContent={(
-      <span>
+      <span role="button">
         {filter.name}
         <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} tabIndex="0" />
       </span>

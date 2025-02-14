@@ -159,6 +159,8 @@ const SoilDrainage = ({ drainageOptions }) => {
                     </Typography>
                   </div>
                 )}
+                content="Indicates your soil drainage based on the USDA NRCS Web Soil Survey drainage classes.
+                Definitions of values found here: https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
               />
             </Typography>
           </Grid>

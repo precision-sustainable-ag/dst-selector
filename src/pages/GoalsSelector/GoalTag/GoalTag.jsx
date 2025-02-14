@@ -47,7 +47,7 @@ const GoalTag = ({
       id={`tooltip-${id}`}
       placement="top"
       arrow
-      title={<p>{`${goalDescription}`}</p>}
+      title={goalDescription}
       key={`tooltip${key}`}
       tooltipContent={(
         <span>

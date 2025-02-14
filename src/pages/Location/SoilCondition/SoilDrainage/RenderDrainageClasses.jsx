@@ -106,6 +106,7 @@ const RenderDrainageClasses = ({
             onClick={() => {
               updateDrainageClass(index);
             }}
+            aria-label={`${d}-${drainageVal.includes(index) ? 'selected' : ''}`}
             sx={{
               '&:focus': {
                 boxShadow: '0 0 0 2px black',

@@ -37,7 +37,12 @@ export const ReferenceTooltip = ({
       )}
       arrow
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        <span
+          role="button"
+          aria-label={`Source:${sourceName}`}
+        >
+          <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        </span>
       )}
     />
   ) : sourceType === 'html' ? (
@@ -57,7 +62,9 @@ export const ReferenceTooltip = ({
       arrow
       enterTouchDelay={0}
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        <span role="button" aria-label={sourceContent}>
+          <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        </span>
       )}
     />
   ) : (
@@ -71,7 +78,12 @@ export const ReferenceTooltip = ({
       placement="right"
       arrow
       tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        <span
+          role="button"
+          aria-label={sourceContent}
+        >
+          <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+        </span>
       )}
     />
   );
@@ -84,7 +96,12 @@ export const DataTooltip = ({ data, placement = 'top-start' }) => (
     arrow
     enterTouchDelay={0}
     tooltipContent={(
-      <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+      <span
+        role="button"
+        aria-label={data}
+      >
+        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+      </span>
     )}
   />
 );
@@ -261,12 +278,13 @@ export const getRating = (rating, councilShorthand) => {
       strokeWidth="1"
       strokeLinecap="round"
       strokeLinejoin="miter"
+      aria-label={`Rating: ${ratingInt}`}
     >
-      {councilShorthand !== 'MCCC' && <line x1="22" y1="3" x2="22" y2="21" stroke={ratingInt >= 5 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />}
-      <line x1="17" y1="7" x2="17" y2="21" stroke={ratingInt >= 4 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />
-      <line x1="12" y1="11" x2="12" y2="21" stroke={ratingInt >= 3 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />
-      <line x1="7" y1="14" x2="7" y2="21" stroke={ratingInt >= 2 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />
-      <line x1="2" y1="17" x2="2" y2="21" stroke={ratingInt >= 1 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />
+      {councilShorthand !== 'MCCC' && <line x1="22" y1="3" x2="22" y2="21" stroke={ratingInt >= 5 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />}
+      <line x1="17" y1="7" x2="17" y2="21" stroke={ratingInt >= 4 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />
+      <line x1="12" y1="11" x2="12" y2="21" stroke={ratingInt >= 3 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />
+      <line x1="7" y1="14" x2="7" y2="21" stroke={ratingInt >= 2 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />
+      <line x1="2" y1="17" x2="2" y2="21" stroke={ratingInt >= 1 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />
     </svg>
   );
 };

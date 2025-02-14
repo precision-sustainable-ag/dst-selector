@@ -52,7 +52,7 @@ const RenderFilters = ({
             arrow
             placement="right-start"
             enterTouchDelay={0}
-            title={<p>{filter.description}</p>}
+            title={filter.description}
             key={`tooltip-outer-${index}`}
             tooltipContent={(
               <ListItemButton
@@ -129,7 +129,7 @@ const RenderFilters = ({
                         arrow
                         placement="right"
                         enterTouchDelay={0}
-                        title={<p>{val.description}</p>}
+                        title={val.description}
                         key={`tooltip${index}`}
                         tooltipContent={(
                           <FormControlLabel

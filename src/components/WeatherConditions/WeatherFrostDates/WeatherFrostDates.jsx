@@ -61,7 +61,14 @@ const WeatherFrostDates = () => {
                 </div>
               )}
               tooltipContent={(
-                <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+                <span
+                  role="button"
+                  aria-label="Average dates of the first and last frosts for your location, based on frost dates
+                  for the last thirty years from the Precision Sustainable Agriculture Weather API
+                  powered by NSSL MRMS and NASA NLDAS-2 weather data."
+                >
+                  <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
+                </span>
               )}
             />
           </Typography>
