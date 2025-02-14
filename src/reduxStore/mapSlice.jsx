@@ -6,8 +6,6 @@ const initialState = {
   stateLabel: null,
   councilShorthand: null,
   councilLabel: null,
-  lat: 47,
-  lon: -122,
 };
 
 export const updateRegions = (value) => ({

@@ -158,7 +158,7 @@ const SoilCondition = () => {
           let selectedOption;
           floodingOptions.forEach((opt) => {
             if (opt.label === floodingClasses[0]) {
-              selectedOption = [opt.value.toString()];
+              selectedOption = councilShorthandRedux !== 'WCCC' ? [opt.value.toString()] : [];
             }
           });
           const payload = {

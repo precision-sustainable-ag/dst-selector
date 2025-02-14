@@ -19,11 +19,13 @@ import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const dispatch = useDispatch();
   // redux vars
-  // const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const queryString = useSelector((stateRedux) => stateRedux.sharedData.queryString);
 
   const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
 
@@ -33,7 +35,8 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
 
   useEffect(() => {
     // const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?regions=1222&regions=1317`;
+    const regionsParam = councilShorthandRedux === 'WCCC' ? queryString : `regions=${regionIdRedux}`;
+    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${regionsParam}`;
     if (crop.id !== undefined) {
       callCoverCropApi(url).then((data) => {
         setModalData(data);
@@ -43,7 +46,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
         });
     }
 
-    setPrintEnabled(false);
+    // setPrintEnabled(false);
     // fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
     //   .then((res) => {
     //     if (res.status !== 404) {
