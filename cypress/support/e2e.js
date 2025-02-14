@@ -1,42 +1,62 @@
 /* eslint-disable */
-/* eslint-disable no-undef */
 import './commands';
+import { flipCoverCropName } from '../../src/shared/constants';
 
 const rowOpacity = 0.55;
 
-Cypress.Commands.add('assertByTestId', (testId) => {
-  cy.get(`[data-test=${testId}]`).should('exist');
-});
+export const testFiltersByType = () => {
+  const cropData = Cypress.env('cropData');
+  const filterTypes = Cypress.env('filterTypes');
+  const allFilters = Cypress.env('allFilters');
 
-Cypress.Commands.add('beforeEachVisitBaseUrl', () => {
-  cy.visit('');
-  // Check for and click the "not now" button if it exists
-  cy.contains(/not now/i).click({ multiple: true, force: true });
-  // Check for and click the "decline" button if it exists
-  cy.contains(/decline/i).click({ multiple: true, force: true });
-});
+  const allFilterDataTypes = allFilters.reduce((res, filter) => {
+    const dataType = filter.dataType.label;
+    if (res.includes(dataType)) return res;
+    return [...res, dataType];
+  }, []);
 
-export const testFiltersByType = (filterTypes, testFilters, testFilterValues, filterResults) => {
-  for (let i = 0; i < filterTypes.length; i++) {
-    cy.getByTestId(`${filterTypes[i].toUpperCase()}-expandmore-icon`).click();
-  }
-  // checkRows(testFilters[3], testFilterValues[3], filterResults[testFilters[3]]);
+  const testFilters = allFilterDataTypes.reduce((res, dataType) => {
+    // TODO: for each filter type, find first available filter
+    const filterName = allFilters.find((filter) => filter.dataType.label === dataType)?.label;
+    if (!filterName) return res;
+    return [...res, filterName];
+  }, []);
+
+  const testFilterValues = allFilterDataTypes.reduce((res, dataType) => {
+    const filter = allFilters.find((filter) => filter.dataType.label === dataType);
+    if (!filter) return res;
+    return [...res, filter.values.map((v) => (v.dataType === 'number' && filter.dataType.label !== 'currency' ? parseInt(v.value) : v.value))];
+  }, []);
+
+  const filterResults = {};
+  testFilters.forEach((filter, i) => {
+    const result = {};
+    testFilterValues[i].forEach((value) => {
+      result[value] = [];
+    });
+    cropData.forEach((crop) => {
+      const attr = crop.attributes.find((attr) => attr.label === filter);
+      if (attr) {
+        attr.values.forEach((val) => {
+          const { value } = val;
+          result[value] = [...result[value], flipCoverCropName(crop.label)];
+        });
+      }
+    });
+    filterResults[filter] = result;
+  });
+
+  cy.log(filterTypes, allFilterDataTypes, testFilters, testFilterValues, filterResults);
+
+  filterTypes.forEach((filterType) => {
+    cy.getByTestId(`${filterType.toUpperCase()}-expandmore-icon`).click();
+  });
 
   testFilters.forEach((filter, i) => {
     checkRows(filter, testFilterValues[i], filterResults[filter]);
     cy.getByTestId('crop-side-bar-clear-filters').click();
   });
 };
-
-Cypress.Commands.add('testFilters', ({
-  // eslint-disable-next-line no-unused-vars
-  sidebarFilter, filterType, filterIndex, filterResult,
-}) => {
-  // cy.assertByTestId(`"${sidebarFilter.toUpperCase()}-expandmore-icon"`).click({ force: true });
-  // eslint-disable-next-line no-use-before-define
-  checkRows(filterType, filterIndex, filterResult);
-  cy.getByTestId('crop-side-bar-clear-filters').click();
-});
 
 const checkRows = (filterType, filterIndex, filterResult) => {
   const filterValType = typeof filterIndex[0];

@@ -52,48 +52,7 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
   });
 
   it('should work on all types of filters', () => {
-    const cropData = Cypress.env('cropData');
-    const filterTypes = Cypress.env('filterTypes');
-    const allFilters = Cypress.env('allFilters');
-
-    const allFilterDataTypes = allFilters.reduce((res, filter) => {
-      const dataType = filter.dataType.label;
-      if (res.includes(dataType)) return res;
-      return [...res, dataType];
-    }, []);
-
-    const testFilters = allFilterDataTypes.reduce((res, dataType) => {
-      // TODO: for each filter type, find first available filter
-      const filterName = allFilters.find((filter) => filter.dataType.label === dataType)?.label;
-      if (!filterName) return res;
-      return [...res, filterName];
-    }, []);
-
-    const testFilterValues = allFilterDataTypes.reduce((res, dataType) => {
-      const filter = allFilters.find((filter) => filter.dataType.label === dataType);
-      if (!filter) return res;
-      return [...res, filter.values.map((v) => (v.dataType === 'number' && filter.dataType.label !== 'currency' ? parseInt(v.value) : v.value))];
-    }, []);
-
-    const filterResults = {};
-    testFilters.forEach((filter, i) => {
-      const result = {};
-      testFilterValues[i].forEach((value) => {
-        result[value] = [];
-      });
-      cropData.forEach((crop) => {
-        const attr = crop.attributes.find((attr) => attr.label === filter);
-        if (attr) {
-          attr.values.forEach((val) => {
-            const { value } = val;
-            result[value] = [...result[value], flipCoverCropName(crop.label)];
-          });
-        }
-      });
-      filterResults[filter] = result;
-    });
-    cy.log(filterTypes, allFilterDataTypes, testFilters, testFilterValues, filterResults);
-    testFiltersByType(filterTypes, testFilters, testFilterValues, filterResults);
+    testFiltersByType();
   });
 
   it('should display same crop list on crop calendar and crop list', () => {
