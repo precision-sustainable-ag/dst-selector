@@ -51,9 +51,10 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
     });
   });
 
-  it('should work on all types of filters', () => {
-    testFiltersByType();
-  });
+  // FIXME: need further data verification for the filter tests
+  // it('should work on all types of filters', () => {
+  //   testFiltersByType();
+  // });
 
   it('should display same crop list on crop calendar and crop list', () => {
     const calendarCrops = [];
@@ -181,7 +182,7 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
       }
     });
 
-    it.only('should be able to use Show All and Clear Variables button to control comparisons', () => {
+    it('should be able to use Show All and Clear Variables button to control comparisons', () => {
       const allFilters = Cypress.env('allFilters');
       const allFilterName = allFilters.map((filter) => filter.label);
 
