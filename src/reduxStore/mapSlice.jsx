@@ -35,14 +35,6 @@ export const updateStateInfo = ({
   },
 });
 
-export const updateLatLon = ({ lat, lon }) => ({
-  type: 'UPDATE_LAT_LON',
-  payload: {
-    lat,
-    lon,
-  },
-});
-
 export const setMapRedux = (mapData) => ({
   type: 'SET_MAP_REDUX',
   payload: { mapData },
@@ -71,13 +63,6 @@ const mapReducer = (state = initialState, action = null) => {
         councilLabel: payload.councilLabel,
         councilShorthand: payload.councilShorthand,
         stateId: payload.stateId,
-      };
-
-    case 'UPDATE_LAT_LON':
-      return {
-        ...state,
-        lat: payload.lat,
-        lon: payload.lon,
       };
 
     case 'SET_MAP_REDUX':
