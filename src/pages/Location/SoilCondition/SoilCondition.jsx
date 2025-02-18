@@ -39,7 +39,6 @@ const SoilCondition = () => {
 
   // retrieving flooding frequency values(not exact value)
   useEffect(() => {
-    if (window.Cypress) return;
     fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query2}&${query1}`)
       .then((res) => res.json())
       .then((data) => {
