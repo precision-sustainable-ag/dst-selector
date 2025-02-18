@@ -41,7 +41,7 @@ const SoilCondition = () => {
 
   // retrieving flooding frequency values(not exact value)
   useEffect(() => {
-    const query = councilShorthandRedux === 'WCCC' ? `${query2}&${query1}` : `${query2}&${query1}`;
+    const query = councilShorthandRedux === 'WCCC' ? `${queryStringRedux}` : `${query2}&${query1}`;
     fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query}`)
       .then((res) => res.json())
       .then((data) => {

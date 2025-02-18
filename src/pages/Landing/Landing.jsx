@@ -25,6 +25,8 @@ import { historyState, setHistoryDialogState, updateField } from '../../reduxSto
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
 import pirschAnalytics from '../../shared/analytics';
 import { mapboxToken } from '../../shared/keys';
+import statesLatLongDict from '../../shared/stateslatlongdict';
+import { setQueryString } from '../../reduxStore/sharedSlice';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -109,41 +111,50 @@ const Landing = () => {
           councilShorthand: selectedState.council.shorthand,
           councilLabel: selectedState.council.label,
         }));
-        // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
-      }
-      if (stateIdRedux !== selectedState.id) {
+        // set querystring for WCCC
+        if (selectedState.council.shorthand === 'WCCC') {
+          const [lat, lon] = statesLatLongDict[selectedState.label];
+          callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`).then((data) => {
+            const query = data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&');
+            dispatchRedux(setQueryString(query));
+          });
+        }
         dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
         dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
         dispatchRedux(updateField(null));
       }
       const { id } = selectedState;
-      fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
-        .then((res) => res.json())
-        .then((data) => {
-          let fetchedRegions;
-          if (data.data.Counties) {
-            fetchedRegions = data.data.Counties;
-          } else {
-            fetchedRegions = data.data.Zones;
-          }
+      if (selectedState.council.shorthand !== 'WCCC') {
+        fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
+          .then((res) => res.json())
+          .then((data) => {
+            let fetchedRegions;
+            if (data.data.Counties) {
+              fetchedRegions = data.data.Counties;
+            } else {
+              fetchedRegions = data.data.Zones;
+            }
 
-          dispatchRedux(updateRegions(fetchedRegions));
+            dispatchRedux(updateRegions(fetchedRegions));
 
-          // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
-          // , skip set default since there already exist region selection
-          if (stateIdRedux !== selectedState.id) {
+            // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
+            // , skip set default since there already exist region selection
+            if (stateIdRedux !== selectedState.id) {
             // set default region for Selector and Explorer
-            localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
-            dispatchRedux(updateRegion({
-              regionId: fetchedRegions[0].id ?? '',
-              regionShorthand: fetchedRegions[0].shorthand ?? '',
-            }));
-          }
-        })
-        .catch((err) => {
+              localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
+              dispatchRedux(updateRegion({
+                regionId: fetchedRegions[0].id ?? '',
+                regionShorthand: fetchedRegions[0].shorthand ?? '',
+              }));
+              // set querystring for non WCCC states
+              dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id ?? ''}`));
+            }
+          })
+          .catch((err) => {
           // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
+            console.log(err.message);
+          });
+      }
     }
   }, [selectedState]);
 

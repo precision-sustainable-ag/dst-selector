@@ -26,7 +26,7 @@ import {
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
-import { setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
+import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
@@ -40,10 +40,8 @@ const Location = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
@@ -107,15 +105,6 @@ const Location = () => {
         // zipCode,
         county,
       } = selectedToEditSite;
-
-      if (councilShorthandRedux === 'WCCC') {
-        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${latitude}&lon=${longitude}`).then((data) => {
-          const query = data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&');
-          dispatchRedux(setQueryString(query));
-        });
-      } else {
-        dispatchRedux(setQueryString(`regions=${regionIdRedux}`));
-      }
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
