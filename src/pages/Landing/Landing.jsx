@@ -111,17 +111,17 @@ const Landing = () => {
           councilShorthand: selectedState.council.shorthand,
           councilLabel: selectedState.council.label,
         }));
-        // set querystring for WCCC
-        if (selectedState.council.shorthand === 'WCCC') {
-          const [lat, lon] = statesLatLongDict[selectedState.label];
-          callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`).then((data) => {
-            const query = data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&');
-            dispatchRedux(setQueryString(query));
-          });
-        }
         dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
         dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
         dispatchRedux(updateField(null));
+      }
+      // set querystring for WCCC
+      if (selectedState.council.shorthand === 'WCCC') {
+        const [lat, lon] = statesLatLongDict[selectedState.label];
+        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`).then((data) => {
+          const query = data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&');
+          dispatchRedux(setQueryString(query));
+        });
       }
       const { id } = selectedState;
       if (selectedState.council.shorthand !== 'WCCC') {
@@ -146,9 +146,9 @@ const Landing = () => {
                 regionId: fetchedRegions[0].id ?? '',
                 regionShorthand: fetchedRegions[0].shorthand ?? '',
               }));
-              // set querystring for non WCCC states
-              dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id ?? ''}`));
             }
+            // set querystring for non WCCC states
+            dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id ?? ''}`));
           })
           .catch((err) => {
           // eslint-disable-next-line no-console
