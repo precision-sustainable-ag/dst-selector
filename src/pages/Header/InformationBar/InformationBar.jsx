@@ -63,9 +63,8 @@ const InformationBar = ({ pathname }) => {
         return (
           <>
             <LocationOn />
-            &nbsp;Location:
-            {' '}
-            {getSelectedValues('location')}
+            &nbsp;Location
+            {councilShorthandRedux !== 'WCCC' && `: ${getSelectedValues('location')}`}
           </>
         );
       case 'site':

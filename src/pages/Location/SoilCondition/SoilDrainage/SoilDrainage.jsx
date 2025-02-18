@@ -34,7 +34,7 @@ const SoilDrainage = ({ drainageOptions }) => {
   // useState vars
   const [showTiling, setShowTiling] = useState(false);
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const [newDrainage, setNewDrainage] = useState([]);
+  const [newDrainage, setNewDrainage] = useState('');
   const [drainageInitialLoad, setDrainageInitialLoad] = useState(false);
 
   useEffect(() => {
