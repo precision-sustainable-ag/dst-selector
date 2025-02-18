@@ -26,7 +26,6 @@ const RenderDrainageClasses = ({
   const [updateTilingCheck, setUpdateTilingCheck] = useState(false);
   const drainageArray = drainageOptions.map((option) => option.value);
   const drainageVal = [drainageArray.map((val) => val.toLowerCase()).indexOf(drainage.toLowerCase())];
-  console.log('drainageVal', drainageVal, drainage, drainageArray);
 
   // functions
   const updateDrainageAction = (drainages) => {
