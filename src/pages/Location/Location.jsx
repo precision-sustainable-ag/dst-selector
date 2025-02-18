@@ -312,11 +312,17 @@ const Location = () => {
           <Typography variant="body1">
             Find your address or ZIP code using the search bar on the map and hit
             <Search fontSize="inherit" />
-            to determine your location. If needed, adjust your
-            {' '}
-            {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
-            {' '}
-            in the dropdown.
+            to determine your location.
+            {councilShorthandRedux !== 'WCCC' && (
+            <>
+              If needed, adjust your
+              {' '}
+              {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
+              {' '}
+              in the dropdown.
+            </>
+            )}
+
           </Typography>
         </Grid>
 
@@ -329,7 +335,7 @@ const Location = () => {
             alignItems: 'center',
           }}
         >
-          <PlantHardinessZone from="Location" />
+          {councilShorthandRedux !== 'WCCC' && <PlantHardinessZone from="Location" />}
         </Grid>
 
         {stateLabelRedux !== 'Ontario' && (

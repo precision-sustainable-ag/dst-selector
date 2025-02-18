@@ -27,12 +27,10 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // redux vars
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
-  // const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const queryString = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
 
   // useState vars
   const [currentSources, setCurrentSources] = useState([{}]);
@@ -45,19 +43,15 @@ const InformationSheetContent = ({ crop, modalData }) => {
     }, {}),
   );
 
-  // const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-
-  const regionsParam = councilShorthandRedux === 'WCCC' ? queryString : `regions=${regionIdRedux}`;
-
   useEffect(() => {
     callCoverCropApi(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${regionsParam}`,
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${queryStringRedux}`,
     ).then((data) => {
       setCurrentSources(data.data);
     });
 
     callCoverCropApi(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?${regionsParam}`,
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?${queryStringRedux}`,
     ).then((data) => {
       setAllThumbs(data.data);
       setDataDone(true);

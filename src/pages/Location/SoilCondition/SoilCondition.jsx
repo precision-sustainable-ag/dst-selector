@@ -30,7 +30,7 @@ const SoilCondition = () => {
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
-  const queryString = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // useState vars
@@ -41,7 +41,8 @@ const SoilCondition = () => {
 
   // retrieving flooding frequency values(not exact value)
   useEffect(() => {
-    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query2}&${query1}`)
+    const query = councilShorthandRedux === 'WCCC' ? `${query2}&${query1}` : `${query2}&${query1}`;
+    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query}`)
       .then((res) => res.json())
       .then((data) => {
         setFloodingOptions(data.data.values);
@@ -50,9 +51,8 @@ const SoilCondition = () => {
         // eslint-disable-next-line no-console
         console.log(err.message);
       });
-    const regionsParam = councilShorthandRedux === 'WCCC' ? queryString : `regions=${regionIdRedux}`;
 
-    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/attribute-values?slug=soil_drainage&${regionsParam}`)
+    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/attribute-values?slug=soil_drainage&${queryStringRedux}`)
       .then((res) => res.json())
       .then((data) => {
         setDrainageOptions(data.data);

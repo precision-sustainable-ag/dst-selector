@@ -68,7 +68,6 @@ const CropSidebar = ({
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
@@ -78,7 +77,7 @@ const CropSidebar = ({
   // const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const queryString = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
@@ -273,13 +272,11 @@ const CropSidebar = ({
   }, [sidebarCategoriesData]);
 
   useEffect(() => {
-    console.log('here 1');
-    if (stateIdRedux && regionIdRedux) {
-      console.log('here 2 with Query String', queryString);
-      dispatchRedux(setAjaxInProgress(true));
-      setLoading(true);
-      if (councilShorthandRedux !== 'WCCC') {
-        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryString}`).then((data) => {
+    dispatchRedux(setAjaxInProgress(true));
+    setLoading(true);
+    if (councilShorthandRedux !== 'WCCC') {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
+        .then((data) => {
           const allFilters = [];
           data.data.forEach((category) => {
             allFilters.push(category.attributes);
@@ -287,8 +284,9 @@ const CropSidebar = ({
           setSidebarFiltersData(allFilters);
           setSidebarCategoriesData(data.data);
         });
-      } else {
-        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryString}`).then((data) => {
+    } else {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
+        .then((data) => {
           const allFilters = [];
           data.data.forEach((category) => {
             allFilters.push(category.attributes);
@@ -296,11 +294,9 @@ const CropSidebar = ({
           setSidebarFiltersData(allFilters);
           setSidebarCategoriesData(data.data);
         });
-      }
-      console.log('here 3');
-      console.log('query', queryString);
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryString}`).then((data) => {
-        console.log('Crops Data', data);
+    }
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`)
+      .then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
         const start = startDate ? moment(startDate).format('MM/DD') : '';
         const end = endDate ? moment(endDate).format('MM/DD') : '';
@@ -308,9 +304,8 @@ const CropSidebar = ({
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
       });
-    }
   }, [
-    cashCropDataRedux, regionIdRedux, queryString,
+    cashCropDataRedux, queryStringRedux,
   ]);
 
   // TODO: Can we use Reducer instead of localStorage?
@@ -537,19 +532,22 @@ const CropSidebar = ({
           <>
             {from === 'explorer' && (
             <>
-              <List component="div" disablePadding>
-                <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
-                  <ListItemText
-                    primary={(
-                      <Typography variant="body2">
-                        PLANT HARDINESS ZONE
-                      </Typography>
+              {councilShorthandRedux !== 'WCCC'
+               && (
+               <List component="div" disablePadding>
+                 <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
+                   <ListItemText
+                     primary={(
+                       <Typography variant="body2">
+                         PLANT HARDINESS ZONE
+                       </Typography>
             )}
-                  />
-                  {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-              </List>
-              <PlantHardinessZone from="Browse Cover Crops" />
+                   />
+                   {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                 </ListItemButton>
+                 <PlantHardinessZone from="Location" />
+               </List>
+               )}
               <CoverCropSearch />
             </>
             )}
