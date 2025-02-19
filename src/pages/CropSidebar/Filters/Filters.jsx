@@ -87,7 +87,7 @@ const Chips = ({ filter }) => {
         <Grid key={filter.name + val.value + i} item>
           <Chip
             key={filter.name + val.value + i}
-            data-test={`${filter.name}-${val.value === '0' ? 'No' : 'Yes'}`}
+            data-test={`${filter.name}-${val.value}`}
             onClick={() => chipChange(filter.name, val.value)}
             component="li"
             size="medium"
@@ -120,14 +120,9 @@ const Chips = ({ filter }) => {
 const Tip = ({ filter }) => (
   <PSATooltip
     enterTouchDelay={0}
-    title={(
-      <>
-        <p>{filter.description}</p>
-        <p>{filter.details}</p>
-      </>
-      )}
+    title={`${filter.description} \n ${filter.details}`}
     tooltipContent={(
-      <span>
+      <span role="button">
         {filter.name}
         <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} tabIndex="0" />
       </span>

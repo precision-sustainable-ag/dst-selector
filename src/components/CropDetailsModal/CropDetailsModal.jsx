@@ -133,7 +133,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
         </html>
       `;
 
-      const response = await fetch('https://developweather.covercrop-data.org/generate-pdf', {
+      const response = await fetch('https://pdf.covercrop-data.org/api/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

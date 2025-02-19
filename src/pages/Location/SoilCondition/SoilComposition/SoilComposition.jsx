@@ -45,6 +45,7 @@ const SoilComposition = () => {
                       </Typography>
                     </div>
                   )}
+                  content="The tool auto-completes your soil composition based on location and the USDA NRCS Web Soil Survey."
                 />
               </Typography>
             </Grid>

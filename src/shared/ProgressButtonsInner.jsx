@@ -53,9 +53,7 @@ const ProgressButtonsInner = ({
       {toolTip && isDisabledNext ? (
         <PSATooltip
           enterTouchDelay={0}
-          title={
-            <p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>
-          }
+          title={`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}
           tooltipContent={(
             <Box>
               <PSAButton

@@ -139,10 +139,12 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
                     arrow
                     tooltipContent={(
-                      <AcUnit
-                        sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
-                        tabIndex="0"
-                      />
+                      <span role="button" aria-label={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}>
+                        <AcUnit
+                          sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
+                          tabIndex="0"
+                        />
+                      </span>
                     )}
                   />
                 </Grid>
@@ -210,6 +212,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 setSaveHistory,
               );
             }}
+            aria-label={selectedBtns.includes(crop.id) ? 'Delete' : 'Add to List'}
             data-test={`cart-btn-${index}`}
             title={selectedBtns.includes(crop.id)
               ? <DeleteForever data-test={`delete-forever-icon-${index}`} />
