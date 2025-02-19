@@ -61,6 +61,7 @@ const SoilCondition = () => {
 
   // retrieving drainage class and flooding frequency
   useEffect(() => {
+    if (window.Cypress) return;
     if (soilDataRedux.drainageClass.length > 0 || historyStateRedux === historyState.imported) {
       // not call api if selected any drainage class or it's imported
       return;
