@@ -234,6 +234,7 @@ const CropSidebar = ({
   }, [sidebarCategoriesData]);
 
   useEffect(() => {
+    if (queryStringRedux === null) return;
     dispatchRedux(setAjaxInProgress(true));
     setLoading(true);
     if (councilShorthandRedux !== 'WCCC') {
