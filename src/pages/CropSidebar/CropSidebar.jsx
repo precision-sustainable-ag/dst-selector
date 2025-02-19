@@ -104,7 +104,6 @@ const CropSidebar = ({
     setShowFilters(value);
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
 
-
   const handleCropGroupFilter = (val) => {
     dispatchRedux(cropGroupFilterRedux === val ? setCropGroupFilter('') : setCropGroupFilter(val));
   };
