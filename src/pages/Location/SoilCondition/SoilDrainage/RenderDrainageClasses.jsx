@@ -77,7 +77,7 @@ const RenderDrainageClasses = ({
       dispatchRedux(setTileDrainage(false));
       pirschAnalytics('Site Conditions', { meta: { drainageClass: drainageArray[drainages[0]] } });
     } else {
-      setNewDrainage([]);
+      setNewDrainage('');
       updateDrainageAction([]);
       dispatchRedux(setTileDrainage(false));
       setShowTiling(false);
