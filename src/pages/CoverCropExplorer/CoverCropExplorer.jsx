@@ -66,7 +66,7 @@ const CoverCropExplorer = () => {
 
   useEffect(() => {
     if ((stateIdRedux === null) && !urlParamStateId) {
-      history.push('/');
+      history.replace('/');
     }
   }, [stateIdRedux]);
 
