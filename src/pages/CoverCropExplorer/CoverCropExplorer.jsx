@@ -23,7 +23,6 @@ const CoverCropExplorer = () => {
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
-  // const { activeCropData } = state;
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   // open crop if url exists

@@ -58,20 +58,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
     });
   }, [crop, filterStateRedux]);
 
-  // useEffect(() => {
-  //   if (stateIdRedux && regionIdRedux) {
-  //     callCoverCropApi(
-  //       `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`,
-  //     ).then((data) => setCurrentSources(data.data));
-  //     callCoverCropApi(
-  //       `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`,
-  //     ).then((data) => {
-  //       setAllThumbs(data.data);
-  //       setDataDone(true);
-  //     });
-  //   }
-  // }, [crop, filterStateRedux]);
-
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Information Sheet' } });
   }, []);

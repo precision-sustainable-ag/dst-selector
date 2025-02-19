@@ -183,7 +183,6 @@ const Location = () => {
   // call cover crop api based on marker change
   useEffect(() => {
     const getDetails = async () => {
-      // const { markers } = state;
       const weatherApiURL = 'https://weather.covercrop-data.org';
 
       // update address on marker change

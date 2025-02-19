@@ -28,7 +28,6 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-// import styled from 'styled-components';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
   callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
@@ -41,18 +40,12 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import {
   clearFilters,
-  // setSoilDrainageFilter,
-  // setIrrigationFilter,
   setCropGroupFilter,
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import {
   setAjaxInProgress, regionToggleHandler,
 } from '../../reduxStore/sharedSlice';
-
-// const SoloFilter = styled(ListItem)({
-//   paddingLeft: '25px',
-// });
 
 const CropSidebar = ({
   comparisonView,
@@ -73,8 +66,6 @@ const CropSidebar = ({
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  // const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
-  // const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
@@ -89,10 +80,6 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
-  // const [westFlag, setWestFlag] = useState(false);
-  // const [query, setQuery] = useState(`${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`);
-  // const latRedux = useSelector((stateRedux) => stateRedux.mapData.lat);
-  // const lonRedux = useSelector((stateRedux) => stateRedux.mapData.lon);
 
   const coverCropGroup = [{ label: 'Brassica' }, { label: 'Legume' }, { label: 'Grass' }, { label: 'Broadleaf' }];
 
@@ -107,24 +94,6 @@ const CropSidebar = ({
 
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
-  // const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-  // const queryWCCC = `${encodeURIComponent('regions')}=${encodeURIComponent(latRedux)} '&' ${encodeURIComponent(lonRedux)}`;
-
-  // const queryWCCCLatLon = [`lat=${latRedux}`, `lon=${lonRedux}`].map((i) => i).join('&');
-
-  // useEffect(() => {
-  //   if (councilShorthandRedux === 'WCCC') {
-  //     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?${queryWCCCLatLon}`).then((data) => {
-  //       // query = data.data.map((i) => `${encodeURIComponent('regions')}=${encodeURIComponent(i.id)}`).join('&');
-  //       setQuery(data.data.map((i) => `regions=${i.id}`).join('&'));
-  //       console.log('Query data from the API', data.data.map((i) => `regions=${i.id}`).join('&'));
-  //       setWestFlag(true);
-  //     });
-  //   }
-  //   dispatchRedux(setQueryString(query));
-  //   console.log('this is query', query);
-  // }, [councilShorthandRedux, queryWCCCLatLon]);
-
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
@@ -135,13 +104,6 @@ const CropSidebar = ({
     setShowFilters(value);
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
 
-  // const handleSoilDrainageFilter = () => {
-  //   dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
-  // };
-
-  // const handleIrrigationFilter = () => {
-  //   dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
-  // };
 
   const handleCropGroupFilter = (val) => {
     dispatchRedux(cropGroupFilterRedux === val ? setCropGroupFilter('') : setCropGroupFilter(val));
@@ -368,72 +330,6 @@ const CropSidebar = ({
         </ListItem>
         )}
       </div>
-      {/* <SoloFilter style={{
-        marginBottom: '8px',
-        paddingBottom: '0px',
-        paddingTop: '0px',
-        paddingLeft: '10px',
-      }}
-      >
-        <ListItemText style={{
-          paddingBottom: '0px',
-          paddingRight: '3%',
-        }}
-        >
-          Soil Drainage Filter
-        </ListItemText>
-        <ListItemText
-          display="block"
-          primary={(
-            <Grid item>
-              <Typography variant="body1" display="inline">
-                No
-              </Typography>
-              <Switch
-                checked={soilDrainageFilterRedux}
-                onChange={handleSoilDrainageFilter}
-                name="soilDrainageFilter"
-              />
-              <Typography variant="body1" display="inline">
-                Yes
-              </Typography>
-            </Grid>
-                  )}
-        />
-      </SoloFilter>
-      <SoloFilter style={{
-        marginBottom: '0px',
-        paddingBottom: '0px',
-        paddingTop: '0px',
-        marginTop: '8px',
-        paddingLeft: '10px',
-      }}
-      >
-        <ListItemText style={{
-          paddingBottom: '0px',
-        }}
-        >
-          Irrigation Dates Filter
-        </ListItemText>
-        <ListItemText
-          display="block"
-          primary={(
-            <Grid item>
-              <Typography variant="body1" display="inline">
-                No
-              </Typography>
-              <Switch
-                checked={irrigationFilterRedux}
-                onChange={handleIrrigationFilter}
-                name="checkedC"
-              />
-              <Typography variant="body1" display="inline">
-                Yes
-              </Typography>
-            </Grid>
-                  )}
-        />
-      </SoloFilter> */}
       <ListItem
         component="div"
       >

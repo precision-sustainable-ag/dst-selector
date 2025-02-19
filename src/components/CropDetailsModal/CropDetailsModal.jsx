@@ -41,40 +41,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
           setDataDone(true);
         });
     }
-
-    // setPrintEnabled(false);
-    // fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
-    //   .then((res) => {
-    //     if (res.status !== 404) {
-    //       setPrintEnabled(true);
-    //     } else {
-    //       setPrintEnabled(false);
-    //     }
-    //   });
   }, [crop]);
-
-  // useEffect(() => {
-  //   const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-  //   const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${regionQuery}`;
-  //   if (crop.id !== undefined) {
-  //     callCoverCropApi(url).then((data) => {
-  //       setModalData(data);
-  //     })
-  //       .then(() => {
-  //         setDataDone(true);
-  //       });
-  //   }
-
-  //   setPrintEnabled(false);
-  //   fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
-  //     .then((res) => {
-  //       if (res.status !== 404) {
-  //         setPrintEnabled(true);
-  //       } else {
-  //         setPrintEnabled(false);
-  //       }
-  //     });
-  // }, [crop]);
 
   const handleModalClose = () => {
     setModalOpen(!modalOpen);

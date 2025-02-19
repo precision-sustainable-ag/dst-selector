@@ -706,13 +706,6 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
   ];
-  // const WCCClegendData = [
-  //   { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
-  //   { className: 'temperatureRisk', label: 'Temperature Risk To Establishment', color: '#f2c94c' },
-  //   { className: 'frostPossible', label: 'Frost Seeding Possible', color: '#2f80ed' },
-  //   { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
-  //   { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
-  // ];
   switch (councilShorthand) {
     case 'MCCC':
       return MCCClegendData;
