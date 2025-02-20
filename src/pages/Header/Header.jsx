@@ -31,7 +31,7 @@ import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
-import useWindowSize from '../../shared/constants';
+// import useWindowSize from '../../shared/constants';
 
 const Header = () => {
   const history = useHistory();
@@ -88,14 +88,14 @@ const Header = () => {
     // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
   }, [isAuthenticated, getAccessTokenSilently, councilShorthandRedux]);
 
-  const windowSize = useWindowSize().width;
+  // const windowSize = useWindowSize().width;
 
-  const [headerWidth, setHeaderWidth] = useState('100%');
-  const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
-  const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
-  useEffect(() => {
-    setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
-  }, [tableWidth, sidebarWidth, windowSize]);
+  // const [headerWidth, setHeaderWidth] = useState('100vw');
+  // const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
+  // const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
+  // // useEffect(() => {
+  //   setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
+  // }, [tableWidth, sidebarWidth, windowSize]);
 
   const navContent = [
     {
@@ -151,7 +151,7 @@ const Header = () => {
   ];
 
   return (
-    <header style={{ width: headerWidth }}>
+    <header style={{ width: '100vw' }}>
       <Box>
         <Grid container>
           <PSAHeader

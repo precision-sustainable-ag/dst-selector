@@ -54,9 +54,17 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
         }}
         data-test={`crop-list-tr-${index}`}
       >
-        <TableCell sx={{ padding: 0 }}>
-          <Grid container>
-            <Grid item md={4} xs={12}>
+        <TableCell
+          sx={{
+            padding: 0,
+            position: 'sticky',
+            left: 0,
+            zIndex: 1,
+            backgroundColor: 'white',
+          }}
+        >
+          <Grid container direction="row" alignItems="center" flexWrap="nowrap">
+            <Grid item md={4} xs={4}>
               {crop ? (
                 <PSAButton
                   buttonType=""
@@ -75,17 +83,17 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   title={(
                     <>
                       { selectedCropIdsRedux.includes(crop.id) && (
-                      <CheckBoxIcon
-                        style={{
-                          position: 'absolute',
-                          right: '7px',
-                          top: '4px',
-                          height: '15px',
-                          zIndex: 1,
-                          backgroundColor: '#5992E6',
+                        <CheckBoxIcon
+                          style={{
+                            position: 'absolute',
+                            right: '7px',
+                            top: '4px',
+                            height: '15px',
+                            zIndex: 1,
+                            backgroundColor: '#5992E6',
 
-                        }}
-                      />
+                          }}
+                        />
 
                       )}
                       <CropImage
@@ -112,8 +120,17 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 />
               )}
             </Grid>
-            <Grid container item md={8} xs={12} alignItems="center">
-              <Grid item>
+            <Grid container item md={8} xs={8} alignItems="center">
+              <Grid
+                item
+                sx={{
+                  maxWidth: '100%', // Prevent overflow
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis', // Handle long words
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
                 <PSAButton
                   buttonType=""
                   size="small"
@@ -122,6 +139,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     justifyContent: 'center',
                     textDecoration: 'underline',
                     color: 'black',
+                    textAlign: 'left', // Ensure readability
                   }}
                   onClick={() => {
                     setModalData(crop);

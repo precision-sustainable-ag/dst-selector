@@ -5,7 +5,9 @@
 
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import { Stack, Badge, Box } from '@mui/material';
+import {
+  Stack, Badge, Box, useMediaQuery, useTheme,
+} from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
@@ -20,6 +22,8 @@ const ProgressButtonsInner = ({
   const history = useHistory();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const changeProgress = (type) => {
     // setCrement(type);
@@ -37,12 +41,12 @@ const ProgressButtonsInner = ({
   };
 
   return (
-    <Stack direction="row" style={{ width: '100%' }}>
+    <Stack direction="row">
       <PSAButton
         style={{
           maxWidth: '90px',
           minWidth: '70px',
-          marginLeft: progressRedux === 4 ? '-75px' : '0px',
+          marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
@@ -60,7 +64,7 @@ const ProgressButtonsInner = ({
                 style={{
                   maxWidth: '90px',
                   minWidth: '70px',
-                  marginLeft: progressRedux === 4 ? '-75px' : '0px',
+                  marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
                 }}
                 onClick={() => changeProgress('increment')}
                 disabled={isDisabledNext || progressRedux === 4}
