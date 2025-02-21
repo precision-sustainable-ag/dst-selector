@@ -3,7 +3,7 @@
 */
 
 import {
-  Box, Grid, Typography,
+  Box, Grid, Typography, useMediaQuery, useTheme,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -19,6 +19,10 @@ import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const dispatch = useDispatch();
   // redux vars
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
@@ -194,8 +198,16 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
               </Grid>
             </Grid>
 
-            <Grid container item xs={12}>
-              <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
+            <Grid container item xs={12} justifyContent={isMobile ? 'center' : 'flex-start'}>
+              <Box
+                sx={{
+                  width: isMobile ? '100%' : 'inherit',
+                  maxWidth: isMobile ? '390px' : 'unset',
+                  margin: isMobile ? '2px' : 'auto',
+                }}
+              >
+                <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
+              </Box>
             </Grid>
           </Grid>
         </Box>

@@ -98,29 +98,84 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           direction={isMobile ? 'row' : 'column'}
                           className="info-sheet-item"
                         >
-                          <Grid item xs={12} className="attribute-label">
-                            <PSATooltip
-                              placement="top-end"
-                              enterTouchDelay={0}
-                              title={att.description}
-                              arrow
-                              tooltipContent={(
-                                <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
-                                  {att.label}
-                                </Typography>
-                              )}
-                            />
-                          </Grid>
-                          <Grid item xs={12} className="attribute-value">
-                            <Typography
-                              style={{ paddingRight: '2rem' }}
-                              display="flex"
-                              justifyContent={isMobile ? 'left' : 'right'}
-                              textAlign="right"
+                          {isMobile ? (
+                            <Box
+                              sx={{
+                                width: '100%',
+                                paddingBottom: '7px',
+                                paddingTop: '2px',
+                                borderBottom: '1px solid #ddd',
+                              }}
                             >
-                              {extractData(att, 'infoSheet', councilShorthandRedux)}
-                            </Typography>
-                          </Grid>
+                              <Grid container alignItems="center" spacing={1}>
+                                <Grid item xs={6} className="attribute-label">
+                                  <PSATooltip
+                                    placement="top-end"
+                                    enterTouchDelay={0}
+                                    title={att.description}
+                                    arrow
+                                    tooltipContent={(
+                                      <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
+                                        {att.label}
+                                      </Typography>
+                                    )}
+                                  />
+                                </Grid>
+
+                                <Grid
+                                  item
+                                  xs={6}
+                                  className="attribute-value"
+                                  sx={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    alignItems: 'center',
+                                    width: '100%',
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      paddingRight: '1rem',
+                                      display: 'flex',
+                                      justifyContent: 'flex-end',
+                                      textAlign: 'right',
+                                      alignItems: 'center',
+                                      width: '100%',
+                                    }}
+                                  >
+                                    {extractData(att, 'infoSheet', councilShorthandRedux)}
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                            </Box>
+                          ) : (
+                            // Non-mobile version
+                            <>
+                              <Grid item xs={12} className="attribute-label">
+                                <PSATooltip
+                                  placement="top-end"
+                                  enterTouchDelay={0}
+                                  title={att.description}
+                                  arrow
+                                  tooltipContent={(
+                                    <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
+                                      {att.label}
+                                    </Typography>
+                                  )}
+                                />
+                              </Grid>
+                              <Grid item xs={12} className="attribute-value">
+                                <Typography
+                                  style={{ paddingRight: '2rem' }}
+                                  display="flex"
+                                  justifyContent={isMobile ? 'left' : 'right'}
+                                  textAlign="right"
+                                >
+                                  {extractData(att, 'infoSheet', councilShorthandRedux)}
+                                </Typography>
+                              </Grid>
+                            </>
+                          )}
                         </Grid>
                       ) : (
                         <Grid item key={catIndex} xs={12}>
