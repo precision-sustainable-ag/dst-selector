@@ -706,6 +706,12 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
   ];
+  const WCCClegendData = [
+    { className: 'reliable', label: 'Irrigation Planting Window', color: '#2d7b7b' },
+    { className: 'temperatureRisk', label: 'Rainfed Planting Window', color: '#f2c94c' },
+    { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
+  ];
   switch (councilShorthand) {
     case 'MCCC':
       return MCCClegendData;
@@ -713,6 +719,8 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
       return SCCClegendData;
     case 'NECCC':
       return NECCClegendData;
+    case 'WCCC':
+      return WCCClegendData;
     default:
       return legendData;
   }
