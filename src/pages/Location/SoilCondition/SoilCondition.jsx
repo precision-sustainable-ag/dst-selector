@@ -30,6 +30,8 @@ const SoilCondition = () => {
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // useState vars
   const [floodingOptions, setFloodingOptions] = useState([]);
@@ -39,7 +41,8 @@ const SoilCondition = () => {
 
   // retrieving flooding frequency values(not exact value)
   useEffect(() => {
-    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query2}&${query1}`)
+    const query = councilShorthandRedux === 'WCCC' ? `${queryStringRedux}` : `${query2}&${query1}`;
+    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query}`)
       .then((res) => res.json())
       .then((data) => {
         setFloodingOptions(data.data.values);
@@ -48,7 +51,8 @@ const SoilCondition = () => {
         // eslint-disable-next-line no-console
         console.log(err.message);
       });
-    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/attribute-values?slug=soil_drainage&regions=${regionIdRedux}`)
+
+    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/attribute-values?slug=soil_drainage&${queryStringRedux}`)
       .then((res) => res.json())
       .then((data) => {
         setDrainageOptions(data.data);
@@ -155,7 +159,7 @@ const SoilCondition = () => {
           let selectedOption;
           floodingOptions.forEach((opt) => {
             if (opt.label === floodingClasses[0]) {
-              selectedOption = [opt.value.toString()];
+              selectedOption = councilShorthandRedux !== 'WCCC' ? [opt.value.toString()] : [];
             }
           });
           const payload = {

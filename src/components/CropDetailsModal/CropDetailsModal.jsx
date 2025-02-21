@@ -19,11 +19,11 @@ import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const dispatch = useDispatch();
   // redux vars
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
 
   const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
 
@@ -32,8 +32,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const [modalData, setModalData] = useState([]);
 
   useEffect(() => {
-    const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${regionQuery}`;
+    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${queryStringRedux}`;
     if (crop.id !== undefined) {
       callCoverCropApi(url).then((data) => {
         setModalData(data);

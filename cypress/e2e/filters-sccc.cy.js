@@ -30,8 +30,8 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('title-goals');
-    cy.intercept('GET', '**/v1/states/37/crops?minimal=true&regions=60').as('getCropsData');
-    cy.intercept('GET', '**/v1/states/37/filters?regions=60').as('getFilters');
+    cy.intercept('GET', '**/v1/states/37/crops?minimal=true&*').as('getCropsData');
+    cy.intercept('GET', '**/v1/states/37/filters?*').as('getFilters');
     cy.get("[data-test='next-btn']").first().click().then(() => {
       cy.wait('@getCropsData').then((interception) => {
         const { data } = interception.response.body;

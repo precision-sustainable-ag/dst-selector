@@ -21,8 +21,8 @@ const GoalsSelector = () => {
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   // redux vars
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const selectedGoalsRedux = useSelector(
     (stateRedux) => stateRedux.goalsData.selectedGoals,
@@ -30,16 +30,12 @@ const GoalsSelector = () => {
 
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-
   useEffect(() => {
-    if (stateIdRedux && regionIdRedux) {
-      callCoverCropApi(
-        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`,
-      ).then((data) => {
-        setAllGoals(data.data);
-      });
-    }
+    callCoverCropApi(
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${queryStringRedux}`,
+    ).then((data) => {
+      setAllGoals(data.data);
+    });
   }, []);
 
   useEffect(() => {

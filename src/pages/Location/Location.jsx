@@ -1,4 +1,3 @@
-// TODO: debug use
 // /* eslint-disable */
 
 /* eslint-disable no-alert */
@@ -27,7 +26,7 @@ import {
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
-import { snackHandler } from '../../reduxStore/sharedSlice';
+import { setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
@@ -43,6 +42,7 @@ const Location = () => {
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
@@ -88,10 +88,10 @@ const Location = () => {
       if (type === 'GeometryCollection') return [geometries[0].coordinates[1], geometries[0].coordinates[0]];
     }
     if (markersRedux) {
-      return [markersRedux[0][0], markersRedux[0][1]];
+      return markersRedux[0];
     }
     if (stateLabelRedux) {
-      return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
+      return statesLatLongDict[stateLabelRedux];
     }
     return [47, -122];
   }, [stateLabelRedux]);
@@ -106,6 +106,13 @@ const Location = () => {
         // zipCode,
         county,
       } = selectedToEditSite;
+
+      if (councilShorthandRedux === 'WCCC') {
+        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${latitude}&lon=${longitude}`).then((data) => {
+          const query = data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&');
+          dispatchRedux(setQueryString(query));
+        });
+      }
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
@@ -133,6 +140,8 @@ const Location = () => {
         },
       ));
 
+      // no need to set region in WCCC(will work with queryStringRedux)
+      if (councilShorthandRedux === 'WCCC') return;
       if (councilShorthandRedux === 'MCCC') {
         // if council is MCCC, change selectedRegion based on county
         if (county && county.includes(' County')) {
@@ -174,7 +183,6 @@ const Location = () => {
   // call cover crop api based on marker change
   useEffect(() => {
     const getDetails = async () => {
-      // const { markers } = state;
       const weatherApiURL = 'https://weather.covercrop-data.org';
 
       // update address on marker change
@@ -302,11 +310,17 @@ const Location = () => {
           <Typography variant="body1">
             Find your address or ZIP code using the search bar on the map and hit
             <Search fontSize="inherit" />
-            to determine your location. If needed, adjust your
-            {' '}
-            {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
-            {' '}
-            in the dropdown.
+            to determine your location.
+            {councilShorthandRedux !== 'WCCC' && (
+            <>
+              If needed, adjust your
+              {' '}
+              {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
+              {' '}
+              in the dropdown.
+            </>
+            )}
+
           </Typography>
         </Grid>
 
@@ -319,36 +333,36 @@ const Location = () => {
             alignItems: 'center',
           }}
         >
-          <PlantHardinessZone from="Location" />
+          {councilShorthandRedux !== 'WCCC' && <PlantHardinessZone from="Location" />}
         </Grid>
 
         {stateLabelRedux !== 'Ontario' && (
-        <Grid container>
-          <Container maxWidth="md">
-            <Map
-              setAddress={setSelectedToEditSite}
-              setFeatures={setCurrentGeometry}
-              initWidth="100%"
-              initHeight="450px"
-              initLat={getLatLng[0]}
-              initLon={getLatLng[1]}
-              initFeatures={mapFeatures}
-              initStartZoom={12}
-              initMinZoom={4}
-              initMaxZoom={18}
-              hasSearchBar
-              hasMarker
-              hasNavigation
-              hasCoordBar
-              hasDrawing
-              hasGeolocate
-              hasFullScreen
-              hasMarkerPopup
-              hasMarkerMovable
-              mapboxToken={mapboxToken}
-            />
-          </Container>
-        </Grid>
+          <Grid container>
+            <Container maxWidth="md">
+              <Map
+                setAddress={setSelectedToEditSite}
+                setFeatures={setCurrentGeometry}
+                initWidth="100%"
+                initHeight="450px"
+                initLat={getLatLng[0]}
+                initLon={getLatLng[1]}
+                initFeatures={mapFeatures}
+                initStartZoom={12}
+                initMinZoom={4}
+                initMaxZoom={18}
+                hasSearchBar
+                hasMarker
+                hasNavigation
+                hasCoordBar
+                hasDrawing
+                hasGeolocate
+                hasFullScreen
+                hasMarkerPopup
+                hasMarkerMovable
+                mapboxToken={mapboxToken}
+              />
+            </Container>
+          </Grid>
         )}
       </Grid>
     </Box>

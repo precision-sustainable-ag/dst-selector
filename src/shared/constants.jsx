@@ -735,8 +735,8 @@ export const callCoverCropApi = async (url) => fetch(url)
 export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashCropEndDate = '') => {
   const formatYearArr = (yearArr = []) => {
     const result = [];
-    let i = 0; let
-      j = 0;
+    let i = 0;
+    let j = 0;
     while (i < yearArr.length) {
       while (j < yearArr.length && arrayEquals(yearArr[i].info, yearArr[j].info)) {
         j += 1;
