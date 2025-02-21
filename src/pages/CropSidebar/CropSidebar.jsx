@@ -15,7 +15,7 @@ import {
   // ListSubheader,
   Typography,
   Grid,
-  // Switch,
+  Switch,
   Chip,
 } from '@mui/material';
 import {
@@ -28,6 +28,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import styled from 'styled-components';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
   callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
@@ -40,7 +41,7 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import {
   clearFilters,
-  // setSoilDrainageFilter,
+  setSoilDrainageFilter,
   // setIrrigationFilter,
   setCropGroupFilter,
 } from '../../reduxStore/filterSlice';
@@ -49,9 +50,9 @@ import {
   setAjaxInProgress, regionToggleHandler,
 } from '../../reduxStore/sharedSlice';
 
-// const SoloFilter = styled(ListItem)({
-//   paddingLeft: '25px',
-// });
+const SoloFilter = styled(ListItem)({
+  paddingLeft: '25px',
+});
 
 const CropSidebar = ({
   comparisonView,
@@ -72,7 +73,7 @@ const CropSidebar = ({
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  // const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
   // const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -88,6 +89,7 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
+  const [showSoloFilter, setShowSoloFilter] = useState(false);
   // const [westFlag, setWestFlag] = useState(false);
   // const [query, setQuery] = useState(`${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`);
   // const latRedux = useSelector((stateRedux) => stateRedux.mapData.lat);
@@ -106,23 +108,14 @@ const CropSidebar = ({
 
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
-  // const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-  // const queryWCCC = `${encodeURIComponent('regions')}=${encodeURIComponent(latRedux)} '&' ${encodeURIComponent(lonRedux)}`;
-
-  // const queryWCCCLatLon = [`lat=${latRedux}`, `lon=${lonRedux}`].map((i) => i).join('&');
-
-  // useEffect(() => {
-  //   if (councilShorthandRedux === 'WCCC') {
-  //     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?${queryWCCCLatLon}`).then((data) => {
-  //       // query = data.data.map((i) => `${encodeURIComponent('regions')}=${encodeURIComponent(i.id)}`).join('&');
-  //       setQuery(data.data.map((i) => `regions=${i.id}`).join('&'));
-  //       console.log('Query data from the API', data.data.map((i) => `regions=${i.id}`).join('&'));
-  //       setWestFlag(true);
-  //     });
-  //   }
-  //   dispatchRedux(setQueryString(query));
-  //   console.log('this is query', query);
-  // }, [councilShorthandRedux, queryWCCCLatLon]);
+  useEffect(() => {
+    // Check if all required regions are present in queryStringRedux
+    if (queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) {
+      setShowSoloFilter(true);
+    } else {
+      setShowSoloFilter(false);
+    }
+  }, [queryStringRedux]);
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -134,9 +127,9 @@ const CropSidebar = ({
     setShowFilters(value);
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
 
-  // const handleSoilDrainageFilter = () => {
-  //   dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
-  // };
+  const handleSoilDrainageFilter = () => {
+    dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
+  };
 
   // const handleIrrigationFilter = () => {
   //   dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
@@ -301,6 +294,7 @@ const CropSidebar = ({
         const start = startDate ? moment(startDate).format('MM/DD') : '';
         const end = endDate ? moment(endDate).format('MM/DD') : '';
         cropDataFormatter(data.data, start, end);
+        console.log('cropDataRedux', data.data);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
       });
@@ -368,40 +362,42 @@ const CropSidebar = ({
           </ListItem>
         )}
       </div>
-      {/* <SoloFilter style={{
-        marginBottom: '8px',
-        paddingBottom: '0px',
-        paddingTop: '0px',
-        paddingLeft: '10px',
-      }}
-      >
-        <ListItemText style={{
+      {showSoloFilter && (
+        <SoloFilter style={{
+          marginBottom: '8px',
           paddingBottom: '0px',
-          paddingRight: '3%',
+          paddingTop: '0px',
+          paddingLeft: '10px',
         }}
         >
-          Soil Drainage Filter
-        </ListItemText>
-        <ListItemText
-          display="block"
-          primary={(
-            <Grid item>
-              <Typography variant="body1" display="inline">
-                No
-              </Typography>
-              <Switch
-                checked={soilDrainageFilterRedux}
-                onChange={handleSoilDrainageFilter}
-                name="soilDrainageFilter"
-              />
-              <Typography variant="body1" display="inline">
-                Yes
-              </Typography>
-            </Grid>
-                  )}
-        />
-      </SoloFilter>
-      <SoloFilter style={{
+          <ListItemText style={{
+            paddingBottom: '0px',
+            paddingRight: '3%',
+          }}
+          >
+            Soil Drainage Filter
+          </ListItemText>
+          <ListItemText
+            display="block"
+            primary={(
+              <Grid item>
+                <Typography variant="body1" display="inline">
+                  No
+                </Typography>
+                <Switch
+                  checked={soilDrainageFilterRedux}
+                  onChange={handleSoilDrainageFilter}
+                  name="soilDrainageFilter"
+                />
+                <Typography variant="body1" display="inline">
+                  Yes
+                </Typography>
+              </Grid>
+            )}
+          />
+        </SoloFilter>
+      )}
+      {/* <SoloFilter style={{
         marginBottom: '0px',
         paddingBottom: '0px',
         paddingTop: '0px',
