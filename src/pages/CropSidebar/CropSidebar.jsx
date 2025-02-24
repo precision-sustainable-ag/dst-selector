@@ -110,7 +110,7 @@ const CropSidebar = ({
 
   useEffect(() => {
     // Check if all required regions are present in queryStringRedux
-    if (queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) {
+    if (queryStringRedux && queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) {
       setShowSoloFilter(true);
     } else {
       setShowSoloFilter(false);
