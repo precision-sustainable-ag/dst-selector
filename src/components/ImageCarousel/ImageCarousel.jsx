@@ -16,7 +16,6 @@ const ImageCarousel = ({ images }) => {
   const [imagesData, setImagesData] = useState([]);
   const [loaded, setLoaded] = useState([]);
   const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
-
   useEffect(() => {
     async function makeImages(n) {
       const imgsData = [];
@@ -34,7 +33,7 @@ const ImageCarousel = ({ images }) => {
     if (printing) {
       makeImages(1);
     } else {
-      makeImages(-1);
+      makeImages(images.length);
     }
   }, [printing]);
 
