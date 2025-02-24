@@ -23,12 +23,12 @@ import {
 } from '@mui/icons-material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ListIcon from '@mui/icons-material/List';
+import styled from 'styled-components';
 import React, {
   useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import styled from 'styled-components';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
   callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
@@ -42,7 +42,7 @@ import Legend from '../../components/Legend/Legend';
 import {
   clearFilters,
   setSoilDrainageFilter,
-  // setIrrigationFilter,
+  setIrrigationFilter,
   setCropGroupFilter,
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
@@ -74,7 +74,7 @@ const CropSidebar = ({
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
-  // const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
+  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
@@ -90,10 +90,6 @@ const CropSidebar = ({
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
   const [showSoloFilter, setShowSoloFilter] = useState(false);
-  // const [westFlag, setWestFlag] = useState(false);
-  // const [query, setQuery] = useState(`${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`);
-  // const latRedux = useSelector((stateRedux) => stateRedux.mapData.lat);
-  // const lonRedux = useSelector((stateRedux) => stateRedux.mapData.lon);
 
   const coverCropGroup = [{ label: 'Brassica' }, { label: 'Legume' }, { label: 'Grass' }, { label: 'Broadleaf' }];
 
@@ -131,9 +127,9 @@ const CropSidebar = ({
     dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
   };
 
-  // const handleIrrigationFilter = () => {
-  //   dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
-  // };
+  const handleIrrigationFilter = () => {
+    dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
+  };
 
   const handleCropGroupFilter = (val) => {
     dispatchRedux(cropGroupFilterRedux === val ? setCropGroupFilter('') : setCropGroupFilter(val));
@@ -397,7 +393,7 @@ const CropSidebar = ({
           />
         </SoloFilter>
       )}
-      {/* <SoloFilter style={{
+      <SoloFilter style={{
         marginBottom: '0px',
         paddingBottom: '0px',
         paddingTop: '0px',
@@ -429,7 +425,7 @@ const CropSidebar = ({
             </Grid>
                   )}
         />
-      </SoloFilter> */}
+      </SoloFilter>
       <ListItem
         component="div"
       >
