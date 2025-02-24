@@ -78,7 +78,6 @@ const ImageCarousel = ({ images }) => {
                 justifyContent: 'center', display: 'flex', alignItems: 'center', height: '550px',
               }}
             >
-              {Math.abs(activeStep - index) <= 2 && (
               <Box
                 component="img"
                 sx={{
@@ -96,7 +95,6 @@ const ImageCarousel = ({ images }) => {
                 src={step.imgPath}
                 alt={step.label}
               />
-              )}
             </div>
 
             <Typography style={{ alignContent: 'center', fontSize: '8pt' }}>{imagesData[activeStep]?.label}</Typography>
