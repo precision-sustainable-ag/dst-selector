@@ -34,7 +34,7 @@ const ImageCarousel = ({ images }) => {
     if (printing) {
       makeImages(1);
     } else {
-      makeImages(-1);
+      makeImages(images.length);
     }
   }, [printing]);
 
