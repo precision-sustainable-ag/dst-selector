@@ -30,8 +30,8 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
     <Box className="growthCellsWrapper" sx={{ display: 'flex', width: from === 'calendar' ? 'auto' : '200px' }}>
       {data.cropGrowthWindow.map((growthWindow, index) => {
         const filteredWindow = { ...growthWindow };
-        if (councilShorthandRedux === 'WCCC' && irrigationFilter === true) {
-          filteredWindow.info = filteredWindow.info.filter((text) => !text.includes('rainfed'));
+        if (councilShorthandRedux === 'WCCC') {
+          filteredWindow.info = filteredWindow.info.filter((text) => !text.includes(irrigationFilter ? 'rainfed' : 'irrigation'));
         }
         const {
           startTime, endTime, info, length,

@@ -377,7 +377,7 @@ const CropSidebar = ({
           }}
           >
             <ListItemText>
-              Irrigation Dates Filter
+              Is Your Field Irrigated?
             </ListItemText>
             <ListItemText
               display="block"
