@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import { PSAButton } from 'shared-react-components/src';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
@@ -79,6 +80,17 @@ const PreviousCashCrop = () => {
             </LocalizationProvider>
           </Grid>
         </Grid>
+      </Grid>
+      <Grid item container justifyContent="center" mt={2}>
+        <PSAButton
+          buttonType="PillButton"
+          title="Clear Selection"
+          onClick={() => {
+            handleDispatch('', '');
+          }}
+          disabled={!cashCropDataRedux.dateRange.startDate && !cashCropDataRedux.dateRange.endDate}
+          data-test="clear-dates-button"
+        />
       </Grid>
     </>
   );
