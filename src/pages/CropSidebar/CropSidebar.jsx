@@ -23,7 +23,6 @@ import {
 } from '@mui/icons-material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ListIcon from '@mui/icons-material/List';
-import styled from 'styled-components';
 import React, {
   useEffect, useState,
 } from 'react';
@@ -49,10 +48,6 @@ import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice'
 import {
   setAjaxInProgress, regionToggleHandler,
 } from '../../reduxStore/sharedSlice';
-
-const SoloFilter = styled(ListItem)({
-  paddingLeft: '25px',
-});
 
 const CropSidebar = ({
   comparisonView,
@@ -347,72 +342,65 @@ const CropSidebar = ({
           </ListItem>
         )}
       </div>
-      <SoloFilter style={{
-        marginBottom: '8px',
-        paddingBottom: '0px',
-        paddingTop: '0px',
-        paddingLeft: '10px',
-      }}
-      >
-        <ListItemText style={{
-          paddingBottom: '0px',
-          paddingRight: '3%',
-        }}
-        >
-          Soil Drainage Filter
-        </ListItemText>
-        <ListItemText
-          display="block"
-          primary={(
-            <Grid item>
-              <Typography variant="body1" display="inline">
-                No
-              </Typography>
-              <Switch
-                checked={soilDrainageFilterRedux}
-                onChange={handleSoilDrainageFilter}
-                name="soilDrainageFilter"
-              />
-              <Typography variant="body1" display="inline">
-                Yes
-              </Typography>
-            </Grid>
+      {councilShorthandRedux === 'WCCC' && (
+        <>
+          <ListItem style={{
+            paddingLeft: '25px',
+            marginBottom: '8px',
+          }}
+          >
+            <ListItemText>
+              Soil Drainage Filter
+            </ListItemText>
+            <ListItemText
+              display="block"
+              primary={(
+                <Grid item>
+                  <Typography variant="body1" display="inline">
+                    No
+                  </Typography>
+                  <Switch
+                    checked={soilDrainageFilterRedux}
+                    onChange={handleSoilDrainageFilter}
+                    name="soilDrainageFilter"
+                  />
+                  <Typography variant="body1" display="inline">
+                    Yes
+                  </Typography>
+                </Grid>
                   )}
-        />
-      </SoloFilter>
-      <SoloFilter style={{
-        marginBottom: '0px',
-        paddingBottom: '0px',
-        paddingTop: '0px',
-        marginTop: '8px',
-        paddingLeft: '10px',
-      }}
-      >
-        <ListItemText style={{
-          paddingBottom: '0px',
-        }}
-        >
-          Irrigation Dates Filter
-        </ListItemText>
-        <ListItemText
-          display="block"
-          primary={(
-            <Grid item>
-              <Typography variant="body1" display="inline">
-                No
-              </Typography>
-              <Switch
-                checked={irrigationFilterRedux}
-                onChange={handleIrrigationFilter}
-                name="checkedC"
-              />
-              <Typography variant="body1" display="inline">
-                Yes
-              </Typography>
-            </Grid>
+            />
+          </ListItem>
+          <ListItem style={{
+            paddingLeft: '25px',
+            marginTop: '8px',
+          }}
+          >
+            <ListItemText>
+              Is Your Field Irrigated?
+            </ListItemText>
+            <ListItemText
+              display="block"
+              primary={(
+                <Grid item>
+                  <Typography variant="body1" display="inline">
+                    No
+                  </Typography>
+                  <Switch
+                    checked={irrigationFilterRedux}
+                    onChange={handleIrrigationFilter}
+                    name="checkedC"
+                  />
+                  <Typography variant="body1" display="inline">
+                    Yes
+                  </Typography>
+                </Grid>
                   )}
-        />
-      </SoloFilter>
+            />
+          </ListItem>
+        </>
+      )}
+
       <ListItem
         component="div"
       >
