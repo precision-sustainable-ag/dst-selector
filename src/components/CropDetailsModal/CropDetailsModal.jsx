@@ -73,24 +73,35 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     const extractCSS = () => {
       let styles = '';
 
-      // Get styles from <style> and <link>
-      document.querySelectorAll('style, link[rel="stylesheet"]').forEach((node) => {
-        if (node.tagName === 'STYLE') {
-          styles += node.innerHTML;
-        } else if (node.tagName === 'LINK') {
-          try {
-            const request = new XMLHttpRequest();
-            request.open('GET', node.href, false);
-            request.send(null);
-            styles += request.responseText;
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.warn('Could not load CSS file:', node.href);
-          }
+      const emotionStyles = Array.from(document.styleSheets);
+      emotionStyles.forEach((sheet) => {
+        try {
+          Array.from(sheet.cssRules).forEach((rule) => {
+            styles += rule.cssText;
+          });
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.warn('Cannot access CSS rules:', e);
         }
       });
 
-      return styles.replace(/@media \(min-width:1536px\)/g, '@media (min-width:0px)');
+      // document.querySelectorAll('style, link[rel="stylesheet"]').forEach((node) => {
+      //   if (node.tagName === 'STYLE') {
+      //     styles += node.innerHTML;
+      //   } else if (node.tagName === 'LINK') {
+      //     try {
+      //       const request = new XMLHttpRequest();
+      //       request.open('GET', node.href, false);
+      //       request.send(null);
+      //       styles += request.responseText;
+      //     } catch (error) {
+      //       // eslint-disable-next-line no-console
+      //       console.warn('Could not load CSS file:', node.href);
+      //     }
+      //   }
+      // });
+
+      return styles.replace(/@media \(min-width:\s*1536px\)/g, '@media (min-width:0px)');
     };
 
     dispatchRedux(updatePrinting(true));
@@ -106,7 +117,9 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
         </html>
       `;
 
-      // const response = await fetch('https://developweather.covercrop-data.org/generate-pdf', {
+      // console.log(fullHtml);
+
+      // const response = await fetch(`https://developweather.covercrop-data.org/generate-pdf?${Math.random()}`, {
       // const response = await fetch('http://localhost/generate-pdf', {
       const response = await fetch('https://pdf.covercrop-data.org/api/generate-pdf/', {
         method: 'POST',
