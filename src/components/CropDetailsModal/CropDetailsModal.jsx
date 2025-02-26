@@ -82,6 +82,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
 
     try {
       dispatch(updatePrinting(true));
+      await new Promise((resolve) => { setTimeout(resolve, 2000); });
 
       const cropDetailModal = document.querySelector('[id^=cropDetailModal]');
       const clonedModal = cropDetailModal.cloneNode(true);

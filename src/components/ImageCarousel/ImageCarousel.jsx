@@ -34,7 +34,7 @@ const ImageCarousel = ({ images }) => {
     if (printing) {
       makeImages(1);
     } else {
-      makeImages(-1);
+      makeImages(images.length);
     }
   }, [printing]);
 
@@ -50,12 +50,16 @@ const ImageCarousel = ({ images }) => {
     setActiveStep(step);
   };
 
-  const nextStep = (activeStep + 1) % imagesData.length;
-  if (loaded[nextStep]) {
-    setTimeout(() => {
+  useEffect(() => {
+    let nextStep = (activeStep + 1) % maxSteps;
+    if (!loaded[nextStep]) {
+      nextStep = activeStep;
+    }
+    const timer = setTimeout(() => {
       setActiveStep(nextStep);
     }, 2000);
-  }
+    return () => clearTimeout(timer);
+  }, [activeStep, maxSteps, loaded]);
 
   return (
     maxSteps > 0 && (
@@ -74,7 +78,6 @@ const ImageCarousel = ({ images }) => {
                 justifyContent: 'center', display: 'flex', alignItems: 'center', height: '550px',
               }}
             >
-              {Math.abs(activeStep - index) <= 2 && (
               <Box
                 component="img"
                 sx={{
@@ -92,7 +95,6 @@ const ImageCarousel = ({ images }) => {
                 src={step.imgPath}
                 alt={step.label}
               />
-              )}
             </div>
 
             <Typography style={{ alignContent: 'center', fontSize: '8pt' }}>{imagesData[activeStep]?.label}</Typography>

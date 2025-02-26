@@ -44,6 +44,9 @@ div.growthCellsWrapper {
   .growthCell-30.Late{
     background-color: $lateSummerColor;
   }
+  .growthCell-30.irrigation{
+    background-color: $reliableEstablishmentColor;
+  }
   .growthCell-30.rainfed{
     background-color: $rainfedPlantingWindowsColor;
   }
@@ -89,6 +92,9 @@ div.growthCellsWrapper {
   }
   .growthCell-20.Early{
     background-color: $earlySummerColor;
+  }
+  .growthCell-20.irrigation{
+    background-color: $reliableEstablishmentColor;
   }
   .growthCell-20.rainfed{
     background-color: $rainfedPlantingWindowsColor;
