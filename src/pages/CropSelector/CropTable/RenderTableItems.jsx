@@ -19,10 +19,19 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
     .map((crop, index) => {
+      const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
+      const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
+      const buttonStyle = { outlineOffset: '-8px' };
+
+      if (shouldHighlightRed) {
+        buttonStyle.outline = '4px solid red';
+      }
+
       if (
         !crop.inactive
           ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
@@ -52,6 +61,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                   <PSAButton
                     buttonType=""
                     onClick={() => handleModalOpen(crop)}
+                    style={buttonStyle}
                     title={(
                       <CropImage
                         present={!!crop.thumbnail}
