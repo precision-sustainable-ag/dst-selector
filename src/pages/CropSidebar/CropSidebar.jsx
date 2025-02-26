@@ -89,7 +89,6 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
-  const [showSoloFilter, setShowSoloFilter] = useState(false);
 
   const coverCropGroup = [{ label: 'Brassica' }, { label: 'Legume' }, { label: 'Grass' }, { label: 'Broadleaf' }];
 
@@ -103,15 +102,6 @@ const CropSidebar = ({
   });
 
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
-
-  useEffect(() => {
-    // Check if all required regions are present in queryStringRedux
-    if (queryStringRedux && queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) {
-      setShowSoloFilter(true);
-    } else {
-      setShowSoloFilter(false);
-    }
-  }, [queryStringRedux]);
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -290,7 +280,6 @@ const CropSidebar = ({
         const start = startDate ? moment(startDate).format('MM/DD') : '';
         const end = endDate ? moment(endDate).format('MM/DD') : '';
         cropDataFormatter(data.data, start, end);
-        console.log('cropDataRedux', data.data);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
       });
@@ -358,7 +347,7 @@ const CropSidebar = ({
           </ListItem>
         )}
       </div>
-      {showSoloFilter && (
+      {(queryStringRedux && queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) && (
         <SoloFilter style={{
           marginBottom: '8px',
           paddingBottom: '0px',
