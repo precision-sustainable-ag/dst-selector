@@ -10,6 +10,7 @@ import { Box, Grid } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import ProgressButtons from '../../shared/ProgressButtons';
 import useWindowSize from '../../shared/constants';
+import NavigationButtons from '../../shared/NavigationButtons';
 
 const Footer = () => {
   const history = useHistory();
@@ -49,16 +50,9 @@ const Footer = () => {
         justifyContent="center"
         height={pathname !== '/' ? '50px' : 'auto'}
       >
-        {pathname === '/' && (
-        <Grid
-          item
-          xs={12}
-          mt={0.6}
-          mb={0.6}
-        >
-          <ProgressButtons />
+        <Grid item xs={12} mt={0.6} mb={0.6}>
+          {pathname === '/' ? <ProgressButtons /> : <NavigationButtons />}
         </Grid>
-        )}
       </Grid>
     </Box>
   );
