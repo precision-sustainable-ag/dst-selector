@@ -346,7 +346,6 @@ const CropSidebar = ({
         {(queryStringRedux && queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) && (
           <ListItem style={{
             paddingLeft: '25px',
-            marginBottom: '8px',
           }}
           >
             <ListItemText>
@@ -354,6 +353,9 @@ const CropSidebar = ({
             </ListItemText>
             <ListItemText
               display="block"
+              style={{
+                paddingLeft: '25px',
+              }}
               primary={(
                 <Grid item>
                   <Typography variant="body1" display="inline">
@@ -375,7 +377,7 @@ const CropSidebar = ({
         {councilShorthandRedux === 'WCCC' && (
           <ListItem style={{
             paddingLeft: '25px',
-            marginTop: '8px',
+            marginTop: '-15px',
           }}
           >
             <ListItemText>
