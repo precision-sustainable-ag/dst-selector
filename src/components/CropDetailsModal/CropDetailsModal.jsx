@@ -61,23 +61,18 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     const extractCSS = async () => {
       let styles = '';
 
-      // Get styles from <style> and <link>
-      document.querySelectorAll('style, link[rel="stylesheet"]').forEach((node) => {
-        if (node.tagName === 'STYLE') {
-          styles += node.innerHTML;
-        } else if (node.tagName === 'LINK') {
-          try {
-            const request = new XMLHttpRequest();
-            request.open('GET', node.href, false);
-            request.send(null);
-            styles += request.responseText;
-          } catch (error) {
-            throw new Error(`Could not load CSS file: ${node.href}`);
-          }
+      const emotionStyles = Array.from(document.styleSheets);
+      emotionStyles.forEach((sheet) => {
+        try {
+          Array.from(sheet.cssRules).forEach((rule) => {
+            styles += rule.cssText;
+          });
+        } catch (e) {
+          throw new Error('Error in extracting CSS');
         }
       });
 
-      return styles.replace(/@media \(min-width:1536px\)/g, '@media (min-width:0px)');
+      return styles.replace(/@media \(min-width:\s*1536px\)/g, '@media (min-width:0px)');
     };
 
     try {
