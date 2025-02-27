@@ -70,9 +70,8 @@ const ProgressButtonsInner = ({
                 disabled={isDisabledNext || progressRedux === 4}
                 buttonType="PillButton"
                 data-test="next-btn"
-              >
-                Next
-              </PSAButton>
+                title="NEXT"
+              />
             </Box>
           )}
         />

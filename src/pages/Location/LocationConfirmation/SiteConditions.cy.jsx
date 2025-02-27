@@ -197,11 +197,6 @@ describe('<SiteConditions />', () => {
         attributions: {},
       },
     }).as('getDrainageOptions');
-
-    // Mock POST requests
-    cy.intercept('POST', '**/*', (req) => {
-      req.reply('');
-    }).as('blockPostRequests');
   });
 
   it('should render all site condition cards', () => {
@@ -256,6 +251,7 @@ describe('<SiteConditions />', () => {
         open: false,
         goBack: true,
       },
+      queryString: 'regions=650',
     };
 
     reduxStore.dispatch(setSharedRedux(sharedData));
@@ -290,7 +286,7 @@ describe('<SiteConditions />', () => {
       </Provider>,
     );
     // Wait for all blocked requests to be intercepted
-    cy.wait(['@getDrainageOptions', '@getFloodingFrequency', '@blockPostRequests']);
+    cy.wait(['@getDrainageOptions', '@getFloodingFrequency']);
 
     cy.assertByTestId('soil-composition-card');
     cy.assertByTestId('frost-dates-card');

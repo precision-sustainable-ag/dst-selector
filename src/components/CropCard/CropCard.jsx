@@ -23,6 +23,7 @@ const CropCard = ({
   // redux vars
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
 
   // useState vars
   const [selectedBtns, setSelectedBtns] = useState(selectedCropIdsRedux);
@@ -53,6 +54,9 @@ const CropCard = ({
     await updateBtns();
   }
 
+  const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
+  const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
+
   // height: isMobile ? '350px' : '350px'
   return (
     <Card style={{ width: isMobile ? '160px' : '260px' }} data-test={`crop-card-${index - 1}`}>
@@ -63,7 +67,12 @@ const CropCard = ({
               ? crop.thumbnail
               : 'https://placehold.it/250x150?text=Placeholder'
             }
-          sx={{ height: 140 }}
+          sx={{
+            height: 140,
+            borderWidth: shouldHighlightRed ? '4px' : '0px',
+            borderColor: shouldHighlightRed ? 'red' : 'transparent',
+            borderStyle: 'solid',
+          }}
           title={crop.label}
         />
       </CardActionArea>

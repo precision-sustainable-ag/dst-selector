@@ -52,7 +52,6 @@ const CropCalendarView = ({
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const activeGrowthPeriodRedux = useSelector((stateRedux) => stateRedux.cropData.activeGrowthPeriod);
-
   // useState vars
   const [legendModal, setLegendModal] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);

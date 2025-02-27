@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /*
   This file contains the CropSidebar and its styles
@@ -14,7 +15,7 @@ import {
   // ListSubheader,
   Typography,
   Grid,
-  // Switch,
+  Switch,
   Chip,
 } from '@mui/material';
 import {
@@ -27,7 +28,6 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-// import styled from 'styled-components';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
   callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
@@ -40,16 +40,14 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import {
   clearFilters,
-  // setSoilDrainageFilter,
-  // setIrrigationFilter,
+  setSoilDrainageFilter,
+  setIrrigationFilter,
   setCropGroupFilter,
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
-import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
-
-// const SoloFilter = styled(ListItem)({
-//   paddingLeft: '25px',
-// });
+import {
+  setAjaxInProgress, regionToggleHandler,
+} from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -65,16 +63,16 @@ const CropSidebar = ({
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  // const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
-  // const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
+  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
@@ -100,8 +98,6 @@ const CropSidebar = ({
 
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
@@ -112,13 +108,13 @@ const CropSidebar = ({
     setShowFilters(value);
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
 
-  // const handleSoilDrainageFilter = () => {
-  //   dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
-  // };
+  const handleSoilDrainageFilter = () => {
+    dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
+  };
 
-  // const handleIrrigationFilter = () => {
-  //   dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
-  // };
+  const handleIrrigationFilter = () => {
+    dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
+  };
 
   const handleCropGroupFilter = (val) => {
     dispatchRedux(cropGroupFilterRedux === val ? setCropGroupFilter('') : setCropGroupFilter(val));
@@ -186,8 +182,8 @@ const CropSidebar = ({
       const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
 
       cd[n].inactive = (!match)
-      || !(matchesDrainageClass && cropFloodingValueIsHigher)
-      || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
+        || !(matchesDrainageClass && cropFloodingValueIsHigher)
+        || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
 
       return true;
     });
@@ -249,29 +245,41 @@ const CropSidebar = ({
   }, [sidebarCategoriesData]);
 
   useEffect(() => {
-    if (stateIdRedux && regionIdRedux) {
-      dispatchRedux(setAjaxInProgress(true));
-      setLoading(true);
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
-        const allFilters = [];
-        data.data.forEach((category) => {
-          allFilters.push(category.attributes);
+    if (queryStringRedux === null) return;
+    dispatchRedux(setAjaxInProgress(true));
+    setLoading(true);
+    if (councilShorthandRedux !== 'WCCC') {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
+        .then((data) => {
+          const allFilters = [];
+          data.data.forEach((category) => {
+            allFilters.push(category.attributes);
+          });
+          setSidebarFiltersData(allFilters);
+          setSidebarCategoriesData(data.data);
         });
-        setSidebarFiltersData(allFilters);
-        setSidebarCategoriesData(data.data);
-      });
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
+    } else {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
+        .then((data) => {
+          const allFilters = [];
+          data.data.forEach((category) => {
+            allFilters.push(category.attributes);
+          });
+          setSidebarFiltersData(allFilters);
+          setSidebarCategoriesData(data.data);
+        });
+    }
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`)
+      .then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
-
         const start = startDate ? moment(startDate).format('MM/DD') : '';
         const end = endDate ? moment(endDate).format('MM/DD') : '';
         cropDataFormatter(data.data, start, end);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
       });
-    }
   }, [
-    cashCropDataRedux, regionIdRedux,
+    cashCropDataRedux, queryStringRedux,
   ]);
 
   // TODO: Can we use Reducer instead of localStorage?
@@ -314,92 +322,88 @@ const CropSidebar = ({
     >
       <div>
         {filtersSelected && (
-        <ListItem style={{
-          textAlign: 'center',
-          paddingBottom: '0px',
-          paddingTop: '8px',
-        }}
-        >
-          <ListItemText
-            primary={(
-              <PSAButton
-                buttonType=""
-                onClick={resetAllFilters}
-                style={{ cursor: 'pointer', color: 'red' }}
-                data-test="crop-side-bar-clear-filters"
-                title="Clear Filters"
-              />
-            )}
-          />
-        </ListItem>
+          <ListItem style={{
+            textAlign: 'center',
+            paddingBottom: '0px',
+            paddingTop: '8px',
+          }}
+          >
+            <ListItemText
+              primary={(
+                <PSAButton
+                  buttonType=""
+                  onClick={resetAllFilters}
+                  style={{ cursor: 'pointer', color: 'red' }}
+                  data-test="crop-side-bar-clear-filters"
+                  title="Clear Filters"
+                />
+              )}
+            />
+          </ListItem>
         )}
       </div>
-      {/* <SoloFilter style={{
-        marginBottom: '8px',
-        paddingBottom: '0px',
-        paddingTop: '0px',
-        paddingLeft: '10px',
-      }}
-      >
-        <ListItemText style={{
-          paddingBottom: '0px',
-          paddingRight: '3%',
-        }}
-        >
-          Soil Drainage Filter
-        </ListItemText>
-        <ListItemText
-          display="block"
-          primary={(
-            <Grid item>
-              <Typography variant="body1" display="inline">
-                No
-              </Typography>
-              <Switch
-                checked={soilDrainageFilterRedux}
-                onChange={handleSoilDrainageFilter}
-                name="soilDrainageFilter"
-              />
-              <Typography variant="body1" display="inline">
-                Yes
-              </Typography>
-            </Grid>
-                  )}
-        />
-      </SoloFilter>
-      <SoloFilter style={{
-        marginBottom: '0px',
-        paddingBottom: '0px',
-        paddingTop: '0px',
-        marginTop: '8px',
-        paddingLeft: '10px',
-      }}
-      >
-        <ListItemText style={{
-          paddingBottom: '0px',
-        }}
-        >
-          Irrigation Dates Filter
-        </ListItemText>
-        <ListItemText
-          display="block"
-          primary={(
-            <Grid item>
-              <Typography variant="body1" display="inline">
-                No
-              </Typography>
-              <Switch
-                checked={irrigationFilterRedux}
-                onChange={handleIrrigationFilter}
-                name="checkedC"
-              />
-              <Typography variant="body1" display="inline">
-                Yes
-              </Typography>
-            </Grid>
-                  )}
-        />
-      </SoloFilter> */}
+      <>
+        {(queryStringRedux && queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) && (
+          <ListItem style={{
+            paddingLeft: '25px',
+          }}
+          >
+            <ListItemText>
+              Soil Drainage Filter
+            </ListItemText>
+            <ListItemText
+              display="block"
+              style={{
+                paddingLeft: '25px',
+              }}
+              primary={(
+                <Grid item>
+                  <Typography variant="body1" display="inline">
+                    No
+                  </Typography>
+                  <Switch
+                    checked={soilDrainageFilterRedux}
+                    onChange={handleSoilDrainageFilter}
+                    name="soilDrainageFilter"
+                  />
+                  <Typography variant="body1" display="inline">
+                    Yes
+                  </Typography>
+                </Grid>
+              )}
+            />
+          </ListItem>
+        )}
+        {councilShorthandRedux === 'WCCC' && (
+          <ListItem style={{
+            paddingLeft: '25px',
+            marginTop: '-15px',
+          }}
+          >
+            <ListItemText>
+              Is Your Field Irrigated?
+            </ListItemText>
+            <ListItemText
+              display="block"
+              primary={(
+                <Grid item>
+                  <Typography variant="body1" display="inline">
+                    No
+                  </Typography>
+                  <Switch
+                    checked={irrigationFilterRedux}
+                    onChange={handleIrrigationFilter}
+                    name="checkedC"
+                  />
+                  <Typography variant="body1" display="inline">
+                    Yes
+                  </Typography>
+                </Grid>
+              )}
+            />
+          </ListItem>
+        )}
+      </>
       <ListItem
         component="div"
       >
@@ -481,61 +485,64 @@ const CropSidebar = ({
           aria-labelledby="nested-list-subheader"
         >
           {from === 'table' && (
-          <>
-            {showFilters && speciesSelectorActivationFlagRedux && !listView && (
-            <CoverCropSearch />
-            )}
+            <>
+              {showFilters && speciesSelectorActivationFlagRedux && !listView && (
+                <CoverCropSearch />
+              )}
 
-            {!listView && (
-            <CoverCropGoals style={style} />
-            )}
+              {!listView && (
+                <CoverCropGoals style={style} />
+              )}
 
-          </>
+            </>
           )}
           {showFilters && (
-          <>
-            {from === 'explorer' && (
             <>
-              <List component="div" disablePadding>
-                <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
-                  <ListItemText
-                    primary={(
-                      <Typography variant="body2">
-                        PLANT HARDINESS ZONE
-                      </Typography>
-            )}
-                  />
-                  {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
+              {from === 'explorer' && (
+                <>
+                  {councilShorthandRedux !== 'WCCC'
+                    && (
+                      <List component="div" disablePadding>
+                        <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
+                          <ListItemText
+                            primary={(
+                              <Typography variant="body2">
+                                PLANT HARDINESS ZONE
+                              </Typography>
+                            )}
+                          />
+                          {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                        </ListItemButton>
+                        <PlantHardinessZone from="Location" />
+                      </List>
+                    )}
+                  <CoverCropSearch />
+                </>
+              )}
+              <Box
+                sx={{
+                  border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+                }}
+              >
+                <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
+                  <ListItemText primary="FILTERS" />
+                  {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
-              </List>
-              <PlantHardinessZone from="Browse Cover Crops" />
-              <CoverCropSearch />
-            </>
-            )}
-            <Box
-              sx={{
-                border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
-              }}
-            >
-              <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
-                <ListItemText primary="FILTERS" />
-                {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse in={cropFiltersOpen} timeout="auto">
-                {filtersList()}
-              </Collapse>
-            </Box>
-            {from !== 'explorer'
+                <Collapse in={cropFiltersOpen} timeout="auto">
+                  {filtersList()}
+                </Collapse>
+              </Box>
+              {from !== 'explorer'
                 && (
-                <Box
-                  sx={{
-                    border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
-                  }}
-                >
-                  <Legend legendData={legendData} modal />
-                </Box>
+                  <Box
+                    sx={{
+                      border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+                    }}
+                  >
+                    <Legend legendData={legendData} modal />
+                  </Box>
                 )}
-          </>
+            </>
           )}
         </List>
       </Box>
