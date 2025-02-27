@@ -27,7 +27,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { PSAButton, PSATooltip, PSALoadingSpinner } from 'shared-react-components/src';
 import StraightIcon from '@mui/icons-material/Straight';
-import { allMonths, CustomStyles, sortCrops } from '../../../shared/constants';
+import {
+  allMonths,
+  CustomStyles,
+  sortCrops,
+} from '../../../shared/constants';
 
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
@@ -38,15 +42,16 @@ const growthIcon = {
   color: 'white',
 };
 
-const CropCalendarView = ({ listView, setListView }) => {
+const CropCalendarView = ({
+  listView,
+  setListView,
+}) => {
   // redux vars
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
-  const activeGrowthPeriodRedux = useSelector(
-    (stateRedux) => stateRedux.cropData.activeGrowthPeriod,
-  );
+  const activeGrowthPeriodRedux = useSelector((stateRedux) => stateRedux.cropData.activeGrowthPeriod);
 
   // useState vars
   const [legendModal, setLegendModal] = useState(false);
@@ -239,10 +244,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                           )}
                         />
                       ) : (
-                        <TableCell
-                          sx={{ borderBottom: '5px solid white', padding: 0 }}
-                          colSpan="2"
-                        />
+                        <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="2" />
                       )}
                       {activeGrowthPeriodRedux.includes('Mar') ? (
                         <PSATooltip
@@ -261,13 +263,11 @@ const CropCalendarView = ({ listView, setListView }) => {
                                 <LocalFlorist sx={growthIcon} />
                               </Typography>
                             </TableCell>
+
                           )}
                         />
                       ) : (
-                        <TableCell
-                          sx={{ borderBottom: '5px solid white', padding: 0 }}
-                          colSpan="3"
-                        />
+                        <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                       )}
                       {activeGrowthPeriodRedux.includes('Jun') ? (
                         <PSATooltip
@@ -289,10 +289,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                           )}
                         />
                       ) : (
-                        <TableCell
-                          sx={{ borderBottom: '5px solid white', padding: 0 }}
-                          colSpan="3"
-                        />
+                        <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                       )}
                       {activeGrowthPeriodRedux.includes('Sep') ? (
                         <PSATooltip
@@ -314,10 +311,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                           )}
                         />
                       ) : (
-                        <TableCell
-                          sx={{ borderBottom: '5px solid white', padding: 0 }}
-                          colSpan="3"
-                        />
+                        <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                       )}
                       {activeGrowthPeriodRedux.includes('Dec') ? (
                         <PSATooltip
@@ -339,10 +333,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                           )}
                         />
                       ) : (
-                        <TableCell
-                          sx={{ borderBottom: '5px solid white', padding: 0 }}
-                          colSpan="1"
-                        />
+                        <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="1" />
                       )}
                     </>
                   )}
@@ -351,6 +342,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                       borderBottom: '5px solid white',
                       padding: 0,
                       textAlign: 'center',
+
                     }}
                   />
                   {activeGrowthPeriodRedux.length > 0 ? (
@@ -364,7 +356,9 @@ const CropCalendarView = ({ listView, setListView }) => {
                           buttonType=""
                           startIcon={<AddCircle />}
                           onClick={handleLegendModal}
-                          title={<Typography variant="body2"> Legend</Typography>}
+                          title={
+                            <Typography variant="body2"> Legend</Typography>
+                          }
                         />
                       </Box>
                     </TableCell>
@@ -373,10 +367,6 @@ const CropCalendarView = ({ listView, setListView }) => {
                   )}
                 </TableRow>
                 <TableRow style={{ marginTop: '5px' }}>
-                  {/* <TableCell sx={{
-                    borderRight: '5px solid white', backgroundColor: columnSort === 'name' ? '#49a8ab' : '#abd08f', padding: 0, width: '250px', textAlign: 'center',
-                  }}
-                  > */}
                   <TableCell
                     sx={{
                       left: isMobile ? 0 : 'auto',
@@ -392,18 +382,14 @@ const CropCalendarView = ({ listView, setListView }) => {
                     <PSAButton
                       buttonType=""
                       sx={{
-                        textAlign: 'center',
-                        color: 'black',
-                        textTransform: 'none',
+                        textAlign: 'center', color: 'black', textTransform: 'none',
                       }}
                       onClick={() => sortByName()}
                       title={(
                         <>
                           {' '}
                           Crop Name
-                          {columnSort === 'name' && (
-                            <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />
-                          )}
+                          {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
                         </>
                       )}
                     />
@@ -439,12 +425,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                                 title={(
                                   <>
                                     {`Goal ${index + 1}`}
-                                    {columnSort === `goal${index}` && (
-                                      <StraightIcon
-                                        style={{ margin: '0px' }}
-                                        className={currentGoalSortFlag ? '' : 'rotate180'}
-                                      />
-                                    )}
+                                    {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
                                   </>
                                 )}
                               />
@@ -462,8 +443,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                       <TableCell
                         sx={{ padding: 1, backgroundColor: '#abd08f', cursor: 'pointer' }}
                         key={`monthskey${index}`}
-                        className={`calendarSecondHeadMonth ${
-                          growthMonth ? 'activeGrowthMonth' : ''
+                        className={`calendarSecondHeadMonth ${growthMonth ? 'activeGrowthMonth' : ''
                         } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
                         onClick={() => sortByPlantingWindow()}
                       >
@@ -471,36 +451,24 @@ const CropCalendarView = ({ listView, setListView }) => {
                       </TableCell>
                     );
                   })}
-                  <TableCell
-                    sx={{
-                      borderLeft: '5px solid white',
-                      backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f',
-                      padding: 0,
-                      width: '75px',
-                      textAlign: 'center',
-                    }}
+                  <TableCell sx={{
+                    borderLeft: '5px solid white', backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f', padding: 0, width: '75px', textAlign: 'center',
+                  }}
                   >
                     <PSAButton
                       sx={{
-                        textAlign: 'center',
-                        color: 'black',
-                        textTransform: 'none',
-                        padding: '0px',
+                        textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
                       }}
                       onClick={() => sortBySelectedCrops()}
                       title={(
                         <>
                           My List
-                          {columnSort === 'myList' && (
-                            <StraightIcon
-                              style={{ margin: '0px' }}
-                              className={myListSortFlag ? '' : 'rotate180'}
-                            />
-                          )}
+                          {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
                         </>
-                      )}
+                        )}
                       buttonType=""
                     />
+
                   </TableCell>
                 </TableRow>
               </TableHead>
