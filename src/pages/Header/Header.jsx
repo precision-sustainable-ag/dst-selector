@@ -31,7 +31,6 @@ import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
-// import useWindowSize from '../../shared/constants';
 
 const Header = () => {
   const history = useHistory();
@@ -87,15 +86,6 @@ const Header = () => {
     if (isAuthenticated) fetchUserData();
     // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
   }, [isAuthenticated, getAccessTokenSilently, councilShorthandRedux]);
-
-  // const windowSize = useWindowSize().width;
-
-  // const [headerWidth, setHeaderWidth] = useState('100vw');
-  // const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
-  // const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
-  // // useEffect(() => {
-  //   setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
-  // }, [tableWidth, sidebarWidth, windowSize]);
 
   const navContent = [
     {

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   TableCell, TableRow, Grid,
   Box,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import {
   AcUnit, AddCircleOutline, CheckRounded, DeleteForever,
@@ -43,6 +45,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const selectedBtns = selectedCropIdsRedux;
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md')) || /Mobi|Android/i.test(navigator.userAgent);
+
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
     .map((crop, index) => (
@@ -57,10 +62,10 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
         <TableCell
           sx={{
             padding: 0,
-            position: 'sticky',
-            left: 0,
-            zIndex: 1,
-            backgroundColor: 'white',
+            position: isMobile ? 'sticky' : 'static',
+            left: isMobile ? 0 : 'auto',
+            zIndex: isMobile ? 1 : 'auto',
+            backgroundColor: isMobile ? 'white' : 'transparent',
           }}
         >
           <Grid container direction="row" alignItems="center" flexWrap="nowrap">
@@ -121,16 +126,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               )}
             </Grid>
             <Grid container item md={8} xs={8} alignItems="center">
-              <Grid
-                item
-                sx={{
-                  maxWidth: '100%', // Prevent overflow
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis', // Handle long words
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
+              <Grid item>
                 <PSAButton
                   buttonType=""
                   size="small"
@@ -139,7 +135,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     justifyContent: 'center',
                     textDecoration: 'underline',
                     color: 'black',
-                    textAlign: 'left', // Ensure readability
+                    textAlign: 'left',
                   }}
                   onClick={() => {
                     setModalData(crop);
