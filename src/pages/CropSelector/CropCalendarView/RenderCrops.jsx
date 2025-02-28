@@ -74,14 +74,14 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           data-test={`crop-list-tr-${index}`}
         >
           <TableCell
-          sx={{
-            padding: 0,
-            position: isMobile ? 'sticky' : 'static',
-            left: isMobile ? 0 : 'auto',
-            zIndex: isMobile ? 1 : 'auto',
-            backgroundColor: isMobile ? 'white' : 'transparent',
-          }}
-        >
+            sx={{
+              padding: 0,
+              position: isMobile ? 'sticky' : 'static',
+              left: isMobile ? 0 : 'auto',
+              zIndex: isMobile ? 1 : 'auto',
+              backgroundColor: isMobile ? 'white' : 'transparent',
+            }}
+          >
             <Grid container direction="row" alignItems="center" flexWrap="nowrap">
               <Grid item md={4} xs={4}>
                 {crop ? (
@@ -96,16 +96,16 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     title={(
                       <>
                         {isSelected && (
-                            <CheckBoxIcon
-                              style={{
-                                position: 'absolute',
-                                right: '4px',
-                                top: '4px',
-                                height: '15px',
-                                zIndex: 1,
-                                backgroundColor: '#5992E6',
-                              }}
-                            />
+                        <CheckBoxIcon
+                          style={{
+                            position: 'absolute',
+                            right: '4px',
+                            top: '4px',
+                            height: '15px',
+                            zIndex: 1,
+                            backgroundColor: '#5992E6',
+                          }}
+                        />
                         )}
                         <CropImage
                           view="calendar"
@@ -141,7 +141,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       textDecoration: 'underline',
                       color: 'black',
                       textAlign: 'left',
-                  }}
+                    }}
                     onClick={() => {
                       setModalData(crop);
                       setModalOpen(!modalOpen);
