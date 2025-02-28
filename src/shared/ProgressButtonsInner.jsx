@@ -41,11 +41,12 @@ const ProgressButtonsInner = ({
   };
 
   return (
-    <Stack direction="row">
+    <Stack direction="row" spacing={isMobile ? 2 : 0}>
       <PSAButton
         style={{
           maxWidth: '90px',
           minWidth: '70px',
+          height: isMobile ? '35px' : 'auto',
           marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
@@ -65,6 +66,7 @@ const ProgressButtonsInner = ({
                   maxWidth: '90px',
                   minWidth: '70px',
                   marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
+                  height: isMobile ? '35px' : 'auto',
                 }}
                 onClick={() => changeProgress('increment')}
                 disabled={isDisabledNext || progressRedux === 4}
@@ -85,6 +87,7 @@ const ProgressButtonsInner = ({
               maxWidth: '90px',
               minWidth: progressRedux === 4 ? 'max-content' : '70px',
               marginLeft: '3%',
+              height: isMobile ? '35px' : 'auto',
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
@@ -100,6 +103,7 @@ const ProgressButtonsInner = ({
           maxWidth: '90px',
           minWidth: '90px',
           marginLeft: '3%',
+          height: isMobile ? '35px' : 'auto',
         }}
         onClick={() => {
           if (selectedCropIdsRedux.length > 0) {
