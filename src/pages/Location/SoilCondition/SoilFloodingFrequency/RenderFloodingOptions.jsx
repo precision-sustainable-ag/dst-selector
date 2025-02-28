@@ -48,7 +48,7 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
     <Grid
       item
       display="flex"
-      flexDirection={isMobile ? 'column' : 'row'}
+      flexDirection="row"
       flexWrap="wrap"
       justifyContent="center"
       alignItems={isMobile ? 'center' : 'flex-start'}
@@ -56,7 +56,7 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
       flexBasis="0"
     >
       {floodingOptions.map((f, index) => (
-        <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
+        <Box key={index} sx={{ width: 'auto' }}>
           <Chip
             label={f.label}
             color={flooding.includes(f.value) ? 'primary' : 'secondary'}
