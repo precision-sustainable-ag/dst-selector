@@ -1,5 +1,7 @@
 import React from 'react';
-import { Badge } from '@mui/material';
+import {
+  Badge, useMediaQuery, useTheme,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
@@ -19,6 +21,11 @@ const ToggleOptions = ({ pathname }) => {
     (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
   );
 
+  // used to know if the user is in mobile mode
+  const theme = useTheme();
+
+  // breakpoints
+  const isMdOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
     // FIXME: the following codes will not work?
@@ -56,6 +63,7 @@ const ToggleOptions = ({ pathname }) => {
   return (
     <>
       <PSAButton
+        size={isMdOrSmaller && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
         component={NavLink}
         onClick={() => openMyCoverCropReset('selector')}
         buttonType="ToggleOptions"
@@ -63,6 +71,7 @@ const ToggleOptions = ({ pathname }) => {
         to="/"
         sx={{
           fontWeight: 'bold',
+          fontSize: selectedCropIdsRedux.length > 0 && isMdOrSmaller ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
         }}
         data-test="get-recommendation-btn"
         title="Get A Recommendation"
@@ -77,12 +86,16 @@ const ToggleOptions = ({ pathname }) => {
         tooltipContent={(
           <span>
             <PSAButton
+              size={isMdOrSmaller && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
               onClick={setSpeciesSelectorActivationFlag}
               disabled={stateLabelRedux === null}
               selected={pathname === '/explorer'}
               buttonType="ToggleOptions"
               data-test="browse-covercrops-btn"
-              sx={{ fontWeight: 'bold' }}
+              sx={{
+                fontWeight: 'bold',
+                fontSize: selectedCropIdsRedux.length > 0 && isMdOrSmaller ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
+              }}
               title="BROWSE COVER CROPS"
             />
           </span>
@@ -90,15 +103,19 @@ const ToggleOptions = ({ pathname }) => {
       />
 
       {selectedCropIdsRedux.length > 0 && (
-        <Badge badgeContent={selectedCropIdsRedux.length} color="error" data-test="badge">
-          <PSAButton
-            selected={pathname === '/my-cover-crop-list'}
-            buttonType="ToggleOptions"
-            onClick={setMyCoverCropActivationFlag}
-            sx={{ fontWeight: 'bold' }}
-            title="MY SELECTED CROPS"
-          />
-        </Badge>
+      <Badge badgeContent={!isMdOrSmaller ? selectedCropIdsRedux.length : null} color="error" data-test="badge">
+        <PSAButton
+          size={isMdOrSmaller && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
+          selected={pathname === '/my-cover-crop-list'}
+          buttonType="ToggleOptions"
+          onClick={setMyCoverCropActivationFlag}
+          sx={{
+            fontWeight: 'bold',
+            fontSize: selectedCropIdsRedux.length > 0 && isMdOrSmaller ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
+          }}
+          title="MY SELECTED CROPS"
+        />
+      </Badge>
       )}
     </>
   );

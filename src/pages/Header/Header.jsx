@@ -150,7 +150,7 @@ const Header = () => {
             navContent={navContent}
             onLogoClick={handleLogoClick}
           />
-          <Grid container sx={{ pb: isMdOrSmaller ? '3rem' : '1rem' }}>
+          <Grid container sx={{ pb: isMdOrSmaller ? '3.5rem' : '1rem' }}>
             <Grid
               item
               sx={{
@@ -158,6 +158,7 @@ const Header = () => {
                 top: isMdOrSmaller ? '85px' : '120px',
                 display: 'flex',
               }}
+              mb={{ xs: 2 }}
             >
               {/* get a recommendation / browse cover crops */}
               <ToggleOptions pathname={pathname} />
