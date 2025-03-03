@@ -142,7 +142,7 @@ const CropSidebar = ({
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         } else if (parm === 'common') {
-          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0].values[0]?.value.toLowerCase().match(/\w+/g);
+          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0]?.values[0]?.value.toLowerCase().match(/\w+/g);
         } else {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
