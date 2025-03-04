@@ -61,7 +61,15 @@ const ToggleOptions = ({ pathname }) => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between', // Distribute elements evenly
+        alignItems: 'center', // Center elements vertically
+        width: '100%', // Ensure it spans the full container width
+        gap: '1rem', // Optional: Adds spacing between items
+      }}
+    >
       <PSAButton
         size={isMdOrSmaller && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
         component={NavLink}
@@ -74,7 +82,14 @@ const ToggleOptions = ({ pathname }) => {
           fontSize: selectedCropIdsRedux.length > 0 && isMdOrSmaller ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
         }}
         data-test="get-recommendation-btn"
-        title="Get A Recommendation"
+        title={selectedCropIdsRedux.length > 0 && isMdOrSmaller ? (
+          <div>
+            <span style={{ display: 'block', textAlign: 'center' }}>Get A</span>
+            <span style={{ display: 'block', textAlign: 'center' }}>Recommendation</span>
+          </div>
+        ) : (
+          'Get A Recommendation'
+        )}
       />
       <PSATooltip
         title={
@@ -96,7 +111,14 @@ const ToggleOptions = ({ pathname }) => {
                 fontWeight: 'bold',
                 fontSize: selectedCropIdsRedux.length > 0 && isMdOrSmaller ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
               }}
-              title="BROWSE COVER CROPS"
+              title={selectedCropIdsRedux.length > 0 && isMdOrSmaller ? (
+                <div>
+                  <span style={{ display: 'block', textAlign: 'center' }}>Browse</span>
+                  <span style={{ display: 'block', textAlign: 'center' }}>Cover Crops</span>
+                </div>
+              ) : (
+                'Get A Recommendation'
+              )}
             />
           </span>
         )}
@@ -113,11 +135,18 @@ const ToggleOptions = ({ pathname }) => {
             fontWeight: 'bold',
             fontSize: selectedCropIdsRedux.length > 0 && isMdOrSmaller ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
           }}
-          title="MY SELECTED CROPS"
+          title={selectedCropIdsRedux.length > 0 && isMdOrSmaller ? (
+            <div>
+              <span style={{ display: 'block', textAlign: 'center' }}>My</span>
+              <span style={{ display: 'block', textAlign: 'center' }}>Selected Crops</span>
+            </div>
+          ) : (
+            'My Selected Crops'
+          )}
         />
       </Badge>
       )}
-    </>
+    </div>
   );
 };
 

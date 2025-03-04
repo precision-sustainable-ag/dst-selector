@@ -152,11 +152,12 @@ const Header = () => {
           />
           <Grid container sx={{ pb: isMdOrSmaller ? '3.5rem' : '1rem' }}>
             <Grid
-              item
+              xs={12}
               sx={{
                 position: 'absolute',
                 top: isMdOrSmaller ? '85px' : '120px',
                 display: 'flex',
+                width: isMdOrSmaller ? '100%' : 'auto',
               }}
               mb={{ xs: 2 }}
             >
