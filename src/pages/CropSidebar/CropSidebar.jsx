@@ -141,15 +141,13 @@ const CropSidebar = ({
       const match = (parm) => {
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
-        } else if (parm === 'common') {
-          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0]?.values[0]?.value.toLowerCase().match(/\w+/g);
         } else {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
         return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
       };
       cd[n].inactive = true;
-      return match('label') || match('scientificName') || match('common');
+      return match('label') || match('scientificName');
     });
     // transforms selectedFilterObject into an array
     const nonZeroKeys2 = Object.keys(selectedFilterObject).map((key) => {
