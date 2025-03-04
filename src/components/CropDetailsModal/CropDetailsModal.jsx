@@ -23,11 +23,11 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
 
   const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
 
@@ -36,8 +36,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const [modalData, setModalData] = useState([]);
 
   useEffect(() => {
-    const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${regionQuery}`;
+    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${queryStringRedux}`;
     if (crop.id !== undefined) {
       callCoverCropApi(url).then((data) => {
         setModalData(data);
@@ -66,27 +65,23 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     const extractCSS = async () => {
       let styles = '';
 
-      // Get styles from <style> and <link>
-      document.querySelectorAll('style, link[rel="stylesheet"]').forEach((node) => {
-        if (node.tagName === 'STYLE') {
-          styles += node.innerHTML;
-        } else if (node.tagName === 'LINK') {
-          try {
-            const request = new XMLHttpRequest();
-            request.open('GET', node.href, false);
-            request.send(null);
-            styles += request.responseText;
-          } catch (error) {
-            throw new Error(`Could not load CSS file: ${node.href}`);
-          }
+      const emotionStyles = Array.from(document.styleSheets);
+      emotionStyles.forEach((sheet) => {
+        try {
+          Array.from(sheet.cssRules).forEach((rule) => {
+            styles += rule.cssText;
+          });
+        } catch (e) {
+          throw new Error('Error in extracting CSS');
         }
       });
 
-      return styles.replace(/@media \(min-width:1536px\)/g, '@media (min-width:0px)');
+      return styles.replace(/@media \(min-width:\s*1536px\)/g, '@media (min-width:0px)');
     };
 
     try {
       dispatch(updatePrinting(true));
+      await new Promise((resolve) => { setTimeout(resolve, 2000); });
 
       const cropDetailModal = document.querySelector('[id^=cropDetailModal]');
       const clonedModal = cropDetailModal.cloneNode(true);

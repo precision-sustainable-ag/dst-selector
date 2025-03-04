@@ -30,8 +30,8 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('title-goals');
-    cy.intercept('GET', '**/v1/states/36/crops?minimal=true&regions=3').as('getCropsData');
-    cy.intercept('GET', '**/v1/states/36/filters?regions=3').as('getFilters');
+    cy.intercept('GET', '**/v1/states/36/crops?minimal=true&*').as('getCropsData');
+    cy.intercept('GET', '**/v1/states/36/filters?*').as('getFilters');
     cy.get("[data-test='next-btn']").first().click().then(() => {
       cy.wait('@getCropsData').then((interception) => {
         const { data } = interception.response.body;

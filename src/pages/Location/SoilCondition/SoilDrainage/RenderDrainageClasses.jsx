@@ -8,7 +8,7 @@ import { historyState, setHistoryState } from '../../../../reduxStore/userSlice'
 import pirschAnalytics from '../../../../shared/analytics';
 
 const RenderDrainageClasses = ({
-  setNewDrainage, setShowTiling, drainageOptions, drainage = [],
+  setNewDrainage, setShowTiling, drainageOptions, drainage = '',
 }) => {
   const dispatchRedux = useDispatch();
 
@@ -25,7 +25,7 @@ const RenderDrainageClasses = ({
   const [previousDrainage, setPreviousDrainage] = useState(-1);
   const [updateTilingCheck, setUpdateTilingCheck] = useState(false);
   const drainageArray = drainageOptions.map((option) => option.value);
-  const drainageVal = [drainageArray.indexOf(drainage)];
+  const drainageVal = [drainageArray.map((val) => val.toLowerCase()).indexOf(drainage.toLowerCase())];
 
   // functions
   const updateDrainageAction = (drainages) => {
@@ -77,7 +77,7 @@ const RenderDrainageClasses = ({
       dispatchRedux(setTileDrainage(false));
       pirschAnalytics('Site Conditions', { meta: { drainageClass: drainageArray[drainages[0]] } });
     } else {
-      setNewDrainage([]);
+      setNewDrainage('');
       updateDrainageAction([]);
       dispatchRedux(setTileDrainage(false));
       setShowTiling(false);

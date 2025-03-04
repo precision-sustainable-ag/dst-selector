@@ -706,6 +706,12 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
   ];
+  const WCCClegendData = [
+    { className: 'reliable', label: 'Irrigation Planting Window', color: '#2d7b7b' },
+    { className: 'temperatureRisk', label: 'Rainfed Planting Window', color: '#f2c94c' },
+    { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
+  ];
   switch (councilShorthand) {
     case 'MCCC':
       return MCCClegendData;
@@ -713,6 +719,8 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
       return SCCClegendData;
     case 'NECCC':
       return NECCClegendData;
+    case 'WCCC':
+      return WCCClegendData;
     default:
       return legendData;
   }
@@ -735,8 +743,8 @@ export const callCoverCropApi = async (url) => fetch(url)
 export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashCropEndDate = '') => {
   const formatYearArr = (yearArr = []) => {
     const result = [];
-    let i = 0; let
-      j = 0;
+    let i = 0;
+    let j = 0;
     while (i < yearArr.length) {
       while (j < yearArr.length && arrayEquals(yearArr[i].info, yearArr[j].info)) {
         j += 1;
@@ -776,7 +784,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
         let valEnd;
         // hessian fly dates are an exception to this condition because it has only one date and not a range
         if (date.label === 'Hessian Fly Free Date') {
-          valStart = moment(dateArray, 'YYYY-MM-DD').format('MM/DD');
+          valStart = moment(dateArray.value, 'YYYY-MM-DD').format('MM/DD');
           valEnd = valStart;
         }
         const datesArr = dateArray.value.split('-');

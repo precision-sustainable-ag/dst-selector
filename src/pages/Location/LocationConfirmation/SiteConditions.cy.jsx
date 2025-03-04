@@ -251,6 +251,7 @@ describe('<SiteConditions />', () => {
         open: false,
         goBack: true,
       },
+      queryString: 'regions=650',
     };
 
     reduxStore.dispatch(setSharedRedux(sharedData));

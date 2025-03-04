@@ -8,6 +8,7 @@ import { PSADropdown } from 'shared-react-components/src';
 import { updateRegion } from '../../../reduxStore/mapSlice';
 import { historyState, setHistoryDialogState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
+import { setQueryString } from '../../../reduxStore/sharedSlice';
 
 const PlantHardinessZone = ({ from }) => {
   const dispatchRedux = useDispatch();
@@ -29,6 +30,7 @@ const PlantHardinessZone = ({ from }) => {
       regionId: selectedRegion.id ?? '',
       regionShorthand: selectedRegion.shorthand ?? '',
     }));
+    dispatchRedux(setQueryString(`regions=${selectedRegion.id ?? ''}`));
     pirschAnalytics(from, { meta: { dropdownUpdate: true } });
   };
 
