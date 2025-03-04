@@ -125,11 +125,12 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   return dataDone === true && (
     <PSAModal
       sx={{
-        overflow: 'scroll',
-        marginTop: '2%',
-        marginBottom: '1%',
+        overflowX: 'hidden',
         maxWidth: '70%',
-        marginLeft: '15%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        margin: '2% auto',
       }}
       open={modalOpen}
       onClose={handleModalClose}
@@ -198,7 +199,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                 sx={{
                   width: isMobile ? '100%' : 'inherit',
                   maxWidth: isMobile ? '390px' : 'unset',
-                  margin: isMobile ? '2px' : 'auto',
+                  margin: isMobile ? '2px' : '3%',
                 }}
               >
                 <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />

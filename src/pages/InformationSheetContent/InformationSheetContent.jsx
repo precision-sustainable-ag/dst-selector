@@ -72,17 +72,46 @@ const InformationSheetContent = ({ crop, modalData }) => {
         <CoverCropInformation allThumbs={allThumbs} crop={modalData} className="page-break" />
         {modalData
           && modalData.data.map((cat, index) => (
-            <Grid item key={index} xs={12} className="avoid-break">
+            <Grid
+              item
+              key={index}
+              xs={12}
+              className="info-sheet-accordian-grid"
+              sx={{ marginBottom: '16px' }}
+            >
               <PSAAccordion
+                sx={{
+                  backgroundColor: '#f8f6f6',
+                  border: '1px solid #e3e1e1',
+                  justifyContent: 'center',
+                }}
                 expanded={accordionOpen[cat.label]}
                 onChange={() => handleAccordion(cat.label)}
                 summaryContent={(
-                  <Typography variant="h4" style={{ padding: '3px' }}>
+                  <Typography
+                    variant="h4"
+                    style={{
+                      color: 'grey',
+                      marginBottom: '10px',
+                    }}
+                  >
                     {cat.label}
                   </Typography>
                 )}
                 detailsContent={(
-                  <Grid container>
+                  <Grid
+                    container
+                    spacing={3}
+                    sx={{
+                      backgroundColor: { xs: '#F5F5F5', md: 'white' },
+                      flexWrap: 'wrap',
+                      justifyContent: 'space-between',
+                      borderTop: '1px solid #e3e1e1',
+                      padding: { xs: '', md: '10px 15px 0px' },
+                      borderBottomRightRadius: '30px',
+                      borderBottomLeftRadius: '30px',
+                    }}
+                  >
                     {cat.attributes.map((att, catIndex) => (!att.label.startsWith('Comments')
                       && !att.label.startsWith('Notes:')
                       && cat.label !== 'Extended Comments' ? (
@@ -90,10 +119,27 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           container
                           key={catIndex}
                           item
-                          md={6}
-                          sm={12}
+                          sm={6}
+                          xs={12}
+                          md={5.7}
                           direction={isMobile ? 'row' : 'column'}
                           className="info-sheet-item"
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            backgroundColor: '#F5F5F5',
+                            borderRadius: { xs: '', md: '30px' },
+                            borderBottomLeftRadius: '30px',
+                            borderBottomRightRadius: '30px',
+                            boxShadow: { xs: '', md: '0px 2px 4px rgba(0, 0, 0, 0.1)' },
+                            fontWeight: 'bold',
+                            fontSize: '16px',
+                            marginBottom: { xs: '', md: '20px' },
+                            minHeight: '36px',
+                            overflow: 'hidden',
+                            borderTop: { xs: '1px solid #e6e3e3', md: '' },
+                            wordWrap: 'break-word',
+                          }}
                         >
                           {isMobile ? (
                             <Box
@@ -101,7 +147,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                 width: '100%',
                                 paddingBottom: '7px',
                                 paddingTop: '2px',
-                                borderBottom: '1px solid #ddd',
                               }}
                             >
                               <Grid container alignItems="center" spacing={1}>
@@ -126,7 +171,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                   sx={{
                                     display: 'flex',
                                     justifyContent: 'flex-end',
-                                    alignItems: 'center',
                                     width: '100%',
                                   }}
                                 >
@@ -136,7 +180,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                       display: 'flex',
                                       justifyContent: 'flex-end',
                                       textAlign: 'right',
-                                      alignItems: 'center',
                                       width: '100%',
                                     }}
                                   >
@@ -146,32 +189,56 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               </Grid>
                             </Box>
                           ) : (
-                            // Non-mobile version
-                            <>
-                              <Grid item xs={12} className="attribute-label">
+                          // Non-mobile version
+                            <Grid container alignItems="center" spacing={1}>
+                              <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className="attribute-label"
+                              >
                                 <PSATooltip
                                   placement="top-end"
                                   enterTouchDelay={0}
                                   title={att.description}
                                   arrow
                                   tooltipContent={(
-                                    <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
+                                    <Typography
+                                      sx={{
+                                        fontWeight: 'bold',
+                                      }}
+                                      variant="body1"
+                                      tabIndex="0"
+                                    >
                                       {att.label}
                                     </Typography>
                                   )}
                                 />
                               </Grid>
-                              <Grid item xs={12} className="attribute-value">
+                              <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className="attribute-value"
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'flex-end',
+                                  width: '100%',
+                                }}
+                              >
                                 <Typography
-                                  style={{ paddingRight: '2rem' }}
-                                  display="flex"
-                                  justifyContent={isMobile ? 'left' : 'right'}
-                                  textAlign="right"
+                                  sx={{
+                                    paddingRight: '1rem',
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    textAlign: 'right',
+                                    width: '100%',
+                                  }}
                                 >
                                   {extractData(att, 'infoSheet', councilShorthandRedux)}
                                 </Typography>
                               </Grid>
-                            </>
+                            </Grid>
                           )}
                         </Grid>
                       ) : (
@@ -187,7 +254,9 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                   <Typography
                                     display="flex"
                                     justifyContent="center"
-                                    sx={{ fontWeight: 'bold' }}
+                                    sx={{
+                                      fontWeight: 'bold',
+                                    }}
                                   >
                                     {att.label}
                                   </Typography>
