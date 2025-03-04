@@ -65,7 +65,7 @@ const CropCard = ({
           image={
             crop.thumbnail
               ? crop.thumbnail
-              : 'https://placehold.it/250x150?text=Placeholder'
+              : 'https://placehold.co/260x140?text=Placeholder'
             }
           sx={{
             height: 140,

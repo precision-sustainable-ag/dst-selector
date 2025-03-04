@@ -360,6 +360,7 @@ export const CropImage = ({
 
   switch (view) {
     case 'calendar':
+    case 'table':
       imageStyle = {
         width: '50px',
         height: '50px',
