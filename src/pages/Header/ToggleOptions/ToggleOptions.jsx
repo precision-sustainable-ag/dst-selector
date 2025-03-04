@@ -117,7 +117,7 @@ const ToggleOptions = ({ pathname }) => {
                   <span style={{ display: 'block', textAlign: 'center' }}>Cover Crops</span>
                 </div>
               ) : (
-                'Get A Recommendation'
+                'Browse Cover Crops'
               )}
             />
           </span>
