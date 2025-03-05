@@ -705,6 +705,7 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'frostPossible', label: 'Frost Seeding Possible', color: '#2f80ed' },
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
+    { className: 'canInterseed', label: 'Can Interseed', color: '#dd4c9f' },
   ];
   const WCCClegendData = [
     { className: 'reliable', label: 'Irrigation Planting Window', color: '#2d7b7b' },
