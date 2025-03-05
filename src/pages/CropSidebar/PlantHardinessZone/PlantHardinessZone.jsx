@@ -25,12 +25,16 @@ const PlantHardinessZone = ({ from }) => {
       return;
     }
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === e.target.value)[0];
+    if (!selectedRegion?.id || !selectedRegion?.shorthand) {
+      console.error('Unavailable region.');
+      return;
+    }
     localStorage.setItem('regionId', selectedRegion.id);
     dispatchRedux(updateRegion({
-      regionId: selectedRegion.id ?? '',
-      regionShorthand: selectedRegion.shorthand ?? '',
+      regionId: selectedRegion.id,
+      regionShorthand: selectedRegion.shorthand,
     }));
-    dispatchRedux(setQueryString(`regions=${selectedRegion.id ?? ''}`));
+    dispatchRedux(setQueryString(`regions=${selectedRegion.id}`));
     pirschAnalytics(from, { meta: { dropdownUpdate: true } });
   };
 

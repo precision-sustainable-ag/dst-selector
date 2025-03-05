@@ -140,15 +140,16 @@ const Landing = () => {
             // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
             // , skip set default since there already exist region selection
             if (stateIdRedux !== selectedState.id) {
-            // set default region for Selector and Explorer
-              localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
+              // set default region for Selector and Explorer
+              if (!fetchedRegions[0]?.id || !fetchedRegions[0]?.shorthand) throw new Error('Unavailable region.');
+              localStorage.setItem('regionId', fetchedRegions[0].id);
               dispatchRedux(updateRegion({
-                regionId: fetchedRegions[0].id ?? '',
-                regionShorthand: fetchedRegions[0].shorthand ?? '',
+                regionId: fetchedRegions[0].id,
+                regionShorthand: fetchedRegions[0].shorthand,
               }));
             }
             // set querystring for non WCCC states
-            dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id ?? ''}`));
+            dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id}`));
           })
           .catch((err) => {
           // eslint-disable-next-line no-console
