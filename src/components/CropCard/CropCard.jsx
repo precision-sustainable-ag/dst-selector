@@ -63,10 +63,10 @@ const CropCard = ({
       <CardActionArea onClick={() => handleModalOpen(crop)}>
         <CardMedia
           image={
-            crop.thumbnail
-              ? crop.thumbnail
-              : 'https://placehold.co/260x140?text=Placeholder'
-            }
+            isMobile
+              ? crop.thumbnailMobile || 'https://placehold.co/160x140?text=Placeholder'
+              : crop.thumbnailWide || 'https://placehold.co/260x140?text=Placeholder'
+          }
           sx={{
             height: 140,
             borderWidth: shouldHighlightRed ? '4px' : '0px',

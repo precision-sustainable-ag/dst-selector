@@ -97,7 +97,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                         <CropImage
                           view="calendar"
                           present
-                          src={crop.thumbnail ? crop.thumbnail : 'https://placehold.co/50x50'}
+                          src={crop.thumbnailSmall ? crop.thumbnailSmall : 'https://placehold.co/50x50'}
                           alt={crop.label}
                         />
                       </>
