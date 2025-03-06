@@ -82,7 +82,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                         height="100%"
                       >
                         <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                          <polygon points="50,0 100,50 50,100 0,50" fill="green" strokeWidth={0} />
+                          <polygon points="50,0 100,50 50,100 0,50" fill="#f8a504" strokeWidth={0} />
                         </svg>
                       </Grid>
                     )

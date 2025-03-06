@@ -38,20 +38,17 @@ div.growthCellsWrapper {
   .growthCell-30.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
   }
-  .growthCell-30, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average, .Hessian  {
-    background-color: $defaultLegendColor;
+  .growthCell-30.Can{
+    background-color: $canInterseedColor;
   }
-  .growthCell-30.Late{
-    background-color: $lateSummerColor;
+  .growthCell-30, .basic, .Fall\/Winter, .Summer, .Spring, .Average, .Hessian  {
+    background-color: $defaultLegendColor;
   }
   .growthCell-30.irrigation{
     background-color: $reliableEstablishmentColor;
   }
   .growthCell-30.rainfed{
     background-color: $rainfedPlantingWindowsColor;
-  }
-  .growthCell-30.Early{
-    background-color: $earlySummerColor;
   }
   .growthCell-30.Moisture{
     background-color: $earlySummerColor;
@@ -87,12 +84,6 @@ div.growthCellsWrapper {
   .growthCell-20.Multiple{
     background-color: $multipleColor;
   }
-  .growthCell-20.Late{
-    background-color: $lateSummerColor;
-  }
-  .growthCell-20.Early{
-    background-color: $earlySummerColor;
-  }
   .growthCell-20.irrigation{
     background-color: $reliableEstablishmentColor;
   }
@@ -102,10 +93,13 @@ div.growthCellsWrapper {
   .growthCell-20.Moisture{
     background-color: $moistureRiskColor;
   }
+  .growthCell-20.Can{
+    background-color: $canInterseedColor;
+  }
   .growthCell-20.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
   }
-  .growthCell-20, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average, .Hessian  {
+  .growthCell-20, .basic, .Fall\/Winter, .Summer, .Spring, .Average, .Hessian  {
     background-color: $defaultLegendColor;
   }
 }
