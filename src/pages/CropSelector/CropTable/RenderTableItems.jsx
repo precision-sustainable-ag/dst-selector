@@ -64,8 +64,9 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     style={buttonStyle}
                     title={(
                       <CropImage
-                        present={!!crop.thumbnail}
-                        src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
+                        view="table"
+                        present
+                        src={crop.thumbnailSmall ? crop.thumbnailSmall : 'https://placehold.co/50x50'}
                         alt={crop.label}
                       />
                     )}
