@@ -360,6 +360,7 @@ export const CropImage = ({
 
   switch (view) {
     case 'calendar':
+    case 'table':
       imageStyle = {
         width: '50px',
         height: '50px',
@@ -686,14 +687,14 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'frostPossible', label: 'Frost Seeding Possible', color: '#2f80ed' },
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
-    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#008000' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#f8a504' },
   ];
   const MCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
     { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment', color: '#f2c94c' },
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
-    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#008000' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#f8a504' },
   ];
   const SCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
@@ -705,6 +706,7 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'frostPossible', label: 'Frost Seeding Possible', color: '#2f80ed' },
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
+    { className: 'canInterseed', label: 'Can Interseed', color: '#dd4c9f' },
   ];
   const WCCClegendData = [
     { className: 'reliable', label: 'Irrigation Planting Window', color: '#2d7b7b' },

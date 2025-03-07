@@ -122,7 +122,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           sm={6}
                           xs={12}
                           md={5.7}
-                          direction={isMobile ? 'row' : 'column'}
+                          direction={isMobile || cat.label === 'Termination' ? 'row' : 'column'}
                           className="info-sheet-item"
                           sx={{
                             display: 'flex',
@@ -190,7 +190,10 @@ const InformationSheetContent = ({ crop, modalData }) => {
                             </Box>
                           ) : (
                           // Non-mobile version
-                            <Grid container alignItems="center" spacing={1}>
+                            <Grid
+                              container
+                              spacing={1}
+                            >
                               <Grid
                                 item
                                 xs={12}

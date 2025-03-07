@@ -44,7 +44,7 @@ const Legend = ({ legendData, modal }) => {
                   >
                     <polygon
                       points="50,0 100,50 50,100 0,50"
-                      fill="green"
+                      fill="#f8a504"
                       strokeWidth={0}
                     />
                   </svg>
