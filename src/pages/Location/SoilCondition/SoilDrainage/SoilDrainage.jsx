@@ -30,7 +30,6 @@ const SoilDrainage = ({ drainageOptions }) => {
   );
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const tileDrainageRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.tileDrainage);
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   // useState vars
   const [showTiling, setShowTiling] = useState(false);
@@ -46,14 +45,10 @@ const SoilDrainage = ({ drainageOptions }) => {
 
   useEffect(() => {
     // set new drainage value
-    if (stateIdRedux === 7) {
-      setNewDrainage();
+    if (tileDrainageRedux) {
+      setNewDrainage(soilDataRedux.prevDrainageClass[0]);
     } else {
-      setNewDrainage(
-        tileDrainageRedux
-          ? soilDataRedux.prevDrainageClass[0]
-          : soilDataRedux.drainageClass[0],
-      );
+      setNewDrainage(soilDataRedux.drainageClass[0]);
     }
     setDrainageInitialLoad(true);
   }, [soilDataOriginalRedux]);
