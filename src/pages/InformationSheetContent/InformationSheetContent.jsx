@@ -209,6 +209,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                     <Typography
                                       sx={{
                                         fontWeight: 'bold',
+                                        marginTop: '5px',
                                       }}
                                       variant="body1"
                                       tabIndex="0"
@@ -231,11 +232,13 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               >
                                 <Typography
                                   sx={{
-                                    paddingRight: '1rem',
+                                    paddingRight: '1.5rem',
                                     display: 'flex',
                                     justifyContent: 'flex-end',
                                     textAlign: 'right',
                                     width: '100%',
+                                    paddingTop: '1%',
+                                    paddingBottom: '0%',
                                   }}
                                 >
                                   {extractData(att, 'infoSheet', councilShorthandRedux)}

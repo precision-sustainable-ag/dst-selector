@@ -78,6 +78,7 @@ const ExplorerCardView = ({ activeCropData }) => {
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
           crop={modalData}
+          fromExplorer
         />
       </>
     )

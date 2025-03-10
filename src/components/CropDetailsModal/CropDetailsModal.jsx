@@ -16,7 +16,12 @@ import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
 import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
 
-const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
+const CropDetailsModal = ({
+  crop,
+  setModalOpen,
+  modalOpen,
+  fromExplorer = false,
+}) => {
   const dispatch = useDispatch();
   // redux vars
 
@@ -126,7 +131,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     <PSAModal
       sx={{
         overflowX: 'hidden',
-        maxWidth: '70%',
+        maxWidth: fromExplorer && isMobile ? '100%' : '70%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -144,10 +149,20 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
           id={`cropDetailModal-${modalData.id}`}
         >
           <Grid container>
-            <Grid container item xs={12} sx={{ backgroundColor: '#2D7B7B' }} className="no-print">
+            <Grid
+              container
+              item
+              xs={12}
+              sx={{
+                backgroundColor: '#2D7B7B',
+                position: fromExplorer ? 'fixed' : 'relative',
+                zIndex: fromExplorer ? 1000 : 'auto',
+              }}
+              className="no-print"
+            >
               <Grid container display="flex" alignItems="center" item xs={11}>
                 <Grid item>
-                  <Typography color="white" sx={{ marginLeft: '2em' }}>
+                  <Typography color="white" sx={{ marginLeft: 'em' }}>
                     Cover Crop Information Sheet
                   </Typography>
                 </Grid>
@@ -195,15 +210,29 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
             </Grid>
 
             <Grid container item xs={12} justifyContent={isMobile ? 'center' : 'flex-start'}>
-              <Box
-                sx={{
-                  width: isMobile ? '100%' : 'inherit',
-                  maxWidth: isMobile ? '390px' : 'unset',
-                  margin: isMobile ? '2px' : '3%',
-                }}
-              >
-                <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
-              </Box>
+              {fromExplorer ? (
+                <Box
+                  sx={{
+                    width: isMobile ? '100%' : 'inherit',
+                    maxWidth: isMobile ? '390px' : 'unset',
+                    marginTop: isMobile ? '60px' : '4%',
+                    marginLeft: isMobile ? '20px' : '2%',
+                    marginRight: isMobile ? '20px' : '3%',
+                  }}
+                >
+                  <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    width: isMobile ? '100%' : 'inherit',
+                    maxWidth: isMobile ? '390px' : 'unset',
+                    margin: isMobile ? '2px' : '2%',
+                  }}
+                >
+                  <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
+                </Box>
+              )}
             </Grid>
           </Grid>
         </Box>
