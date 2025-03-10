@@ -157,12 +157,13 @@ const CropDetailsModal = ({
                 backgroundColor: '#2D7B7B',
                 position: fromExplorer ? 'fixed' : 'relative',
                 zIndex: fromExplorer ? 1000 : 'auto',
+                width: fromExplorer ? '70%' : 'auto',
               }}
               className="no-print"
             >
               <Grid container display="flex" alignItems="center" item xs={11}>
                 <Grid item>
-                  <Typography color="white" sx={{ marginLeft: 'em' }}>
+                  <Typography color="white" sx={{ marginLeft: '2em' }}>
                     Cover Crop Information Sheet
                   </Typography>
                 </Grid>
@@ -215,8 +216,8 @@ const CropDetailsModal = ({
                   sx={{
                     width: isMobile ? '100%' : 'inherit',
                     maxWidth: isMobile ? '390px' : 'unset',
-                    marginTop: isMobile ? '60px' : '4%',
-                    marginLeft: isMobile ? '20px' : '2%',
+                    marginTop: isMobile ? '60px' : '70px',
+                    marginLeft: isMobile ? '20px' : '30px',
                     marginRight: isMobile ? '20px' : '3%',
                   }}
                 >
