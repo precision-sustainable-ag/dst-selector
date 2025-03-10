@@ -30,6 +30,7 @@ const SoilDrainage = ({ drainageOptions }) => {
   );
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const tileDrainageRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.tileDrainage);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   // useState vars
   const [showTiling, setShowTiling] = useState(false);
@@ -45,10 +46,14 @@ const SoilDrainage = ({ drainageOptions }) => {
 
   useEffect(() => {
     // set new drainage value
-    if (tileDrainageRedux) {
-      setNewDrainage(soilDataRedux.prevDrainageClass[0]);
+    if (stateIdRedux === 7) {
+      setNewDrainage();
     } else {
-      setNewDrainage(soilDataRedux.drainageClass[0]);
+      setNewDrainage(
+        tileDrainageRedux
+          ? soilDataRedux.prevDrainageClass[0]
+          : soilDataRedux.drainageClass[0],
+      );
     }
     setDrainageInitialLoad(true);
   }, [soilDataOriginalRedux]);
@@ -200,14 +205,14 @@ const SoilDrainage = ({ drainageOptions }) => {
         >
           <Grid item xs={12} alignSelf="center" justifySelf="center">
             {drainageInitialLoad
-            && (
-            <RenderDrainageClasses
-              setNewDrainage={setNewDrainage}
-              setShowTiling={setShowTiling}
-              drainage={newDrainage}
-              drainageOptions={drainageOptions}
-            />
-            )}
+              && (
+                <RenderDrainageClasses
+                  setNewDrainage={setNewDrainage}
+                  setShowTiling={setShowTiling}
+                  drainage={newDrainage}
+                  drainageOptions={drainageOptions}
+                />
+              )}
           </Grid>
           <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
           {showTiling && (

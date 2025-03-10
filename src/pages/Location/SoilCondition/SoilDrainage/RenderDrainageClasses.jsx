@@ -21,6 +21,7 @@ const RenderDrainageClasses = ({
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const tileDrainageRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.tileDrainage);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   const [previousDrainage, setPreviousDrainage] = useState(-1);
   const [updateTilingCheck, setUpdateTilingCheck] = useState(false);
@@ -104,7 +105,9 @@ const RenderDrainageClasses = ({
             color={drainageVal.includes(index) ? 'primary' : 'secondary'}
             style={{ margin: '0.3rem' }}
             onClick={() => {
-              updateDrainageClass(index);
+              if (stateIdRedux !== 7) {
+                updateDrainageClass(index);
+              }
             }}
             aria-label={`${d}-${drainageVal.includes(index) ? 'selected' : ''}`}
             sx={{
