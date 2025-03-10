@@ -1109,7 +1109,6 @@ export const extractData = (attribute, from, councilShorthand) => {
 };
 
 export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {
-  console.log('selectedGoals', crop);
   if (selectedGoals.length === 0) return crop.inactive;
   return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
 };
