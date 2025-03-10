@@ -179,9 +179,15 @@ const CropSidebar = ({
 
       const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
 
-      cd[n].inactive = (!match)
-        || !(matchesDrainageClass && cropFloodingValueIsHigher)
-        || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
+      if (stateIdRedux === 7) {
+        cd[n].inactive = (!match)
+          || !cropFloodingValueIsHigher
+          || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
+      } else {
+        cd[n].inactive = (!match)
+          || !(matchesDrainageClass && cropFloodingValueIsHigher)
+          || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
+      }
 
       return true;
     });
