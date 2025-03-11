@@ -6,7 +6,7 @@ const CoverCropInformation = ({
   crop, allThumbs, className,
 }) => (
   <Grid container spacing={3} className={className}>
-    <Grid item md={6} sm={12} sx={{ paddingTop: { xs: '30px !important', md: '0px !important' }, paddingLeft: '9px !important' }}>
+    <Grid item md={6} sm={12} sx={{ paddingTop: { xs: '30px !important', md: '10px !important' }, paddingLeft: { xs: '24px !important' } }}>
       <Grid item>
         <Typography variant="h5">
           {crop['Cover Crop Group']}

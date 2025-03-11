@@ -157,7 +157,7 @@ const CropDetailsModal = ({
                 backgroundColor: '#2D7B7B',
                 position: fromExplorer ? 'fixed' : 'relative',
                 zIndex: fromExplorer ? 1000 : 'auto',
-                width: fromExplorer ? '70%' : 'auto',
+                width: (fromExplorer && !isMobile) ? '70%' : 'auto',
               }}
               className="no-print"
             >

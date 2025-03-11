@@ -135,7 +135,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                             fontWeight: 'bold',
                             fontSize: '16px',
                             marginBottom: { xs: '', md: '20px' },
-                            minHeight: '36px',
+                            minHeight: '29px',
                             overflow: 'hidden',
                             borderTop: { xs: '1px solid #e6e3e3', md: '' },
                             wordWrap: 'break-word',
@@ -209,7 +209,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                     <Typography
                                       sx={{
                                         fontWeight: 'bold',
-                                        marginTop: '5px',
+                                        marginTop: '2px',
                                       }}
                                       variant="body1"
                                       tabIndex="0"
