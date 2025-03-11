@@ -5,7 +5,9 @@
 
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import { Stack, Badge, Box } from '@mui/material';
+import {
+  Stack, Badge, Box, useMediaQuery, useTheme,
+} from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
@@ -20,6 +22,8 @@ const ProgressButtonsInner = ({
   const history = useHistory();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const changeProgress = (type) => {
     // setCrement(type);
@@ -37,12 +41,13 @@ const ProgressButtonsInner = ({
   };
 
   return (
-    <Stack direction="row" style={{ width: '100%' }}>
+    <Stack direction="row" spacing={isMobile ? 2 : 0}>
       <PSAButton
         style={{
           maxWidth: '90px',
           minWidth: '70px',
-          marginLeft: progressRedux === 4 ? '-75px' : '0px',
+          height: isMobile ? '35px' : 'auto',
+          marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
@@ -60,7 +65,8 @@ const ProgressButtonsInner = ({
                 style={{
                   maxWidth: '90px',
                   minWidth: '70px',
-                  marginLeft: progressRedux === 4 ? '-75px' : '0px',
+                  marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
+                  height: isMobile ? '35px' : 'auto',
                 }}
                 onClick={() => changeProgress('increment')}
                 disabled={isDisabledNext || progressRedux === 4}
@@ -81,6 +87,7 @@ const ProgressButtonsInner = ({
               maxWidth: '90px',
               minWidth: progressRedux === 4 ? 'max-content' : '70px',
               marginLeft: '3%',
+              height: isMobile ? '35px' : 'auto',
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
@@ -96,6 +103,7 @@ const ProgressButtonsInner = ({
           maxWidth: '90px',
           minWidth: '90px',
           marginLeft: '3%',
+          height: isMobile ? '35px' : 'auto',
         }}
         onClick={() => {
           if (selectedCropIdsRedux.length > 0) {

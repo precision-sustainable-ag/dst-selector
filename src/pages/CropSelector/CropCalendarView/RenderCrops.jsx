@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   TableCell, TableRow, Grid,
   Box,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import {
   AcUnit, AddCircleOutline, CheckRounded, DeleteForever,
@@ -41,6 +43,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md')) || /Mobi|Android/i.test(navigator.userAgent);
+
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
     .map((crop, index) => {
@@ -68,9 +73,17 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           }}
           data-test={`crop-list-tr-${index}`}
         >
-          <TableCell sx={{ padding: 0 }}>
-            <Grid container>
-              <Grid item md={4} xs={12}>
+          <TableCell
+            sx={{
+              padding: 0,
+              position: isMobile ? 'sticky' : 'static',
+              left: isMobile ? 0 : 'auto',
+              zIndex: isMobile ? 1 : 'auto',
+              backgroundColor: isMobile ? 'white' : 'transparent',
+            }}
+          >
+            <Grid container direction="row" alignItems="center" flexWrap="nowrap">
+              <Grid item md={4} xs={4}>
                 {crop ? (
                   <PSAButton
                     buttonType=""
@@ -83,16 +96,16 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     title={(
                       <>
                         {isSelected && (
-                          <CheckBoxIcon
-                            style={{
-                              position: 'absolute',
-                              right: '4px',
-                              top: '4px',
-                              height: '15px',
-                              zIndex: 1,
-                              backgroundColor: '#5992E6',
-                            }}
-                          />
+                        <CheckBoxIcon
+                          style={{
+                            position: 'absolute',
+                            right: '4px',
+                            top: '4px',
+                            height: '15px',
+                            zIndex: 1,
+                            backgroundColor: '#5992E6',
+                          }}
+                        />
                         )}
                         <CropImage
                           view="calendar"
@@ -117,7 +130,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   />
                 )}
               </Grid>
-              <Grid container item md={8} xs={12} alignItems="center">
+              <Grid container item md={8} xs={8} alignItems="center">
                 <Grid item>
                   <PSAButton
                     buttonType=""
@@ -127,6 +140,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       justifyContent: 'center',
                       textDecoration: 'underline',
                       color: 'black',
+                      textAlign: 'left',
                     }}
                     onClick={() => {
                       setModalData(crop);
