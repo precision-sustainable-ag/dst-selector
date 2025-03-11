@@ -5,11 +5,9 @@
 */
 
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Box, Grid } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import ProgressButtons from '../../shared/ProgressButtons';
-import useWindowSize from '../../shared/constants';
 import NavigationButtons from '../../shared/NavigationButtons';
 
 const Footer = () => {
@@ -25,20 +23,11 @@ const Footer = () => {
     });
   }, [history]);
 
-  const windowSize = useWindowSize().width;
-
-  const [footerWidth, setFooterWidth] = useState('100%');
-  const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
-  const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
-
-  useEffect(() => {
-    setFooterWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
-  }, [tableWidth, sidebarWidth, windowSize]);
   return (
     <Box
       sx={{
         backgroundColor: '#598445',
-        width: footerWidth,
+        width: '100vw',
       }}
       className="primaryFooter"
       id="page-footer"
