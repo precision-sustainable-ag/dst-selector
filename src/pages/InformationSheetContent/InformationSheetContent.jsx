@@ -77,13 +77,22 @@ const InformationSheetContent = ({ crop, modalData }) => {
               key={index}
               xs={12}
               className="info-sheet-accordian-grid"
-              sx={{ marginBottom: '16px' }}
+              sx={{
+                marginBottom: '16px',
+                marginTop: '0px',
+              }}
             >
               <PSAAccordion
                 sx={{
                   backgroundColor: '#f8f6f6',
                   border: '1px solid #e3e1e1',
                   justifyContent: 'center',
+                  '& .MuiAccordionDetails-root': {
+                    padding: '10px 0px 0px 24px !important',
+                  },
+                  '& .MuiGrid-item': {
+                    paddingTop: '5px !important',
+                  },
                 }}
                 expanded={accordionOpen[cat.label]}
                 onChange={() => handleAccordion(cat.label)}
@@ -209,7 +218,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                     <Typography
                                       sx={{
                                         fontWeight: 'bold',
-                                        marginTop: '2px',
                                       }}
                                       variant="body1"
                                       tabIndex="0"
