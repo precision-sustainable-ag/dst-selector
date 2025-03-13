@@ -93,6 +93,9 @@ const InformationSheetContent = ({ crop, modalData }) => {
                   '& .MuiGrid-item': {
                     paddingTop: '5px !important',
                   },
+                  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                    marginTop: '17px !important',
+                  },
                 }}
                 expanded={accordionOpen[cat.label]}
                 onChange={() => handleAccordion(cat.label)}
@@ -101,7 +104,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                     variant="h4"
                     style={{
                       color: 'grey',
-                      marginBottom: '10px',
+                      marginTop: '10px',
                     }}
                   >
                     {cat.label}
@@ -119,6 +122,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                       padding: { xs: '', md: '10px 15px 0px' },
                       borderBottomRightRadius: '30px',
                       borderBottomLeftRadius: '30px',
+                      marginTop: '0px',
                     }}
                   >
                     {cat.attributes.map((att, catIndex) => (!att.label.startsWith('Comments')
