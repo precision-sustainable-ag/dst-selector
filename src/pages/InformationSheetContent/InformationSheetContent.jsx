@@ -76,11 +76,8 @@ const InformationSheetContent = ({ crop, modalData }) => {
               item
               key={index}
               xs={12}
-              className="info-sheet-accordian-grid"
-              sx={{
-                marginBottom: '16px',
-                marginTop: '0px',
-              }}
+              className="avoid-break"
+              sx={{ marginBottom: '16px' }}
             >
               <PSAAccordion
                 sx={{
@@ -93,20 +90,11 @@ const InformationSheetContent = ({ crop, modalData }) => {
                   '& .MuiGrid-item': {
                     paddingTop: '5px !important',
                   },
-                  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-                    marginTop: '17px !important',
-                  },
                 }}
                 expanded={accordionOpen[cat.label]}
                 onChange={() => handleAccordion(cat.label)}
                 summaryContent={(
-                  <Typography
-                    variant="h4"
-                    style={{
-                      color: 'grey',
-                      marginTop: '10px',
-                    }}
-                  >
+                  <Typography variant="h4" style={{ color: 'grey' }}>
                     {cat.label}
                   </Typography>
                 )}

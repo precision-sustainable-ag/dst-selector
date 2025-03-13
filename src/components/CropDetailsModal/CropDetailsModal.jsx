@@ -131,10 +131,7 @@ const CropDetailsModal = ({
       sx={{
         overflowX: 'hidden',
         maxWidth: isMobile ? '100%' : '70%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        margin: '2% auto',
+        margin: isMobile ? '0' : '2% auto',
       }}
       open={modalOpen}
       onClose={handleModalClose}
@@ -150,13 +147,12 @@ const CropDetailsModal = ({
           <Grid container>
             <Grid
               container
-              item
-              xs={12}
               sx={{
                 backgroundColor: '#2D7B7B',
                 position: 'fixed',
                 zIndex: 1000,
-                width: isMobile ? '100%' : '69.3%',
+                width: isMobile ? '100%' : '70%',
+                height: isMobile ? '70px' : 'auto',
               }}
               className="no-print"
             >
@@ -170,9 +166,7 @@ const CropDetailsModal = ({
                   borderTop: '5px solid #2d7b7b',
                 }}
               >
-                <Grid
-                  item
-                >
+                <Grid item>
                   <Typography color="white" sx={{ marginLeft: '2em' }}>
                     Cover Crop Information Sheet
                   </Typography>
@@ -186,28 +180,24 @@ const CropDetailsModal = ({
                     }}
                     title="Terminology Definitions"
                   />
-                </Grid>
-                {
-                  printing
-                    ? (
-                      <Grid item>
+                  {
+                    printing
+                      ? (
                         <PSAButton
                           buttonType="ModalLink"
                           startIcon={<CircularProgress size={20} />}
                         />
-                      </Grid>
-                    )
-                    : (
-                      <Grid item>
+                      )
+                      : (
                         <PSAButton
                           startIcon={<Print />}
                           buttonType="ModalLink"
                           onClick={print}
                           title="Print"
                         />
-                      </Grid>
-                    )
-                }
+                      )
+                  }
+                </Grid>
               </Grid>
 
               <Grid item xs={1}>
@@ -220,7 +210,7 @@ const CropDetailsModal = ({
               </Grid>
             </Grid>
 
-            <Grid container item xs={12} justifyContent={isMobile ? 'center' : 'flex-start'}>
+            <Grid container justifyContent={isMobile ? 'center' : 'flex-start'}>
               <Box
                 sx={{
                   width: isMobile ? '100%' : 'inherit',
