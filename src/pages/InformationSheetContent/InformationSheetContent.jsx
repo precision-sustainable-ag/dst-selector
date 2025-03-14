@@ -153,7 +153,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           </Grid>
                         </Grid>
                       ) : (
-                        <Grid item key={catIndex} xs={12} sx={{ marginBottom: '10px' }}>
+                        <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
                           <PSATooltip
                             placement="top-end"
                             enterTouchDelay={0}
