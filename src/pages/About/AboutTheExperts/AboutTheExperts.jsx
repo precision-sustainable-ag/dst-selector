@@ -23,7 +23,7 @@ const AboutTheExperts = () => {
     { id: 2, menuOption: 'Midwest Cover Crops Council', dataType: 'JSX' },
     { id: 3, menuOption: 'Northeast Cover Crops Council', dataType: 'array' },
     { id: 4, menuOption: 'Southern Cover Crops Council', dataType: 'array' },
-    { id: 5, menuOption: 'Western Cover Crops Council', dataType: 'JSX' },
+    { id: 5, menuOption: 'Western Cover Crops Council', dataType: 'array' },
   ];
 
   const handleChange = (newValue) => {
