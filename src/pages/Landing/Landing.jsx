@@ -308,11 +308,6 @@ const Landing = () => {
                 </Grid>
               )}
           </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body2" align="center">
-              *More states coming soon!
-            </Typography>
-          </Grid>
         </Box>
       </Grid>
       <Grid item>

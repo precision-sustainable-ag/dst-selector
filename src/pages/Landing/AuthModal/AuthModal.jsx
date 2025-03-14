@@ -1,5 +1,5 @@
 /*
-  This is the popup modal asking for user login/signup.
+  Improved login/signup popup with a more appealing message.
 */
 
 import {
@@ -38,16 +38,15 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
     marginTop: '15px',
     marginBottom: '15px',
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    borderRadius: '12px',
     boxShadow: 24,
     p: {
-      xs: 2, sm: 2, md: 3, lg: 4, xl: 4,
+      xs: 3, sm: 3, md: 4, lg: 5, xl: 5,
     },
   };
 
   const handleModal = () => {
     const authObject = {
-      // set not show auth modal time as 14 days
       expiredAt: new Date().getTime() + 14 * 24 * 60 * 60 * 1000,
     };
     localStorage.setItem(localStorageKey, JSON.stringify(authObject));
@@ -63,18 +62,17 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
       closeAfterTransition
       onClose={handleModal}
       modalContent={(
-        <Box
-          sx={style}
-        >
-          <Typography variant="h6" component="h2">
-            Login to try out our new user history feature?
+        <Box sx={style}>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            Unlock Exclusive Features!
           </Typography>
-          <Typography variant="body">
-            We will not share your data.
+          <Typography variant="body1" mb={2}>
+            Sign in to access your personalized history and seamless cross-device experience.
+            Your data is safe with us!
           </Typography>
-          <Grid container spacing={1}>
+          <Grid container spacing={2} justifyContent="center">
             <Grid item>
-              <AuthButton variant="outlined" type="Login" />
+              <AuthButton variant="contained" type="Login" />
             </Grid>
             <Grid item>
               <AuthButton variant="outlined" type="Signup" />
@@ -89,4 +87,5 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
     )
   );
 };
+
 export default AuthModal;

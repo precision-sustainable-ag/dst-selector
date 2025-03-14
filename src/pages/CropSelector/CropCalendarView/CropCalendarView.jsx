@@ -47,6 +47,7 @@ const CropCalendarView = ({
   setListView,
 }) => {
   // redux vars
+  const councilRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
@@ -134,7 +135,10 @@ const CropCalendarView = ({
   };
 
   useEffect(() => {
-    if (cropDataRedux.length !== 0) sortByAverageGoals();
+    if (cropDataRedux.length !== 0) {
+      if (councilRedux === 'WCCC') sortByPlantingWindow();
+      else sortByAverageGoals();
+    }
   }, [cropDataRedux]);
 
   const tableRef = useRef(null);
