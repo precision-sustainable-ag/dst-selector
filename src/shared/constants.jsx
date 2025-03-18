@@ -786,7 +786,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
         let valEnd;
         // hessian fly dates are an exception to this condition because it has only one date and not a range
         if (date.label === 'Hessian Fly Free Date') {
-          valStart = moment(dateArray.value, 'YYYY-MM-DD').format('MM/DD');
+          valStart = moment(dateArray.value, 'MM/DD/YYYY').format('MM/DD');
           valEnd = valStart;
         }
         const datesArr = dateArray.value.split('-');
