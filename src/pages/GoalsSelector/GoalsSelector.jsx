@@ -8,12 +8,13 @@ import {
   Chip,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { PSALoadingSpinner } from 'shared-react-components/src';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 import pirschAnalytics from '../../shared/analytics';
+import { updateSelectedFlowering, updateSelectedIrrigation, updateSelectedSeason } from '../../reduxStore/terminationSlice';
 
 const GoalsSelector = () => {
   // theme vars
@@ -29,17 +30,34 @@ const GoalsSelector = () => {
     (stateRedux) => stateRedux.goalsData.selectedGoals,
   ).reverse();
 
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+
+  const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
+
+  const dispatch = useDispatch();
+
+  const handleSelectedSeason = (season) => {
+    dispatch(updateSelectedSeason(season));
+  };
+
+  const handleSelectedFlowering = (floweringType) => {
+    dispatch(updateSelectedFlowering(floweringType));
+  };
+
+  const handleSelectedIrrigation = (irrigation) => {
+    dispatch(updateSelectedIrrigation(irrigation));
+  };
+
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
 
-  const seasons = ['Spring', 'Summer', 'Autumn', 'Winter'];
-  const [selectedSeason, setSelectedSeason] = useState(null);
+  const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
 
   const floweringTypes = ['Annual', 'Perennial'];
-  const [selectedFlowering, setSelectedFlowering] = useState(null);
 
   const irrigationType = ['Rainfed', 'Irrigated'];
-  const [selectedIrrigation, setSelectedIrrigation] = useState(null);
 
   useEffect(() => {
     callCoverCropApi(
@@ -179,6 +197,8 @@ const GoalsSelector = () => {
       {/* =============================================== */}
 
       {/* Bottom Row */}
+      {councilShorthandRedux === 'WCCC'
+      && (
       <Grid
         container
         item
@@ -252,7 +272,7 @@ const GoalsSelector = () => {
                     maxWidth: !isLargeScreen ? '45%' : 'auto',
                   },
                 }}
-                onClick={() => setSelectedSeason(season)}
+                onClick={() => handleSelectedSeason(season)}
                 color={selectedSeason === season ? 'primary' : 'secondary'}
               />
             ))}
@@ -301,7 +321,7 @@ const GoalsSelector = () => {
                     boxShadow: '0 0 0 2px black',
                   },
                 }}
-                onClick={() => setSelectedFlowering(floweringType)}
+                onClick={() => handleSelectedFlowering(floweringType)}
                 color={selectedFlowering === floweringType ? 'primary' : 'secondary'}
               />
             ))}
@@ -353,7 +373,7 @@ const GoalsSelector = () => {
                     boxShadow: '0 0 0 2px black',
                   },
                 }}
-                onClick={() => setSelectedIrrigation(irrigation)}
+                onClick={() => handleSelectedIrrigation(irrigation)}
                 color={selectedIrrigation === irrigation ? 'primary' : 'secondary'}
               />
             ))}
@@ -361,8 +381,8 @@ const GoalsSelector = () => {
           </Grid>
         </Grid>
 
-        {/* </Grid> */}
       </Grid>
+      )}
     </Box>
   );
 };

@@ -32,6 +32,39 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
 
+  const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
+
+  // Termination checks
+  const seasons = ['Spring Planted', 'Summer Planted', 'Fall Planted', 'Winter Planted'];
+  const floweringTypes = ['Annual', 'Perennial'];
+  const irrigationType = ['Rainfed', 'Irrigated'];
+
+  function checkTermination(label) {
+    const labelSet = new Set(label.split(',').map((item) => item.trim()));
+
+    if (selectedSeason && seasons.some((season) => labelSet.has(season))) {
+      const seasonLabel = `${selectedSeason} Planted`;
+      if (!labelSet.has(seasonLabel)) {
+        return false;
+      }
+    }
+
+    if (selectedFlowering) {
+      if (!labelSet.has(selectedFlowering) && floweringTypes.some((flowering) => labelSet.has(flowering))) {
+        return false;
+      }
+    }
+
+    if (selectedIrrigation) {
+      if (!labelSet.has(selectedIrrigation) && irrigationType.some((irrigation) => labelSet.has(irrigation))) {
+        return false;
+      }
+    }
+
+    return true;
+  }
   // useState vars
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
@@ -83,9 +116,13 @@ const InformationSheetContent = ({ crop, modalData }) => {
                 )}
                 detailsContent={(
                   <Grid container>
-                    {cat.attributes.map((att, catIndex) => (!att.label.startsWith('Comments')
+                    {cat.attributes.map((att, catIndex) => {
+                      if (att.order === 3 && !checkTermination(att.label)) {
+                        return null; // Return null to render nothing for this attribute
+                      }
+                      return (!att.label.startsWith('Comments')
                       && !att.label.startsWith('Notes:')
-                      && cat.label !== 'Extended Comments' ? (
+                      && cat.label !== 'Extended Comments') ? (
                         <Grid
                           container
                           key={catIndex}
@@ -119,14 +156,14 @@ const InformationSheetContent = ({ crop, modalData }) => {
                             </Typography>
                           </Grid>
                         </Grid>
-                      ) : (
-                        <Grid item key={catIndex} xs={12}>
-                          <PSATooltip
-                            placement="top-end"
-                            enterTouchDelay={0}
-                            title={att.description}
-                            arrow
-                            tooltipContent={(
+                        ) : (
+                          <Grid item key={catIndex} xs={12}>
+                            <PSATooltip
+                              placement="top-end"
+                              enterTouchDelay={0}
+                              title={att.description}
+                              arrow
+                              tooltipContent={(
                               cat.label !== 'Extended Comments' ? (
                                 <Box xs={12} variant="body1" tabIndex="0">
                                   <Typography
@@ -135,6 +172,8 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                     sx={{ fontWeight: 'bold' }}
                                   >
                                     {att.label}
+                                    {att.order}
+
                                   </Typography>
                                   <Typography display="flex" justifyContent="center">
                                     {att.values[0]?.value}
@@ -155,9 +194,10 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                 </Box>
                               )
                             )}
-                          />
-                        </Grid>
-                      )))}
+                            />
+                          </Grid>
+                        );
+                    })}
                   </Grid>
                 )}
               />
