@@ -220,15 +220,15 @@ const Demo = () => {
       await sleep(500);
     }
 
-    if (options.mouseup) {
-      const event = new Event('mouseup', { bubbles: true });
+    if (options.focus) {
+      const event = new Event('focus', { bubbles: false });
       obj.dispatchEvent(event);
       mg.style.display = 'none';
       await sleep(500);
     }
 
-    if (options.focus) {
-      const event = new Event('focus', { bubbles: false });
+    if (options.mouseup) {
+      const event = new Event('mouseup', { bubbles: true });
       obj.dispatchEvent(event);
       mg.style.display = 'none';
       await sleep(500);
@@ -240,10 +240,17 @@ const Demo = () => {
       mg.style.display = 'none';
       await sleep(500);
     }
+
+    if (options.change) {
+      const event = new Event('change', { bubbles: false });
+      obj.dispatchEvent(event);
+      mg.style.display = 'none';
+      await sleep(500);
+    }
   }; // moveTo
 
   const demo = async () => {
-    // Home
+    // Landing
     dispatchRedux(updateStateInfo({
       stateLabel: 'Georgia',
       stateId: 14,
@@ -255,8 +262,8 @@ const Demo = () => {
     await moveTo('[data-test="next-btn"]', 'After selecting your state, press NEXT to advance to the next screen.', 3000, { click: true });
 
     // Location
-    await moveTo('.mapboxgl-ctrl-geocoder--input', '', 500, { value: '72 Tanglewood', keyspeed: 100 });
-    await moveTo('.suggestions li:nth-child(1)', '', 2000, { mouseup: true });
+    await moveTo('.mapboxgl-ctrl-geocoder--input', 'Enter your location here.', 500, { value: '72 Tanglewood', keyspeed: 100 });
+    await moveTo('.suggestions li:nth-child(1)', 'Select from the list.', 2000, { mouseup: true });
     await moveTo('[data-test="next-btn"]', 'After selecting your location, press NEXT to advance to the next screen.', 3000, { click: true });
 
     // SiteConditions
@@ -282,7 +289,6 @@ const Demo = () => {
 
     // GoalsSelector
     // CropSelector
-    // RouteNotFound
   };
 
   useEffect(() => {
@@ -299,7 +305,11 @@ const Demo = () => {
     };
   }, []);
 
-  return null;
+  return (
+    <div className="magnifying-glass">
+      <div className="caption" />
+    </div>
+  );
 };
 
 const App = () => (
@@ -310,9 +320,6 @@ const App = () => (
           <Auth0ProviderWithHistory>
             <Suspense fallback={<div>Loading..</div>}>
               <Demo />
-              <div className="magnifying-glass">
-                <div className="caption" />
-              </div>
               <Box>
                 <SkipContent href="#main-content" text="Skip to content" />
                 <Header />
