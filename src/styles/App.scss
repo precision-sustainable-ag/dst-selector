@@ -61,3 +61,42 @@ code {
     padding-bottom: 15px !important;
   }
 }
+
+.magnifying-glass {
+  position: fixed;
+  display: none;
+  background: transparent;
+  border-radius: 8px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 99999;
+  transition: left .3s, top .3s;
+  transform: translate(-10px, -10px);
+
+  div.caption {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    margin-top: 0.2rem;
+    text-align: center;
+
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    min-width: 10rem;
+    max-width: 20rem;
+
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  div.caption:empty {
+    display: none;
+  }
+}
