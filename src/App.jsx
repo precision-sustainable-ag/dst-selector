@@ -14,7 +14,7 @@ import {
   adaptV4Theme,
 } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import React, { Suspense } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useDispatch, useSelector, Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { PSAProfile, PSATheme } from 'shared-react-components/src';
@@ -42,6 +42,8 @@ import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
 import Feedback from './pages/Feedback/Feedback';
+
+import { updateStateInfo } from './reduxStore/mapSlice';
 
 import './styles/App.scss';
 // bootstrap import
@@ -129,6 +131,177 @@ const csTheme = responsiveFontSizes(theme, {
 
 export const dstTheme = createTheme(deepmerge(PSATheme, csTheme));
 
+const speed = 1;
+
+let lastCaption;
+
+const sleep = (ms) => new Promise((resolve) => {
+  setTimeout(resolve, ms * speed);
+});
+
+const Demo = () => {
+  const dispatchRedux = useDispatch();
+
+  const moveTo = async (sel, caption, delay, options = { }) => {
+    const mg = document.querySelector('.magnifying-glass');
+    const cap = mg.querySelector('.caption');
+
+    if (caption === true) {
+      caption = lastCaption;
+    } else {
+      lastCaption = caption;
+    }
+
+    const parent = document.fullscreenElement || document.body;
+    if (!parent.contains(mg)) {
+      parent.appendChild(mg);
+    }
+
+    const obj = document.querySelector(sel);
+    if (!obj) {
+      // eslint-disable-next-line no-console
+      console.warn(sel);
+      return;
+    }
+
+    obj?.scrollIntoViewIfNeeded();
+
+    const br = obj.getBoundingClientRect();
+    Object.assign(mg.style, {
+      left: `${br.x}px`,
+      top: `${br.y}px`,
+      width: `${br.width + 20}px`,
+      height: `${br.height + 20}px`,
+      display: 'block',
+    });
+
+    cap.innerHTML = '';
+
+    if (caption) {
+      cap.style.left = '50%';
+      cap.style.top = '100%';
+      setTimeout(() => { // wait for CSS transition
+        cap.innerHTML = caption;
+        const cbr = cap.getBoundingClientRect();
+        // console.log(cbr);
+        if (cbr.right > window.innerWidth - 5) {
+          cap.style.left = `calc(50% - ${cbr.right - (window.innerWidth - 5)}px)`;
+        }
+
+        if (cbr.bottom > window.innerHeight - 50) {
+          cap.style.top = `${-cap.clientHeight}px`;
+        }
+      }, 300);
+    }
+
+    if (options.value) {
+      await sleep(500);
+      obj.focus();
+      let v = '';
+      // eslint-disable-next-line no-restricted-syntax
+      for (const c of options.value.toString()) {
+        v += c;
+        obj.value = v;
+        const event = new Event('keydown', { bubbles: true });
+        obj.dispatchEvent(event);
+        // eslint-disable-next-line no-await-in-loop
+        await sleep(options.keyspeed || 100);
+      }
+      obj.blur();
+    }
+
+    await sleep(delay);
+
+    if (options.click) {
+      const event = new Event('click', { bubbles: false });
+      obj.dispatchEvent(event);
+      obj.click();
+      mg.style.display = 'none';
+      await sleep(500);
+    }
+
+    if (options.mouseup) {
+      const event = new Event('mouseup', { bubbles: true });
+      obj.dispatchEvent(event);
+      mg.style.display = 'none';
+      await sleep(500);
+    }
+
+    if (options.focus) {
+      const event = new Event('focus', { bubbles: false });
+      obj.dispatchEvent(event);
+      mg.style.display = 'none';
+      await sleep(500);
+    }
+
+    if (options.mousedown) {
+      const event = new Event('mousedown', { bubbles: true });
+      obj.dispatchEvent(event);
+      mg.style.display = 'none';
+      await sleep(500);
+    }
+  }; // moveTo
+
+  const demo = async () => {
+    // Home
+    dispatchRedux(updateStateInfo({
+      stateLabel: 'Georgia',
+      stateId: 14,
+      councilShorthand: 'SCCC',
+      councilLabel: 'Southern Cover Crops Council',
+    }));
+
+    await moveTo('[data-test="state-selector-dropdown"]', 'Select your state from this drop-down, or click it on the map.', 5000);
+    await moveTo('[data-test="next-btn"]', 'After selecting your state, press NEXT to advance to the next screen.', 3000, { click: true });
+
+    // Location
+    await moveTo('.mapboxgl-ctrl-geocoder--input', '', 500, { value: '72 Tanglewood', keyspeed: 100 });
+    await moveTo('.suggestions li:nth-child(1)', '', 2000, { mouseup: true });
+    await moveTo('[data-test="next-btn"]', 'After selecting your location, press NEXT to advance to the next screen.', 3000, { click: true });
+
+    // SiteConditions
+    await moveTo('[data-test="soil-composition-card"]', 'This shows your soil composition based on soil survey data (SSURGO).', 3000);
+    await moveTo('[data-test="frost-dates-card"]', 'This shows 30-year average frost dates for your location.', 3000);
+    await moveTo('[data-test="precipitation-card"]', 'This shows average monthly and yearly precipitation for your location.', 3000);
+
+    await moveTo(
+      '[data-test="soil-drainage-card"]',
+      'This shows your soil drainage based on soil survey data.<p>You can make changes if appropriate for your location.</p>',
+      3000,
+    );
+    await moveTo('[data-test="drainage-class-chip-2"]', '', 1000, { click: true });
+
+    await moveTo(
+      '[data-test="flooding-frequency-card"]',
+      'This shows the annual probability of a flood event.<p>You can make changes if appropriate for your location.</p>',
+      3000,
+    );
+    await moveTo('[data-test="flooding-options-chip-2"]', '', 1000, { click: true });
+
+    await moveTo('[data-test="next-btn"]', 'When satisfied with your conditions, press NEXT to advance to the next screen.', 3000, { click: true });
+
+    // GoalsSelector
+    // CropSelector
+    // RouteNotFound
+  };
+
+  useEffect(() => {
+    const keydown = (e) => {
+      if (e.key === 'd' && e.ctrlKey && e.altKey) {
+        demo(e);
+      }
+    };
+
+    document.addEventListener('keydown', keydown);
+
+    return () => {
+      document.removeEventListener('keydown', keydown);
+    };
+  }, []);
+
+  return null;
+};
+
 const App = () => (
   <StyledEngineProvider injectFirst>
     <ThemeProvider theme={dstTheme}>
@@ -136,6 +309,10 @@ const App = () => (
         <BrowserRouter>
           <Auth0ProviderWithHistory>
             <Suspense fallback={<div>Loading..</div>}>
+              <Demo />
+              <div className="magnifying-glass">
+                <div className="caption" />
+              </div>
               <Box>
                 <SkipContent href="#main-content" text="Skip to content" />
                 <Header />
