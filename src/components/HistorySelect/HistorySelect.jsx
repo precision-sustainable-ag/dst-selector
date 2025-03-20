@@ -137,6 +137,7 @@ const HistorySelect = () => {
         const updatedHistoryList = userHistoryList.filter(
           (history) => history.id !== selectedUserHistory.id,
         );
+        dispatch(setUserRedux({ userHistoryList: [] }));
         dispatch(setUserRedux({
           userHistoryList: updatedHistoryList,
         }));

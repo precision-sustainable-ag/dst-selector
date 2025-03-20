@@ -68,7 +68,6 @@ export const getHistories = async (accessToken) => {
 
 export const deleteHistory = async (accessToken, historyId) => {
   const url = `${historyApiUrl}/history/${historyId}`;
-  console.log(url);
   const config = {
     method: 'DELETE',
     headers: {
