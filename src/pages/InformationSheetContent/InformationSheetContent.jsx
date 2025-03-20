@@ -142,7 +142,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           container
                           key={catIndex}
                           item
-                          sm={6}
                           xs={12}
                           md={5.7}
                           className="info-sheet-item"
