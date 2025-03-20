@@ -39,15 +39,27 @@ const GoalsSelector = () => {
   const dispatch = useDispatch();
 
   const handleSelectedSeason = (season) => {
-    dispatch(updateSelectedSeason(season));
+    if (selectedSeason === season) {
+      dispatch(updateSelectedSeason(null));
+    } else {
+      dispatch(updateSelectedSeason(season));
+    }
   };
 
   const handleSelectedFlowering = (floweringType) => {
-    dispatch(updateSelectedFlowering(floweringType));
+    if (floweringType === selectedFlowering) {
+      dispatch(updateSelectedFlowering(null));
+    } else {
+      dispatch(updateSelectedFlowering(floweringType));
+    }
   };
 
   const handleSelectedIrrigation = (irrigation) => {
-    dispatch(updateSelectedIrrigation(irrigation));
+    if (irrigation === selectedIrrigation) {
+      dispatch(updateSelectedIrrigation(null));
+    } else {
+      dispatch(updateSelectedIrrigation(irrigation));
+    }
   };
 
   // useState vars

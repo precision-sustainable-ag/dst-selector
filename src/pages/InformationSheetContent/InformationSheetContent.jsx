@@ -42,6 +42,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const irrigationType = ['Rainfed', 'Irrigated'];
 
   function checkTermination(label) {
+    console.log(label);
     const labelSet = new Set(label.split(',').map((item) => item.trim()));
 
     if (selectedSeason && seasons.some((season) => labelSet.has(season))) {
@@ -117,7 +118,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                 detailsContent={(
                   <Grid container>
                     {cat.attributes.map((att, catIndex) => {
-                      if (att.order === 3 && !checkTermination(att.label)) {
+                      if (councilShorthandRedux === 'WCCC' && att.order === 3 && !checkTermination(att.label)) {
                         return null; // Return null to render nothing for this attribute
                       }
                       return (!att.label.startsWith('Comments')
