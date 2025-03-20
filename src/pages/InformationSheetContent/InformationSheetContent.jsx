@@ -42,7 +42,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const irrigationType = ['Rainfed', 'Irrigated'];
 
   function checkTermination(label) {
-    console.log(label);
     const labelSet = new Set(label.split(',').map((item) => item.trim()));
 
     if (selectedSeason && seasons.some((season) => labelSet.has(season))) {
