@@ -3,7 +3,7 @@
 */
 
 import {
-  Box, Grid, Typography,
+  Box, Grid, Typography, useMediaQuery, useTheme,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -16,9 +16,17 @@ import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
 import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
 
-const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
+const CropDetailsModal = ({
+  crop,
+  setModalOpen,
+  modalOpen,
+}) => {
   const dispatch = useDispatch();
   // redux vars
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
@@ -121,11 +129,9 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   return dataDone === true && (
     <PSAModal
       sx={{
-        overflow: 'scroll',
-        marginTop: '2%',
-        marginBottom: '1%',
-        maxWidth: '70%',
-        marginLeft: '15%',
+        overflowX: 'hidden',
+        maxWidth: isMobile ? '100%' : '70%',
+        margin: isMobile ? '0' : '2% auto',
       }}
       open={modalOpen}
       onClose={handleModalClose}
@@ -139,8 +145,27 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
           id={`cropDetailModal-${modalData.id}`}
         >
           <Grid container>
-            <Grid container item xs={12} sx={{ backgroundColor: '#2D7B7B' }} className="no-print">
-              <Grid container display="flex" alignItems="center" item xs={11}>
+            <Grid
+              container
+              sx={{
+                backgroundColor: '#2D7B7B',
+                position: 'fixed',
+                zIndex: 1000,
+                width: isMobile ? '100%' : '70%',
+                height: isMobile ? '70px' : 'auto',
+              }}
+              className="no-print"
+            >
+              <Grid
+                container
+                display="flex"
+                alignItems="center"
+                item
+                xs={11}
+                sx={{
+                  borderTop: '5px solid #2d7b7b',
+                }}
+              >
                 <Grid item>
                   <Typography color="white" sx={{ marginLeft: '2em' }}>
                     Cover Crop Information Sheet
@@ -155,28 +180,24 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     }}
                     title="Terminology Definitions"
                   />
-                </Grid>
-                {
-                  printing
-                    ? (
-                      <Grid item>
+                  {
+                    printing
+                      ? (
                         <PSAButton
                           buttonType="ModalLink"
                           startIcon={<CircularProgress size={20} />}
                         />
-                      </Grid>
-                    )
-                    : (
-                      <Grid item>
+                      )
+                      : (
                         <PSAButton
                           startIcon={<Print />}
                           buttonType="ModalLink"
                           onClick={print}
                           title="Print"
                         />
-                      </Grid>
-                    )
-                }
+                      )
+                  }
+                </Grid>
               </Grid>
 
               <Grid item xs={1}>
@@ -189,8 +210,18 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
               </Grid>
             </Grid>
 
-            <Grid container item xs={12}>
-              <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
+            <Grid container justifyContent={isMobile ? 'center' : 'flex-start'}>
+              <Box
+                sx={{
+                  width: isMobile ? '100%' : 'inherit',
+                  maxWidth: isMobile ? '390px' : 'unset',
+                  marginTop: '80px',
+                  marginLeft: isMobile ? '2px' : '2.5%',
+                  marginRight: isMobile ? '2px' : '2.5%',
+                }}
+              >
+                <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
+              </Box>
             </Grid>
           </Grid>
         </Box>
