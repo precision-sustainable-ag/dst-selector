@@ -6,7 +6,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSADropdown, PSAModal } from 'shared-react-components/src';
 import { getAuthToken } from '../../shared/authToken';
-import { loadHistory } from '../../shared/api';
+import { loadHistory, removeHistory } from '../../shared/api';
 import {
   setSelectedHistory, setHistoryDialogState, setHistoryState,
   historyState, setUserRedux,
@@ -128,6 +128,24 @@ const HistorySelect = () => {
     });
   };
 
+  const handleDeleteHistory = () => {
+    if (!value) return;
+    const token = getAuthToken();
+    const selectedUserHistory = userHistoryList.find((history) => history.label === value);
+    removeHistory(token, selectedUserHistory.id).then((res) => {
+      if (res) {
+        const updatedHistoryList = userHistoryList.filter(
+          (history) => history.id !== selectedUserHistory.id,
+        );
+        dispatch(setUserRedux({
+          userHistoryList: updatedHistoryList,
+        }));
+        dispatch(snackHandler({ snackOpen: true, snackMessage: 'History Deleted.' }));
+        setValue('');
+      }
+    });
+  };
+
   const handleAddHistory = () => {
     dispatch(setHistoryDialogState({ ...historyDialogState, open: true }));
     pirschAnalytics('History', { meta: { history: 'Create New' } });
@@ -152,12 +170,12 @@ const HistorySelect = () => {
         open={open}
         modalContent={(
           <Box sx={modalStyles}>
-            <Grid container spacing={2}>
+            <Grid container spacing={6}>
               <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
                 <Typography>Select your history</Typography>
               </Grid>
 
-              <Grid item xs={12} md={9} display="flex" justifyContent="center" alignItems="center">
+              <Grid item xs={12} md={7} display="flex" justifyContent="center" alignItems="center">
                 <PSADropdown
                   formSx={{ minWidth: '80%' }}
                   inputSx={inputLabelStyles}
@@ -173,13 +191,23 @@ const HistorySelect = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} md={3} display="flex" justifyContent="center" alignItems="center">
+              <Grid item xs={12} md={5} display="flex" justifyContent="center" alignItems="center" gap={3}>
                 <PSAButton
                   onClick={handleLoadHistory}
                   variant="contained"
                   disabled={value === ''}
                   data-test="import-history"
                   title="Import"
+                  buttonType=""
+                />
+
+                <PSAButton
+                  onClick={handleDeleteHistory}
+                  variant="contained"
+                  color="error"
+                  disabled={value === ''}
+                  data-test="delete-history"
+                  title="Delete"
                   buttonType=""
                 />
               </Grid>

@@ -66,6 +66,20 @@ export const getHistories = async (accessToken) => {
   return data;
 };
 
+export const deleteHistory = async (accessToken, historyId) => {
+  const url = `${historyApiUrl}/history/${historyId}`;
+  console.log(url);
+  const config = {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+  const data = await fetchData(url, config);
+  return data;
+};
+
 /**
  * This function loads history from user history api.
  * If no param, return a list of name of current history records.
@@ -98,6 +112,27 @@ export const loadHistory = async (token = null, name = null) => {
   } catch (err) {
     // FIXME: temporary error handling for all api calls, not throwing it
     console.error('Error when loading history: ', err);
+    throw err;
+  }
+};
+
+/**
+ * Deletes a history record from the API using its ID.
+ * @param {string} token - Authentication token.
+ * @param {string} historyId - The ID of the history record to delete.
+ */
+export const removeHistory = async (token, historyId) => {
+  try {
+    if (!token) throw new Error('Access token not available!');
+    if (!historyId) throw new Error('History ID is required!');
+
+    const res = await deleteHistory(token, historyId);
+
+    if (res) {
+      return res;
+    }
+  } catch (err) {
+    console.error('Error when deleting history:', err);
     throw err;
   }
 };
