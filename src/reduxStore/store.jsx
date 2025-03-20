@@ -10,6 +10,7 @@ import addressReducer from './addressSlice';
 import sharedReducer from './sharedSlice';
 import userReducer from './userSlice';
 import pageReducer from './pageSlice';
+import terminationReducer from './terminationSlice';
 
 export const reset = () => ({
   type: 'RESET',
@@ -27,6 +28,7 @@ const configureStore = () => {
     addressData: addressReducer,
     userData: userReducer,
     pageData: pageReducer,
+    terminationData: terminationReducer,
   });
 
   const rootReducer = (state, action) => {
@@ -43,6 +45,7 @@ const configureStore = () => {
         addressData: addressReducer(undefined, action),
         userData: userReducer(undefined, action),
         pageData: pageReducer(undefined, action),
+        terminationData: terminationReducer(undefined, action),
       };
     }
 

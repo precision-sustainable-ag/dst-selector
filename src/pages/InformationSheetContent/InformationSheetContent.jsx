@@ -26,6 +26,39 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
 
+  const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
+
+  // Termination checks
+  const seasons = ['Spring Planted', 'Summer Planted', 'Fall Planted', 'Winter Planted'];
+  const floweringTypes = ['Annual', 'Perennial'];
+  const irrigationType = ['Rainfed', 'Irrigated'];
+
+  function checkTermination(label) {
+    const labelSet = new Set(label.split(',').map((item) => item.trim()));
+
+    if (selectedSeason && seasons.some((season) => labelSet.has(season))) {
+      const seasonLabel = `${selectedSeason} Planted`;
+      if (!labelSet.has(seasonLabel)) {
+        return false;
+      }
+    }
+
+    if (selectedFlowering) {
+      if (!labelSet.has(selectedFlowering) && floweringTypes.some((flowering) => labelSet.has(flowering))) {
+        return false;
+      }
+    }
+
+    if (selectedIrrigation) {
+      if (!labelSet.has(selectedIrrigation) && irrigationType.some((irrigation) => labelSet.has(irrigation))) {
+        return false;
+      }
+    }
+
+    return true;
+  }
   // useState vars
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
@@ -98,9 +131,13 @@ const InformationSheetContent = ({ crop, modalData }) => {
                       borderRadius: '0 0 30px 30px',
                     }}
                   >
-                    {cat.attributes.map((att, catIndex) => (!att.label.startsWith('Comments')
+                    {cat.attributes.map((att, catIndex) => {
+                      if (councilShorthandRedux === 'WCCC' && att.order === 3 && !checkTermination(att.label)) {
+                        return null; // Return null to render nothing for this attribute
+                      }
+                      return (!att.label.startsWith('Comments')
                       && !att.label.startsWith('Notes:')
-                      && cat.label !== 'Extended Comments' ? (
+                      && cat.label !== 'Extended Comments') ? (
                         <Grid
                           container
                           key={catIndex}
@@ -152,33 +189,36 @@ const InformationSheetContent = ({ crop, modalData }) => {
                             </Grid>
                           </Grid>
                         </Grid>
-                      ) : (
-                        <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
-                          <PSATooltip
-                            placement="top-end"
-                            enterTouchDelay={0}
-                            title={att.description}
-                            arrow
-                            tooltipContent={(
-                              <Box xs={12} tabIndex="0">
-                                <Typography
-                                  display="flex"
-                                  justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
-                                  sx={{ fontWeight: 'bold' }}
-                                >
-                                  {att.label}
-                                </Typography>
-                                <Typography
-                                  display="flex"
-                                  justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
-                                >
-                                  {att.values[0]?.value}
-                                </Typography>
-                              </Box>
+                        ) : (
+                          <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
+                            <PSATooltip
+                              placement="top-end"
+                              enterTouchDelay={0}
+                              title={att.description}
+                              arrow
+                              tooltipContent={(
+                                <Box xs={12} tabIndex="0">
+                                  <Typography
+                                    display="flex"
+                                    justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
+                                    sx={{ fontWeight: 'bold' }}
+                                  >
+                                    {att.label}
+                                    {att.order}
+
+                                  </Typography>
+                                  <Typography
+                                    display="flex"
+                                    justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
+                                  >
+                                    {att.values[0]?.value}
+                                  </Typography>
+                                </Box>
                             )}
-                          />
-                        </Grid>
-                      )))}
+                            />
+                          </Grid>
+                        );
+                    })}
                   </Grid>
                 )}
               />
