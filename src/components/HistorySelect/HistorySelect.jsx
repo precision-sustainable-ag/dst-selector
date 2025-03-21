@@ -19,6 +19,7 @@ import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
+import { reset } from '../../reduxStore/store';
 
 const menuProps = {
   PaperProps: {
@@ -137,7 +138,7 @@ const HistorySelect = () => {
         const updatedHistoryList = userHistoryList.filter(
           (history) => history.id !== selectedUserHistory.id,
         );
-        dispatch(setUserRedux({ userHistoryList: [] }));
+        dispatch(reset());
         dispatch(setUserRedux({
           userHistoryList: updatedHistoryList,
         }));
