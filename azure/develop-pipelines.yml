@@ -34,9 +34,6 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - script: |
-        echo VITE_API_GOOGLE_API_KEY="$(VITE_API_GOOGLE_API_KEY)" >> /home/vsts/work/1/s/.env
-        echo VITE_API_OPEN_WEATHER_API_KEY="$(VITE_API_OPEN_WEATHER_API_KEY)" >> /home/vsts/work/1/s/.env
-        echo VITE_API_MAPBOX_API_KEY="$(VITE_API_MAPBOX_API_KEY)" >> /home/vsts/work/1/s/.env
         echo VITE_API_AUTH0_DOMAIN="$(VITE_API_AUTH0_DOMAIN)" >> /home/vsts/work/1/s/.env
         echo VITE_API_AUTH0_CLIENT_ID="$(VITE_API_AUTH0_CLIENT_ID)" >> /home/vsts/work/1/s/.env
         echo VITE_API_AUTH0_AUDIENCE="$(VITE_API_AUTH0_AUDIENCE)" >> /home/vsts/work/1/s/.env
@@ -44,8 +41,6 @@ stages:
         echo VITE_API_USER_HISTORY_SCHEMA="$(VITE_API_USER_HISTORY_SCHEMA)" >> /home/vsts/work/1/s/.env
         echo VITE_API_RELEASE_NOTES="$(VITE_API_RELEASE_NOTES)" >> /home/vsts/work/1/s/.env
         echo VITE_API_MAPBOX_TOKEN="$(VITE_API_MAPBOX_TOKEN)" >> /home/vsts/work/1/s/.env
-        echo VITE_AUTH0_USERNAME="$(VITE_AUTH0_USERNAME)" >> /home/vsts/work/1/s/.env
-        echo VITE_AUTH0_PASSWORD="$(VITE_AUTH0_PASSWORD)" >> /home/vsts/work/1/s/.env
       displayName: "Create .env"
     - task: Docker@2
       displayName: Build and push an image to container registry
