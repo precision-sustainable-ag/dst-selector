@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-fallthrough */
 /* eslint-disable max-len */
 /*
   This file contains the Header component, helper functions
@@ -32,6 +34,209 @@ import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
 import useWindowSize from '../../shared/constants';
+import { updateStateInfo } from '../../reduxStore/mapSlice';
+
+const speed = 1;
+
+let lastCaption;
+
+const sleep = (ms) => new Promise((resolve) => {
+  setTimeout(resolve, ms * speed);
+});
+
+const Demo = () => {
+  const dispatchRedux = useDispatch();
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  console.log(progressRedux);
+
+  const moveTo = async (sel, caption, delay, options = { }) => {
+    const mg = document.querySelector('.magnifying-glass');
+    const cap = mg.querySelector('.caption');
+
+    if (caption === true) {
+      caption = lastCaption;
+    } else {
+      lastCaption = caption;
+    }
+
+    const parent = document.fullscreenElement || document.body;
+    if (!parent.contains(mg)) {
+      parent.appendChild(mg);
+    }
+
+    const obj = document.querySelector(sel);
+    if (!obj) {
+      // eslint-disable-next-line no-console
+      console.warn(sel);
+      return;
+    }
+
+    obj?.scrollIntoViewIfNeeded();
+
+    const br = obj.getBoundingClientRect();
+    Object.assign(mg.style, {
+      left: `${br.x}px`,
+      top: `${br.y}px`,
+      width: `${br.width + 20}px`,
+      height: `${br.height + 20}px`,
+      display: 'block',
+    });
+
+    cap.innerHTML = '';
+
+    if (caption) {
+      cap.style.left = '50%';
+      cap.style.top = '100%';
+      setTimeout(() => { // wait for CSS transition
+        cap.innerHTML = caption;
+        const cbr = cap.getBoundingClientRect();
+        // console.log(cbr);
+        if (cbr.right > window.innerWidth - 5) {
+          cap.style.left = `calc(50% - ${cbr.right - (window.innerWidth - 5)}px)`;
+        }
+
+        if (cbr.bottom > window.innerHeight - 50) {
+          cap.style.top = `${-cap.clientHeight}px`;
+        }
+      }, 300);
+    }
+
+    if (options.value) {
+      await sleep(500);
+      obj.focus();
+      let v = '';
+      // eslint-disable-next-line no-restricted-syntax
+      for (const c of options.value.toString()) {
+        v += c;
+        obj.value = v;
+        const event = new Event('keydown', { bubbles: true });
+        obj.dispatchEvent(event);
+        // eslint-disable-next-line no-await-in-loop
+        await sleep(options.keyspeed || 100);
+      }
+      obj.blur();
+    }
+
+    await sleep(delay);
+
+    if (options.click) {
+      const event = new Event('click', { bubbles: false });
+      obj.dispatchEvent(event);
+      obj.click();
+      mg.style.display = 'none';
+      await sleep(500);
+    }
+
+    if (options.focus) {
+      const event = new Event('focus', { bubbles: false });
+      obj.dispatchEvent(event);
+      mg.style.display = 'none';
+      await sleep(500);
+    }
+
+    if (options.mouseup) {
+      const event = new Event('mouseup', { bubbles: true });
+      obj.dispatchEvent(event);
+      mg.style.display = 'none';
+      await sleep(500);
+    }
+
+    if (options.mousedown) {
+      const event = new Event('mousedown', { bubbles: true });
+      obj.dispatchEvent(event);
+      mg.style.display = 'none';
+      await sleep(500);
+    }
+
+    if (options.change) {
+      const event = new Event('change', { bubbles: false });
+      obj.dispatchEvent(event);
+      mg.style.display = 'none';
+      await sleep(500);
+    }
+  }; // moveTo
+
+  const landing = async () => {
+    dispatchRedux(updateStateInfo({
+      stateLabel: 'Georgia',
+      stateId: 14,
+      councilShorthand: 'SCCC',
+      councilLabel: 'Southern Cover Crops Council',
+    }));
+
+    await moveTo('[data-test="state-selector-dropdown"]', 'Select your state from this drop-down, or click it on the map.', 5000);
+    await moveTo('[data-test="next-btn"]', 'After selecting your state, press NEXT to advance to the next screen.', 3000, { click: true });
+  }; // landing
+
+  const location = async () => {
+    await moveTo('.mapboxgl-ctrl-geocoder--input', 'Enter your location here.', 500, { value: '72 Tanglewood', keyspeed: 100 });
+    await moveTo('.suggestions li:nth-child(1)', 'Select from the list.', 2000, { mouseup: true });
+    await moveTo('[data-test="next-btn"]', 'After selecting your location, press NEXT to advance to the next screen.', 3000, { click: true });
+  };
+
+  const siteConditions = async () => {
+    await moveTo('[data-test="soil-composition-card"]', 'This shows your soil composition based on soil survey data (SSURGO).', 3000);
+    await moveTo('[data-test="frost-dates-card"]', 'This shows 30-year average frost dates for your location.', 3000);
+    await moveTo('[data-test="precipitation-card"]', 'This shows average monthly and yearly precipitation for your location.', 3000);
+
+    await moveTo(
+      '[data-test="soil-drainage-card"]',
+      'This shows your soil drainage based on soil survey data.<p>You can make changes if appropriate for your location.</p>',
+      3000,
+    );
+    await moveTo('[data-test="drainage-class-chip-2"]', '', 1000, { click: true });
+
+    await moveTo(
+      '[data-test="flooding-frequency-card"]',
+      'This shows the annual probability of a flood event.<p>You can make changes if appropriate for your location.</p>',
+      3000,
+    );
+    await moveTo('[data-test="flooding-options-chip-2"]', '', 1000, { click: true });
+
+    await moveTo('[data-test="next-btn"]', 'When satisfied with your conditions, press NEXT to advance to the next screen.', 3000, { click: true });
+  };
+
+  const goalSelector = async () => {
+    await sleep(1000);
+    await moveTo('#chip6', 'First goal', 3000, { click: true });
+  };
+
+  const cropSelector = async () => {
+    console.log('TBD');
+  };
+
+  useEffect(() => {
+    const keydown = async (e) => {
+      if (e.key === 'd' && e.ctrlKey && e.altKey) {
+        // eslint-disable-next-line default-case
+        switch (progressRedux) {
+          case 0:
+            await landing();
+          case 1:
+            await location();
+          case 2:
+            await siteConditions();
+          case 3:
+            await goalSelector();
+          case 4:
+            await cropSelector();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', keydown);
+
+    return () => {
+      document.removeEventListener('keydown', keydown);
+    };
+  }, [progressRedux]);
+
+  return (
+    <div className="magnifying-glass">
+      <div className="caption" />
+    </div>
+  );
+};
 
 const Header = () => {
   const history = useHistory();
@@ -152,6 +357,7 @@ const Header = () => {
 
   return (
     <header style={{ width: headerWidth }}>
+      <Demo />
       <Box>
         <Grid container>
           <PSAHeader
