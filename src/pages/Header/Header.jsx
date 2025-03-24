@@ -47,7 +47,6 @@ const sleep = (ms) => new Promise((resolve) => {
 const Demo = () => {
   const dispatchRedux = useDispatch();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  console.log(progressRedux);
 
   const moveTo = async (sel, caption, delay, options = { }) => {
     const mg = document.querySelector('.magnifying-glass');
@@ -67,7 +66,9 @@ const Demo = () => {
     const obj = document.querySelector(sel);
     if (!obj) {
       // eslint-disable-next-line no-console
-      console.warn(sel);
+      console.log(`${sel} not available. Waiting 0.2s`);
+      await sleep(200);
+      await moveTo(sel, caption, delay, options);
       return;
     }
 
@@ -197,7 +198,6 @@ const Demo = () => {
   };
 
   const goalSelector = async () => {
-    await sleep(1000);
     await moveTo('#chip6', 'First goal', 3000, { click: true });
   };
 
