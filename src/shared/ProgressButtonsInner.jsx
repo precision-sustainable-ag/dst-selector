@@ -72,6 +72,7 @@ const ProgressButtonsInner = ({
                 disabled={isDisabledNext || progressRedux === 4}
                 buttonType="PillButton"
                 data-test="next-btn"
+                transparent={false}
                 title="NEXT"
               />
             </Box>
