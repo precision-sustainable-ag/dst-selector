@@ -252,27 +252,18 @@ const CropSidebar = ({
     if (queryStringRedux === null) return;
     dispatchRedux(setAjaxInProgress(true));
     setLoading(true);
-    if (councilShorthandRedux !== 'WCCC') {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
-        .then((data) => {
-          const allFilters = [];
-          data.data.forEach((category) => {
-            allFilters.push(category.attributes);
-          });
-          setSidebarFiltersData(allFilters);
-          setSidebarCategoriesData(data.data);
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
+      .then((data) => {
+        // remove termination filters for WCCC
+        const allFilters = [];
+        data.data.forEach((category) => {
+          if (councilShorthandRedux === 'WCCC' && category.label === 'Termination') return;
+          allFilters.push(category.attributes);
         });
-    } else {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
-        .then((data) => {
-          const allFilters = [];
-          data.data.forEach((category) => {
-            allFilters.push(category.attributes);
-          });
-          setSidebarFiltersData(allFilters);
-          setSidebarCategoriesData(data.data);
-        });
-    }
+        const categories = councilShorthandRedux === 'WCCC' ? data.data.filter((category) => (category.label !== 'Termination')) : data.data;
+        setSidebarFiltersData(allFilters);
+        setSidebarCategoriesData(categories);
+      });
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`)
       .then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
