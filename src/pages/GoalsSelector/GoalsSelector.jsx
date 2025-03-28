@@ -258,7 +258,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Season
+              Planting Season
             </Typography>
           </Grid>
           {/* sub-title */}
@@ -309,7 +309,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Flowering Type
+              Lifecycle
             </Typography>
           </Grid>
           {/* sub-title */}
