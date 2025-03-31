@@ -17,7 +17,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
-import { Map } from 'shared-react-components/src';
+import { PSAReduxMap } from 'shared-react-components/src';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, callCoverCropApi,
@@ -51,6 +51,11 @@ const Location = () => {
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState({});
   const [mapFeatures, setMapFeatures] = useState([]);
+
+  // call back function that is passed to shared map to update 'selectedToEditSite'
+  const updateSelectedToEditSite = (properties) => {
+    setSelectedToEditSite(properties?.address);
+  };
 
   // if user field exists, return field, else return state capitol
   const getFeatures = () => {
@@ -339,8 +344,8 @@ const Location = () => {
         {stateLabelRedux !== 'Ontario' && (
           <Grid container>
             <Container maxWidth="md">
-              <Map
-                setAddress={setSelectedToEditSite}
+              <PSAReduxMap
+                setProperties={updateSelectedToEditSite}
                 setFeatures={setCurrentGeometry}
                 initWidth="100%"
                 initHeight="450px"
@@ -355,10 +360,12 @@ const Location = () => {
                 hasNavigation
                 hasCoordBar
                 hasDrawing
+                hasFreehand
                 hasGeolocate
                 hasFullScreen
                 hasMarkerPopup
                 hasMarkerMovable
+                hasHelp
                 mapboxToken={mapboxToken}
               />
             </Container>

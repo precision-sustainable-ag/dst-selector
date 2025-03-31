@@ -17,7 +17,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
-import { RegionSelectorMap, PSADropdown } from 'shared-react-components/src';
+import { PSADropdown, PSARegionSelectorMap } from 'shared-react-components/src';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { updateLocation } from '../../reduxStore/addressSlice';
@@ -326,7 +326,7 @@ const Landing = () => {
           }}
           sx={{ maxWidth: '800px' }}
         >
-          <RegionSelectorMap
+          <PSARegionSelectorMap
             selectorFunction={setMapState}
             selectedState={selectedState.label}
             availableStates={availableStates}

@@ -19,4 +19,12 @@ export default defineConfig(() => ({
       '@babel/runtime': path.resolve(__dirname, 'node_modules/@babel/runtime'),
     },
   },
+  optimizeDeps: {
+    include: [
+      'mapbox-gl',
+      '@mapbox/mapbox-gl-draw',
+      '@mapbox/mapbox-gl-geocoder',
+      'wellknown',
+    ],
+  },
 }));
