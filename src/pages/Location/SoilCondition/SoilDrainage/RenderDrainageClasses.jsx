@@ -72,7 +72,6 @@ const RenderDrainageClasses = ({
 
     if (!drainageVal.includes(index)) {
       drainages = [index];
-      console.log('drainages: ', drainages);
       setNewDrainage(drainageArray[drainages[0]]);
       updateDrainageAction(drainages);
       dispatchRedux(setTileDrainage(false));
