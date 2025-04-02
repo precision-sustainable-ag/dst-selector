@@ -53,7 +53,7 @@ const RenderDrainageClasses = ({
       } else if (drainages === 1) {
         drainages -= 1;
       } else if (drainages >= 2) {
-        drainages = councilShorthandRedux === 'MCCC' && previousDrainage !== 2 ? drainages - 2 : drainages - 1;
+        drainages = councilShorthandRedux === 'MCCC' && previousDrainage !== 2 ? drainages - 2 : drainages;
       }
     }
     updateDrainageAction([drainages]);
@@ -72,6 +72,7 @@ const RenderDrainageClasses = ({
 
     if (!drainageVal.includes(index)) {
       drainages = [index];
+      console.log('drainages: ', drainages);
       setNewDrainage(drainageArray[drainages[0]]);
       updateDrainageAction(drainages);
       dispatchRedux(setTileDrainage(false));
