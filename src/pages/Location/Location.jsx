@@ -53,8 +53,9 @@ const Location = () => {
   const [mapFeatures, setMapFeatures] = useState([]);
 
   // call back function that is passed to shared map to update 'selectedToEditSite'
-  const updateSelectedToEditSite = (properties) => {
+  const updateProperties = (properties) => {
     setSelectedToEditSite(properties?.address);
+    setCurrentGeometry(properties?.features);
   };
 
   // if user field exists, return field, else return state capitol
@@ -132,7 +133,7 @@ const Location = () => {
       const point = buildPoint(longitude, latitude);
       let geoCollection = null;
       if (Object.keys(currentGeometry).length > 0) {
-        const polygon = currentGeometry.features?.slice(-1)[0];
+        const polygon = currentGeometry?.slice(-1)[0];
         geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry);
         dispatchRedux(updateField(geoCollection));
       } else { dispatchRedux(updateField(point)); }
@@ -345,7 +346,7 @@ const Location = () => {
           <Grid container>
             <Container maxWidth="md">
               <PSAReduxMap
-                setProperties={updateSelectedToEditSite}
+                setProperties={updateProperties}
                 setFeatures={setCurrentGeometry}
                 initWidth="100%"
                 initHeight="450px"
