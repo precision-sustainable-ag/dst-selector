@@ -203,8 +203,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                     sx={{ fontWeight: 'bold' }}
                                   >
                                     {att.label}
-                                    {att.order}
-
                                   </Typography>
                                   <Typography
                                     display="flex"
