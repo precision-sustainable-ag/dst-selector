@@ -2,6 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import {
   TableCell, Typography, TableRow, Grid,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { PSAButton } from 'shared-react-components/src';
 import {
@@ -20,6 +22,9 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md')) || /Mobi|Android/i.test(navigator.userAgent);
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
@@ -48,7 +53,16 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
             }}
             data-test="crop-list-tr"
           >
-            <TableCell size="small" sx={{ maxWidth: 150 }}>
+            <TableCell
+              size="small"
+              sx={{
+                padding: 0,
+                position: isMobile ? 'sticky' : 'static',
+                left: isMobile ? 0 : 'auto',
+                zIndex: isMobile ? 1 : 'auto',
+                backgroundColor: isMobile ? 'white' : 'transparent',
+              }}
+            >
               <Grid
                 container
                 direction="column"
