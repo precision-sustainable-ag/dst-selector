@@ -153,174 +153,172 @@ const CropTable = ({
           title="CROP CALENDAR"
         />
       </Box>
-      <>
-        <TableContainer
-          component="div"
-          sx={{
-            lineHeight: '0.5',
-            overflowX: isMobile ? 'auto' : 'initial',
-            overflowY: isMobile ? 'auto' : 'initial',
-            maxHeight: isMobile ? '700px' : 'auto',
-            maxWidth: isMobile ? '100vw' : 'auto',
-            display: isMobile ? 'block' : 'block',
-            width: '100%',
-          }}
-        >
-          <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }} ref={tableRef}>
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  sx={{
-                    left: isMobile ? 0 : 'auto',
-                    zIndex: isMobile ? 20 : 2,
-                    borderRight: '5px solid white',
-                    backgroundColor: columnSort === 'name' ? '#49a8ab' : '#abd08f',
-                    padding: 0,
-                    minWidth: isMobile ? '30px' : 'auto',
-                    width: isMobile ? 'auto' : '250px',
-                    textAlign: 'center',
-                  }}
-                >
-                  <PSAButton
-                    onClick={() => sortByName()}
-                    buttonType=""
-                    sx={{ color: 'black', textTransform: 'none' }}
-                    variant="body1"
-                    title={(
-                      <>
-                        Cover Crops
-                        {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
-                      </>
-                    )}
-                  />
-                </TableCell>
-                {cropDataRedux[0].keyTraits.length > 0
-                  && (
-                    <TableCell
-                      sx={{ padding: 0 }}
-                      style={{
-                        backgroundColor: '#abd08f',
-                      }}
-                    >
-                      <Typography variant="body1" style={sudotype}>
-                        Key Traits
-                      </Typography>
-                    </TableCell>
+      <TableContainer
+        component="div"
+        sx={{
+          lineHeight: '0.5',
+          overflowX: isMobile ? 'auto' : 'initial',
+          overflowY: isMobile ? 'auto' : 'initial',
+          maxHeight: isMobile ? '700px' : 'auto',
+          maxWidth: isMobile ? '100vw' : 'auto',
+          display: 'block',
+          width: '100%',
+        }}
+      >
+        <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }} ref={tableRef}>
+          <TableHead>
+            <TableRow>
+              <TableCell
+                sx={{
+                  left: isMobile ? 0 : 'auto',
+                  zIndex: isMobile ? 20 : 2,
+                  borderRight: '5px solid white',
+                  backgroundColor: columnSort === 'name' ? '#49a8ab' : '#abd08f',
+                  padding: 0,
+                  minWidth: isMobile ? '30px' : 'auto',
+                  width: isMobile ? 'auto' : '250px',
+                  textAlign: 'center',
+                }}
+              >
+                <PSAButton
+                  onClick={() => sortByName()}
+                  buttonType=""
+                  sx={{ color: 'black', textTransform: 'none' }}
+                  variant="body1"
+                  title={(
+                    <>
+                      Cover Crops
+                      {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
+                    </>
                   )}
-                {selectedGoalsRedux.length > 0
-                  && selectedGoalsRedux.map((goal, index) => (
-                    <TableCell
-                      sx={{ padding: 0 }}
-                      key={index}
-                      style={{
-                        wordBreak: 'break-word',
-                        backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',
-                        textAlign: 'center',
-                      }}
-                    >
-                      <PSATooltip
-                        placement="bottom"
-                        arrow
-                        enterTouchDelay={0}
-                        title={goal}
-                        tooltipContent={(
-                          <Box>
-                            <PSAButton
-                              buttonType=""
-                              onClick={() => sortByGoal(goal, index, `goal${index}`)}
-                              variant="body1"
-                              sx={{ textTransform: 'none' }}
-                              title={(
-                                <>
-                                  {`Goal ${index + 1}`}
-                                  {columnSort === `goal${index}` && (
-                                    <StraightIcon
-                                      style={{ margin: '0px' }}
-                                      className={currentGoalSortFlag ? '' : 'rotate180'}
-                                    />
-                                  )}
-                                </>
-                              )}
-                            />
-                          </Box>
-                        )}
-                      />
-                    </TableCell>
-                  ))}
-
-                {showGrowthWindow && (
-                <TableCell
-                  sx={{ padding: 0 }}
-                  style={{
-                    backgroundColor: columnSort === 'plantingWindow' ? '#49a8ab' : '#abd08f',
-                    textAlign: 'center',
-                  }}
-                >
-                  <PSAButton
-                    buttonType=""
-                    variant="body1"
-                    style={{
-                      textTransform: 'none',
-                    }}
-                    onClick={() => sortByPlantingWindow()}
-                    title={(
-                      <>
-                        Planting Window
-                        {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
-                      </>
-                      )}
-                  />
-                </TableCell>
-                )}
-
-                <TableCell
-                  sx={{ padding: 0 }}
-                  style={{
-                    backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f',
-                    textAlign: 'center',
-                  }}
-                >
-                  <PSAButton
-                    buttonType=""
-                    variant="body1"
-                    style={{ textTransform: 'none' }}
-                    onClick={() => sortBySelectedCrops()}
-                    title={(
-                      <>
-                        My List
-                        {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
-                      </>
-                    )}
-                  />
-                </TableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody data-test="crop-list-tbody">
-
-              {activeCropIdsRedux.length > 0 ? (
-                <RenderTableItems
-                  showGrowthWindow={showGrowthWindow}
-                  handleModalOpen={handleModalOpen}
                 />
-              ) : (
-                <TableRow data-test="crop-list-tr">
+              </TableCell>
+              {cropDataRedux[0].keyTraits.length > 0
+                && (
                   <TableCell
                     sx={{ padding: 0 }}
+                    style={{
+                      backgroundColor: '#abd08f',
+                    }}
                   >
-                    No cover crops match your selected Cover Crop Property filters.
+                    <Typography variant="body1" style={sudotype}>
+                      Key Traits
+                    </Typography>
                   </TableCell>
-                </TableRow>
+                )}
+              {selectedGoalsRedux.length > 0
+                && selectedGoalsRedux.map((goal, index) => (
+                  <TableCell
+                    sx={{ padding: 0 }}
+                    key={index}
+                    style={{
+                      wordBreak: 'break-word',
+                      backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <PSATooltip
+                      placement="bottom"
+                      arrow
+                      enterTouchDelay={0}
+                      title={goal}
+                      tooltipContent={(
+                        <Box>
+                          <PSAButton
+                            buttonType=""
+                            onClick={() => sortByGoal(goal, index, `goal${index}`)}
+                            variant="body1"
+                            sx={{ textTransform: 'none' }}
+                            title={(
+                              <>
+                                {`Goal ${index + 1}`}
+                                {columnSort === `goal${index}` && (
+                                  <StraightIcon
+                                    style={{ margin: '0px' }}
+                                    className={currentGoalSortFlag ? '' : 'rotate180'}
+                                  />
+                                )}
+                              </>
+                            )}
+                          />
+                        </Box>
+                      )}
+                    />
+                  </TableCell>
+                ))}
+
+              {showGrowthWindow && (
+              <TableCell
+                sx={{ padding: 0 }}
+                style={{
+                  backgroundColor: columnSort === 'plantingWindow' ? '#49a8ab' : '#abd08f',
+                  textAlign: 'center',
+                }}
+              >
+                <PSAButton
+                  buttonType=""
+                  variant="body1"
+                  style={{
+                    textTransform: 'none',
+                  }}
+                  onClick={() => sortByPlantingWindow()}
+                  title={(
+                    <>
+                      Planting Window
+                      {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
+                    </>
+                    )}
+                />
+              </TableCell>
               )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <CropDetailsModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          crop={modalData}
-        />
-      </>
+
+              <TableCell
+                sx={{ padding: 0 }}
+                style={{
+                  backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f',
+                  textAlign: 'center',
+                }}
+              >
+                <PSAButton
+                  buttonType=""
+                  variant="body1"
+                  style={{ textTransform: 'none' }}
+                  onClick={() => sortBySelectedCrops()}
+                  title={(
+                    <>
+                      My List
+                      {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
+                    </>
+                  )}
+                />
+              </TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody data-test="crop-list-tbody">
+
+            {activeCropIdsRedux.length > 0 ? (
+              <RenderTableItems
+                showGrowthWindow={showGrowthWindow}
+                handleModalOpen={handleModalOpen}
+              />
+            ) : (
+              <TableRow data-test="crop-list-tr">
+                <TableCell
+                  sx={{ padding: 0 }}
+                >
+                  No cover crops match your selected Cover Crop Property filters.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <CropDetailsModal
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        crop={modalData}
+      />
     </>
   ) : (
     <Grid
