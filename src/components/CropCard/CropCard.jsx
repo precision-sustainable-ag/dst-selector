@@ -1,5 +1,5 @@
 import {
-  Card, CardActionArea, CardContent, CardMedia, Typography,
+  Card, CardActionArea, CardContent, CardMedia, Typography, Box,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -54,6 +54,11 @@ const CropCard = ({
     await updateBtns();
   }
 
+  const needsRotation = (c) => {
+    const rotatedCropIds = ['Beans, Faba', 'Millet, Proso', 'Sudangrass'];
+    return rotatedCropIds.includes(c.label);
+  };
+
   const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
   const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
 
@@ -61,20 +66,31 @@ const CropCard = ({
   return (
     <Card style={{ width: isMobile ? '160px' : '260px' }} data-test={`crop-card-${index - 1}`}>
       <CardActionArea onClick={() => handleModalOpen(crop)}>
-        <CardMedia
-          image={
-            isMobile
-              ? crop.thumbnailMobile || 'https://placehold.co/160x140?text=Placeholder'
-              : crop.thumbnailWide || 'https://placehold.co/260x140?text=Placeholder'
-          }
+        <Box
           sx={{
             height: 140,
-            borderWidth: shouldHighlightRed ? '4px' : '0px',
-            borderColor: shouldHighlightRed ? 'red' : 'transparent',
-            borderStyle: 'solid',
+            overflow: 'hidden',
           }}
-          title={crop.label}
-        />
+        >
+          <CardMedia
+            component="img"
+            image={
+              isMobile
+                ? crop.thumbnailMobile || 'https://placehold.co/160x140?text=Placeholder'
+                : crop.thumbnailWide || 'https://placehold.co/260x140?text=Placeholder'
+            }
+            sx={{
+              height: needsRotation(crop) ? 'auto' : '100%',
+              width: needsRotation(crop) ? '100%' : 'auto',
+              transform: needsRotation(crop) ? 'rotate(90deg) scale(1.9)' : 'none',
+              transformOrigin: 'center',
+              borderWidth: shouldHighlightRed ? '4px' : '0px',
+              borderColor: shouldHighlightRed ? 'red' : 'transparent',
+              borderStyle: 'solid',
+            }}
+            title={crop.label}
+          />
+        </Box>
       </CardActionArea>
       <CardContent>
         <Typography
