@@ -6,6 +6,7 @@ const initialState = {
     latLong: [],
     drainageOptions: [],
     floodingOptions: [],
+    tileDrainage: false,
   },
   soilDataOriginal: {
     mapUnitName: '',
@@ -14,6 +15,7 @@ const initialState = {
     latLong: [],
     drainageOptions: [],
     floodingOptions: [],
+    tileDrainage: false,
   },
 };
 
