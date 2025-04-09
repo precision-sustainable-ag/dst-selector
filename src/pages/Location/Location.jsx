@@ -12,7 +12,6 @@ import {
 import React, {
   useEffect,
   useState,
-  useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
@@ -47,12 +46,29 @@ const Location = () => {
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [mapFeatures, setMapFeatures] = useState(userFieldRedux);
+  // eslint-disable-next-line no-nested-ternary
+  const [latLon, setLatLon] = useState(markersRedux ? markersRedux[0] : stateLabelRedux ? statesLatLongDict[stateLabelRedux] : [47, -122]);
 
-  // call back function that is passed to shared map to update 'selectedToEditSite'
+  const updateMapFeatures = (newFeatures) => {
+    if (JSON.stringify(mapFeatures) === JSON.stringify(newFeatures)) return;
+
+    // if user imported a history, this will prevent the user from changing the polygons
+    if (historyStateRedux === historyState.imported) {
+      setMapFeatures([...mapFeatures]);
+      dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+      return;
+    }
+
+    // update redux state variable with new features
+    setMapFeatures(newFeatures);
+    dispatchRedux(updateField(newFeatures));
+  };
+
+  // call back function that is passed to shared map to update local state variables
   const updateProperties = (properties) => {
     setSelectedToEditSite(properties?.address);
-    setMapFeatures(properties?.features);
-    dispatchRedux(updateField(properties?.features));
+    setLatLon([properties?.lat, properties?.lon]);
+    updateMapFeatures(properties?.features);
   };
 
   useEffect(() => {
@@ -69,17 +85,6 @@ const Location = () => {
     }));
     pirschAnalytics('Location', { meta: { mapUpdate: true } });
   };
-
-  // set map initial lat lng
-  const getLatLng = useMemo(() => {
-    if (markersRedux) {
-      return markersRedux[0];
-    }
-    if (stateLabelRedux) {
-      return statesLatLongDict[stateLabelRedux];
-    }
-    return [47, -122];
-  }, [stateLabelRedux]);
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
@@ -101,10 +106,10 @@ const Location = () => {
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
-      // FIXME: if user imported a history without a field, this will prevent them creating one
-      if (historyStateRedux === historyState.imported && userFieldRedux !== null) {
+      // if user imported a history, this will prevent the user from changing the marker location
+      if (historyStateRedux === historyState.imported) {
         dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
-        setMapFeatures(userFieldRedux);
+        setLatLon(markersRedux[0]);
         return;
       }
 
@@ -319,8 +324,8 @@ const Location = () => {
                 setProperties={updateProperties}
                 initWidth="100%"
                 initHeight="450px"
-                initLat={getLatLng[0]}
-                initLon={getLatLng[1]}
+                initLat={latLon[0]}
+                initLon={latLon[1]}
                 initFeatures={mapFeatures}
                 initStartZoom={12}
                 initMinZoom={4}
