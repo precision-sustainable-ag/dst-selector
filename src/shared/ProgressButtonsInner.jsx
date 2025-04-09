@@ -95,6 +95,7 @@ const ProgressButtonsInner = ({
             buttonType="PillButton"
             data-test={progressRedux === 4 ? 'my selected crops-btn' : 'next-btn'}
             title={progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
+            className="selectedCropsButton"
           />
         </Badge>
       )}

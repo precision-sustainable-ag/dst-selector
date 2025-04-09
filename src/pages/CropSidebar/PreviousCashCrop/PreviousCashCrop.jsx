@@ -56,11 +56,11 @@ const PreviousCashCrop = () => {
                     error: false,
                   },
                 }}
+                className="planting-date-picker"
                 sx={{ width: 1 }}
                 label="Planting Date"
                 value={dayjs(cashCropDataRedux.dateRange.startDate)}
                 onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
-                data-test="planting-date-picker"
               />
             </LocalizationProvider>
           </Grid>
@@ -72,6 +72,7 @@ const PreviousCashCrop = () => {
                     error: false,
                   },
                 }}
+                className="harvest-date-picker"
                 sx={{ width: 1 }}
                 label="Harvest Date"
                 value={dayjs(cashCropDataRedux.dateRange.endDate)}

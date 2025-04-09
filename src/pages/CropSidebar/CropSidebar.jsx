@@ -461,6 +461,7 @@ const CropSidebar = ({
           buttonType="PillButton"
           data-test="comparison-view-btn"
           title="COMPARISON VIEW"
+          className="comparisonViewButton"
         />
         <ComparisonBar
           filterData={sidebarFilters}
@@ -519,7 +520,7 @@ const CropSidebar = ({
                   border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
                 }}
               >
-                <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
+                <ListItemButton className="sidebarFilters" onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
                   <ListItemText primary="FILTERS" />
                   {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>

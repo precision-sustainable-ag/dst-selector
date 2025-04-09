@@ -343,7 +343,7 @@ const Location = () => {
 
         {stateLabelRedux !== 'Ontario' && (
           <Grid container>
-            <Container maxWidth="md">
+            <Container className="MapBox" maxWidth="md">
               <Map
                 setAddress={setSelectedToEditSite}
                 setFeatures={setCurrentGeometry}

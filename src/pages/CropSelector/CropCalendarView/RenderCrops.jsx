@@ -86,6 +86,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               <Grid item md={4} xs={4}>
                 {crop ? (
                   <PSAButton
+                    className={`crop${index}`}
                     buttonType=""
                     size="small"
                     onClick={() => {
@@ -213,6 +214,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 backgroundColor: isSelected ? '#EAEAEA' : 'white',
                 color: isSelected ? '#d32f2f' : '#2d7b7b',
               }}
+              className={`cropToBasket${index}`}
               onClick={() => {
                 addCropToBasket(
                   crop.id,
