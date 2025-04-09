@@ -203,14 +203,18 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                     sx={{ fontWeight: 'bold' }}
                                   >
                                     {att.label}
-                                    {att.order}
-
                                   </Typography>
                                   <Typography
                                     display="flex"
                                     justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
                                   >
                                     {att.values[0]?.value}
+                                  </Typography>
+                                  <Typography
+                                    display="flex"
+                                    justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
+                                  >
+                                    {att.values[1]?.value}
                                   </Typography>
                                 </Box>
                             )}
