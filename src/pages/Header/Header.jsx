@@ -36,7 +36,7 @@ import { releaseNotesURL } from '../../shared/keys';
 // import useWindowSize from '../../shared/constants';
 import { updateStateInfo } from '../../reduxStore/mapSlice';
 
-const speed = 1;
+const speed = 1.3;
 
 let lastCaption;
 
@@ -170,7 +170,7 @@ const Demo = () => {
 
   const location = async () => {
     await moveTo('.MapBox', ' There are 3 ways you can navigate to your field.   Double click,  use the Polygon tool in the top left of the map to mark your field, or...', 6000);
-    await moveTo('.mapboxgl-ctrl-geocoder--input', 'Enter your location here.', 500, { value: '10th Avenue, Kettleman City', keyspeed: 100 });
+    await moveTo('.mapboxgl-ctrl-geocoder--input', 'Enter your field address here.', 500, { value: '10th Avenue, Kettleman City', keyspeed: 100 });
     await moveTo('.suggestions li:nth-child(1)', 'Select from the list.', 2000, { mouseup: true });
     await moveTo('[data-test="next-btn"]', 'After selecting your location, press NEXT to advance to the next screen.', 5000, { click: true });
   };
@@ -190,7 +190,7 @@ const Demo = () => {
     await moveTo('#chip6', 'You can select up to 3 goals', 4000, { click: true });
     await moveTo('#chip3', '', 500, { click: true });
     await moveTo('#chip8', '', 500, { click: true });
-    await moveTo('#season2', 'To filter your cover crop termination information please select your Planting Season, Life Cycle, and Irrigation type.</br> Select up to one of each. ', 7000);
+    await moveTo('#season2', 'To filter your cover crop termination information you may select your Planting Season, Life Cycle, and/or Irrigation type.</br> Select up to one of each. ', 7000);
     await moveTo('#floweringType0', 'Select Life Cycle', 2000, { click: true });
     await moveTo('#irrigation1', 'Select an irrigation Type', 2000, { click: true });
     await moveTo('.planting-date-picker', 'Enter cash crop planting date.  This will be reflected in you results.', 5000);
@@ -201,7 +201,7 @@ const Demo = () => {
   const mySelectedCrops = async () => {
     await moveTo('.myCropsCards', 'Here are the crops you selected.', 5000);
     await moveTo('.comparisonViewButton', 'Click here to compare and contrast your selections.', 5000, { click: true });
-    await moveTo('.showAllBox', 'In the sidebar select individual filters to compare by or select them all by clicking...', 5000, { click: true });
+    await moveTo('.showAllBox', 'In the sidebar select individual filters to compare by or select them all by clicking...', 6500, { click: true });
     await moveTo('.showAllButton', 'Here', 2000, { click: true });
     await moveTo('.header', 'This concludes our automated demo.  You can click on the logo to return to the beginning and get started for yourself.', 5000);
     await moveTo('[data-test="header_logo_button"]', '', 1000, { click: true });
@@ -231,7 +231,7 @@ const Demo = () => {
     await moveTo('.sidebarGoals', 'Here you can see the goals you have selected and their priority', 4000);
     await moveTo('.sidebarEditGoals', 'This button allows you to change your selections', 3000);
     await moveTo('.sidebarGoals', '', 1000, { click: true });
-    await moveTo('.sidebarFilters', 'The many filters allow you to filter down your results by values that may be more important to you.', 5000);
+    await moveTo('.sidebarFilters', 'The filters allow you to adjust your results by values that may be more important to you.', 5000);
     await moveTo('.legend', '', 1000, { click: true });
     await moveTo('.legend', 'This legend will help you understand the color scheme on the calendar.  Hover over the colored bars to see their tooltips.', 7000);
     await moveTo('.crop3', 'Clicking on any of the crops will open up their infosheet.', 7000, { click: true });
