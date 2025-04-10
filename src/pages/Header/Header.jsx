@@ -229,7 +229,7 @@ const Demo = () => {
     // Sidebar
     await moveTo('.sidebarGoals', '', 1000, { click: true });
     await moveTo('.sidebarGoals', 'Here you can see the goals you have selected and their priority', 4000);
-    await moveTo('.sidebarEditGoals', 'This button allowes you to change your selections', 3000);
+    await moveTo('.sidebarEditGoals', 'This button allows you to change your selections', 3000);
     await moveTo('.sidebarGoals', '', 1000, { click: true });
     await moveTo('.sidebarFilters', 'The many filters allow you to filter down your results by values that may be more important to you.', 5000);
     await moveTo('.legend', '', 1000, { click: true });
