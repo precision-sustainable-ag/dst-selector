@@ -103,7 +103,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
               item
               key={index}
               xs={12}
-              className="avoid-break"
+              className={`avoid-break infosheetAccordion${index}`}
               sx={{ marginBottom: '16px' }}
             >
               <PSAAccordion
@@ -116,7 +116,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                 expanded={accordionOpen[cat.label]}
                 onChange={() => handleAccordion(cat.label)}
                 summaryContent={(
-                  <Typography variant="h4" style={{ color: 'grey' }}>
+                  <Typography className={`infosheetAccordionButton${index}`} variant="h4" style={{ color: 'grey' }}>
                     {cat.label}
                   </Typography>
                 )}

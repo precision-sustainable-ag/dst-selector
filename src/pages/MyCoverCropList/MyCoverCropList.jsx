@@ -68,7 +68,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
             </Grid>
           </Box>
         ) : (
-          <Grid container spacing={2}>
+          <Grid className="myCropsCards" container spacing={2}>
             {cropDataRedux.filter((crop) => selectedCropIdsRedux.includes(crop.id)).map((crop, index) => (
               <Grid item key={index}>
                 <MyCoverCropCards

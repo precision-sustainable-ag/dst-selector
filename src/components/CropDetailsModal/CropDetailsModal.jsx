@@ -194,6 +194,7 @@ const CropDetailsModal = ({
                           buttonType="ModalLink"
                           onClick={print}
                           title="Print"
+                          className="infosheetPrint"
                         />
                       )
                   }
@@ -206,6 +207,7 @@ const CropDetailsModal = ({
                   onClick={handleModalClose}
                   startIcon={<Close />}
                   buttonType=""
+                  className="modalClose"
                 />
               </Grid>
             </Grid>

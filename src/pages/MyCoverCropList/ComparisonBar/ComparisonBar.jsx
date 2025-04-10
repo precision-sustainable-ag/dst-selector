@@ -116,6 +116,7 @@ const ComparisonBar = ({
       sx={{
         width: '100%',
       }}
+      className="showAllBox"
     >
       {comparisonKeys.length > 0 && (
         <ListItem onClick={() => {}}>
@@ -143,6 +144,7 @@ const ComparisonBar = ({
                 onClick={showAllVariables}
                 data-test="my-selected-crops-show-all"
                 title="Show All"
+                className="showAllButton"
               />
             )}
           />

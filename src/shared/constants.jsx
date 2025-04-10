@@ -455,6 +455,7 @@ export const BinaryButton = ({ action }) => (
       }}
       color="secondary"
       title="Yes"
+      className="yesButton"
     />
     <PSAButton
       buttonType=""

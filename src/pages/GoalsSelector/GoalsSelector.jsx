@@ -116,7 +116,7 @@ const GoalsSelector = () => {
                   align="center"
                   gutterBottom
                 >
-                  Select 1 to 3 goals in order of importance.
+                  Select up to 3 goals in order of importance.
                 </Typography>
               </Grid>
               <Grid item xs={12} mb={2}>
@@ -272,10 +272,11 @@ const GoalsSelector = () => {
 
             }}
           >
-            {seasons.map((season) => (
+            {seasons.map((season, i) => (
               <Chip
                 key={season}
                 label={season}
+                id={(`season${i}`)}
                 clickable
                 style={{ margin: '0.3rem' }}
                 sx={{
@@ -322,10 +323,11 @@ const GoalsSelector = () => {
               justifyContent: 'center',
             }}
           >
-            {floweringTypes.map((floweringType) => (
+            {floweringTypes.map((floweringType, i) => (
               <Chip
                 key={floweringType}
                 label={floweringType}
+                id={(`floweringType${i}`)}
                 clickable
                 style={{ margin: '0.3rem' }}
                 sx={{
@@ -374,10 +376,11 @@ const GoalsSelector = () => {
               justifyContent: 'center',
             }}
           >
-            {irrigationType.map((irrigation) => (
+            {irrigationType.map((irrigation, i) => (
               <Chip
                 key={irrigation}
                 label={irrigation}
+                id={(`irrigation${i}`)}
                 clickable
                 style={{ margin: '0.3rem' }}
                 sx={{

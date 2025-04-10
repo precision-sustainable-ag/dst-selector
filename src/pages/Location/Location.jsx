@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // /* eslint-disable */
 
 /* eslint-disable no-alert */
@@ -343,7 +344,7 @@ const Location = () => {
 
         {stateLabelRedux !== 'Ontario' && (
           <Grid container>
-            <Container maxWidth="md">
+            <Container className="MapBox" maxWidth="md">
               <Map
                 setAddress={setSelectedToEditSite}
                 setFeatures={setCurrentGeometry}
