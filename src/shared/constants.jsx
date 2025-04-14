@@ -360,6 +360,7 @@ export const CropImage = ({
 
   switch (view) {
     case 'calendar':
+    case 'table':
       imageStyle = {
         width: '50px',
         height: '50px',
@@ -454,6 +455,7 @@ export const BinaryButton = ({ action }) => (
       }}
       color="secondary"
       title="Yes"
+      className="yesButton"
     />
     <PSAButton
       buttonType=""
@@ -686,14 +688,14 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'frostPossible', label: 'Frost Seeding Possible', color: '#2f80ed' },
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
-    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#008000' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#f8a504' },
   ];
   const MCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
     { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment', color: '#f2c94c' },
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
-    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#008000' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#f8a504' },
   ];
   const SCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
@@ -705,6 +707,7 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'frostPossible', label: 'Frost Seeding Possible', color: '#2f80ed' },
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
+    { className: 'canInterseed', label: 'Can Interseed', color: '#dd4c9f' },
   ];
   const WCCClegendData = [
     { className: 'reliable', label: 'Irrigation Planting Window', color: '#2d7b7b' },
@@ -784,7 +787,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
         let valEnd;
         // hessian fly dates are an exception to this condition because it has only one date and not a range
         if (date.label === 'Hessian Fly Free Date') {
-          valStart = moment(dateArray.value, 'YYYY-MM-DD').format('MM/DD');
+          valStart = moment(dateArray.value, 'MM/DD/YYYY').format('MM/DD');
           valEnd = valStart;
         }
         const datesArr = dateArray.value.split('-');
@@ -1218,17 +1221,108 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Vega', firstName: 'Jacqueline', Affiliation: 'USDA NRCS' },
       ];
     case 5:
-      return (
-        <>
-          <Typography style={{ paddingTop: '15px' }} variant="body1" align="left">
-            Data for the Western Cover Crop Council is soon to come!
-          </Typography>
-          <br />
-          <a target="_blank" style={{ fontSize: '20px', display: 'flex', justifyContent: 'center' }} href="https://westerncovercrops.org/" rel="noreferrer">
-            <b>Western Cover Crop Council Site </b>
-          </a>
-        </>
-      );
+      return [
+        { lastName: 'Marion', firstName: 'Annie', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Sirovatka', firstName: 'Nick', Affiliation: 'USDA-NRCS Soil Health Division' },
+        { lastName: 'Deaton', firstName: 'Keela', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Wingerg', firstName: 'Marlon', Affiliation: 'soil health division' },
+        { lastName: 'McGuire', firstName: 'Andy', Affiliation: 'WSU Extension' },
+        { lastName: 'Brennan', firstName: 'Eric', Affiliation: 'USDA-ARS' },
+        { lastName: 'Gibbons', firstName: 'Jared', Affiliation: 'University of Idaho Extension' },
+        { lastName: 'Gasch', firstName: 'Caley', Affiliation: 'University of Alaska Fairbanks Matanuska Experiment Farm and Extension Center, Palmer, AK' },
+        { lastName: 'Benedict', firstName: 'Chris', Affiliation: 'WSU Ex' },
+        { lastName: 'Ghajar', firstName: 'Shayan', Affiliation: 'Oregon State University' },
+        { lastName: 'Andrews', firstName: 'Nick', Affiliation: 'OSU Organic Vegetables' },
+        { lastName: 'Hines', firstName: 'Steven', Affiliation: 'University of Idaho: Extension' },
+        { lastName: 'Finkelburg', firstName: 'Douglas', Affiliation: 'University of Idaho: Extension' },
+        { lastName: 'Bartow', firstName: 'Amy', Affiliation: 'NRCS' },
+        { lastName: 'Light', firstName: 'Sarah', Affiliation: 'UCCE' },
+        { lastName: 'Schembre', firstName: 'Chuck', Affiliation: 'Understanding Ag ' },
+        { lastName: 'Frey', firstName: 'Joe', Affiliation: 'SW Committee of the WCCC' },
+        { lastName: 'DeVincentis', firstName: 'Alyssa', Affiliation: 'UC Davis' },
+        { lastName: 'Gaudin', firstName: 'Amelie', Affiliation: 'UC Davis' },
+        { lastName: 'Wauters', firstName: 'Vivian', Affiliation: 'UC Davis' },
+        { lastName: 'Bullard', firstName: 'Valerie', Affiliation: 'NRCS' },
+        { lastName: 'Smither-Kopperl', firstName: 'Margaret', Affiliation: 'PMC ' },
+        { lastName: 'Hollingsworth', firstName: 'Joy', Affiliation: 'UC ANR' },
+        { lastName: 'Bernau', firstName: 'Christopher', Affiliation: 'PMC ' },
+        { lastName: 'Moody', firstName: 'Allen', Affiliation: 'NRCS' },
+        { lastName: 'Kabir', firstName: 'Zahangir', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Brondt', firstName: 'Sonja', Affiliation: 'USDA SARETP' },
+        { lastName: 'Dufour', firstName: 'Rex Bayard', Affiliation: 'NCAT' },
+        { lastName: 'Maldonado', firstName: 'Stetcyn', Affiliation: 'Project Apis m. ' },
+        { lastName: 'MCCoy', firstName: 'Jamilah', Affiliation: 'USDA NRCS' },
+        { lastName: 'Russell', firstName: 'Katie', Affiliation: 'Colorado State University' },
+        { lastName: 'Miller', firstName: 'Perry', Affiliation: 'MSU' },
+        { lastName: 'Johnson', firstName: 'Tom', Affiliation: 'Kamprath Seed Company' },
+        { lastName: 'Meyer', firstName: 'Ron', Affiliation: 'Colorado State University ' },
+        { lastName: 'Duyck', firstName: 'Garrett', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Michel', firstName: 'Leslie', Affiliation: 'Washington State Department of Agriculture' },
+        { lastName: 'Ghimire', firstName: 'Rajan', Affiliation: 'NM State Universtity' },
+        { lastName: 'Reeve', firstName: 'Jennifer', Affiliation: 'USU ' },
+        { lastName: 'Flynn', firstName: 'Robert', Affiliation: 'NMSU' },
+        { lastName: 'Gemperle', firstName: 'Christine', Affiliation: 'Gemperle Orchards, Blue Diamond Growers Coop, Almond Board of California Board of Directors, Project Apis m.and PAm 2.0 (Bee and Butterfly Habitat Fund)  Board of Directors' },
+        { lastName: 'Collins', firstName: 'Doug', Affiliation: 'WSU Extension' },
+        { lastName: 'Machado', firstName: 'Stephen', Affiliation: 'Oregon State University' },
+        { lastName: 'Qin', firstName: 'Ruijun', Affiliation: 'Oregon State University' },
+        { lastName: 'Omeg', firstName: 'Mike', Affiliation: 'Orchard View Inc' },
+        { lastName: 'David', firstName: 'Brian', Affiliation: 'NRCS State Agronomist for Utah' },
+        { lastName: 'Waring', firstName: 'Emily R', Affiliation: 'UC Merced' },
+        { lastName: 'Thompson', firstName: 'Marni', Affiliation: 'NRCS: Soil Health Specialist' },
+        { lastName: 'Gearhart', firstName: 'Trevor', Affiliation: 'Whatcom Resource Conservation District' },
+        { lastName: 'Jani', firstName: 'Arun', Affiliation: 'California State University, Monterey Bay' },
+        { lastName: 'Moberg', firstName: 'Dean', Affiliation: 'Tualatin SWCD' },
+        { lastName: 'Kenagy', firstName: 'Peter', Affiliation: 'Kenagy Family farm' },
+        { lastName: 'Reyes', firstName: 'Anthony', Affiliation: 'Agriculture Program Manager, Oxbow Farm and Conservation Center' },
+        { lastName: 'Synk', firstName: 'Billy', Affiliation: 'Pollinator Partnership' },
+        { lastName: 'Hagen-Zakarison', firstName: 'Sheryl', Affiliation: 'Zakarison LLC' },
+        { lastName: 'Sullivan', firstName: 'Clare', Affiliation: 'OSU Soil Scientist and Agronomist' },
+        { lastName: 'Kovalenko', firstName: 'Tammie', Affiliation: 'Delta Junction FFA Advisor, weed free forage inspector, and farmer' },
+        { lastName: 'Chaney', firstName: 'Marty', Affiliation: 'USDA - NRCS' },
+        { lastName: 'Weldon', firstName: 'Megan', Affiliation: 'King Conservation District ' },
+        { lastName: 'Rossow', firstName: 'Silas', Affiliation: 'Cal Ag Solutions' },
+        { lastName: 'Taulbee', firstName: 'Jacob', Affiliation: 'Humboldt County Resource Conservation District' },
+        { lastName: 'Kling', firstName: 'Michael', Affiliation: 'General Manager/ VP of Sales & Marketing Kamprath Seeds, LP A wholesale supplier of cover crop seed and technical knowledge in the state of California. ' },
+        { lastName: 'Zesiger', firstName: 'Cody', Affiliation: 'Utah State University' },
+        { lastName: 'Winfield', firstName: 'Emilie', Affiliation: 'North Coast Soil Hub' },
+        { lastName: 'Kay-Cruz', firstName: 'Jessa', Affiliation: 'The Xerces Society for Invertebrate Conservation ' },
+        { lastName: 'Hamblin', firstName: 'Sheldon', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Harrigan', firstName: 'James', Affiliation: 'USDA- NRCS' },
+        { lastName: 'Mirro', firstName: 'Jason', Affiliation: 'King Conservation District' },
+        { lastName: 'Jones', firstName: 'Tyler', Affiliation: 'University of Wyoming' },
+        { lastName: 'Carter', firstName: 'Andrea', Affiliation: 'Native Seeds/SEARCH ' },
+        { lastName: 'Wang', firstName: 'Yadi', Affiliation: 'Arizona SOL ' },
+        { lastName: 'Pickett', firstName: 'Terron', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Clements', firstName: 'Charlie', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Thompson', firstName: 'Anita', Affiliation: 'University of Arizona Cooperative Extension' },
+        { lastName: 'Solomon', firstName: 'Juan', Affiliation: 'University of Nevada, Reno' },
+        { lastName: 'Thomas', firstName: 'Jim', Affiliation: 'USDA NRCS PMC' },
+        { lastName: 'Grover', firstName: 'Kulbushan', Affiliation: 'NMSU' },
+        { lastName: 'McIntyre', firstName: 'Brad', Affiliation: 'Farmer and cover crop seed cleaning and sales business ' },
+        { lastName: 'Bose', firstName: 'Fred', Affiliation: 'Hearne Seed Co' },
+        { lastName: 'Ianson', firstName: 'David', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Bowman', firstName: 'Josh', Affiliation: 'Rio Gro' },
+        { lastName: 'Kadas', firstName: 'Steve', Affiliation: 'Soil Health LLC' },
+        { lastName: 'Crane', firstName: 'Robert', Affiliation: 'NRCS' },
+        { lastName: 'Mon', firstName: 'Jarai', Affiliation: 'NRCS' },
+        { lastName: 'Lohse', firstName: 'Brian', Affiliation: 'Lockeford Seed' },
+        { lastName: 'Koop', firstName: 'Monica', Affiliation: 'Homer SWCD' },
+        { lastName: 'Hart', firstName: 'Josie', Affiliation: 'Denver Botanic Gardens' },
+        { lastName: 'Serrano', firstName: 'Belinda', Affiliation: 'USDA- NRCS' },
+        { lastName: 'Newton', firstName: 'Christine', Affiliation: 'NRCS- CO' },
+        { lastName: 'Kell', firstName: 'Sarah', Affiliation: 'Farm Manager- Growing Gardens' },
+        { lastName: 'Palic', firstName: 'Daniel', Affiliation: 'NRCS- CO' },
+        { lastName: 'Pistacchio', firstName: 'Randy', Affiliation: 'Long\'s Gardens' },
+        { lastName: 'Lempka', firstName: 'Larry', Affiliation: 'Los Rios Farm' },
+        { lastName: 'Sanyal', firstName: 'Debankur', Affiliation: 'University of Arizona' },
+        { lastName: 'Pinnamaneni', firstName: 'Srinivas', Affiliation: 'Colorado State University' },
+        { lastName: 'Lee', firstName: 'Steven', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Nichols', firstName: 'Alison', Affiliation: 'Pierce CD' },
+        { lastName: 'Meyer', firstName: 'Katie', Affiliation: 'Advancing Eco Agriculture' },
+        { lastName: 'Monsaint-Queeney', firstName: 'Victoria', Affiliation: 'Homer SWCD' },
+        { lastName: 'Sagers', firstName: 'Joseph', Affiliation: 'University of Idaho: Extension' },
+        { lastName: 'Walther', firstName: 'Jonathan', Affiliation: 'USDA-NRCS' },
+      ];
     default:
       return [
         { lastName: 'Mirsky', firstName: 'Steven', Affiliation: 'USDA-ARS' },
@@ -1252,6 +1346,157 @@ export const getExpertsData = (councilId) => {
       ];
   }
 };
+
+export const defaultFaqs = [
+  {
+    id: 1,
+    question: 'What is the difference between dormant and non-dormant alfalfa?',
+    answer: '"Dormant" alfalfa varieties are those traditionally grown as perennials in northern climates; they have varying degrees of cold hardiness but would generally be expected to survive the winter. “Non dormant” alfalfa varieties are far less strongly perennial in cold climates due to lower levels of cold hardiness. There are some differences in growth pattern and forage quality between the two groups, as well. Non-dormant varieties produce more biomass in the first year than dormant varieties.',
+  },
+  {
+    id: 2,
+    question: 'What is a “forage brassica”?',
+    answer: 'Many forage brassicas are hybrids of B. oleracea and B. napus. (i.e. kale, rapeseed, turnip). Some are bred for their leaf production, others for their roots. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 3,
+    question: 'What is the difference between a forage, daikon, tillage, and oilseed radish?',
+    answer: 'Radishes have been bred for many purposes, including (human) food, (animal) feed and forage, and ability to improve soil structure. Confusion as to naming abounds, and is worsened by the fact that the various types of radish readily interbreed. Cover crop radishes are generally referred to as daikon-type radishes (as opposed to the globe-shaped radishes that feature in salads). According to Extension resources, ‘Tillage’ radish is actually a specific brand of radish bred to be a cover crop. Oilseed radishes have smaller, more branching roots than forage radishes. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 4,
+    question: 'What is the difference between a forage turnip vs ‘Purple Top’ turnip?',
+    answer: 'Forage turnips have been bred for use as animal feed (i.e. large tonnage per acre), as opposed to ‘Purple Top’ and similar cultivars traditionally grown for human food (i.e. bulb production). Seed costs vary widely. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 5,
+    question: 'What do you mean by “mustard”?',
+    answer: 'Our tool groups several species under the term “mustard”, including Sinapis alba (white mustard) and Brassica juncea (brown, Oriental, or Indian mustard). We include notes in the comments/notes sections on the information sheet where there are differences in characteristics or uses among the species.',
+  },
+  {
+    id: 6,
+    question: 'What’s the difference between canola and rapeseed?',
+    answer: 'In practice for cover croppers, not much. Some rapeseed was bred to have lower levels of compounds not good for human consumption, making it better for the production of cooking oil. The varieties good for the production of oil for human consumption are referred to as “canola”. Canola seed is generally more expensive than rapeseed seed.',
+  },
+  {
+    id: 7,
+    question: 'What is the difference between “winter” and “spring” small grains?',
+    answer: 'We are referring to germplasm type. For example, “winter” wheat varieties are those that would be expected to usually survive winter and require vernalization (i.e. cold) to trigger flowering. “Spring” wheat varieties are much less cold hardy and do not require vernalization to flower.',
+  },
+  {
+    id: 8,
+    question: 'Can spring small grains be planted in fall and vice versa? Why would you do so?',
+    answer: "Winter small grain cultivars can be planted in spring, but they won't flower (which may be useful since they don't get as tall and are good for a low-growing ground cover). Likewise, spring small grains may be planted in the fall (and will therefore likely winter-kill, preventing the need for spring termination).",
+  },
+  {
+    id: 9,
+    question: 'Why do ratings for a given cover crop vary by hardiness zone?',
+    answer: 'USDA hardiness zones are based on average minimum temperatures and are a simple proxy for the length of the growing season across the Northeast US. Ratings differ because these climatic features affect planting dates, crop management, and plant growth. In addition, the experts in each zone sometimes have differences in experience with the cover crop; a cover crop may be more commonly used in a vegetable rotation in one zone and an agronomic rotation in another one, with corresponding differences in traits due to the way they are used.',
+  },
+  {
+    id: 10,
+    question: 'I’m applying fall manure and want a cover crop to take up the N and prevent Prunoff. What should I use?',
+    answer: 'Choose a cover crop ranked high for the goals of “nitrogen scavenging”, “prevent fall erosion”, and “prevent spring erosion”.',
+  },
+  {
+    id: 11,
+    question: 'I want a cover crop that can prevent soil crusting. What should I use?',
+    answer: 'Pick a cover crop that is either alive during the time period of concern or has a good rating for “lasting residue” and that has a good rating for “soil aggregation” and “reduces topsoil compaction”.',
+  },
+  {
+    id: 12,
+    question: 'I am interested in a recommendation based on a goal you do not have in your tool. What can I do?',
+    answer: 'Consider what existing goals and rated traits make up the goal you are interested in.',
+  },
+];
+
+export const wcccFaqs = [
+  {
+    id: 1,
+    question: 'How was the species list generated?',
+    answer: 'The cover crop species list was generated by the Western Cover Crops Council, and the experts in the data verification groups.',
+  },
+  {
+    id: 2,
+    question: 'Why do the variables differ throughout the ecoregions and states?',
+    answer: 'Each ecoregion and state had the option to customize the variables to make the dataset relevant.',
+  },
+  {
+    id: 3,
+    question: 'Why do the ratings differ throughout the ecoregions and states?',
+    answer: 'Each region and state has its own unique setting and environmental conditions. The ratings differ based on climatic features, as well as the experience of the experts involved in data verification.',
+  },
+  {
+    id: 4,
+    question: 'Why is roller crimping not listed as a common termination method in most regions?',
+    answer: 'Roller crimping is the most difficult termination method, and may have variable results. Success is dependent on using the correct equipment during the correct maturity period of the crop. It is important that the stand is consistent. It is not currently recommended as a termination method in the west, unless you are willing to make multiple to many passes.',
+  },
+  {
+    id: 5,
+    question: 'Why is mowing and grazing not listed as a termination method in ecoregion 7?',
+    answer: 'Due to the environmental conditions in this area, if you choose to mow or graze in this area, you may need multiple passes or methods for effective termination.',
+  },
+  {
+    id: 6,
+    question: 'Why aren’t there seeding rates for the broadcast method of seeding?',
+    answer: 'In the west, seeding with a no-till seed drill is the recommended form of planting. In the future, a seeding rate calculator will be available for the other seeding methods.',
+  },
+  {
+    id: 7,
+    question: 'Will seeding rates need to be adjusted for forage production, weed suppression, or other goals that require a dense stand?',
+    answer: 'Yes. Seeding rates may need to be increased if you are planting for a special purpose. Please consult your local NRCS, Cooperative Extension office, or Conservation District for detailed guidance.',
+  },
+  {
+    id: 8,
+    question: 'What is a “forage brassica”?',
+    answer: 'Many forage brassicas are hybrids of B. oleracea and B. napus. (i.e. kale, rapeseed, turnip). Some are bred for their leaf production, others for their roots. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 9,
+    question: 'What is the difference between a forage, daikon, tillage, and oilseed radish?',
+    answer: 'Radishes have been bred for many purposes, including (human) food, (animal) feed and forage, and ability to improve soil structure. Confusion as to naming abounds, and is worsened by the fact that the various types of radish readily interbreed. Cover crop radishes are generally referred to as daikon-type radishes (as opposed to the globe-shaped radishes that feature in salads). According to Extension resources, ‘Tillage’ radish is actually a specific brand of radish bred to be a cover crop. Oilseed radishes have smaller, more branching roots than forage radishes. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 10,
+    question: 'What is the difference between a forage turnip vs ‘Purple Top’ turnip?',
+    answer: 'Forage turnips have been bred for use as animal feed (i.e. large tonnage per acre), as opposed to ‘Purple Top’ and similar cultivars traditionally grown for human food (i.e. bulb production). Seed costs vary widely. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 11,
+    question: 'What do you mean by “mustard”?',
+    answer: 'Our tool groups several species under the term “mustard”, including Sinapis alba (white mustard) and Brassica juncea (brown, Oriental, or Indian mustard). We include notes in the comments/notes sections on the information sheet where there are differences in characteristics or uses among the species.',
+  },
+  {
+    id: 12,
+    question: 'What’s the difference between canola and rapeseed?',
+    answer: 'In practice for cover croppers, not much. Some rapeseed was bred to have lower levels of compounds not good for human consumption, making it better for the production of cooking oil. The varieties good for the production of oil for human consumption are referred to as “canola”. Canola seed is generally more expensive than rapeseed seed.',
+  },
+  {
+    id: 13,
+    question: 'What is the difference between “winter” and “spring” small grains?',
+    answer: 'We are referring to germplasm type. For example, “winter” wheat varieties are those that would be expected to usually survive winter and require vernalization (i.e. cold) to trigger flowering. “Spring” wheat varieties are much less cold hardy and do not require vernalization to flower.',
+  },
+  {
+    id: 14,
+    question: 'Can spring small grains be planted in fall and vice versa? Why would you do so?',
+    answer: "Winter small grain cultivars can be planted in spring, but they won't flower (which may be useful since they don't get as tall and are good for a low-growing ground cover). Likewise, spring small grains may be planted in the fall (and will therefore likely winter-kill, preventing the need for spring termination).",
+  },
+  {
+    id: 15,
+    question: 'How will varieties or cultivars impact the ratings for a species?',
+    answer: 'Cover crop species have many varieties or cultivars. Winter survival, environmental tolerances and performance are highly dependent on cultivar.',
+  },
+  {
+    id: 16,
+    question: 'Will a herbicide treatment impact cover crop growth?',
+    answer: 'Chemical carryover from herbicide treatment can affect cover crop growth. Please see additional resources for further information.',
+  },
+  {
+    id: 17,
+    question: 'Does crop insurance impact recommended termination time before cash crop planting?',
+    answer: 'Yes. The NRCS recommended termination time is dependent on crop insurance. If you do not use crop insurance, you may have a different termination guideline.',
+  },
+];
 
 const useWindowSize = () => { // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/

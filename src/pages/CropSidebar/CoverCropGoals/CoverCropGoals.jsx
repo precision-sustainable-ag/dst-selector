@@ -34,7 +34,7 @@ const CoverCropGoals = () => {
       }}
     >
       {' '}
-      <ListItemButton onClick={() => setGoalsOpen(!goalsOpen)}>
+      <ListItemButton className="sidebarGoals" onClick={() => setGoalsOpen(!goalsOpen)}>
         <ListItemText primary="GOALS" sx={{ fontWeight: 'bold' }} />
         {goalsOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
@@ -76,6 +76,7 @@ const CoverCropGoals = () => {
             <ListItem sx={{ paddingLeft: 3 }}>
               <ListItemText disableTypography>
                 <Typography
+                  className="sidebarEditGoals"
                   variant="button"
                   sx={{ color: 'red' }}
                   onClick={() => changeProgress()}

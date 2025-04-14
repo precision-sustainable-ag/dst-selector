@@ -200,14 +200,14 @@ const SoilDrainage = ({ drainageOptions }) => {
         >
           <Grid item xs={12} alignSelf="center" justifySelf="center">
             {drainageInitialLoad
-            && (
-            <RenderDrainageClasses
-              setNewDrainage={setNewDrainage}
-              setShowTiling={setShowTiling}
-              drainage={newDrainage}
-              drainageOptions={drainageOptions}
-            />
-            )}
+              && (
+                <RenderDrainageClasses
+                  setNewDrainage={setNewDrainage}
+                  setShowTiling={setShowTiling}
+                  drainage={newDrainage}
+                  drainageOptions={drainageOptions}
+                />
+              )}
           </Grid>
           <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
           {showTiling && (

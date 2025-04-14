@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // /* eslint-disable */
 
 /* eslint-disable no-alert */
@@ -78,11 +79,16 @@ const Location = () => {
 
   const updateRegionRedux = (regionName) => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
+    if (!selectedRegion?.id || !selectedRegion?.shorthand) {
+      console.error('Unavailable region.');
+      return;
+    }
     localStorage.setItem('regionId', selectedRegion.id);
     dispatchRedux(updateRegion({
-      regionId: selectedRegion.id ?? '',
-      regionShorthand: selectedRegion.shorthand ?? '',
+      regionId: selectedRegion.id,
+      regionShorthand: selectedRegion.shorthand,
     }));
+    dispatchRedux(setQueryString(`regions=${selectedRegion.id}`));
     pirschAnalytics('Location', { meta: { mapUpdate: true } });
   };
 
@@ -319,7 +325,7 @@ const Location = () => {
 
         {stateLabelRedux !== 'Ontario' && (
           <Grid container>
-            <Container maxWidth="md">
+            <Container className="MapBox" maxWidth="md">
               <PSAReduxMap
                 setProperties={updateProperties}
                 initWidth="100%"

@@ -5,9 +5,9 @@ import ImageCarousel from '../../../components/ImageCarousel/ImageCarousel';
 const CoverCropInformation = ({
   crop, allThumbs, className,
 }) => (
-  <Grid container spacing={3} ml="1%" mr="1%" className={className}>
-    <Grid item md={6} sm={12}>
-      <Grid item>
+  <Grid container spacing={3} className={className}>
+    <Grid item md={6} sm={12} sx={{ paddingTop: { xs: '30px !important', md: '10px !important' }, paddingLeft: { xs: '24px !important' } }}>
+      <Grid className="coverCropDescription" item>
         <Typography variant="h5">
           {crop['Cover Crop Group']}
         </Typography>
@@ -30,7 +30,7 @@ const CoverCropInformation = ({
       </Grid>
     </Grid>
 
-    <Grid item md={6} sm={12}>
+    <Grid className="imageCarousel" item md={6} sm={12}>
       <ImageCarousel images={allThumbs} />
     </Grid>
   </Grid>

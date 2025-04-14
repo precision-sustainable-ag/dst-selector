@@ -141,15 +141,13 @@ const CropSidebar = ({
       const match = (parm) => {
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
-        } else if (parm === 'common') {
-          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0].values[0]?.value.toLowerCase().match(/\w+/g);
         } else {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
         return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
       };
       cd[n].inactive = true;
-      return match('label') || match('scientificName') || match('common');
+      return match('label') || match('scientificName');
     });
     // transforms selectedFilterObject into an array
     const nonZeroKeys2 = Object.keys(selectedFilterObject).map((key) => {
@@ -181,9 +179,15 @@ const CropSidebar = ({
 
       const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
 
-      cd[n].inactive = (!match)
-        || !(matchesDrainageClass && cropFloodingValueIsHigher)
-        || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
+      if (stateIdRedux === 7) {
+        cd[n].inactive = (!match)
+          || !cropFloodingValueIsHigher
+          || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
+      } else {
+        cd[n].inactive = (!match)
+          || !(matchesDrainageClass && cropFloodingValueIsHigher)
+          || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
+      }
 
       return true;
     });
@@ -248,27 +252,18 @@ const CropSidebar = ({
     if (queryStringRedux === null) return;
     dispatchRedux(setAjaxInProgress(true));
     setLoading(true);
-    if (councilShorthandRedux !== 'WCCC') {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
-        .then((data) => {
-          const allFilters = [];
-          data.data.forEach((category) => {
-            allFilters.push(category.attributes);
-          });
-          setSidebarFiltersData(allFilters);
-          setSidebarCategoriesData(data.data);
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
+      .then((data) => {
+        // remove termination filters for WCCC
+        const allFilters = [];
+        data.data.forEach((category) => {
+          if (councilShorthandRedux === 'WCCC' && category.label === 'Termination') return;
+          allFilters.push(category.attributes);
         });
-    } else {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
-        .then((data) => {
-          const allFilters = [];
-          data.data.forEach((category) => {
-            allFilters.push(category.attributes);
-          });
-          setSidebarFiltersData(allFilters);
-          setSidebarCategoriesData(data.data);
-        });
-    }
+        const categories = councilShorthandRedux === 'WCCC' ? data.data.filter((category) => (category.label !== 'Termination')) : data.data;
+        setSidebarFiltersData(allFilters);
+        setSidebarCategoriesData(categories);
+      });
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`)
       .then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
@@ -466,6 +461,7 @@ const CropSidebar = ({
           buttonType="PillButton"
           data-test="comparison-view-btn"
           title="COMPARISON VIEW"
+          className="comparisonViewButton"
         />
         <ComparisonBar
           filterData={sidebarFilters}
@@ -524,7 +520,7 @@ const CropSidebar = ({
                   border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
                 }}
               >
-                <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
+                <ListItemButton className="sidebarFilters" onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
                   <ListItemText primary="FILTERS" />
                   {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>

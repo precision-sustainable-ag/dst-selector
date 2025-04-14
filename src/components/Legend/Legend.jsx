@@ -18,7 +18,7 @@ const Legend = ({ legendData, modal }) => {
 
   return (
     <>
-      <ListItemButton onClick={() => setLegendOpen(!legendOpen)}>
+      <ListItemButton className="legend" onClick={() => setLegendOpen(!legendOpen)}>
         <ListItemText primary="LEGEND" />
         {legendOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
@@ -44,7 +44,7 @@ const Legend = ({ legendData, modal }) => {
                   >
                     <polygon
                       points="50,0 100,50 50,100 0,50"
-                      fill="green"
+                      fill="#f8a504"
                       strokeWidth={0}
                     />
                   </svg>

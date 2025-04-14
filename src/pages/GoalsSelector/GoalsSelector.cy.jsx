@@ -52,7 +52,7 @@ describe('<GoalsSelector />', () => {
   it(
     'should contain goals subtitle',
     () => {
-      cy.contains(/select 1 to 3 goals in order of importance/i);
+      cy.contains(/select up to 3 goals in order of importance/i);
     },
   );
 
