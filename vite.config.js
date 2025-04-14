@@ -26,5 +26,8 @@ export default defineConfig(() => ({
       '@mapbox/mapbox-gl-geocoder',
       'wellknown',
     ],
+    exclude: [
+      '@auth0/auth0-react',
+    ],
   },
 }));
