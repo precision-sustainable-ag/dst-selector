@@ -51,7 +51,11 @@ const Landing = () => {
   // handler function for stateSelect list
   const handleStateChange = (e) => {
     const selState = allStates.filter((s) => s.shorthand === e.target.value);
-    setSelectedState(selState[0]);
+    if (historyStateRedux === historyState.imported && stateIdRedux !== selState[0].id) {
+      dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+    } else {
+      setSelectedState(selState[0]);
+    }
   };
 
   // Load map data based on current enviorment
