@@ -13,17 +13,13 @@ import {
 import React, {
   useEffect,
   useState,
-  useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
-import { Map } from 'shared-react-components/src';
+import { PSAReduxMap } from 'shared-react-components/src';
 import statesLatLongDict from '../../shared/stateslatlongdict';
-import {
-  abbrRegion, reverseGEO, callCoverCropApi,
-  buildPoint, drawAreaFromGeoCollection, buildGeometryCollection,
-} from '../../shared/constants';
+import { abbrRegion, reverseGEO, callCoverCropApi } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
@@ -50,23 +46,33 @@ const Location = () => {
 
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
-  const [currentGeometry, setCurrentGeometry] = useState({});
-  const [mapFeatures, setMapFeatures] = useState([]);
+  const [mapFeatures, setMapFeatures] = useState(userFieldRedux);
+  // eslint-disable-next-line no-nested-ternary
+  const [latLon, setLatLon] = useState(markersRedux ? markersRedux[0] : stateLabelRedux ? statesLatLongDict[stateLabelRedux] : [47, -122]);
 
-  // if user field exists, return field, else return state capitol
-  const getFeatures = () => {
-    if (userFieldRedux !== null) {
-      const { geometry } = userFieldRedux;
-      if (geometry.type === 'Point') return [userFieldRedux];
-      if (geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(userFieldRedux);
+  const updateMapFeatures = (newFeatures) => {
+    if (JSON.stringify(mapFeatures) === JSON.stringify(newFeatures)) return;
+
+    // if user imported a history, this will prevent the user from changing the polygons
+    if (historyStateRedux === historyState.imported) {
+      setMapFeatures([...mapFeatures]);
+      dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+      return;
     }
-    return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
+
+    // update redux state variable with new features
+    setMapFeatures(newFeatures);
+    dispatchRedux(updateField(newFeatures));
   };
 
-  // set map features, update selectedFieldIdRedux
+  // call back function that is passed to shared map to update local state variables
+  const updateProperties = (properties) => {
+    setSelectedToEditSite(properties?.address);
+    setLatLon([properties?.lat, properties?.lon]);
+    updateMapFeatures(properties?.features);
+  };
+
   useEffect(() => {
-    // load map features here
-    setMapFeatures(getFeatures());
     // analytics
     pirschAnalytics('Visited Page', { meta: { visited: 'Location' } });
   }, []);
@@ -85,22 +91,6 @@ const Location = () => {
     dispatchRedux(setQueryString(`regions=${selectedRegion.id}`));
     pirschAnalytics('Location', { meta: { mapUpdate: true } });
   };
-
-  // set map initial lat lng
-  const getLatLng = useMemo(() => {
-    if (userFieldRedux !== null) {
-      const { type, coordinates, geometries } = userFieldRedux.geometry;
-      if (type === 'Point') return [coordinates[1], coordinates[0]];
-      if (type === 'GeometryCollection') return [geometries[0].coordinates[1], geometries[0].coordinates[0]];
-    }
-    if (markersRedux) {
-      return markersRedux[0];
-    }
-    if (stateLabelRedux) {
-      return statesLatLongDict[stateLabelRedux];
-    }
-    return [47, -122];
-  }, [stateLabelRedux]);
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
@@ -122,21 +112,12 @@ const Location = () => {
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
-      // FIXME: if user imported a history without a field, this will prevent them creating one
-      if (historyStateRedux === historyState.imported && userFieldRedux !== null) {
+      // if user imported a history, this will prevent the user from changing the marker location
+      if (historyStateRedux === historyState.imported) {
         dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
-        setMapFeatures(getFeatures());
+        setLatLon(markersRedux[0]);
         return;
       }
-
-      // save field in redux
-      const point = buildPoint(longitude, latitude);
-      let geoCollection = null;
-      if (Object.keys(currentGeometry).length > 0) {
-        const polygon = currentGeometry.features?.slice(-1)[0];
-        geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry);
-        dispatchRedux(updateField(geoCollection));
-      } else { dispatchRedux(updateField(point)); }
 
       dispatchRedux(updateLocation(
         {
@@ -345,13 +326,12 @@ const Location = () => {
         {stateLabelRedux !== 'Ontario' && (
           <Grid container>
             <Container className="MapBox" maxWidth="md">
-              <Map
-                setAddress={setSelectedToEditSite}
-                setFeatures={setCurrentGeometry}
+              <PSAReduxMap
+                setProperties={updateProperties}
                 initWidth="100%"
                 initHeight="450px"
-                initLat={getLatLng[0]}
-                initLon={getLatLng[1]}
+                initLat={latLon[0]}
+                initLon={latLon[1]}
                 initFeatures={mapFeatures}
                 initStartZoom={12}
                 initMinZoom={4}
@@ -361,10 +341,12 @@ const Location = () => {
                 hasNavigation
                 hasCoordBar
                 hasDrawing
+                hasFreehand
                 hasGeolocate
                 hasFullScreen
                 hasMarkerPopup
                 hasMarkerMovable
+                hasHelp
                 mapboxToken={mapboxToken}
               />
             </Container>

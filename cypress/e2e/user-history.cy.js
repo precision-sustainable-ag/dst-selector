@@ -110,7 +110,7 @@ describe('Test for updating user history', () => {
     cy.assertByTestId('history-dialog-warning');
   });
 
-  it.only('should be able to update history after Location page', () => {
+  it('should be able to update history after Location page', () => {
     cy.getByTestId('next-btn').first().click();
 
     cy.window().its('store').invoke('dispatch', {

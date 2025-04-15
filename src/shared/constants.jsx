@@ -886,41 +886,6 @@ export const deleteFields = async (accessToken = null, id = null) => {
 };
 // TODO: not used above
 
-export const buildPoint = (lng, lat, name = null) => ({
-  type: 'Feature',
-  label: name,
-  geometry: {
-    coordinates: [lng, lat],
-    type: 'Point',
-  },
-});
-
-export const buildGeometryCollection = (point, polygon, name = null) => {
-  const { coordinates: pointCoordinates } = point;
-  const { coordinates: polygonCoordinates } = polygon;
-  return {
-    type: 'Feature',
-    label: name,
-    geometry: {
-      type: 'GeometryCollection',
-      geometries: [
-        {
-          type: 'Point',
-          coordinates: pointCoordinates,
-        },
-        {
-          type: 'Polygon',
-          coordinates: polygonCoordinates,
-        },
-      ],
-    },
-  };
-};
-
-export const drawAreaFromGeoCollection = (geoCollection) => [
-  { type: 'Feature', geometry: { ...geoCollection.geometry.geometries[1] } },
-];
-
 export const addCropToBasket = (
   cropId,
   cropName,
