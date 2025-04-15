@@ -103,7 +103,7 @@ const HistoryDialog = () => {
                 label="Input your field name"
                 value={fieldName}
                 onChange={handleFieldNameChange}
-                testId="input-field-name"
+                data-test="input-field-name"
               />
             </>
           )}
