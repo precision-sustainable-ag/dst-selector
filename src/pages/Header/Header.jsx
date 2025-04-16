@@ -88,6 +88,7 @@ const Demo = () => {
     if (caption) {
       cap.style.left = '50%';
       cap.style.top = '100%';
+      cap.style.fontSize = '20px';
       setTimeout(() => { // wait for CSS transition
         cap.innerHTML = caption;
         const cbr = cap.getBoundingClientRect();
@@ -169,20 +170,18 @@ const Demo = () => {
   };
 
   const location = async () => {
-    await moveTo('.MapBox', ' There are 3 ways you can navigate to your field.   Double click,  use the Polygon tool in the top left of the map to mark your field, or...', 6000);
+    await moveTo('.MapBox', ' There are 3 ways you can navigate to your field.  <p>Double click</p>  <p>The Polygon tool in the top left of the map </p> or...', 6000);
     await moveTo('.mapboxgl-ctrl-geocoder--input', 'Enter your field address here.', 500, { value: '10th Avenue, Kettleman City', keyspeed: 100 });
     await moveTo('.suggestions li:nth-child(1)', 'Select from the list.', 2000, { mouseup: true });
     await moveTo('[data-test="next-btn"]', 'After selecting your location, press NEXT to advance to the next screen.', 5000, { click: true });
   };
 
   const siteConditions = async () => {
-    await moveTo('[data-test="soil-composition-card"]', 'This shows your soil composition based on soil survey data (SSURGO).', 5000);
-    await moveTo('[data-test="frost-dates-card"]', 'This shows 30-year average frost dates for your location.', 5000);
+    await moveTo('[data-test="soil-composition-card"]', 'This shows your soil composition based on web soil survey data (SSURGO).', 5000);
+    await moveTo('[data-test="frost-dates-card"]', 'This shows frost dates as predicted over the past 30 years.', 5000);
     await moveTo('[data-test="precipitation-card"]', 'This shows average annual precipitation for your location.', 5000);
     await moveTo('[data-test="soil-drainage-card"]', 'This shows your soil drainage based on soil survey data.<p>You can make changes appropriate for your location.</p>', 5000);
-    await moveTo('[data-test="drainage-class-chip-2"]', '', 2000);
     await moveTo('[data-test="flooding-frequency-card"]', 'This shows the annual probability of a flood event.<p>You can make changes appropriate for your location.</p>', 5000);
-    await moveTo('[data-test="flooding-options-chip-2"]', '', 1000);
     await moveTo('[data-test="next-btn"]', 'When satisfied with your conditions, press NEXT to advance to the next screen.', 5000, { click: true });
   };
 
@@ -190,11 +189,11 @@ const Demo = () => {
     await moveTo('#chip6', 'You can select up to 3 goals', 4000, { click: true });
     await moveTo('#chip3', '', 500, { click: true });
     await moveTo('#chip8', '', 500, { click: true });
-    await moveTo('#season2', 'To filter your cover crop termination information you may select your Planting Season, Life Cycle, and/or Irrigation type.</br> Select up to one of each. ', 7000);
-    await moveTo('#floweringType0', 'Select Life Cycle', 2000, { click: true });
-    await moveTo('#irrigation1', 'Select an irrigation Type', 2000, { click: true });
-    await moveTo('.planting-date-picker', 'Enter cash crop planting date.  This will be reflected in you results.', 5000);
-    await moveTo('.harvest-date-picker', 'Enter cash crop harvest date.  This will be reflected in you results.', 5000);
+    await moveTo('.additionalFilters', 'Optional: <p>To filter your cover crop termination information select your</p> <p>Planting Season</p> <p>Life Cycle</p> <p>Irrigation type</p> <p>Select up to one of each.</p> ', 7000);
+    await moveTo('#floweringType0', 'Optional: <p>Select Life Cycle.</p>', 2000, { click: true });
+    await moveTo('#irrigation1', 'Optional: <p>Select an irrigation Type.</p>', 2000, { click: true });
+    await moveTo('.planting-date-picker', 'Optional:<p>Enter cash crop planting date.</p>', 5000);
+    await moveTo('.harvest-date-picker', 'Optional:<p>Enter cash crop harvest date.</p>', 5000);
     await moveTo('[data-test="next-btn"]', 'When satisfied with your conditions, press NEXT to advance to the next screen.', 5000, { click: true });
   };
 
@@ -213,9 +212,9 @@ const Demo = () => {
     await moveTo('.coverCropDescription', 'Here is a breif description of the crop you have selected', 5000);
     await moveTo('.imageCarousel', 'And a few images that will rotate through a carousel', 5000);
     await moveTo('.infosheetAccordion0', 'Click the header to hide or show each accordion.', 4000);
-    await moveTo('.infosheetAccordionButton0', '', 1000, { click: true });
-    await moveTo('.infosheetAccordionButton1', '', 1000, { click: true });
     await moveTo('.infosheetAccordionButton2', '', 1000, { click: true });
+    await moveTo('.infosheetAccordionButton3', '', 1000, { click: true });
+    await moveTo('.infosheetAccordionButton4', '', 1000, { click: true });
     await moveTo('.infosheetPrint', 'Here you can create then print or save a PDF copy of the infosheet.  This will open in a new tab.', 8000);
     await moveTo('.modalClose', 'Return to where you were by clicking the X.', 5000, { click: true });
     await moveTo('.cropToBasket0', 'Click the plus button to add crops to your Crop List.', 5000, { click: true });
@@ -232,6 +231,8 @@ const Demo = () => {
     await moveTo('.sidebarEditGoals', 'This button allows you to change your selections', 3000);
     await moveTo('.sidebarGoals', '', 1000, { click: true });
     await moveTo('.sidebarFilters', 'The filters allow you to adjust your results by values that may be more important to you.', 5000);
+    await moveTo('.cropGroup3', '', 1000, { click: true });
+    await moveTo('.sidebarFilters', 'You can see the crops filter in the calendar view. --> ', 4000, { click: true });
     await moveTo('.legend', '', 1000, { click: true });
     await moveTo('.legend', 'This legend will help you understand the color scheme on the calendar.  Hover over the colored bars to see their tooltips.', 7000);
     await moveTo('.crop3', 'Clicking on any of the crops will open up their infosheet.', 7000, { click: true });

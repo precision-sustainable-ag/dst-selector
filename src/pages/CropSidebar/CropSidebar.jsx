@@ -414,7 +414,7 @@ const CropSidebar = ({
         />
       </ListItem>
       <ListItem>
-        {coverCropGroup.map((val) => {
+        {coverCropGroup.map((val, i) => {
           const selected = cropGroupFilterRedux === val.label;
           return (
             <Grid key={val.label} item>
@@ -428,6 +428,7 @@ const CropSidebar = ({
                 component="li"
                 size="medium"
                 label={val.label}
+                className={`cropGroup${i}`}
                 color={selected ? 'primary' : 'secondary'}
               />
             </Grid>
