@@ -225,6 +225,7 @@ const GoalsSelector = () => {
           mt: isLargeScreen ? 4 : 2,
           mb: isLargeScreen ? 4 : 2,
         }}
+        className="additionalFilters"
         justifyContent="center"
       >
         <Grid item xs={12}>
