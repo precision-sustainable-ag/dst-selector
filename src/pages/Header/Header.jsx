@@ -209,7 +209,7 @@ const Demo = () => {
   };
 
   const infosheet = async () => {
-    await moveTo('.coverCropDescription', 'Here is a breif description of the crop you have selected', 5000);
+    await moveTo('.coverCropDescription', 'Here is a brief description of the crop you have selected', 5000);
     await moveTo('.imageCarousel', 'And a few images that will rotate through a carousel', 5000);
     await moveTo('.infosheetAccordion0', 'Click the header to hide or show each accordion.', 4000);
     await moveTo('.infosheetAccordionButton2', '', 1000, { click: true });
