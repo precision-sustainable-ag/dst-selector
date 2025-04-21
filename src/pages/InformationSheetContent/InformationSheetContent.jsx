@@ -98,129 +98,144 @@ const InformationSheetContent = ({ crop, modalData }) => {
       <>
         <CoverCropInformation allThumbs={allThumbs} crop={modalData} className="page-break" />
         {modalData
-          && modalData.data.map((cat, index) => (
-            <Grid
-              item
-              key={index}
-              xs={12}
-              className={`avoid-break infosheetAccordion${index}`}
-              sx={{ marginBottom: '16px' }}
-            >
-              <PSAAccordion
-                sx={{
-                  border: '1px solid #e3e1e1',
-                  '& .MuiAccordionDetails-root': {
-                    padding: '0',
-                  },
-                }}
-                expanded={accordionOpen[cat.label]}
-                onChange={() => handleAccordion(cat.label)}
-                summaryContent={(
-                  <Typography className={`infosheetAccordionButton${index}`} variant="h4" style={{ color: 'grey' }}>
-                    {cat.label}
-                  </Typography>
-                )}
-                detailsContent={(
-                  <Grid
-                    container
-                    sx={{
-                      backgroundColor: { xs: '#F5F5F5', md: 'white' },
-                      justifyContent: 'space-between',
-                      borderTop: '1px solid #e3e1e1',
-                      padding: { xs: '', md: '10px 15px 0px' },
-                      borderRadius: '0 0 30px 30px',
-                    }}
-                  >
-                    {cat.attributes.map((att, catIndex) => {
-                      if (councilShorthandRedux === 'WCCC' && att.order === 3 && !checkTermination(att.label)) {
-                        return null; // Return null to render nothing for this attribute
-                      }
-                      return (!att.label.startsWith('Comments')
-                      && !att.label.startsWith('Notes:')
-                      && cat.label !== 'Extended Comments') ? (
-                        <Grid
-                          container
-                          key={catIndex}
-                          item
-                          xs={12}
-                          md={5.7}
-                          className="info-sheet-item"
-                          sx={{
-                            backgroundColor: '#F5F5F5',
-                            borderTop: { xs: '1px solid #e6e3e3', md: '' },
-                            borderRadius: { xs: '0 0 30px 30px', md: '30px' },
-                            boxShadow: { xs: '', md: '0px 2px 4px rgba(0, 0, 0, 0.1)' },
-                            marginBottom: { xs: '', md: '20px' },
-                            padding: '6px 18px',
-                            overflow: 'hidden',
-                            wordWrap: 'break-word',
-                            minHeight: '40px',
-                          }}
-                        >
-                          <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Grid item xs={6} className="attribute-label">
+          && modalData.data.map((cat, index) => {
+            const IsTermination = cat.label === 'Termination';
+            const flag = IsTermination && councilShorthandRedux === 'WCCC';
+            return (
+              <Grid
+                item
+                key={index}
+                xs={12}
+                className={`avoid-break infosheetAccordion${index}`}
+                sx={{ marginBottom: '16px' }}
+              >
+                <PSAAccordion
+                  sx={{
+                    border: '1px solid #e3e1e1',
+                    '& .MuiAccordionDetails-root': {
+                      padding: '0',
+                    },
+                  }}
+                  expanded={accordionOpen[cat.label]}
+                  onChange={() => handleAccordion(cat.label)}
+                  summaryContent={(
+                    <Typography className={`infosheetAccordionButton${index}`} variant="h4" style={{ color: 'grey' }}>
+                      {cat.label}
+                    </Typography>
+                  )}
+                  detailsContent={(
+                    <Grid
+                      container
+                      sx={{
+                        backgroundColor: { xs: '#F5F5F5', md: 'white' },
+                        justifyContent: 'space-between',
+                        borderTop: '1px solid #e3e1e1',
+                        padding: { xs: '', md: '10px 15px 0px' },
+                        borderRadius: '0 0 30px 30px',
+                      }}
+                    >
+                      {cat.attributes.map((att, catIndex) => {
+                        if (councilShorthandRedux === 'WCCC' && att.order === 3 && !checkTermination(att.label)) {
+                          return null; // Return null to render nothing for this attribute
+                        }
+                        return !att.label.startsWith('Comments')
+                          && !att.label.startsWith('Notes:')
+                          && cat.label !== 'Extended Comments' ? (
+                            <Grid
+                              container
+                              key={catIndex}
+                              item
+                              xs={12}
+                              md={5.7}
+                              className="info-sheet-item"
+                              sx={{
+                                backgroundColor: '#F5F5F5',
+                                borderTop: { xs: '1px solid #e6e3e3', md: '' },
+                                borderRadius: { xs: '0 0 30px 30px', md: '30px' },
+                                boxShadow: { xs: '', md: '0px 2px 4px rgba(0, 0, 0, 0.1)' },
+                                marginBottom: { xs: '', md: '20px' },
+                                padding: '6px 18px',
+                                overflow: 'hidden',
+                                wordWrap: 'break-word',
+                                minHeight: '40px',
+                              }}
+                            >
+                              <Grid
+                                container
+                                sx={{
+                                  display: 'flex',
+                                  // flexDirection: flag ? 'column' : 'row',
+                                  alignItems: flag ? 'flex-start' : 'center',
+                                }}
+                              >
+                                <Grid
+                                  item
+                                  xs={flag ? 12 : 6}
+                                  className="attribute-label"
+                                  sx={{
+                                    textAlign: flag ? 'center' : 'inherit',
+                                  }}
+                                >
+                                  <PSATooltip
+                                    placement="top-end"
+                                    enterTouchDelay={0}
+                                    title={att.description}
+                                    arrow
+                                    tooltipContent={(
+                                      <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
+                                        {att.label}
+                                      </Typography>
+      )}
+                                  />
+                                </Grid>
+
+                                <Grid item xs={flag ? 12 : 6} className="attribute-value">
+                                  <Typography
+                                    sx={{
+                                      display: 'block',
+                                      textAlign: flag ? 'center' : 'right',
+                                    }}
+                                  >
+                                    {extractData(att, 'infoSheet', councilShorthandRedux)}
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+
+                            </Grid>
+                          ) : (
+                            <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
                               <PSATooltip
                                 placement="top-end"
                                 enterTouchDelay={0}
                                 title={att.description}
                                 arrow
                                 tooltipContent={(
-                                  <Typography
-                                    sx={{ fontWeight: 'bold' }}
-                                    variant="body1"
-                                    tabIndex="0"
-                                  >
-                                    {att.label}
-                                  </Typography>
-                                  )}
+                                  <Box xs={12} tabIndex="0">
+                                    <Typography
+                                      display="flex"
+                                      justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
+                                      sx={{ fontWeight: 'bold' }}
+                                    >
+                                      {att.label}
+                                    </Typography>
+                                    <Typography
+                                      display="flex"
+                                      justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
+                                    >
+                                      {att.values[0]?.value}
+                                    </Typography>
+                                  </Box>
+                              )}
                               />
                             </Grid>
-                            <Grid item xs={6} className="attribute-value">
-                              <Typography
-                                sx={{
-                                  display: 'flex',
-                                  justifyContent: 'flex-end',
-                                  textAlign: 'right',
-                                }}
-                              >
-                                {extractData(att, 'infoSheet', councilShorthandRedux)}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        ) : (
-                          <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
-                            <PSATooltip
-                              placement="top-end"
-                              enterTouchDelay={0}
-                              title={att.description}
-                              arrow
-                              tooltipContent={(
-                                <Box xs={12} tabIndex="0">
-                                  <Typography
-                                    display="flex"
-                                    justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
-                                    sx={{ fontWeight: 'bold' }}
-                                  >
-                                    {att.label}
-                                  </Typography>
-                                  <Typography
-                                    display="flex"
-                                    justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
-                                  >
-                                    {att.values[0]?.value}
-                                  </Typography>
-                                </Box>
-                            )}
-                            />
-                          </Grid>
-                        );
-                    })}
-                  </Grid>
-                )}
-              />
-            </Grid>
-          ))}
+                          );
+                      })}
+                    </Grid>
+                  )}
+                />
+              </Grid>
+            );
+          })}
 
         <InformationSheetReferences currentSources={currentSources} />
       </>
