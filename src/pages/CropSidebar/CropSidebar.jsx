@@ -157,8 +157,10 @@ const CropSidebar = ({
       return '';
     });
 
+    const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
+
     const filtered = cropData?.filter((crop, n, cd) => {
-      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0].value;
+      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -414,7 +416,7 @@ const CropSidebar = ({
         />
       </ListItem>
       <ListItem>
-        {coverCropGroup.map((val) => {
+        {coverCropGroup.map((val, i) => {
           const selected = cropGroupFilterRedux === val.label;
           return (
             <Grid key={val.label} item>
@@ -428,6 +430,7 @@ const CropSidebar = ({
                 component="li"
                 size="medium"
                 label={val.label}
+                className={`cropGroup${i}`}
                 color={selected ? 'primary' : 'secondary'}
               />
             </Grid>
