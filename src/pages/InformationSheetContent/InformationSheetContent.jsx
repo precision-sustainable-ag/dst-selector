@@ -84,7 +84,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
     }
     const attributeValues = [];
     attribute?.values.forEach((value) => {
-      if (councilShorthandRedux === 'WCCC' && category === 'Termination' && tagsRedux.length > 0) {
+      if (councilShorthandRedux === 'WCCC' && category === 'Termination Window' && tagsRedux.length > 0) {
         // filter attr by tags
         const { tags } = value;
         if (tags.some((tag) => tagsRedux.includes(tag))) attributeValues.push(value.value);
