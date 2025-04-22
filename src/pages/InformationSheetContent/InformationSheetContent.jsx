@@ -125,7 +125,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
         <CoverCropInformation allThumbs={allThumbs} crop={modalData} className="page-break" />
         {modalData
           && modalData.data.map((cat, index) => {
-            const IsTermination = cat.label === 'Termination';
+            const IsTermination = cat.label === 'Termination' || cat.label === 'Termination Window';
             const flag = IsTermination && councilShorthandRedux === 'WCCC';
             return (
               <Grid
