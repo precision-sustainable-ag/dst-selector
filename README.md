@@ -1,6 +1,6 @@
 ## Cover Crop Species Selector Decision Support Tool
 
-**Date Created:** 8/18/22
+**Date Created:** 08/18/22
 
 **Date Last Modified:** 04/22/2025
 
