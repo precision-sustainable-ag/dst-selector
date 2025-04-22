@@ -2,6 +2,7 @@ const initialState = {
   selectedSeason: null,
   selectedFlowering: null,
   selectedIrrigation: null,
+  tags: [],
 };
 
 export const updateSelectedSeason = (season) => ({
@@ -19,6 +20,11 @@ export const updateSelectedIrrigation = (irrigationType) => ({
   payload: irrigationType,
 });
 
+export const updateTags = (tags) => ({
+  type: 'UPDATE_TAGS',
+  payload: tags,
+});
+
 const terminationsReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_SELECTED_SEASON':
@@ -29,6 +35,9 @@ const terminationsReducer = (state = initialState, action = null) => {
 
     case 'UPDATE_SELECTED_IRRIGATION':
       return { ...state, selectedIrrigation: action.payload };
+
+    case 'UPDATE_TAGS':
+      return { ...state, tags: action.payload };
 
     default:
       return state;

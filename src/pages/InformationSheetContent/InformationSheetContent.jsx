@@ -29,6 +29,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
   const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
   const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
+  const tagsRedux = useSelector((stateRedux) => stateRedux.terminationData.tags);
 
   // Termination checks
   const seasons = ['Spring Planted', 'Summer Planted', 'Fall Planted', 'Winter Planted'];
@@ -70,6 +71,31 @@ const InformationSheetContent = ({ crop, modalData }) => {
     }, {}),
   );
 
+  const getAttributeData = (attribute, category) => {
+    // handles no attribute
+    if (!attribute) {
+      return <Typography variant="body2">No Data</Typography>;
+    }
+    // if attribute.values.label exist, return label
+    if (attribute?.values[0]?.label) {
+      return (
+        <Typography variant="body2">{attribute?.values[0]?.label}</Typography>
+      );
+    }
+    const attributeValues = [];
+    attribute?.values.forEach((value) => {
+      if (councilShorthandRedux === 'WCCC' && category === 'Termination Window' && tagsRedux.length > 0) {
+        // filter attr by tags
+        const { tags } = value;
+        if (tags.some((tag) => tagsRedux.includes(tag))) attributeValues.push(value.value);
+      } else {
+        attributeValues.push(`${value.value}${attribute?.units ? ` ${attribute?.units}` : ''}`);
+      }
+    });
+    const dataType = attribute?.dataType.label;
+    return extractData(attributeValues, dataType, attribute, councilShorthandRedux);
+  };
+
   useEffect(() => {
     callCoverCropApi(
       `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${queryStringRedux}`,
@@ -99,7 +125,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
         <CoverCropInformation allThumbs={allThumbs} crop={modalData} className="page-break" />
         {modalData
           && modalData.data.map((cat, index) => {
-            const IsTermination = cat.label === 'Termination';
+            const IsTermination = cat.label === 'Termination' || cat.label === 'Termination Window';
             const flag = IsTermination && councilShorthandRedux === 'WCCC';
             return (
               <Grid
@@ -196,7 +222,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                       textAlign: flag ? 'center' : 'right',
                                     }}
                                   >
-                                    {extractData(att, 'infoSheet', councilShorthandRedux)}
+                                    {getAttributeData(att, cat.label)}
                                   </Typography>
                                 </Grid>
                               </Grid>

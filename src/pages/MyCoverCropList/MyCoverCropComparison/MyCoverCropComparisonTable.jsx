@@ -164,9 +164,27 @@ const MyCoverCropComparisonTable = () => {
         </TableCell>
       );
     }
+
+    const getAttributeData = () => {
+      // handles no attribute
+      if (!attribute) {
+        return <Typography variant="body2">No Data</Typography>;
+      }
+      const attributeValues = [];
+      for (let i = 0; i < attribute?.values.length; i++) {
+        if (attribute?.values[i].value) {
+          attributeValues.push(`${attribute?.values[i].value}${attribute?.units ? ` ${attribute?.units}` : ''}`);
+        } else {
+          attributeValues.push(attribute?.values[i]);
+        }
+      }
+      const dataType = attribute?.dataType;
+      return extractData(attributeValues, dataType, attribute, councilShorthandRedux);
+    };
+
     return (
       <TableCell align="center" key={index}>
-        {extractData(attribute, 'comparisonTable', councilShorthandRedux)}
+        {getAttributeData()}
       </TableCell>
     );
   });
