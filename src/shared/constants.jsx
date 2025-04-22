@@ -1013,45 +1013,7 @@ export const postHistory = async (accessToken = null, historyData = null) => {
 };
 // TODO: not used above
 
-export const extractData = (attribute, from, councilShorthand) => {
-  // handles no attribute
-  if (!attribute) {
-    return <Typography variant="body2">No Data</Typography>;
-  }
-
-  // extract data
-  let dataType;
-  const attributeValues = [];
-
-  if (from === 'infoSheet') {
-    if (attribute?.values[0]?.label) {
-      return (
-        <Typography variant="body2">{attribute?.values[0]?.label}</Typography>
-      );
-    }
-    attribute?.values.forEach((ele) => {
-      attributeValues.push(`${ele.value} ${attribute?.units ? attribute?.units : ''}`);
-    });
-    dataType = attribute?.dataType.label;
-  } else {
-    // from myCoverCropComparison
-    for (let i = 0; i < attribute?.values.length; i++) {
-      if (attribute?.values[i].value) {
-        attributeValues.push(`${attribute?.values[i].value} ${attribute?.units ? attribute?.units : ''}`);
-      } else {
-        attributeValues.push(attribute?.values[i]);
-      }
-    }
-    dataType = attribute?.dataType;
-  }
-
-  const data = attributeValues;
-
-  // handles no data
-  if (!data) {
-    return <Typography variant="body2">No Data</Typography>;
-  }
-
+export const extractData = (data, dataType, attribute, councilShorthand) => {
   // handles pillbox data
   if (data && dataType === 'pillbox') {
     return getRating(data, councilShorthand);
