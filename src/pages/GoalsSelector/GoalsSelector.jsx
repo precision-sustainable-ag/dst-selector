@@ -14,7 +14,9 @@ import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 import pirschAnalytics from '../../shared/analytics';
-import { updateSelectedFlowering, updateSelectedIrrigation, updateSelectedSeason } from '../../reduxStore/terminationSlice';
+import {
+  updateSelectedFlowering, updateSelectedIrrigation, updateSelectedSeason, updateTags,
+} from '../../reduxStore/terminationSlice';
 
 const GoalsSelector = () => {
   // theme vars
@@ -77,11 +79,17 @@ const GoalsSelector = () => {
     ).then((data) => {
       setAllGoals(data.data);
     });
+    pirschAnalytics('Visited Page', { meta: { visited: 'Goals' } });
   }, []);
 
   useEffect(() => {
-    pirschAnalytics('Visited Page', { meta: { visited: 'Goals' } });
-  }, []);
+    if (councilShorthandRedux === 'WCCC') {
+      const selectedTags = allGoals.filter((goal) => selectedGoalsRedux.includes(goal.label))
+        .map((goal) => goal.tags).flat();
+      const uniqueTags = [...new Set(selectedTags)];
+      dispatch(updateTags(uniqueTags));
+    }
+  }, [selectedGoalsRedux]);
 
   return (
     <Box>
