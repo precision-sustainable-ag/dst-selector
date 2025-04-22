@@ -173,7 +173,7 @@ const MyCoverCropComparisonTable = () => {
       const attributeValues = [];
       for (let i = 0; i < attribute?.values.length; i++) {
         if (attribute?.values[i].value) {
-          attributeValues.push(`${attribute?.values[i].value}${attribute?.units && ` ${attribute?.units}`}`);
+          attributeValues.push(`${attribute?.values[i].value}${attribute?.units ? ` ${attribute?.units}` : ''}`);
         } else {
           attributeValues.push(attribute?.values[i]);
         }

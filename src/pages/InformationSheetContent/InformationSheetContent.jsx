@@ -89,7 +89,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
         const { tags } = value;
         if (tags.some((tag) => tagsRedux.includes(tag))) attributeValues.push(value.value);
       } else {
-        attributeValues.push(`${value.value}${attribute?.units && ` ${attribute?.units}`}`);
+        attributeValues.push(`${value.value}${attribute?.units ? ` ${attribute?.units}` : ''}`);
       }
     });
     const dataType = attribute?.dataType.label;
