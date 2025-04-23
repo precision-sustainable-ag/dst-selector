@@ -16,15 +16,12 @@ import { useSelector } from 'react-redux';
 import { PSAAccordion, PSATooltip } from 'shared-react-components/src';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
-import { callCoverCropApi, extractData } from '../../shared/constants';
+import { extractData } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
 
 const InformationSheetContent = ({ crop, modalData }) => {
   // redux vars
-  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
 
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
   const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
@@ -61,9 +58,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
     return true;
   }
   // useState vars
-  const [currentSources, setCurrentSources] = useState([{}]);
-  const [allThumbs, setAllThumbs] = useState([]);
-  const [dataDone, setDataDone] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(
     modalData.data.reduce((res, data) => {
       res[data.label] = true;
@@ -97,21 +91,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
   };
 
   useEffect(() => {
-    callCoverCropApi(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${queryStringRedux}`,
-    ).then((data) => {
-      setCurrentSources(data.data);
-    });
-
-    callCoverCropApi(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?${queryStringRedux}`,
-    ).then((data) => {
-      setAllThumbs(data.data);
-      setDataDone(true);
-    });
-  }, [crop, filterStateRedux]);
-
-  useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Information Sheet' } });
   }, []);
 
@@ -120,9 +99,9 @@ const InformationSheetContent = ({ crop, modalData }) => {
     setAccordionOpen({ ...accordionOpen, [cat]: !open });
   };
   return (
-    dataDone === true && (
+    (
       <>
-        <CoverCropInformation allThumbs={allThumbs} crop={modalData} className="page-break" />
+        <CoverCropInformation crop={modalData} className="page-break" />
         {modalData
           && modalData.data.map((cat, index) => {
             const IsTermination = cat.label === 'Termination' || cat.label === 'Termination Window';
@@ -263,7 +242,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
             );
           })}
 
-        <InformationSheetReferences currentSources={currentSources} />
+        <InformationSheetReferences cropId={crop.id} />
       </>
     )
   );
