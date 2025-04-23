@@ -114,7 +114,7 @@ const GoalsSelector = () => {
               {/* title */}
               <Grid item xs={12}>
                 <Typography variant="h4" align="center" data-test="title-goals">
-                  Goals
+                  Cover Crop Goals
                 </Typography>
               </Grid>
               {/* sub-title */}
@@ -267,7 +267,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Planting Season
+              Coover Crop Planting Season
             </Typography>
           </Grid>
           {/* sub-title */}
@@ -319,7 +319,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Lifecycle
+              Cover Crop Lifecycle
             </Typography>
           </Grid>
           {/* sub-title */}
@@ -372,7 +372,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Irrigation Type
+              Will Cover Crops Be Irrigated?
             </Typography>
           </Grid>
           {/* sub-title */}
@@ -388,7 +388,7 @@ const GoalsSelector = () => {
             {irrigationType.map((irrigation, i) => (
               <Chip
                 key={irrigation}
-                label={irrigation}
+                label={i === 0 ? 'No' : 'Yes'}
                 id={(`irrigation${i}`)}
                 clickable
                 style={{ margin: '0.3rem' }}
