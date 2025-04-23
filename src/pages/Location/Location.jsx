@@ -21,9 +21,10 @@ import { PSAReduxMap } from 'shared-react-components/src';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import { abbrRegion, reverseGEO, callCoverCropApi } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
+import StateChangeAlertDialog from './StateChangeAlertDialog/StateChangeAlertDialog';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
-import { setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
+import { setOpenStateChangeAlert, setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
@@ -49,6 +50,7 @@ const Location = () => {
   const [mapFeatures, setMapFeatures] = useState(userFieldRedux);
   // eslint-disable-next-line no-nested-ternary
   const [latLon, setLatLon] = useState(markersRedux ? markersRedux[0] : stateLabelRedux ? statesLatLongDict[stateLabelRedux] : [47, -122]);
+  const [stateLabel, setStateLabel] = useState(null);
 
   const updateMapFeatures = (newFeatures) => {
     if (JSON.stringify(mapFeatures) === JSON.stringify(newFeatures)) return;
@@ -70,7 +72,12 @@ const Location = () => {
     setSelectedToEditSite(properties?.address);
     setLatLon([properties?.lat, properties?.lon]);
     updateMapFeatures(properties?.features);
+    setStateLabel(properties?.state?.STATE_NAME);
   };
+
+  useEffect(() => {
+    if (stateLabel && stateLabel !== stateLabelRedux) dispatchRedux(setOpenStateChangeAlert(true));
+  }, [stateLabel]);
 
   useEffect(() => {
     // analytics
@@ -342,6 +349,7 @@ const Location = () => {
                 hasCoordBar
                 hasDrawing
                 hasFreehand
+                hasSinglePolygon
                 hasGeolocate
                 hasFullScreen
                 hasMarkerPopup
@@ -350,6 +358,7 @@ const Location = () => {
                 mapboxToken={mapboxToken}
               />
             </Container>
+            <StateChangeAlertDialog />
           </Grid>
         )}
       </Grid>
