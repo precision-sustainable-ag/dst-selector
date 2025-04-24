@@ -17,7 +17,6 @@ const initialState = {
     open: false,
     goBack: true,
   },
-  openStateChangeAlert: false,
 };
 
 export const setQueryString = (value) => ({
@@ -108,13 +107,6 @@ export const setMyCoverCropReset = (open, goBack = true) => ({
   },
 });
 
-export const setOpenStateChangeAlert = (value) => ({
-  type: 'SET_OPEN_STATE_CHANGE_ALERT',
-  payload: {
-    value,
-  },
-});
-
 export const setSharedRedux = (sharedData) => ({
   type: 'SET_SHARED_REDUX',
   payload: { sharedData },
@@ -200,12 +192,6 @@ const sharedReducer = (state = initialState, action = null) => {
           open: action.payload.open,
           goBack: action.payload.goBack,
         },
-      };
-
-    case 'SET_OPEN_STATE_CHANGE_ALERT':
-      return {
-        ...state,
-        openStateChangeAlert: action.payload.value,
       };
 
     case 'SET_SHARED_REDUX':

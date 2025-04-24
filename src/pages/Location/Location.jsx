@@ -24,7 +24,7 @@ import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardiness
 import StateChangeAlertDialog from './StateChangeAlertDialog/StateChangeAlertDialog';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
-import { setOpenStateChangeAlert, setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
+import { setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
@@ -51,6 +51,7 @@ const Location = () => {
   // eslint-disable-next-line no-nested-ternary
   const [latLon, setLatLon] = useState(markersRedux ? markersRedux[0] : stateLabelRedux ? statesLatLongDict[stateLabelRedux] : [47, -122]);
   const [stateLabel, setStateLabel] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const updateMapFeatures = (newFeatures) => {
     if (JSON.stringify(mapFeatures) === JSON.stringify(newFeatures)) return;
@@ -76,7 +77,7 @@ const Location = () => {
   };
 
   useEffect(() => {
-    if (stateLabel && stateLabel !== stateLabelRedux) dispatchRedux(setOpenStateChangeAlert(true));
+    if (stateLabel && stateLabel !== stateLabelRedux) setIsOpen(true);
   }, [stateLabel]);
 
   useEffect(() => {
@@ -358,7 +359,7 @@ const Location = () => {
                 mapboxToken={mapboxToken}
               />
             </Container>
-            <StateChangeAlertDialog />
+            <StateChangeAlertDialog isOpen={isOpen} setIsOpen={setIsOpen} />
           </Grid>
         )}
       </Grid>

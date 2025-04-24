@@ -5,21 +5,15 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import { setOpenStateChangeAlert } from '../../../reduxStore/sharedSlice';
 
-const StateChangeAlertDialog = () => {
-  const dispatchRedux = useDispatch();
-
-  const isOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.openStateChangeAlert);
-
+const StateChangeAlertDialog = ({ isOpen, setIsOpen }) => {
   const handleClose = () => {
-    dispatchRedux(setOpenStateChangeAlert(false));
+    setIsOpen(false);
   };
 
   return (
-    <Dialog disableEscapeKeyDown open={isOpenRedux}>
+    <Dialog disableEscapeKeyDown open={isOpen}>
       <DialogContent dividers>
         <Typography variant="body1">
           Your marker is placed outside the boundaries of the state you originally selected.
