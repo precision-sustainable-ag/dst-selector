@@ -16,7 +16,8 @@ const StateChangeAlertDialog = ({ isOpen, setIsOpen }) => {
     <Dialog disableEscapeKeyDown open={isOpen}>
       <DialogContent dividers>
         <Typography variant="body1">
-          Your marker is placed outside the boundaries of the state you originally selected.
+          This point is in a state other than the one you selected at the start. Move the point into
+          your selected state or hit Back and select a different state.
         </Typography>
       </DialogContent>
       <DialogActions className="resetBox">
