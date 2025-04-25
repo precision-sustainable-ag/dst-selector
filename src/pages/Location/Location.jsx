@@ -147,10 +147,6 @@ const Location = () => {
       .catch((error) => console.error('SSURGO FETCH ERROR', error));
   };
 
-  useEffect(() => {
-    if (councilShorthandRedux === 'WCCC' && markersRedux) getSSURGOData(markersRedux[0][0], markersRedux[0][1]);
-  }, [markersRedux]);
-
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
     if (Object.keys(selectedToEditSite).length > 0) {
@@ -320,6 +316,9 @@ const Location = () => {
     if (markersRedux) {
       getDetails();
     }
+
+    // If WCCC, check is the land is farmable
+    if (councilShorthandRedux === 'WCCC' && markersRedux) getSSURGOData(markersRedux[0][0], markersRedux[0][1]);
   }, [markersRedux]);
 
   return (
