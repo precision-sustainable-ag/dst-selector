@@ -193,6 +193,7 @@ const sharedReducer = (state = initialState, action = null) => {
           goBack: action.payload.goBack,
         },
       };
+
     case 'SET_SHARED_REDUX':
       return {
         ...state,

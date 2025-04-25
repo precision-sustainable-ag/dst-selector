@@ -21,6 +21,7 @@ import { PSAReduxMap } from 'shared-react-components/src';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import { abbrRegion, reverseGEO, callCoverCropApi } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
+import StateChangeAlertDialog from './StateChangeAlertDialog/StateChangeAlertDialog';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
@@ -49,6 +50,11 @@ const Location = () => {
   const [mapFeatures, setMapFeatures] = useState(userFieldRedux);
   // eslint-disable-next-line no-nested-ternary
   const [latLon, setLatLon] = useState(markersRedux ? markersRedux[0] : stateLabelRedux ? statesLatLongDict[stateLabelRedux] : [47, -122]);
+  const [stateLabel, setStateLabel] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isFarmable, setIsFarmable] = useState(true);
+
+  const NOT_FARMABLE_HTML = '<div style="color: red; font-weight: bold; margin-top: 8 px;">The selected land is not farmable</div>';
 
   const updateMapFeatures = (newFeatures) => {
     if (JSON.stringify(mapFeatures) === JSON.stringify(newFeatures)) return;
@@ -70,7 +76,12 @@ const Location = () => {
     setSelectedToEditSite(properties?.address);
     setLatLon([properties?.lat, properties?.lon]);
     updateMapFeatures(properties?.features);
+    setStateLabel(properties?.state?.STATE_NAME);
   };
+
+  useEffect(() => {
+    if (stateLabel && stateLabel !== stateLabelRedux) setIsOpen(true);
+  }, [stateLabel, latLon[0], latLon[1]]);
 
   useEffect(() => {
     // analytics
@@ -90,6 +101,50 @@ const Location = () => {
     }));
     dispatchRedux(setQueryString(`regions=${selectedRegion.id}`));
     pirschAnalytics('Location', { meta: { mapUpdate: true } });
+  };
+
+  // Fetches ssurgo data and checks if the soil composition is farmable
+  const getSSURGOData = (lat, lon) => {
+    // eslint-disable-next-line max-len
+    const soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS mapUnitName, muag.drclassdcd AS drainageClass, muag.flodfreqdcd AS floodingFrequency, mp.mupolygonkey as MPKEY
+      FROM mapunit AS mu
+      INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+      INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+      WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))
+      AND
+      mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append('query', soilDataQuery);
+    urlencoded.append('format', 'json+columnname');
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow',
+    };
+
+    fetch('https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest', requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const stringSplit = [];
+
+        result.Table.forEach((el, index) => {
+          if (index !== 0) {
+            if (stringSplit.indexOf(el[1].split(',')[0]) === -1) {
+              stringSplit.push(el[1].split(',')[0]);
+            }
+          }
+        });
+
+        setIsFarmable(!stringSplit.some((el) => el.toLowerCase().includes('urban land')));
+      })
+      // eslint-disable-next-line no-console
+      .catch((error) => console.error('SSURGO FETCH ERROR', error));
   };
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
@@ -261,6 +316,9 @@ const Location = () => {
     if (markersRedux) {
       getDetails();
     }
+
+    // If WCCC, check is the land is farmable
+    if (councilShorthandRedux === 'WCCC' && markersRedux) getSSURGOData(markersRedux[0][0], markersRedux[0][1]);
   }, [markersRedux]);
 
   return (
@@ -342,14 +400,17 @@ const Location = () => {
                 hasCoordBar
                 hasDrawing
                 hasFreehand
+                hasSinglePolygon
                 hasGeolocate
                 hasFullScreen
                 hasMarkerPopup
                 hasMarkerMovable
+                popupContent={!isFarmable ? NOT_FARMABLE_HTML : ''}
                 hasHelp
                 mapboxToken={mapboxToken}
               />
             </Container>
+            <StateChangeAlertDialog isOpen={isOpen} setIsOpen={setIsOpen} />
           </Grid>
         )}
       </Grid>
