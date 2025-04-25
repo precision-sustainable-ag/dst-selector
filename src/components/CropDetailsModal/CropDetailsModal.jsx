@@ -3,14 +3,14 @@
 */
 
 import {
-  Box, Grid, Typography, useMediaQuery, useTheme,
+  Grid, Typography, useMediaQuery, useTheme,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Close, Print } from '@mui/icons-material';
+import { Print } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSAButton, PSAModal } from 'shared-react-components/src';
+import { PSAButton, PSAInfoSheet } from 'shared-react-components/src';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
@@ -50,10 +50,6 @@ const CropDetailsModal = ({
         });
     }
   }, [crop]);
-
-  const handleModalClose = () => {
-    setModalOpen(!modalOpen);
-  };
 
   const print = async () => {
     if (consentRedux === true) {
@@ -120,114 +116,60 @@ const CropDetailsModal = ({
       const { fileUrl } = await response.json();
       window.open(fileUrl, '_blank');
     } catch (err) {
+      // FIXME: this snackbar will be blocked by modal
       dispatch(snackHandler({ snackOpen: true, snackMessage: `Error generating PDF: ${err}` }));
     } finally {
       dispatch(updatePrinting(false));
     }
   };
 
-  return dataDone === true && (
-    <PSAModal
-      sx={{
-        overflowX: 'hidden',
-        maxWidth: isMobile ? '100%' : '70%',
-        margin: isMobile ? '0' : '2% auto',
-      }}
-      open={modalOpen}
-      onClose={handleModalClose}
-      closeAfterTransition
-      disableEscapeKeyDown={false}
-      modalContent={(
-        <Box
-          sx={{
-            backgroundColor: 'white',
+  // eslint-disable-next-line react/no-unstable-nested-components
+  const InfosheetTitle = () => (
+    <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
+      <Grid item>
+        <Typography color="white" sx={{ marginLeft: '2em' }}>
+          Cover Crop Information Sheet
+        </Typography>
+      </Grid>
+      <Grid item>
+
+        <PSAButton
+          startIcon={<OpenInNewIcon />}
+          buttonType="ModalLink"
+          onClick={() => {
+            window.open('/data-dictionary', '_blank');
           }}
-          id={`cropDetailModal-${modalData.id}`}
-        >
-          <Grid container>
-            <Grid
-              container
-              sx={{
-                backgroundColor: '#2D7B7B',
-                position: 'fixed',
-                zIndex: 1000,
-                width: isMobile ? '100%' : '70%',
-                height: isMobile ? '70px' : 'auto',
-              }}
-              className="no-print"
-            >
-              <Grid
-                container
-                display="flex"
-                alignItems="center"
-                item
-                xs={11}
-                sx={{
-                  borderTop: '5px solid #2d7b7b',
-                }}
-              >
-                <Grid item>
-                  <Typography color="white" sx={{ marginLeft: '2em' }}>
-                    Cover Crop Information Sheet
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <PSAButton
-                    startIcon={<OpenInNewIcon />}
-                    buttonType="ModalLink"
-                    onClick={() => {
-                      window.open('/data-dictionary', '_blank');
-                    }}
-                    title="Terminology Definitions"
-                  />
-                  {
-                    printing
-                      ? (
-                        <PSAButton
-                          buttonType="ModalLink"
-                          startIcon={<CircularProgress size={20} />}
-                        />
-                      )
-                      : (
-                        <PSAButton
-                          startIcon={<Print />}
-                          buttonType="ModalLink"
-                          onClick={print}
-                          title="Print"
-                          className="infosheetPrint"
-                        />
-                      )
-                  }
-                </Grid>
-              </Grid>
+          title="Terminology Definitions"
+        />
+        {
+        printing
+          ? (
+            <PSAButton
+              buttonType="ModalLink"
+              startIcon={<CircularProgress size={20} />}
+            />
+          )
+          : (
+            <PSAButton
+              startIcon={<Print />}
+              buttonType="ModalLink"
+              onClick={print}
+              title="Print"
+              className="infosheetPrint"
+            />
+          )
+      }
+      </Grid>
+    </Grid>
+  );
 
-              <Grid item xs={1}>
-                <PSAButton
-                  style={{ color: 'white', float: 'right', paddingTop: '13px' }}
-                  onClick={handleModalClose}
-                  startIcon={<Close />}
-                  buttonType=""
-                  className="modalClose"
-                />
-              </Grid>
-            </Grid>
-
-            <Grid container justifyContent={isMobile ? 'center' : 'flex-start'}>
-              <Box
-                sx={{
-                  width: isMobile ? '100%' : 'inherit',
-                  maxWidth: isMobile ? '390px' : 'unset',
-                  marginTop: '80px',
-                  marginLeft: isMobile ? '2px' : '2.5%',
-                  marginRight: isMobile ? '2px' : '2.5%',
-                }}
-              >
-                <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-      )}
+  return dataDone === true && (
+    <PSAInfoSheet
+      open={modalOpen}
+      setOpen={setModalOpen}
+      title={<InfosheetTitle />}
+      content={<InformationSheetContent crop={crop} modalData={modalData.data} />}
+      fullScreen={isMobile}
     />
   );
 };

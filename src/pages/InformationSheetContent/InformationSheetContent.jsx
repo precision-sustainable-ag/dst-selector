@@ -13,7 +13,7 @@ import {
   Grid,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { PSAAccordion, PSATooltip } from 'shared-react-components/src';
+import { PSAAccordion, PSATooltip, PSAInfoSheetAttributeBox } from 'shared-react-components/src';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 import { extractData } from '../../shared/constants';
@@ -104,8 +104,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
         <CoverCropInformation crop={modalData} className="page-break" />
         {modalData
           && modalData.data.map((cat, index) => {
-            const IsTermination = cat.label === 'Termination' || cat.label === 'Termination Window';
-            const flag = IsTermination && councilShorthandRedux === 'WCCC';
+            const isTermination = councilShorthandRedux === 'WCCC' && (cat.label === 'Termination' || cat.label === 'Termination Window');
             return (
               <Grid
                 item
@@ -118,7 +117,9 @@ const InformationSheetContent = ({ crop, modalData }) => {
                   sx={{
                     border: '1px solid #e3e1e1',
                     '& .MuiAccordionDetails-root': {
-                      padding: '0',
+                      backgroundColor: { xs: '#F5F5F5', md: 'white' },
+                      borderRadius: '0 0 30px 30px',
+                      padding: { xs: '0', md: '8px' },
                     },
                   }}
                   expanded={accordionOpen[cat.label]}
@@ -129,85 +130,13 @@ const InformationSheetContent = ({ crop, modalData }) => {
                     </Typography>
                   )}
                   detailsContent={(
-                    <Grid
-                      container
-                      sx={{
-                        backgroundColor: { xs: '#F5F5F5', md: 'white' },
-                        justifyContent: 'space-between',
-                        borderTop: '1px solid #e3e1e1',
-                        padding: { xs: '', md: '10px 15px 0px' },
-                        borderRadius: '0 0 30px 30px',
-                      }}
-                    >
+                    <Grid container>
                       {cat.attributes.map((att, catIndex) => {
                         if (councilShorthandRedux === 'WCCC' && att.order === 3 && !checkTermination(att.label)) {
                           return null; // Return null to render nothing for this attribute
                         }
-                        return !att.label.startsWith('Comments')
-                          && !att.label.startsWith('Notes:')
-                          && cat.label !== 'Extended Comments' ? (
-                            <Grid
-                              container
-                              key={catIndex}
-                              item
-                              xs={12}
-                              md={5.7}
-                              className="info-sheet-item"
-                              sx={{
-                                backgroundColor: '#F5F5F5',
-                                borderTop: { xs: '1px solid #e6e3e3', md: '' },
-                                borderRadius: { xs: '0 0 30px 30px', md: '30px' },
-                                boxShadow: { xs: '', md: '0px 2px 4px rgba(0, 0, 0, 0.1)' },
-                                marginBottom: { xs: '', md: '20px' },
-                                padding: '6px 18px',
-                                overflow: 'hidden',
-                                wordWrap: 'break-word',
-                                minHeight: '40px',
-                              }}
-                            >
-                              <Grid
-                                container
-                                sx={{
-                                  display: 'flex',
-                                  // flexDirection: flag ? 'column' : 'row',
-                                  alignItems: flag ? 'flex-start' : 'center',
-                                }}
-                              >
-                                <Grid
-                                  item
-                                  xs={flag ? 12 : 6}
-                                  className="attribute-label"
-                                  sx={{
-                                    textAlign: flag ? 'center' : 'inherit',
-                                  }}
-                                >
-                                  <PSATooltip
-                                    placement="top-end"
-                                    enterTouchDelay={0}
-                                    title={att.description}
-                                    arrow
-                                    tooltipContent={(
-                                      <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
-                                        {att.label}
-                                      </Typography>
-      )}
-                                  />
-                                </Grid>
-
-                                <Grid item xs={flag ? 12 : 6} className="attribute-value">
-                                  <Typography
-                                    sx={{
-                                      display: 'block',
-                                      textAlign: flag ? 'center' : 'right',
-                                    }}
-                                  >
-                                    {getAttributeData(att, cat.label)}
-                                  </Typography>
-                                </Grid>
-                              </Grid>
-
-                            </Grid>
-                          ) : (
+                        if (att.label.startsWith('Comments') || att.label.startsWith('Notes:') || cat.label === 'Extended Comments') {
+                          return (
                             <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
                               <PSATooltip
                                 placement="top-end"
@@ -234,6 +163,16 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               />
                             </Grid>
                           );
+                        }
+                        return (
+                          <PSAInfoSheetAttributeBox
+                            variant={isTermination ? 'texts' : ''}
+                            key={catIndex}
+                            description={att.description}
+                            label={att.label}
+                            value={getAttributeData(att, cat.label)}
+                          />
+                        );
                       })}
                     </Grid>
                   )}
