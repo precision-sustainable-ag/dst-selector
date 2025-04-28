@@ -8,48 +8,19 @@ import {
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Print } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSAInfoSheet } from 'shared-react-components/src';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
-import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
 import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
 
-const CropDetailsModal = ({
-  crop,
-  setModalOpen,
-  modalOpen,
-}) => {
+export const InfoSheetTitle = ({ crop }) => {
   const dispatch = useDispatch();
-  // redux vars
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
-
   const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
-
-  // useState vars
-  const [dataDone, setDataDone] = useState(false);
-  const [modalData, setModalData] = useState([]);
-
-  useEffect(() => {
-    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${queryStringRedux}`;
-    if (crop.id !== undefined) {
-      callCoverCropApi(url).then((data) => {
-        setModalData(data);
-      })
-        .then(() => {
-          setDataDone(true);
-        });
-    }
-  }, [crop]);
 
   const print = async () => {
     if (consentRedux === true) {
@@ -123,8 +94,7 @@ const CropDetailsModal = ({
     }
   };
 
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const InfosheetTitle = () => (
+  return (
     <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
       <Grid item>
         <Typography color="white" sx={{ marginLeft: '2em' }}>
@@ -162,13 +132,22 @@ const CropDetailsModal = ({
       </Grid>
     </Grid>
   );
+};
 
-  return dataDone === true && (
+const CropDetailsModal = ({
+  crop,
+  setModalOpen,
+  modalOpen,
+}) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  return (
     <PSAInfoSheet
       open={modalOpen}
       setOpen={setModalOpen}
-      title={<InfosheetTitle />}
-      content={<InformationSheetContent crop={crop} modalData={modalData.data} />}
+      title={<InfoSheetTitle />}
+      content={<InformationSheetContent crop={crop} />}
       fullScreen={isMobile}
     />
   );

@@ -20,8 +20,6 @@ const InformationSheetReferences = ({ cropId }) => {
     });
   }, []);
 
-  if (currentSources.length > 0) console.log(currentSources);
-
   return currentSources.length > 0 && (
     <Box component="div" sx={{ width: '100%', m: '0.5rem' }}>
       <PSAAccordion

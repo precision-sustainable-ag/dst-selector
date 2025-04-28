@@ -16,24 +16,29 @@ import { useSelector } from 'react-redux';
 import { PSAAccordion, PSATooltip, PSAInfoSheetAttributeBox } from 'shared-react-components/src';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
-import { extractData } from '../../shared/constants';
+import { callCoverCropApi, extractData } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
 
-const InformationSheetContent = ({ crop, modalData }) => {
-  // redux vars
+const InformationSheetContent = ({ crop }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
   const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
   const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
   const tagsRedux = useSelector((stateRedux) => stateRedux.terminationData.tags);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+
+  const [expandedAccordions, setExpandedAccordions] = useState([]);
+  const [dataDone, setDataDone] = useState(false);
+  const [modalData, setModalData] = useState(null);
 
   // Termination checks
   const seasons = ['Spring Planted', 'Summer Planted', 'Fall Planted', 'Winter Planted'];
   const floweringTypes = ['Annual', 'Perennial'];
   const irrigationType = ['Rainfed', 'Irrigated'];
 
-  function checkTermination(label) {
+  const checkTermination = (label) => {
     const labelSet = new Set(label.split(',').map((item) => item.trim()));
 
     if (selectedSeason && seasons.some((season) => labelSet.has(season))) {
@@ -56,14 +61,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
     }
 
     return true;
-  }
-  // useState vars
-  const [accordionOpen, setAccordionOpen] = useState(
-    modalData.data.reduce((res, data) => {
-      res[data.label] = true;
-      return res;
-    }, {}),
-  );
+  };
 
   const getAttributeData = (attribute, category) => {
     // handles no attribute
@@ -90,16 +88,30 @@ const InformationSheetContent = ({ crop, modalData }) => {
     return extractData(attributeValues, dataType, attribute, councilShorthandRedux);
   };
 
+  const handleAccordion = (cat) => {
+    if (expandedAccordions.includes(cat)) {
+      setExpandedAccordions(expandedAccordions.filter((item) => item !== cat));
+    } else setExpandedAccordions([...expandedAccordions, cat]);
+  };
+
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Information Sheet' } });
   }, []);
 
-  const handleAccordion = (cat) => {
-    const open = accordionOpen[cat];
-    setAccordionOpen({ ...accordionOpen, [cat]: !open });
-  };
+  useEffect(() => {
+    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${queryStringRedux}`;
+    if (crop.id !== undefined) {
+      callCoverCropApi(url).then((data) => {
+        setModalData(data.data);
+        setExpandedAccordions(data.data.data.map((cat) => cat.label));
+      }).then(() => {
+        setDataDone(true);
+      });
+    }
+  }, [crop]);
+
   return (
-    (
+    dataDone && (
       <>
         <CoverCropInformation crop={modalData} className="page-break" />
         {modalData
@@ -122,7 +134,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                       padding: { xs: '0', md: '8px' },
                     },
                   }}
-                  expanded={accordionOpen[cat.label]}
+                  expanded={expandedAccordions.includes(cat.label)}
                   onChange={() => handleAccordion(cat.label)}
                   summaryContent={(
                     <Typography className={`infosheetAccordionButton${index}`} variant="h4" style={{ color: 'grey' }}>
