@@ -13,7 +13,9 @@ import {
   Grid,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { PSAAccordion, PSATooltip, PSAInfoSheetAttributeBox } from 'shared-react-components/src';
+import {
+  PSAAccordion, PSATooltip, PSAInfoSheetAttributeBox, PSALoadingSpinner,
+} from 'shared-react-components/src';
 import CoverCropInformation from '../CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from '../InformationSheetReferences/InformationSheetReferences';
 import { callCoverCropApi, extractData } from '../../../shared/constants';
@@ -111,7 +113,7 @@ const InformationSheetContent = ({ crop }) => {
   }, [crop]);
 
   return (
-    dataDone && (
+    dataDone ? (
       <>
         <CoverCropInformation crop={modalData} className="page-break" />
         {modalData
@@ -196,6 +198,14 @@ const InformationSheetContent = ({ crop }) => {
         <InformationSheetReferences cropId={crop.id} />
       </>
     )
+      : (
+        <Box sx={{
+          width: '1200px', height: '1000px', display: 'flex', justifyContent: 'center',
+        }}
+        >
+          <PSALoadingSpinner />
+        </Box>
+      )
   );
 };
 
