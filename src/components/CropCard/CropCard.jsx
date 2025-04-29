@@ -14,8 +14,7 @@ import InformationSheetContent from '../../pages/InformationSheetContent/Informa
 import { InfoSheetTitle } from '../CropDetailsModal/CropDetailsModal';
 
 const CropCard = ({
-  // eslint-disable-next-line no-unused-vars
-  crop, handleModalOpen, index, dispatchRedux,
+  crop, dispatchRedux,
 }) => {
   // used to know if the user is in mobile mode
   const theme = useTheme();
