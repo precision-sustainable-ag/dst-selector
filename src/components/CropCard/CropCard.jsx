@@ -85,6 +85,7 @@ const CropCard = ({
       sx={{
         img: {
           left: 0,
+          height: '100%',
           transform: needsRotation(crop) ? 'rotate(90deg) scale(1.9)' : 'none',
           border: shouldHighlightRed ? '4px solid red' : 'none',
         },
