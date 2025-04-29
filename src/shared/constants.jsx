@@ -4,7 +4,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import {
-  Grid, Typography, Box,
+  Grid, Typography,
 } from '@mui/material';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
@@ -1029,11 +1029,7 @@ export const extractData = (data, dataType, attribute, councilShorthand) => {
   }
 
   // handles default
-  return (
-    <Box>
-      {data.map((element, index) => <Typography key={index} variant="body2">{element.toString()}</Typography>)}
-    </Box>
-  );
+  return data.map((element, index) => <Typography key={index} variant="body2">{element.toString()}</Typography>);
 };
 
 export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {

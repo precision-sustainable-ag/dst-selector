@@ -65,7 +65,7 @@ const CropCard = ({
       species={crop.label}
       scientific={crop.scientificName}
       details={<InformationSheetContent crop={crop} />}
-      title={<InfoSheetTitle />}
+      title={<InfoSheetTitle crop={crop} />}
       thumbnail={crop.thumbnailWide}
       fullsize={crop.thumbnail}
       portrait={crop.thumbnail}
@@ -83,16 +83,11 @@ const CropCard = ({
         );
       }}
       sx={{
-        minHeight: '',
-        '.heading': {
-          minHeight: '',
-        },
         img: {
           left: 0,
           transform: needsRotation(crop) ? 'rotate(90deg) scale(1.9)' : 'none',
           border: shouldHighlightRed ? '4px solid red' : 'none',
         },
-        marginBottom: '1rem',
       }}
       infoSheetProps={{ fullScreen: isMobile }}
     />

@@ -56,11 +56,6 @@ export const InfoSheetTitle = ({ crop }) => {
 
       const cropDetailModal = document.querySelector('[id^=cropDetailModal]');
       const clonedModal = cropDetailModal.cloneNode(true);
-      clonedModal.querySelectorAll('.attribute-value').forEach((el) => {
-        if (!el.querySelector('svg')) {
-          el.style.paddingRight = '32px';
-        }
-      });
 
       const fullHtml = `
         <html>
@@ -87,7 +82,6 @@ export const InfoSheetTitle = ({ crop }) => {
       const { fileUrl } = await response.json();
       window.open(fileUrl, '_blank');
     } catch (err) {
-      // FIXME: this snackbar will be blocked by modal
       dispatch(snackHandler({ snackOpen: true, snackMessage: `Error generating PDF: ${err}` }));
     } finally {
       dispatch(updatePrinting(false));
@@ -146,7 +140,7 @@ const InformationSheet = ({
     <PSAInfoSheet
       open={modalOpen}
       setOpen={setModalOpen}
-      title={<InfoSheetTitle />}
+      title={<InfoSheetTitle crop={crop} />}
       content={<InformationSheetContent crop={crop} />}
       fullScreen={isMobile}
     />
