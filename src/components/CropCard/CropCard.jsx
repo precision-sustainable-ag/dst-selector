@@ -10,8 +10,8 @@ import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
 import { setSaveHistory } from '../../reduxStore/userSlice';
 // import CropDetailsModal from '../CropDetailsModal/CropDetailsModal';
-import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
-import { InfoSheetTitle } from '../CropDetailsModal/CropDetailsModal';
+import InformationSheetContent from '../InformationSheet/InformationSheetContent/InformationSheetContent';
+import { InfoSheetTitle } from '../InformationSheet/InformationSheet';
 
 const CropCard = ({
   crop, dispatchRedux,

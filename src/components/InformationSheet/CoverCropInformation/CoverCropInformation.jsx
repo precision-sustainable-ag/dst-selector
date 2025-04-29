@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
-import ImageCarousel from '../../../components/ImageCarousel/ImageCarousel';
+import ImageCarousel from '../ImageCarousel/ImageCarousel';
 import { callCoverCropApi } from '../../../shared/constants';
 
 const CoverCropInformation = ({

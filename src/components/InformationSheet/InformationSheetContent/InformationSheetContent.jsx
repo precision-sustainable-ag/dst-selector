@@ -14,10 +14,10 @@ import {
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { PSAAccordion, PSATooltip, PSAInfoSheetAttributeBox } from 'shared-react-components/src';
-import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
-import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
-import { callCoverCropApi, extractData } from '../../shared/constants';
-import pirschAnalytics from '../../shared/analytics';
+import CoverCropInformation from '../CoverCropInformation/CoverCropInformation';
+import InformationSheetReferences from '../InformationSheetReferences/InformationSheetReferences';
+import { callCoverCropApi, extractData } from '../../../shared/constants';
+import pirschAnalytics from '../../../shared/analytics';
 
 const InformationSheetContent = ({ crop }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);

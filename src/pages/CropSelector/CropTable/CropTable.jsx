@@ -26,9 +26,9 @@ import {
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
-import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import RenderTableItems from './RenderTableItems';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
+import InformationSheet from '../../../components/InformationSheet/InformationSheet';
 
 const CropTable = ({
   listView,
@@ -318,7 +318,7 @@ const CropTable = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <CropDetailsModal
+      <InformationSheet
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
         crop={modalData}

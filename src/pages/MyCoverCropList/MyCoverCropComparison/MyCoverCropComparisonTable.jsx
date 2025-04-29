@@ -26,7 +26,7 @@ import {
   trimString,
 } from '../../../shared/constants';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
-import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
+import InformationSheet from '../../../components/InformationSheet/InformationSheet';
 
 const MyCoverCropComparisonTable = () => {
   const dispatchRedux = useDispatch();
@@ -204,7 +204,7 @@ const MyCoverCropComparisonTable = () => {
       <Table stickyHeader aria-label="sticky table" ref={tableRef}>
         <TableHead>
           {modalOpen && (
-            <CropDetailsModal
+            <InformationSheet
               modalOpen={modalOpen}
               setModalOpen={setModalOpen}
               crop={modalData}

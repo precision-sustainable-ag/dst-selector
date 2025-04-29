@@ -35,8 +35,8 @@ import {
 
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
-import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
+import InformationSheet from '../../../components/InformationSheet/InformationSheet';
 
 const growthIcon = {
   color: 'white',
@@ -489,7 +489,7 @@ const CropCalendarView = ({
           </TableContainer>
         </>
       )}
-      <CropDetailsModal modalOpen={modalOpen} setModalOpen={setModalOpen} crop={modalData} />
+      <InformationSheet modalOpen={modalOpen} setModalOpen={setModalOpen} crop={modalData} />
     </>
   );
 };

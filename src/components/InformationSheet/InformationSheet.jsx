@@ -11,7 +11,7 @@ import { Print } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSAInfoSheet } from 'shared-react-components/src';
-import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
+import InformationSheetContent from './InformationSheetContent/InformationSheetContent';
 import pirschAnalytics from '../../shared/analytics';
 import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
 
@@ -134,7 +134,7 @@ export const InfoSheetTitle = ({ crop }) => {
   );
 };
 
-const CropDetailsModal = ({
+const InformationSheet = ({
   crop,
   setModalOpen,
   modalOpen,
@@ -153,4 +153,4 @@ const CropDetailsModal = ({
   );
 };
 
-export default CropDetailsModal;
+export default InformationSheet;
