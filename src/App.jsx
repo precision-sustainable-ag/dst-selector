@@ -46,7 +46,7 @@ import Feedback from './pages/Feedback/Feedback';
 import './styles/App.scss';
 // bootstrap import
 import 'mdbreact/dist/css/mdb.css';
-import SiteConditions from './pages/Location/LocationConfirmation/SiteConditions';
+import SiteConditions from './pages/SiteConditions/SiteConditions';
 import '@fontsource/ibm-plex-sans';
 import SkipContent from './components/SkipContent/SkipContent';
 
