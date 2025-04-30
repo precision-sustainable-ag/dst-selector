@@ -23,7 +23,6 @@ const SoilCondition = () => {
 
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
-  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
@@ -65,13 +64,16 @@ const SoilCondition = () => {
 
   // retrieving drainage class and flooding frequency
   useEffect(() => {
-    if (window.Cypress) return;
-    if (soilDataRedux.drainageClass.length > 0 || historyStateRedux === historyState.imported) {
-      // not call api if selected any drainage class or it's imported
-      return;
-    }
-
-    const getSSURGOData = (lat, lon) => {
+    const [lat, lon] = markersRedux[0];
+    const { lat: latOriginal, lon: lonOriginal } = soilDataOriginalRedux.latLong;
+    if (
+      floodingOptions.length === 0
+      || (lat === latOriginal && lon === lonOriginal)
+      || historyStateRedux === historyState.imported
+      || stateLabelRedux === 'Ontario'
+      || window.Cypress
+    ) return;
+    const getSSURGOData = () => {
       const markersCopy = markersRedux;
 
       let longLatString = '';
@@ -159,7 +161,7 @@ const SoilCondition = () => {
           let selectedOption;
           floodingOptions.forEach((opt) => {
             if (opt.label === floodingClasses[0]) {
-              selectedOption = councilShorthandRedux !== 'WCCC' ? [opt.value.toString()] : [];
+              selectedOption = [opt.value.toString()];
             }
           });
           const payload = {
@@ -180,22 +182,8 @@ const SoilCondition = () => {
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
     };
 
-    if (stateLabelRedux === 'Ontario') return;
-
-    const lat = markersRedux[0][0];
-    const lon = markersRedux[0][1];
-
-    // FIXME: the latLong property is always []
-    if (soilDataOriginalRedux?.latLong) {
-      if (
-        !(soilDataOriginalRedux.latLong?.lat === lat && soilDataOriginalRedux.latLong?.lon === lon)
-      ) {
-        getSSURGOData(lat, lon);
-      }
-    } else {
-      getSSURGOData(lat, lon);
-    }
-  }, [markersRedux, soilDataOriginalRedux?.latLong, floodingOptions]);
+    getSSURGOData();
+  }, [floodingOptions]);
 
   return (
     <Grid item container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
