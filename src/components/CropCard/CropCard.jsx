@@ -60,13 +60,15 @@ const CropCard = ({
   const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
   const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
 
+  const placeHolderImg = 'https://placehold.co/260x140?text=Placeholder';
+
   return (
     <PSACropCard
       species={crop.label}
       scientific={crop.scientificName}
       details={<InformationSheetContent crop={crop} />}
       title={<InfoSheetTitle crop={crop} />}
-      thumbnail={crop.thumbnailWide}
+      thumbnail={crop.thumbnailWide ?? placeHolderImg}
       fullsize={crop.thumbnail}
       portrait={crop.thumbnail}
       selected={selectedBtns.includes(crop.id)}
@@ -84,6 +86,7 @@ const CropCard = ({
       }}
       sx={{
         img: {
+          top: 0,
           left: 0,
           height: '100%',
           transform: needsRotation(crop) ? 'rotate(90deg) scale(1.9)' : 'none',
