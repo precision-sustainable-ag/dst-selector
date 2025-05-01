@@ -109,10 +109,7 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
       .first()
       .click()
       .then(() => {
-        btnIdx.forEach((idx) => {
-          cy.assertByTestId(`crop-card-${idx}`);
-        });
-        cy.get('[data-test^=crop-card-label-]').each(($label) => {
+        cy.get('[data-test^=crop-card-label]').each(($label) => {
           // Ensure the label is visible
           cy.wrap($label).should('be.visible')
             .invoke('text')

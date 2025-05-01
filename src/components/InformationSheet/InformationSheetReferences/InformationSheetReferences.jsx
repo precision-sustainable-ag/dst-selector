@@ -1,10 +1,24 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Typography, Box } from '@mui/material';
 import { PSAAccordion } from 'shared-react-components/src';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { useSelector } from 'react-redux';
+import { callCoverCropApi } from '../../../shared/constants';
 
-const InformationSheetReferences = ({ currentSources }) => {
+const InformationSheetReferences = ({ cropId }) => {
   const [open, setOpen] = useState(true);
+  const [currentSources, setCurrentSources] = useState([]);
+
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+
+  useEffect(() => {
+    callCoverCropApi(
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${cropId}/resources?${queryStringRedux}`,
+    ).then((data) => {
+      setCurrentSources(data.data);
+    });
+  }, []);
 
   return currentSources.length > 0 && (
     <Box component="div" sx={{ width: '100%', m: '0.5rem' }}>

@@ -56,6 +56,11 @@ code {
     justify-content: right !important;
   }
 
+  .attribute-value-text .MuiTypography-root {
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
   .info-sheet-item {
     flex-direction: row !important;
     padding-bottom: 15px !important;

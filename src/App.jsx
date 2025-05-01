@@ -240,7 +240,8 @@ const SnackbarComponent = () => {
         'aria-describedby': 'message-id',
       }}
       message={snackMessageRedux}
-      sx={{ marginBottom: '40px' }}
+      // zIndex is used to show snackbar over dialog
+      sx={{ marginBottom: '40px', zIndex: 1000004 }}
     />
   );
 };
