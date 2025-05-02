@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
-import SoilComposition from '../../pages/Location/SoilCondition/SoilComposition/SoilComposition';
+import SoilComposition from '../../pages/SiteConditions/SoilCondition/SoilComposition/SoilComposition';
 
 const WeatherConditions = () => {
   // redux vars

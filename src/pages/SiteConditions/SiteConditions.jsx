@@ -7,9 +7,9 @@ import React, { useEffect } from 'react';
 import {
   Grid, Typography, Box, useTheme, useMediaQuery,
 } from '@mui/material';
-import SoilCondition from '../SoilCondition/SoilCondition';
-import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
-import pirschAnalytics from '../../../shared/analytics';
+import SoilCondition from './SoilCondition/SoilCondition';
+import WeatherConditions from '../../components/WeatherConditions/WeatherConditions';
+import pirschAnalytics from '../../shared/analytics';
 
 const SiteConditions = () => {
   const theme = useTheme();
