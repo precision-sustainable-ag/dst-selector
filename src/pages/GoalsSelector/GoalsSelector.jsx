@@ -267,7 +267,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Coover Crop Planting Season
+              Cover Crop Planting Season
             </Typography>
           </Grid>
           {/* sub-title */}
