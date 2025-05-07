@@ -2,8 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import {
   TableCell, Typography, TableRow, Grid,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import { PSAButton } from 'shared-react-components/src';
 import {
@@ -15,6 +13,7 @@ import {
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropTableCard from './CropTableCard';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   // redux vars
@@ -23,8 +22,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md')) || /Mobi|Android/i.test(navigator.userAgent);
+  const isMobile = useIsMobile('md');
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))

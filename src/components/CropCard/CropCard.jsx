@@ -1,5 +1,3 @@
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import React, {
   useEffect, useState,
 } from 'react';
@@ -12,13 +10,12 @@ import { setSaveHistory } from '../../reduxStore/userSlice';
 // import CropDetailsModal from '../CropDetailsModal/CropDetailsModal';
 import InformationSheetContent from '../InformationSheet/InformationSheetContent/InformationSheetContent';
 import { InfoSheetTitle } from '../InformationSheet/InformationSheet';
+import useIsMobile from '../../hooks/useIsMobile';
 
 const CropCard = ({
   crop, dispatchRedux,
 }) => {
-  // used to know if the user is in mobile mode
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useIsMobile('sm');
 
   // redux vars
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);

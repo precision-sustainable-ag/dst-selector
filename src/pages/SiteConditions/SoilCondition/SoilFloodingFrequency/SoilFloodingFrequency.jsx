@@ -1,5 +1,5 @@
 import {
-  Typography, Grid, Box, useMediaQuery, useTheme,
+  Typography, Grid, Box,
 } from '@mui/material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { WavesOutlined } from '@mui/icons-material';
@@ -11,12 +11,11 @@ import arrayEquals from '../../../../shared/functions';
 import RenderFloodingOptions from './RenderFloodingOptions';
 import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
+import useIsMobile from '../../../../hooks/useIsMobile';
 
 const SoilFloodingFrequency = ({ floodingOptions }) => {
   const dispatchRedux = useDispatch();
-  // theme
-  const uiTheme = useTheme();
-  const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
+  const isMobile = useIsMobile('sm');
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
