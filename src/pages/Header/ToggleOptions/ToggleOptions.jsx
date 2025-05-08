@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Badge, useMediaQuery, useTheme,
+  Badge,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -10,6 +10,7 @@ import {
   activateSpeicesSelectorTile,
   setMyCoverCropReset,
 } from '../../../reduxStore/sharedSlice';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();
@@ -21,11 +22,8 @@ const ToggleOptions = ({ pathname }) => {
     (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
   );
 
-  // used to know if the user is in mobile mode
-  const theme = useTheme();
+  const isMobile = useIsMobile('md');
 
-  // breakpoints
-  const isMdOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
     // FIXME: the following codes will not work?
@@ -71,7 +69,7 @@ const ToggleOptions = ({ pathname }) => {
       }}
     >
       <PSAButton
-        size={isMdOrSmaller && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
+        size={isMobile && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
         component={NavLink}
         onClick={() => openMyCoverCropReset('selector')}
         buttonType="ToggleOptions"
@@ -79,10 +77,10 @@ const ToggleOptions = ({ pathname }) => {
         to="/"
         sx={{
           fontWeight: 'bold',
-          fontSize: selectedCropIdsRedux.length > 0 && isMdOrSmaller ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
+          fontSize: selectedCropIdsRedux.length > 0 && isMobile ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
         }}
         data-test="get-recommendation-btn"
-        title={selectedCropIdsRedux.length > 0 && isMdOrSmaller ? (
+        title={selectedCropIdsRedux.length > 0 && isMobile ? (
           <div>
             <span style={{ display: 'block', textAlign: 'center' }}>Get A</span>
             <span style={{ display: 'block', textAlign: 'center' }}>Recommendation</span>
@@ -101,7 +99,7 @@ const ToggleOptions = ({ pathname }) => {
         tooltipContent={(
           <span>
             <PSAButton
-              size={isMdOrSmaller && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
+              size={isMobile && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
               onClick={setSpeciesSelectorActivationFlag}
               disabled={stateLabelRedux === null}
               selected={pathname === '/explorer'}
@@ -109,9 +107,9 @@ const ToggleOptions = ({ pathname }) => {
               data-test="browse-covercrops-btn"
               sx={{
                 fontWeight: 'bold',
-                fontSize: selectedCropIdsRedux.length > 0 && isMdOrSmaller ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
+                fontSize: selectedCropIdsRedux.length > 0 && isMobile ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
               }}
-              title={selectedCropIdsRedux.length > 0 && isMdOrSmaller ? (
+              title={selectedCropIdsRedux.length > 0 && isMobile ? (
                 <div>
                   <span style={{ display: 'block', textAlign: 'center' }}>Browse</span>
                   <span style={{ display: 'block', textAlign: 'center' }}>Cover Crops</span>
@@ -125,17 +123,17 @@ const ToggleOptions = ({ pathname }) => {
       />
 
       {selectedCropIdsRedux.length > 0 && (
-      <Badge badgeContent={!isMdOrSmaller ? selectedCropIdsRedux.length : null} color="error" data-test="badge">
+      <Badge badgeContent={!isMobile ? selectedCropIdsRedux.length : null} color="error" data-test="badge">
         <PSAButton
-          size={isMdOrSmaller && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
+          size={isMobile && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
           selected={pathname === '/my-cover-crop-list'}
           buttonType="ToggleOptions"
           onClick={setMyCoverCropActivationFlag}
           sx={{
             fontWeight: 'bold',
-            fontSize: selectedCropIdsRedux.length > 0 && isMdOrSmaller ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
+            fontSize: selectedCropIdsRedux.length > 0 && isMobile ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
           }}
-          title={selectedCropIdsRedux.length > 0 && isMdOrSmaller ? (
+          title={selectedCropIdsRedux.length > 0 && isMobile ? (
             <div>
               <span style={{ display: 'block', textAlign: 'center' }}>My</span>
               <span style={{ display: 'block', textAlign: 'center' }}>Selected Crops</span>

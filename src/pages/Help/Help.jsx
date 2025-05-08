@@ -19,6 +19,7 @@ import HowTo from './HowTo/HowTo';
 import FAQ from './FAQ/FAQ';
 import InfoSheets from './InfoSheets/InfoSheets';
 import pirschAnalytics from '../../shared/analytics';
+import useIsMobile from '../../hooks/useIsMobile';
 
 const Help = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -26,6 +27,8 @@ const Help = () => {
   // only used till new videos are made for How to Use section
   const newVideos = false;
   const howToText = newVideos ? `How to use the ${councilShorthandRedux} Species Selector Tool` : ' How To: Video tutorial coming soon…';
+
+  const isMobile = useIsMobile('md');
 
   useEffect(() => {
     document.title = 'Help Page';
@@ -84,7 +87,7 @@ const Help = () => {
 
   return (
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
-      <Grid container spacing={0} justifyContent="center" mt={4} mb={5} pt={3}>
+      <Grid container spacing={0} justifyContent="center" mt={isMobile ? 0 : 5} mb={isMobile ? 0 : 5}>
         <Grid item xs={12} sm={12} md={3.4} lg={3.4} xl={3.4}>
           <div
             style={{
@@ -123,7 +126,7 @@ const Help = () => {
           }}
         >
           <div style={{ border: `1px solid ${CustomStyles().darkGreen}`, minHeight: '320px' }}>
-            <Stack pl={3} pr={3} pb={4}>
+            <Stack pl={isMobile ? 0 : 3} pr={isMobile ? 0 : 3} pb={4}>
               <center>
                 <Typography variant="h4" gutterBottom>
                   {pageSections.filter((section) => section.id === value)[0].title}

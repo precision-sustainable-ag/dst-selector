@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /*
   This file contains the CropCalendarViewComponent
@@ -15,8 +14,6 @@ import {
   Typography,
   Box,
   Grid,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import ListIcon from '@mui/icons-material/List';
 import { tableCellClasses } from '@mui/material/TableCell';
@@ -37,6 +34,7 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
 import InformationSheet from '../../../components/InformationSheet/InformationSheet';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 const growthIcon = {
   color: 'white',
@@ -68,8 +66,7 @@ const CropCalendarView = ({
   const [myListSortFlag, setMyListSortFlag] = useState(true);
   const [currentGoalSortFlag, setCurrentGoalSortFlag] = useState(true);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md')) || /Mobi|Android/i.test(navigator.userAgent);
+  const isMobile = useIsMobile('md');
 
   const handleLegendModal = () => {
     setLegendModal(!legendModal);

@@ -1,5 +1,5 @@
 import {
-  Grid, Typography, useMediaQuery, useTheme,
+  Grid, Typography,
 } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,14 +10,14 @@ import { PSAButton } from 'shared-react-components/src';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 const PreviousCashCrop = () => {
   const dispatchRedux = useDispatch();
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useIsMobile('sm');
 
   const handleDispatch = (start = '', end = '') => {
     // update history state here

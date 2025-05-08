@@ -6,13 +6,14 @@
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
 import {
-  Stack, Badge, Box, useMediaQuery, useTheme,
+  Stack, Badge, Box,
 } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
+import useIsMobile from '../hooks/useIsMobile';
 
 const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
@@ -22,8 +23,7 @@ const ProgressButtonsInner = ({
   const history = useHistory();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useIsMobile('sm');
 
   const changeProgress = (type) => {
     // setCrement(type);

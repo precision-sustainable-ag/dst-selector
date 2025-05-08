@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   TableCell, TableRow, Grid,
   Box,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import {
   AcUnit, AddCircleOutline, CheckRounded, DeleteForever,
@@ -22,6 +20,7 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 const CheckBoxIcon = ({ style }) => (
   <Box sx={style}>
@@ -43,8 +42,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md')) || /Mobi|Android/i.test(navigator.userAgent);
+  const isMobile = useIsMobile('md');
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))

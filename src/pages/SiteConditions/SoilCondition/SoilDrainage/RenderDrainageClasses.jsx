@@ -1,20 +1,18 @@
 import {
-  Chip, Grid, Box, useTheme, useMediaQuery,
+  Chip, Grid, Box,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../../shared/analytics';
+import useIsMobile from '../../../../hooks/useIsMobile';
 
 const RenderDrainageClasses = ({
   setNewDrainage, setShowTiling, drainageOptions, drainage = '',
 }) => {
   const dispatchRedux = useDispatch();
-
-  // theme
-  const uiTheme = useTheme();
-  const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
+  const isMobile = useIsMobile('sm');
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);

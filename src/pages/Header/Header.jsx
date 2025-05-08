@@ -10,8 +10,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Grid, Box } from '@mui/material';
 import { PSAHeader, PSAAuthButton } from 'shared-react-components/src';
@@ -35,6 +33,7 @@ import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
 // import useWindowSize from '../../shared/constants';
 import { updateStateInfo } from '../../reduxStore/mapSlice';
+import useIsMobile from '../../hooks/useIsMobile';
 
 const speed = 1.3;
 
@@ -277,11 +276,7 @@ const Header = () => {
   const dispatchRedux = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-  // used to know if the user is in mobile mode
-  const theme = useTheme();
-
-  // breakpoints
-  const isMdOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useIsMobile('md');
 
   // redux vars
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -391,14 +386,14 @@ const Header = () => {
             navContent={navContent}
             onLogoClick={handleLogoClick}
           />
-          <Grid container sx={{ pb: isMdOrSmaller ? '3.5rem' : '1rem' }}>
+          <Grid container sx={{ pb: isMobile ? '3.5rem' : '1rem' }}>
             <Grid
               xs={12}
               sx={{
                 position: 'absolute',
-                top: isMdOrSmaller ? '85px' : '120px',
+                top: isMobile ? '85px' : '120px',
                 display: 'flex',
-                width: isMdOrSmaller ? '100%' : 'auto',
+                width: isMobile ? '100%' : 'auto',
               }}
               mb={{ xs: 2 }}
             >

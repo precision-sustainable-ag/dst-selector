@@ -6,8 +6,6 @@
 
 import { Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import { LocationOn } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
@@ -16,15 +14,13 @@ import { PSAButton } from 'shared-react-components/src';
 import ProgressButtons from '../../../shared/ProgressButtons';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
 import NavigationButtons from '../../../shared/NavigationButtons';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 const speciesSelectorToolName = '/';
 
 const InformationBar = ({ pathname }) => {
   const dispatchRedux = useDispatch();
-
-  // used to know if the user is in mobile mode
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useIsMobile('sm');
 
   // redux vars
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
