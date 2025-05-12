@@ -92,10 +92,10 @@ const PreviousCashCrop = () => {
                 sx={{
                   width: 1,
                   '.MuiOutlinedInput-notchedOutline': {
-                    borderColor: isError && theme.palette.error.main,
+                    borderColor: isError && '#d32f2f',
                   },
                   '.MuiFormHelperText-root': {
-                    color: isError && theme.palette.error.main,
+                    color: isError && '#d32f2f',
                   },
                 }}
               />
