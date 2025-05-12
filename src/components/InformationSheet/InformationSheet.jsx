@@ -3,7 +3,7 @@
 */
 
 import {
-  Grid, Typography, useMediaQuery, useTheme,
+  Grid, Typography,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -14,6 +14,7 @@ import { PSAButton, PSAInfoSheet } from 'shared-react-components/src';
 import InformationSheetContent from './InformationSheetContent/InformationSheetContent';
 import pirschAnalytics from '../../shared/analytics';
 import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
+import useIsMobile from '../../hooks/useIsMobile';
 
 export const InfoSheetTitle = ({ crop }) => {
   const dispatch = useDispatch();
@@ -133,8 +134,7 @@ const InformationSheet = ({
   setModalOpen,
   modalOpen,
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useIsMobile('sm');
 
   return (
     <PSAInfoSheet

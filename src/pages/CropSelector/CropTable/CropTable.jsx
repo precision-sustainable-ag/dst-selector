@@ -14,8 +14,6 @@ import {
   Typography,
   Grid,
   Box,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
@@ -29,6 +27,7 @@ import '../../../styles/cropTable.scss';
 import RenderTableItems from './RenderTableItems';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
 import InformationSheet from '../../../components/InformationSheet/InformationSheet';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 const CropTable = ({
   listView,
@@ -55,8 +54,7 @@ const CropTable = ({
   const [myListSortFlag, setMyListSortFlag] = useState(true);
   const [currentGoalSortFlag, setCurrentGoalSortFlag] = useState(true);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md')) || /Mobi|Android/i.test(navigator.userAgent);
+  const isMobile = useIsMobile('md');
 
   const handleModalOpen = (crop) => {
     setModalData(crop);
