@@ -250,7 +250,7 @@ window.addEventListener('error', (err) => {
   if (/(localhost|dev)/i.test(window.location)) return;
 
   const requestPayload = {
-    repository: 'dst-selector',
+    repository: 'dst-feedback',
     title: 'CRASH',
     name: 'error',
     email: 'error@error.com',
