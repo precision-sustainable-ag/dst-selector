@@ -1,7 +1,7 @@
 import {
   Grid, Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -16,14 +16,26 @@ const PreviousCashCrop = () => {
   const dispatchRedux = useDispatch();
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const { startDate, endDate } = cashCropDataRedux.dateRange;
 
   const isMobile = useIsMobile('sm');
+
+  const [isError, setIsError] = useState(false);
+  const [datePickerKey, setDatePickerKey] = useState(0);
 
   const handleDispatch = (start = '', end = '') => {
     // update history state here
     if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
-    dispatchRedux(updateDateRange({ startDate: start.toString(), endDate: end.toString() }));
     pirschAnalytics('Previous Cash Crop', { meta: { updated: true } });
+    if (dayjs(end).isBefore(dayjs(start))) {
+      setIsError(true);
+      // force rerender
+      setDatePickerKey((prev) => prev + 1);
+      dispatchRedux(updateDateRange({ startDate: start.toString(), endDate: null }));
+      return;
+    }
+    setIsError(false);
+    dispatchRedux(updateDateRange({ startDate: start ? start.toString() : null, endDate: end ? end.toString() : null }));
   };
 
   return (
@@ -43,7 +55,6 @@ const PreviousCashCrop = () => {
           item
           container
           justifyContent={isMobile ? 'center' : 'space-between'}
-          alignItems="center"
           xs={12}
           spacing={isMobile ? 2 : 3}
           display="flex"
@@ -59,7 +70,7 @@ const PreviousCashCrop = () => {
                 className="planting-date-picker"
                 sx={{ width: 1 }}
                 label="Planting Date"
-                value={dayjs(cashCropDataRedux.dateRange.startDate)}
+                value={startDate ? dayjs(startDate) : null}
                 onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
               />
             </LocalizationProvider>
@@ -67,16 +78,26 @@ const PreviousCashCrop = () => {
           <Grid item md={6}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
+                key={datePickerKey}
                 slotProps={{
                   textField: {
                     error: false,
+                    helperText: isError ? 'Your harvest date must be after your planting date.' : '',
                   },
                 }}
                 className="harvest-date-picker"
-                sx={{ width: 1 }}
                 label="Harvest Date"
-                value={dayjs(cashCropDataRedux.dateRange.endDate)}
+                value={endDate ? dayjs(endDate) : null}
                 onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
+                sx={{
+                  width: 1,
+                  '.MuiOutlinedInput-notchedOutline': {
+                    borderColor: isError && '#d32f2f',
+                  },
+                  '.MuiFormHelperText-root': {
+                    color: isError && '#d32f2f',
+                  },
+                }}
               />
             </LocalizationProvider>
           </Grid>
