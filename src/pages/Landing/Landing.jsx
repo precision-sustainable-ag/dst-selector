@@ -7,7 +7,7 @@
 */
 
 import {
-  Grid, Typography, Box,
+  Grid, Typography, Box, Button,
 } from '@mui/material';
 // import SelectUSState from 'react-select-us-states';
 import React, {
@@ -27,9 +27,37 @@ import pirschAnalytics from '../../shared/analytics';
 import { mapboxToken } from '../../shared/keys';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import { setQueryString } from '../../reduxStore/sharedSlice';
+import useIsMobile from '../../hooks/useIsMobile';
+
+const StateImageButton = ({
+  sx, onClick, src, alt,
+}) => (
+  <Button
+    variant="contained"
+    sx={{
+      border: '1px solid black',
+      padding: 0,
+      borderRadius: 0,
+      boxSizing: 'border-box',
+      ...sx,
+    }}
+    onClick={onClick}
+    aria-label={alt}
+    role="button"
+  >
+    <img
+      src={src}
+      alt={alt}
+      width="100px"
+      height="100px"
+    />
+  </Button>
+);
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
+
+  const isMobile = useIsMobile('sm');
 
   // redux vars
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
@@ -322,7 +350,7 @@ const Landing = () => {
             left: '50%',
             transform: 'translateX(-50%)',
             marginTop: '15px',
-            marginBottom: '15px',
+            marginBottom: isMobile ? '120px' : '15px',
           }}
           sx={{ maxWidth: '800px' }}
         >
@@ -337,6 +365,35 @@ const Landing = () => {
             initStartZoom={2.5}
             data-test="state-map"
             mapboxToken={mapboxToken}
+            key="1"
+          />
+          <StateImageButton
+            sx={{
+              position: 'absolute',
+              bottom: isMobile ? '-110px' : '140px',
+              left: '10px',
+              ...(selectedState.label === 'Alaska' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
+            }}
+            onClick={() => {
+              const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
+              setSelectedState(alaska);
+            }}
+            src={selectedState.label === 'Alaska' ? '/images/alaska-selected.jpg' : '/images/alaska.jpg'}
+            alt="select Alaska"
+          />
+          <StateImageButton
+            sx={{
+              position: 'absolute',
+              bottom: isMobile ? '-110px' : '30px',
+              left: isMobile ? '120px' : '10px',
+              ...(selectedState.label === 'Hawaii' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
+            }}
+            onClick={() => {
+              const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
+              setSelectedState(hawaii);
+            }}
+            src={selectedState.label === 'Hawaii' ? '/images/hawaii-selected.jpg' : '/images/hawaii.jpg'}
+            alt="select Hawaii"
           />
         </Box>
       </Grid>
