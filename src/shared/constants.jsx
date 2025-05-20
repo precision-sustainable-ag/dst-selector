@@ -811,7 +811,14 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
     });
     // add cash crop dates dates
     if (cashCropStartDate !== '' && cashCropEndDate !== '') {
-      yearArr = formatTimeToYearArr(cashCropStartDate, cashCropEndDate, 'Cash Crop Growing', yearArr);
+      if (moment(cashCropStartDate, 'MM/DD').isAfter(moment(cashCropEndDate, 'MM/DD'))) {
+        const tempStart = '01/01';
+        const tempEnd = '12/31';
+        yearArr = formatTimeToYearArr(cashCropStartDate, tempEnd, 'Cash Crop Growing', yearArr);
+        yearArr = formatTimeToYearArr(tempStart, cashCropEndDate, 'Cash Crop Growing', yearArr);
+      } else {
+        yearArr = formatTimeToYearArr(cashCropStartDate, cashCropEndDate, 'Cash Crop Growing', yearArr);
+      }
     }
 
     const yearData = formatYearArr(yearArr);
