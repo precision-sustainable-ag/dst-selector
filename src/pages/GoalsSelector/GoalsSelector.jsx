@@ -238,7 +238,7 @@ const GoalsSelector = () => {
       >
         <Grid item xs={12}>
           <Typography variant="h4" align="center">
-            Additional Filters
+            Additional Cover Crop Filters
           </Typography>
           <Typography
             variant={isMobile ? 'subtitle2' : 'subtitle1'}
@@ -267,7 +267,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Cover Crop Planting Season
+              Planting Season
             </Typography>
           </Grid>
           {/* sub-title */}
@@ -319,7 +319,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Cover Crop Lifecycle
+              Lifecycle
             </Typography>
           </Grid>
           {/* sub-title */}
@@ -372,7 +372,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Will Cover Crops Be Irrigated?
+              Will you Irrigate?
             </Typography>
           </Grid>
           {/* sub-title */}
