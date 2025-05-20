@@ -40,5 +40,6 @@ export default defineConfig({
     auth0_username: process.env.VITE_AUTH0_USERNAME,
     auth0_password: process.env.VITE_AUTH0_PASSWORD,
     auth0_domain: process.env.VITE_API_AUTH0_DOMAIN,
+    test_auth0_env: process.env.VITE_TEST_AUTH0_ENV,
   },
 });
