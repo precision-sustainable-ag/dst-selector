@@ -3,10 +3,17 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- wccc-testing
+  branches:
+    include:
+      - wccc-testing
 
-resources:
-- repo: self
+pr:
+  branches:
+    include:
+      - develop
+      - feature/*
+      - bugfix/*
+      - wccc-testing
 
 variables:
 
@@ -43,6 +50,11 @@ stages:
         echo VITE_API_MAPBOX_TOKEN="$(VITE_API_MAPBOX_TOKEN)" >> /home/vsts/work/1/s/.env
         echo VITE_AUTH0_USERNAME="$(VITE_AUTH0_USERNAME)" >> /home/vsts/work/1/s/.env
         echo VITE_AUTH0_PASSWORD="$(VITE_AUTH0_PASSWORD)" >> /home/vsts/work/1/s/.env
+        IS_PR="false"
+        if [[ $(Build.SourceBranch) == refs/pull/* ]]; then
+          IS_PR="true"
+        fi
+        echo VITE_TEST_AUTH0_ENV="$IS_PR" >> /home/vsts/work/1/s/.env
       displayName: "Create .env"
     - task: Docker@2
       displayName: Build and push an image to container registry

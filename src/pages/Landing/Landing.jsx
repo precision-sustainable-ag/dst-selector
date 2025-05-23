@@ -24,7 +24,7 @@ import { updateLocation } from '../../reduxStore/addressSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
 import pirschAnalytics from '../../shared/analytics';
-import { mapboxToken } from '../../shared/keys';
+import { mapboxToken, testAuth0Env } from '../../shared/keys';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import { setQueryString } from '../../reduxStore/sharedSlice';
 import useIsMobile from '../../hooks/useIsMobile';
@@ -89,7 +89,7 @@ const Landing = () => {
   // Load map data based on current enviorment
   useEffect(() => {
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
-      const isDevEnvironment = /(localhost|dev)/i.test(window.location);
+      const isDevEnvironment = testAuth0Env || /(localhost|dev)/i.test(window.location);
       const productionCouncils = ['NECCC', 'SCCC'];
       const states = isDevEnvironment
         ? stateData.data
@@ -146,6 +146,11 @@ const Landing = () => {
         dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
         dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
         dispatchRedux(updateField(null));
+      }
+      // set address for pipeline environment(when map is not available)
+      if (testAuth0Env) {
+        const [lat, lon] = statesLatLongDict[selectedState.label];
+        dispatchRedux(updateLocation({ address: '', markers: [[lat, lon]], county: null }));
       }
       // set querystring for WCCC
       if (selectedState.council.shorthand === 'WCCC') {
