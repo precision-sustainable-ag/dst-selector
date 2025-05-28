@@ -41,20 +41,11 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
-  const irrigationFilter = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   const isMobile = useIsMobile('md');
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
-    .filter((crop) => {
-      if (irrigationFilter) {
-        const filteredWord = irrigationFilter === 'Irrigated' ? 'rainfed' : 'irrigated';
-        const res = !crop.cropGrowthWindow.some((element) => element.info.length > 0 && element.info[0].includes(filteredWord));
-        return res;
-      }
-      return true;
-    })
     .map((crop, index) => {
       const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
       const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;

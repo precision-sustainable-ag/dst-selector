@@ -15,8 +15,11 @@ import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 import pirschAnalytics from '../../shared/analytics';
 import {
-  updateSelectedFlowering, updateSelectedIrrigation, updateSelectedSeason, updateTags,
+  updateSelectedFlowering, updateSelectedSeason, updateTags,
 } from '../../reduxStore/terminationSlice';
+import {
+  setIrrigationFilter,
+} from '../../reduxStore/filterSlice';
 
 const GoalsSelector = () => {
   // theme vars
@@ -33,10 +36,10 @@ const GoalsSelector = () => {
   ).reverse();
 
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
 
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
   const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
-  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   const dispatch = useDispatch();
 
@@ -57,10 +60,11 @@ const GoalsSelector = () => {
   };
 
   const handleSelectedIrrigation = (irrigation) => {
-    if (irrigation === selectedIrrigation) {
-      dispatch(updateSelectedIrrigation(null));
+    console.log(irrigation === 'Irrigation');
+    if (irrigation === irrigationFilterRedux) {
+      dispatch(setIrrigationFilter(null));
     } else {
-      dispatch(updateSelectedIrrigation(irrigation));
+      dispatch(setIrrigationFilter(irrigation));
     }
   };
 
@@ -389,7 +393,7 @@ const GoalsSelector = () => {
               <Chip
                 key={irrigation}
                 label={i === 0 ? 'No' : 'Yes'}
-                id={(`irrigation${i}`)}
+                id={`irrigation${i}`}
                 clickable
                 style={{ margin: '0.3rem' }}
                 sx={{
@@ -397,8 +401,8 @@ const GoalsSelector = () => {
                     boxShadow: '0 0 0 2px black',
                   },
                 }}
-                onClick={() => handleSelectedIrrigation(irrigation)}
-                color={selectedIrrigation === irrigation ? 'primary' : 'secondary'}
+                onClick={() => handleSelectedIrrigation(irrigation === 'Irrigated')}
+                color={(irrigation === 'Irrigated') === irrigationFilterRedux ? 'primary' : 'secondary'}
               />
             ))}
 
