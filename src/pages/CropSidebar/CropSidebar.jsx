@@ -76,6 +76,9 @@ const CropSidebar = ({
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
+  const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const selectedFloweringRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedIrrigationRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   // useState vars
   const [loading, setLoading] = useState(true);
@@ -180,6 +183,18 @@ const CropSidebar = ({
         ?.includes(drainageClassRedux.toLowerCase()));
 
       const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
+
+      if (selectedSeasonRedux || selectedFloweringRedux || selectedIrrigationRedux) {
+        match = false;
+        crop.terminationWindows.forEach((terminationWindow) => {
+          const seasonMatch = !selectedSeasonRedux || terminationWindow.includes(selectedSeasonRedux);
+          const floweringMatch = !selectedFloweringRedux || terminationWindow.includes(selectedFloweringRedux);
+          const irrigationMatch = !selectedIrrigationRedux || terminationWindow.includes(selectedIrrigationRedux);
+          if (seasonMatch && floweringMatch && irrigationMatch) {
+            match = true;
+          }
+        });
+      }
 
       if (stateIdRedux === 7) {
         cd[n].inactive = (!match)

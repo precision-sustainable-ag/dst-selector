@@ -23,9 +23,6 @@ import pirschAnalytics from '../../../shared/analytics';
 
 const InformationSheetContent = ({ crop }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
-  const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
-  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
   const tagsRedux = useSelector((stateRedux) => stateRedux.terminationData.tags);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -34,36 +31,6 @@ const InformationSheetContent = ({ crop }) => {
   const [expandedAccordions, setExpandedAccordions] = useState([]);
   const [dataDone, setDataDone] = useState(false);
   const [modalData, setModalData] = useState(null);
-
-  // Termination checks
-  const seasons = ['Spring Planted', 'Summer Planted', 'Fall Planted', 'Winter Planted'];
-  const floweringTypes = ['Annual', 'Perennial'];
-  const irrigationType = ['Rainfed', 'Irrigated'];
-
-  const checkTermination = (label) => {
-    const labelSet = new Set(label.split(',').map((item) => item.trim()));
-
-    if (selectedSeason && seasons.some((season) => labelSet.has(season))) {
-      const seasonLabel = `${selectedSeason} Planted`;
-      if (!labelSet.has(seasonLabel)) {
-        return false;
-      }
-    }
-
-    if (selectedFlowering) {
-      if (!labelSet.has(selectedFlowering) && floweringTypes.some((flowering) => labelSet.has(flowering))) {
-        return false;
-      }
-    }
-
-    if (selectedIrrigation) {
-      if (!labelSet.has(selectedIrrigation) && irrigationType.some((irrigation) => labelSet.has(irrigation))) {
-        return false;
-      }
-    }
-
-    return true;
-  };
 
   const getAttributeData = (attribute, category) => {
     // handles no attribute
@@ -146,7 +113,7 @@ const InformationSheetContent = ({ crop }) => {
                   detailsContent={(
                     <Grid container>
                       {cat.attributes.map((att, catIndex) => {
-                        if (councilShorthandRedux === 'WCCC' && att.order === 3 && !checkTermination(att.label)) {
+                        if (councilShorthandRedux === 'WCCC' && att.order === 3) {
                           return null; // Return null to render nothing for this attribute
                         }
                         if (att.label.startsWith('Comments') || att.label.startsWith('Notes:') || cat.label === 'Extended Comments') {
