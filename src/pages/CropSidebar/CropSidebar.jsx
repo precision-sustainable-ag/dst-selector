@@ -184,7 +184,7 @@ const CropSidebar = ({
 
       const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
 
-      if (selectedSeasonRedux || selectedFloweringRedux || selectedIrrigationRedux) {
+      if (crop.terminationWindows?.length > 0 && (selectedSeasonRedux || selectedFloweringRedux || selectedIrrigationRedux)) {
         match = false;
         crop.terminationWindows.forEach((terminationWindow) => {
           const seasonMatch = !selectedSeasonRedux || terminationWindow.includes(selectedSeasonRedux);
