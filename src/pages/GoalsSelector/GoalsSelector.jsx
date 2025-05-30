@@ -15,11 +15,8 @@ import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 import pirschAnalytics from '../../shared/analytics';
 import {
-  updateSelectedFlowering, updateSelectedSeason, updateTags,
+  updateSelectedFlowering, updateSelectedSeason, updateTags, updateSelectedIrrigation,
 } from '../../reduxStore/terminationSlice';
-import {
-  setIrrigationFilter,
-} from '../../reduxStore/filterSlice';
 
 const GoalsSelector = () => {
   // theme vars
@@ -36,10 +33,10 @@ const GoalsSelector = () => {
   ).reverse();
 
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
 
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
   const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   const dispatch = useDispatch();
 
@@ -60,11 +57,10 @@ const GoalsSelector = () => {
   };
 
   const handleSelectedIrrigation = (irrigation) => {
-    console.log(irrigation === 'Irrigation');
-    if (irrigation === irrigationFilterRedux) {
-      dispatch(setIrrigationFilter(null));
+    if (irrigation === selectedIrrigation) {
+      dispatch(updateSelectedIrrigation(null));
     } else {
-      dispatch(setIrrigationFilter(irrigation));
+      dispatch(updateSelectedIrrigation(irrigation));
     }
   };
 
@@ -401,8 +397,8 @@ const GoalsSelector = () => {
                     boxShadow: '0 0 0 2px black',
                   },
                 }}
-                onClick={() => handleSelectedIrrigation(irrigation === 'Irrigated')}
-                color={(irrigation === 'Irrigated') === irrigationFilterRedux ? 'primary' : 'secondary'}
+                onClick={() => handleSelectedIrrigation(irrigation)}
+                color={selectedIrrigation === irrigation ? 'primary' : 'secondary'}
               />
             ))}
 
