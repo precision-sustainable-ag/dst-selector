@@ -4,9 +4,9 @@ The species selector DST is used to help farmers select a cover crop that fits t
 
 Support for this project is brought to us by [Agricultural Informatics Lab](https://sudokita.com), NE SARE, USDA NRCS, NECCC, and the [Precision Sustainable Agriculture](http://precisionsustainableag.org).
 
-To access the **live tool**, visit [https://covercrop-selector.org/](https://covercrop-selector.org/)
-To see **development progress**, visit [https://develop.covercrop-selector.org/](https://develop.covercrop-selector.org/)
-For **in depth documentation** see [the wiki pages](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/156500002/Species+Selector).
+To access the live tool, visit [https://covercrop-selector.org/](https://covercrop-selector.org/).  
+To see development progress, visit [https://develop.covercrop-selector.org/](https://develop.covercrop-selector.org/)  
+For in depth documentation see [the wiki pages](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/156500002/Species+Selector).
 
 **Date Created:** 08/18/22
 
