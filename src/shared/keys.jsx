@@ -15,3 +15,4 @@ export const userHistoryApiUrl = getEnv('VITE_API_USER_HISTORY_API_URL');
 export const userHistorySchema = getEnv('VITE_API_USER_HISTORY_SCHEMA');
 export const releaseNotesURL = getEnv('VITE_API_RELEASE_NOTES');
 export const mapboxToken = getEnv('VITE_API_MAPBOX_TOKEN');
+export const testAuth0Env = getEnv('VITE_TEST_AUTH0_ENV') === 'true';
