@@ -254,16 +254,13 @@ const Location = () => {
         const averageRainForAMonthURL = `${averageRainUrl}&where=month=${currentMonthInt}&stats=sum(precipitation)/5&output=json`;
         // What was the 5-year average annual rainfall for city st?
         const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
-        // added "/" and do %100 to get them into correct format (want frost dates to look like 01/01/23)
-        const currYear = `/${(new Date().getFullYear() % 100).toString()}`;
-        const prevYear = `/${((new Date().getFullYear() % 100) - 1).toString()}`;
         const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
 
         // call the frost url and then set frostFreeDays, averageFrostObject in store
         try {
           const frostResponse = await callCoverCropApi(frostUrl);
-          const firstFrost = new Date(frostResponse.firstfrost + prevYear);
-          const lastFrost = new Date(frostResponse.lastfrost + currYear);
+          const firstFrost = new Date(frostResponse.firstfrost);
+          const lastFrost = new Date(frostResponse.lastfrost);
           const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
           dispatchRedux(updateFrostFreeDays(frostFreeDays));
           dispatchRedux(updateAvgFrostDates({
@@ -278,7 +275,7 @@ const Location = () => {
           }));
         } catch (error) {
           // eslint-disable-next-line
-          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          console.log(`Weather API error code: ${error?.response?.status} for getting frost dates.`);
         }
 
         // call the frost url and then set averagePrecipitationForCurrentMonth in store
@@ -294,6 +291,7 @@ const Location = () => {
         } catch (error) {
           // eslint-disable-next-line no-console
           console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          dispatchRedux(updateAvgPrecipCurrentMonth(null));
         }
 
         // call the frost url and then set fiveYearAvgRainAnnual in store
@@ -304,7 +302,8 @@ const Location = () => {
           dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average annual rainfall`);
+          dispatchRedux(updateAvgPrecipAnnual(null));
         }
       }
     };
