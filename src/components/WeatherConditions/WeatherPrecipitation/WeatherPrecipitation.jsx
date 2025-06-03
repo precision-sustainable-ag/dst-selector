@@ -6,6 +6,7 @@ import { PSATooltip } from 'shared-react-components/src';
 
 const WeatherPrecipitation = ({ currentMonthFull }) => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
+  const { thisMonth, annual } = weatherDataRedux.averagePrecipitation;
 
   return (
     <Grid
@@ -89,9 +90,14 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
 
         <Grid item>
           <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
-            {weatherDataRedux?.averagePrecipitation?.thisMonth}
-            {' '}
-            <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>inches</span>
+            {thisMonth ? (
+              <>
+                {thisMonth}
+                {' '}
+                <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>inches</span>
+              </>
+            ) : 'No Data'}
+
           </Typography>
         </Grid>
       </Grid>
@@ -113,9 +119,13 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
 
         <Grid item>
           <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
-            {weatherDataRedux?.averagePrecipitation?.annual}
-            {' '}
-            <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>inches</span>
+            {annual ? (
+              <>
+                {annual}
+                {' '}
+                <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>inches</span>
+              </>
+            ) : 'No Data'}
           </Typography>
         </Grid>
       </Grid>
