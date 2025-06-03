@@ -37,7 +37,7 @@ const SiteConditions = () => {
             container
             lg={6}
             spacing={3}
-            alignContent="space-between"
+            alignContent="flex-start"
             justifyContent={isLargeScreen ? 'flex-end' : 'center'}
           >
             <WeatherConditions />
