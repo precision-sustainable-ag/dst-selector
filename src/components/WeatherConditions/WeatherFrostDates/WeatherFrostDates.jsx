@@ -6,6 +6,7 @@ import { PSATooltip } from 'shared-react-components/src';
 
 const WeatherFrostDates = () => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
+  const { firstFrostDate, lastFrostDate } = weatherDataRedux.averageFrost;
 
   return (
     <Grid
@@ -95,7 +96,7 @@ const WeatherFrostDates = () => {
 
         <Grid item>
           <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
-            {`${weatherDataRedux?.averageFrost?.firstFrostDate?.month} ${weatherDataRedux?.averageFrost?.firstFrostDate?.day}`}
+            {firstFrostDate?.month ? `${firstFrostDate?.month} ${firstFrostDate?.day}` : 'No Data'}
           </Typography>
         </Grid>
       </Grid>
@@ -118,7 +119,7 @@ const WeatherFrostDates = () => {
 
         <Grid item>
           <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
-            {`${weatherDataRedux?.averageFrost?.lastFrostDate?.month} ${weatherDataRedux?.averageFrost?.lastFrostDate?.day}`}
+            {lastFrostDate?.month ? `${lastFrostDate?.month} ${lastFrostDate?.day}` : 'No Data'}
           </Typography>
         </Grid>
       </Grid>
@@ -139,7 +140,7 @@ const WeatherFrostDates = () => {
 
         <Grid item>
           <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
-            {weatherDataRedux?.frostFreeDays}
+            {weatherDataRedux?.frostFreeDays || 'No Data'}
           </Typography>
         </Grid>
       </Grid>

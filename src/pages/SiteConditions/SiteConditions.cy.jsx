@@ -7,6 +7,7 @@ import { setMapRedux } from '../../reduxStore/mapSlice';
 import { setSharedRedux } from '../../reduxStore/sharedSlice';
 import configureStore from '../../reduxStore/store';
 import { setSoilRedux } from '../../reduxStore/soilSlice';
+import { setWeatherReduxForTest } from '../../reduxStore/weatherSlice';
 
 /* eslint-disable no-undef */
 
@@ -280,6 +281,26 @@ describe('<SiteConditions />', () => {
     };
 
     reduxStore.dispatch(setSoilRedux(soilData));
+
+    const weatherData = {
+      averageFrost: {
+        firstFrostDate: {
+          month: 'September',
+          day: '26',
+        },
+        lastFrostDate: {
+          month: 'June',
+          day: '17',
+        },
+      },
+      averagePrecipitation: {
+        thisMonth: '40.27',
+        annual: '400.71',
+      },
+      frostFreeDays: 367,
+    };
+    reduxStore.dispatch(setWeatherReduxForTest(weatherData));
+
     mount(
       <Provider store={reduxStore}>
         <SiteConditions />
