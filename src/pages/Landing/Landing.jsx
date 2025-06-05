@@ -90,7 +90,7 @@ const Landing = () => {
   useEffect(() => {
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
       const isDevEnvironment = testAuth0Env || /(localhost|dev)/i.test(window.location);
-      const productionCouncils = ['NECCC', 'SCCC'];
+      const productionCouncils = ['NECCC', 'SCCC', 'MCCC'];
       const states = isDevEnvironment
         ? stateData.data
         : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
