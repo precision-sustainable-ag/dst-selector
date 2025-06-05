@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /*
   This file contains the CropCalendarViewComponent
@@ -15,8 +14,6 @@ import {
   Typography,
   Box,
   Grid,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import ListIcon from '@mui/icons-material/List';
 import { tableCellClasses } from '@mui/material/TableCell';
@@ -35,8 +32,9 @@ import {
 
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
-import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
+import InformationSheet from '../../../components/InformationSheet/InformationSheet';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 const growthIcon = {
   color: 'white',
@@ -47,7 +45,6 @@ const CropCalendarView = ({
   setListView,
 }) => {
   // redux vars
-  const councilRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
@@ -68,8 +65,7 @@ const CropCalendarView = ({
   const [myListSortFlag, setMyListSortFlag] = useState(true);
   const [currentGoalSortFlag, setCurrentGoalSortFlag] = useState(true);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md')) || /Mobi|Android/i.test(navigator.userAgent);
+  const isMobile = useIsMobile('md');
 
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
@@ -136,8 +132,7 @@ const CropCalendarView = ({
 
   useEffect(() => {
     if (cropDataRedux.length !== 0) {
-      if (councilRedux === 'WCCC') sortByPlantingWindow();
-      else sortByAverageGoals();
+      sortByAverageGoals();
     }
   }, [cropDataRedux]);
 
@@ -489,7 +484,7 @@ const CropCalendarView = ({
           </TableContainer>
         </>
       )}
-      <CropDetailsModal modalOpen={modalOpen} setModalOpen={setModalOpen} crop={modalData} />
+      <InformationSheet modalOpen={modalOpen} setModalOpen={setModalOpen} crop={modalData} />
     </>
   );
 };

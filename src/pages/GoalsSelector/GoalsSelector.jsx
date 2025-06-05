@@ -14,7 +14,12 @@ import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 import pirschAnalytics from '../../shared/analytics';
-import { updateSelectedFlowering, updateSelectedIrrigation, updateSelectedSeason } from '../../reduxStore/terminationSlice';
+import {
+  updateSelectedFlowering, updateSelectedSeason, updateTags,
+} from '../../reduxStore/terminationSlice';
+import {
+  setIrrigationFilter,
+} from '../../reduxStore/filterSlice';
 
 const GoalsSelector = () => {
   // theme vars
@@ -31,10 +36,10 @@ const GoalsSelector = () => {
   ).reverse();
 
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
 
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
   const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
-  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   const dispatch = useDispatch();
 
@@ -55,10 +60,11 @@ const GoalsSelector = () => {
   };
 
   const handleSelectedIrrigation = (irrigation) => {
-    if (irrigation === selectedIrrigation) {
-      dispatch(updateSelectedIrrigation(null));
+    console.log(irrigation === 'Irrigation');
+    if (irrigation === irrigationFilterRedux) {
+      dispatch(setIrrigationFilter(null));
     } else {
-      dispatch(updateSelectedIrrigation(irrigation));
+      dispatch(setIrrigationFilter(irrigation));
     }
   };
 
@@ -77,11 +83,17 @@ const GoalsSelector = () => {
     ).then((data) => {
       setAllGoals(data.data);
     });
+    pirschAnalytics('Visited Page', { meta: { visited: 'Goals' } });
   }, []);
 
   useEffect(() => {
-    pirschAnalytics('Visited Page', { meta: { visited: 'Goals' } });
-  }, []);
+    if (councilShorthandRedux === 'WCCC') {
+      const selectedTags = allGoals.filter((goal) => selectedGoalsRedux.includes(goal.label))
+        .map((goal) => goal.tags).flat();
+      const uniqueTags = [...new Set(selectedTags)];
+      dispatch(updateTags(uniqueTags));
+    }
+  }, [selectedGoalsRedux]);
 
   return (
     <Box>
@@ -106,7 +118,7 @@ const GoalsSelector = () => {
               {/* title */}
               <Grid item xs={12}>
                 <Typography variant="h4" align="center" data-test="title-goals">
-                  Goals
+                  Cover Crop Goals
                 </Typography>
               </Grid>
               {/* sub-title */}
@@ -116,7 +128,7 @@ const GoalsSelector = () => {
                   align="center"
                   gutterBottom
                 >
-                  Select 1 to 3 goals in order of importance.
+                  Select up to 3 goals in order of importance.
                 </Typography>
               </Grid>
               <Grid item xs={12} mb={2}>
@@ -225,11 +237,12 @@ const GoalsSelector = () => {
           mt: isLargeScreen ? 4 : 2,
           mb: isLargeScreen ? 4 : 2,
         }}
+        className="additionalFilters"
         justifyContent="center"
       >
         <Grid item xs={12}>
           <Typography variant="h4" align="center">
-            Additional Filters
+            Additional Cover Crop Filters
           </Typography>
           <Typography
             variant={isMobile ? 'subtitle2' : 'subtitle1'}
@@ -258,7 +271,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Season
+              Planting Season
             </Typography>
           </Grid>
           {/* sub-title */}
@@ -272,10 +285,11 @@ const GoalsSelector = () => {
 
             }}
           >
-            {seasons.map((season) => (
+            {seasons.map((season, i) => (
               <Chip
                 key={season}
                 label={season}
+                id={(`season${i}`)}
                 clickable
                 style={{ margin: '0.3rem' }}
                 sx={{
@@ -309,7 +323,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Flowering Type
+              Lifecycle
             </Typography>
           </Grid>
           {/* sub-title */}
@@ -322,10 +336,11 @@ const GoalsSelector = () => {
               justifyContent: 'center',
             }}
           >
-            {floweringTypes.map((floweringType) => (
+            {floweringTypes.map((floweringType, i) => (
               <Chip
                 key={floweringType}
                 label={floweringType}
+                id={(`floweringType${i}`)}
                 clickable
                 style={{ margin: '0.3rem' }}
                 sx={{
@@ -361,7 +376,7 @@ const GoalsSelector = () => {
         >
           <Grid item xs={12}>
             <Typography variant="h5" align="center" data-test="title-goals">
-              Irrigation Type
+              Will you Irrigate?
             </Typography>
           </Grid>
           {/* sub-title */}
@@ -374,10 +389,11 @@ const GoalsSelector = () => {
               justifyContent: 'center',
             }}
           >
-            {irrigationType.map((irrigation) => (
+            {irrigationType.map((irrigation, i) => (
               <Chip
                 key={irrigation}
-                label={irrigation}
+                label={i === 0 ? 'No' : 'Yes'}
+                id={`irrigation${i}`}
                 clickable
                 style={{ margin: '0.3rem' }}
                 sx={{
@@ -385,8 +401,8 @@ const GoalsSelector = () => {
                     boxShadow: '0 0 0 2px black',
                   },
                 }}
-                onClick={() => handleSelectedIrrigation(irrigation)}
-                color={selectedIrrigation === irrigation ? 'primary' : 'secondary'}
+                onClick={() => handleSelectedIrrigation(irrigation === 'Irrigated')}
+                color={(irrigation === 'Irrigated') === irrigationFilterRedux ? 'primary' : 'secondary'}
               />
             ))}
 

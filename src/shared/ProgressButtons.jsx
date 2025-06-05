@@ -16,7 +16,6 @@ const ProgressButtons = () => {
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [toolTip, setToolTip] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
-  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
@@ -37,9 +36,9 @@ const ProgressButtons = () => {
         if (stateLabelRedux === 'Ontario') {
           setIsDisabledNext(regionShorthand === '');
         } else if (councilShorthandRedux === 'WCCC') {
-          setIsDisabledNext(addressRedux === '' || queryStringRedux === null);
+          setIsDisabledNext(queryStringRedux === null);
         } else {
-          setIsDisabledNext(addressRedux === '' || regionShorthand === '');
+          setIsDisabledNext(regionShorthand === '');
         }
 
         setToolTip(true);

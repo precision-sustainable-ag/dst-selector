@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // /* eslint-disable */
 
 /* eslint-disable no-alert */
@@ -12,18 +13,15 @@ import {
 import React, {
   useEffect,
   useState,
-  useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
-import { Map } from 'shared-react-components/src';
+import { PSAReduxMap } from 'shared-react-components/src';
 import statesLatLongDict from '../../shared/stateslatlongdict';
-import {
-  abbrRegion, reverseGEO, callCoverCropApi,
-  buildPoint, drawAreaFromGeoCollection, buildGeometryCollection,
-} from '../../shared/constants';
+import { abbrRegion, reverseGEO, callCoverCropApi } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
+import StateChangeAlertDialog from './StateChangeAlertDialog/StateChangeAlertDialog';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
@@ -49,23 +47,43 @@ const Location = () => {
 
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
-  const [currentGeometry, setCurrentGeometry] = useState({});
-  const [mapFeatures, setMapFeatures] = useState([]);
+  const [mapFeatures, setMapFeatures] = useState(userFieldRedux);
+  // eslint-disable-next-line no-nested-ternary
+  const [latLon, setLatLon] = useState(markersRedux ? markersRedux[0] : stateLabelRedux ? statesLatLongDict[stateLabelRedux] : [47, -122]);
+  const [stateLabel, setStateLabel] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isFarmable, setIsFarmable] = useState(true);
 
-  // if user field exists, return field, else return state capitol
-  const getFeatures = () => {
-    if (userFieldRedux !== null) {
-      const { geometry } = userFieldRedux;
-      if (geometry.type === 'Point') return [userFieldRedux];
-      if (geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(userFieldRedux);
+  const NOT_FARMABLE_HTML = '<div style="color: red; font-weight: bold; margin-top: 8 px;">The selected land is not farmable</div>';
+
+  const updateMapFeatures = (newFeatures) => {
+    if (JSON.stringify(mapFeatures) === JSON.stringify(newFeatures)) return;
+
+    // if user imported a history, this will prevent the user from changing the polygons
+    if (historyStateRedux === historyState.imported) {
+      setMapFeatures([...mapFeatures]);
+      dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+      return;
     }
-    return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
+
+    // update redux state variable with new features
+    setMapFeatures(newFeatures);
+    dispatchRedux(updateField(newFeatures));
   };
 
-  // set map features, update selectedFieldIdRedux
+  // call back function that is passed to shared map to update local state variables
+  const updateProperties = (properties) => {
+    setSelectedToEditSite(properties?.address);
+    setLatLon([properties?.lat, properties?.lon]);
+    updateMapFeatures(properties?.features);
+    setStateLabel(properties?.state?.STATE_NAME);
+  };
+
   useEffect(() => {
-    // load map features here
-    setMapFeatures(getFeatures());
+    if (stateLabel && stateLabel !== stateLabelRedux) setIsOpen(true);
+  }, [stateLabel, latLon[0], latLon[1]]);
+
+  useEffect(() => {
     // analytics
     pirschAnalytics('Visited Page', { meta: { visited: 'Location' } });
   }, []);
@@ -85,21 +103,49 @@ const Location = () => {
     pirschAnalytics('Location', { meta: { mapUpdate: true } });
   };
 
-  // set map initial lat lng
-  const getLatLng = useMemo(() => {
-    if (userFieldRedux !== null) {
-      const { type, coordinates, geometries } = userFieldRedux.geometry;
-      if (type === 'Point') return [coordinates[1], coordinates[0]];
-      if (type === 'GeometryCollection') return [geometries[0].coordinates[1], geometries[0].coordinates[0]];
-    }
-    if (markersRedux) {
-      return markersRedux[0];
-    }
-    if (stateLabelRedux) {
-      return statesLatLongDict[stateLabelRedux];
-    }
-    return [47, -122];
-  }, [stateLabelRedux]);
+  // Fetches ssurgo data and checks if the soil composition is farmable
+  const getSSURGOData = (lat, lon) => {
+    // eslint-disable-next-line max-len
+    const soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS mapUnitName, muag.drclassdcd AS drainageClass, muag.flodfreqdcd AS floodingFrequency, mp.mupolygonkey as MPKEY
+      FROM mapunit AS mu
+      INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+      INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+      WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))
+      AND
+      mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append('query', soilDataQuery);
+    urlencoded.append('format', 'json+columnname');
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow',
+    };
+
+    fetch('https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest', requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const stringSplit = [];
+
+        result.Table.forEach((el, index) => {
+          if (index !== 0) {
+            if (stringSplit.indexOf(el[1].split(',')[0]) === -1) {
+              stringSplit.push(el[1].split(',')[0]);
+            }
+          }
+        });
+
+        setIsFarmable(!stringSplit.some((el) => el.toLowerCase().includes('urban land')));
+      })
+      // eslint-disable-next-line no-console
+      .catch((error) => console.error('SSURGO FETCH ERROR', error));
+  };
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
@@ -121,21 +167,12 @@ const Location = () => {
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
-      // FIXME: if user imported a history without a field, this will prevent them creating one
-      if (historyStateRedux === historyState.imported && userFieldRedux !== null) {
+      // if user imported a history, this will prevent the user from changing the marker location
+      if (historyStateRedux === historyState.imported) {
         dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
-        setMapFeatures(getFeatures());
+        setLatLon(markersRedux[0]);
         return;
       }
-
-      // save field in redux
-      const point = buildPoint(longitude, latitude);
-      let geoCollection = null;
-      if (Object.keys(currentGeometry).length > 0) {
-        const polygon = currentGeometry.features?.slice(-1)[0];
-        geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry);
-        dispatchRedux(updateField(geoCollection));
-      } else { dispatchRedux(updateField(point)); }
 
       dispatchRedux(updateLocation(
         {
@@ -217,16 +254,13 @@ const Location = () => {
         const averageRainForAMonthURL = `${averageRainUrl}&where=month=${currentMonthInt}&stats=sum(precipitation)/5&output=json`;
         // What was the 5-year average annual rainfall for city st?
         const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
-        // added "/" and do %100 to get them into correct format (want frost dates to look like 01/01/23)
-        const currYear = `/${(new Date().getFullYear() % 100).toString()}`;
-        const prevYear = `/${((new Date().getFullYear() % 100) - 1).toString()}`;
         const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
 
         // call the frost url and then set frostFreeDays, averageFrostObject in store
         try {
           const frostResponse = await callCoverCropApi(frostUrl);
-          const firstFrost = new Date(frostResponse.firstfrost + prevYear);
-          const lastFrost = new Date(frostResponse.lastfrost + currYear);
+          const firstFrost = new Date(frostResponse.firstfrost);
+          const lastFrost = new Date(frostResponse.lastfrost);
           const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
           dispatchRedux(updateFrostFreeDays(frostFreeDays));
           dispatchRedux(updateAvgFrostDates({
@@ -241,7 +275,7 @@ const Location = () => {
           }));
         } catch (error) {
           // eslint-disable-next-line
-          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          console.log(`Weather API error code: ${error?.response?.status} for getting frost dates.`);
         }
 
         // call the frost url and then set averagePrecipitationForCurrentMonth in store
@@ -257,6 +291,7 @@ const Location = () => {
         } catch (error) {
           // eslint-disable-next-line no-console
           console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          dispatchRedux(updateAvgPrecipCurrentMonth(null));
         }
 
         // call the frost url and then set fiveYearAvgRainAnnual in store
@@ -267,7 +302,8 @@ const Location = () => {
           dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average annual rainfall`);
+          dispatchRedux(updateAvgPrecipAnnual(null));
         }
       }
     };
@@ -279,6 +315,9 @@ const Location = () => {
     if (markersRedux) {
       getDetails();
     }
+
+    // If WCCC, check is the land is farmable
+    if (councilShorthandRedux === 'WCCC' && markersRedux) getSSURGOData(markersRedux[0][0], markersRedux[0][1]);
   }, [markersRedux]);
 
   return (
@@ -343,14 +382,13 @@ const Location = () => {
 
         {stateLabelRedux !== 'Ontario' && (
           <Grid container>
-            <Container maxWidth="md">
-              <Map
-                setAddress={setSelectedToEditSite}
-                setFeatures={setCurrentGeometry}
+            <Container className="MapBox" maxWidth="md">
+              <PSAReduxMap
+                setProperties={updateProperties}
                 initWidth="100%"
                 initHeight="450px"
-                initLat={getLatLng[0]}
-                initLon={getLatLng[1]}
+                initLat={latLon[0]}
+                initLon={latLon[1]}
                 initFeatures={mapFeatures}
                 initStartZoom={12}
                 initMinZoom={4}
@@ -360,13 +398,18 @@ const Location = () => {
                 hasNavigation
                 hasCoordBar
                 hasDrawing
+                hasFreehand
+                hasSinglePolygon
                 hasGeolocate
                 hasFullScreen
                 hasMarkerPopup
                 hasMarkerMovable
+                popupContent={!isFarmable ? NOT_FARMABLE_HTML : ''}
+                hasHelp
                 mapboxToken={mapboxToken}
               />
             </Container>
+            <StateChangeAlertDialog isOpen={isOpen} setIsOpen={setIsOpen} />
           </Grid>
         )}
       </Grid>

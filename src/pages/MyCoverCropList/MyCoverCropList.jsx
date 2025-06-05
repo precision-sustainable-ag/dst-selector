@@ -14,9 +14,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton } from 'shared-react-components/src';
 import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropComparisonTable';
-import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
 import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
+import CropCard from '../../components/CropCard/CropCard';
 
 const MyCoverCropList = ({ comparisonView, from }) => {
   const dispatchRedux = useDispatch();
@@ -68,16 +68,10 @@ const MyCoverCropList = ({ comparisonView, from }) => {
             </Grid>
           </Box>
         ) : (
-          <Grid container spacing={2}>
+          <Grid className="myCropsCards" container spacing={2}>
             {cropDataRedux.filter((crop) => selectedCropIdsRedux.includes(crop.id)).map((crop, index) => (
               <Grid item key={index}>
-                <MyCoverCropCards
-                  key={index}
-                  cardNo={index + 1}
-                  crop={crop}
-                  btnId={crop.id}
-                  itemNo={index}
-                />
+                <CropCard crop={crop} dispatchRedux={dispatchRedux} />
               </Grid>
             ))}
           </Grid>

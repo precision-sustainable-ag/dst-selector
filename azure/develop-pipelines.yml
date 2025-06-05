@@ -3,10 +3,17 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- develop
+  branches:
+    include:
+      - wccc-testing
 
-resources:
-- repo: self
+pr:
+  branches:
+    include:
+      - develop
+      - feature/*
+      - bugfix/*
+      - wccc-testing
 
 variables:
 
@@ -43,6 +50,11 @@ stages:
         echo VITE_API_MAPBOX_TOKEN="$(VITE_API_MAPBOX_TOKEN)" >> /home/vsts/work/1/s/.env
         echo VITE_AUTH0_USERNAME="$(VITE_AUTH0_USERNAME)" >> /home/vsts/work/1/s/.env
         echo VITE_AUTH0_PASSWORD="$(VITE_AUTH0_PASSWORD)" >> /home/vsts/work/1/s/.env
+        IS_PR="false"
+        if [[ $(Build.SourceBranch) == refs/pull/* ]]; then
+          IS_PR="true"
+        fi
+        echo VITE_TEST_AUTH0_ENV="$IS_PR" >> /home/vsts/work/1/s/.env
       displayName: "Create .env"
     - task: Docker@2
       displayName: Build and push an image to container registry
@@ -59,7 +71,7 @@ stages:
         docker run -d --name test-app --network="host" $(containerRegistry)/$(imageRepository):$(tag)
         docker build -f Dockerfile.tester -t cypress-tester .
 
-        docker run --network="host" --name cypress-runner cypress-tester || TEST_EXIT_CODE=$?
+        docker run --network="host" --name cypress-runner -e NODE_OPTIONS="--max-old-space-size=4096" cypress-tester || TEST_EXIT_CODE=$?
         
         docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/screenshots || true
         docker cp cypress-runner:/e2e/cypress/videos ./cypress/videos || true

@@ -89,13 +89,13 @@ const infoSheets = [{
   }, {
     subtitle: 'Cover Crop Termination Options, Getting Rid of Weeds,',
     link: 'https://growiwm.org/cover-crop-termination-options/',
-  }, {
-    id: 7,
-    title: 'Planting Green',
-    content: [{
-      subtitle: 'Planting Green – A New Cover Crop Management Technique, Penn State Extension,',
-      link: 'https://extension.psu.edu/planting-green-a-new-cover-crop-management-technique',
-    }],
+  }],
+}, {
+  id: 7,
+  title: 'Planting Green',
+  content: [{
+    subtitle: 'Planting Green – A New Cover Crop Management Technique, Penn State Extension,',
+    link: 'https://extension.psu.edu/planting-green-a-new-cover-crop-management-technique',
   }],
 }];
 
@@ -111,9 +111,7 @@ const FAQ = () => (
                 {
                   info.content.map((content) => (
                     <li>
-                      {content.subtitle}
-                      <br />
-                      <a href={content.link} target="_blank" rel="noopener noreferrer">{content.link}</a>
+                      <a href={content.link} target="_blank" rel="noopener noreferrer">{content.subtitle}</a>
                     </li>
                   ))
                 }

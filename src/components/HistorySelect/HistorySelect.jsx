@@ -98,6 +98,26 @@ const HistorySelect = () => {
 
   const dispatch = useDispatch();
 
+  const normalizeField = (field) => {
+    // Normalize if old format
+    if (!Array.isArray(field)) {
+      if (field.type === 'Feature' && field.geometry?.type === 'GeometryCollection') {
+        // Extract only 'Polygon' geometries (skip 'Point' geometries)
+        const polygonGeometries = field.geometry.geometries.filter(
+          (geom) => geom.type === 'Polygon',
+        );
+
+        return polygonGeometries.map((polygon) => ({
+          type: 'Feature',
+          geometry: polygon,
+        }));
+      }
+      // Handle unexpected structure
+      return [];
+    }
+    return field;
+  };
+
   const handleLoadHistory = () => {
     // eslint-disable-next-line no-shadow
     const selectedHistory = userHistoryList.find((history) => history.label === value);
@@ -112,6 +132,13 @@ const HistorySelect = () => {
         } = res.json;
         // this is used to specify where the crop from (selector/ explorer)
         const { myCoverCropListLocation } = sharedData;
+
+        const normalizedField = normalizeField(userData?.field);
+        const updatedUserData = {
+          ...userData,
+          field: normalizedField,
+        };
+
         // update redux
         dispatch(setCropRedux(cropData));
         dispatch(setMapRedux(mapData));
@@ -120,7 +147,7 @@ const HistorySelect = () => {
         dispatch(myCropListLocation({ from: myCoverCropListLocation }));
         dispatch(setSoilRedux(soilData));
         dispatch(setAddressRedux(addressData));
-        dispatch(setUserRedux(userData));
+        dispatch(setUserRedux(updatedUserData));
         dispatch(setHistoryState(historyState.imported));
         setOpen(false);
       }

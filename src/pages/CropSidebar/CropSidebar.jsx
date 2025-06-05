@@ -157,8 +157,10 @@ const CropSidebar = ({
       return '';
     });
 
+    const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
+
     const filtered = cropData?.filter((crop, n, cd) => {
-      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0].value;
+      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -252,27 +254,18 @@ const CropSidebar = ({
     if (queryStringRedux === null) return;
     dispatchRedux(setAjaxInProgress(true));
     setLoading(true);
-    if (councilShorthandRedux !== 'WCCC') {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
-        .then((data) => {
-          const allFilters = [];
-          data.data.forEach((category) => {
-            allFilters.push(category.attributes);
-          });
-          setSidebarFiltersData(allFilters);
-          setSidebarCategoriesData(data.data);
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
+      .then((data) => {
+        // remove termination filters for WCCC
+        const allFilters = [];
+        data.data.forEach((category) => {
+          if (councilShorthandRedux === 'WCCC' && category.label === 'Termination') return;
+          allFilters.push(category.attributes);
         });
-    } else {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
-        .then((data) => {
-          const allFilters = [];
-          data.data.forEach((category) => {
-            allFilters.push(category.attributes);
-          });
-          setSidebarFiltersData(allFilters);
-          setSidebarCategoriesData(data.data);
-        });
-    }
+        const categories = councilShorthandRedux === 'WCCC' ? data.data.filter((category) => (category.label !== 'Termination')) : data.data;
+        setSidebarFiltersData(allFilters);
+        setSidebarCategoriesData(categories);
+      });
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`)
       .then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
@@ -423,7 +416,7 @@ const CropSidebar = ({
         />
       </ListItem>
       <ListItem>
-        {coverCropGroup.map((val) => {
+        {coverCropGroup.map((val, i) => {
           const selected = cropGroupFilterRedux === val.label;
           return (
             <Grid key={val.label} item>
@@ -437,6 +430,7 @@ const CropSidebar = ({
                 component="li"
                 size="medium"
                 label={val.label}
+                className={`cropGroup${i}`}
                 color={selected ? 'primary' : 'secondary'}
               />
             </Grid>
@@ -470,6 +464,7 @@ const CropSidebar = ({
           buttonType="PillButton"
           data-test="comparison-view-btn"
           title="COMPARISON VIEW"
+          className="comparisonViewButton"
         />
         <ComparisonBar
           filterData={sidebarFilters}
@@ -528,7 +523,7 @@ const CropSidebar = ({
                   border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
                 }}
               >
-                <ListItemButton onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
+                <ListItemButton className="sidebarFilters" onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
                   <ListItemText primary="FILTERS" />
                   {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>

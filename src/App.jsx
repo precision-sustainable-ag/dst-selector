@@ -46,7 +46,7 @@ import Feedback from './pages/Feedback/Feedback';
 import './styles/App.scss';
 // bootstrap import
 import 'mdbreact/dist/css/mdb.css';
-import SiteConditions from './pages/Location/LocationConfirmation/SiteConditions';
+import SiteConditions from './pages/SiteConditions/SiteConditions';
 import '@fontsource/ibm-plex-sans';
 import SkipContent from './components/SkipContent/SkipContent';
 
@@ -240,7 +240,47 @@ const SnackbarComponent = () => {
         'aria-describedby': 'message-id',
       }}
       message={snackMessageRedux}
-      sx={{ marginBottom: '40px' }}
+      // zIndex is used to show snackbar over dialog
+      sx={{ marginBottom: '40px', zIndex: 1000004 }}
     />
   );
 };
+
+window.addEventListener('error', (err) => {
+  if (/(localhost|dev)/i.test(window.location)) return;
+
+  const requestPayload = {
+    repository: 'dst-feedback',
+    title: 'CRASH',
+    name: 'error',
+    email: 'error@error.com',
+    comments: `${err?.message}: ${err?.filename}`,
+    labels: ['crash', 'dst-selector'],
+  };
+
+  /* eslint-disable no-alert */
+  fetch('https://feedback.covercrop-data.org/v1/issues', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestPayload),
+  })
+    .then((response) => response.json())
+    .then((body) => {
+      if (body?.data?.status === 'success') {
+        alert(`
+          An error occurred.
+          We have been notified and will investigate the problem.
+        `);
+      } else {
+        alert('An error occurred');
+      }
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      alert('Failed to send Feedback to Github.');
+    });
+}, { once: true });
+/* eslint-enable no-alert */

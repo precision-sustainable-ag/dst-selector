@@ -1,3 +1,5 @@
+import { testAuth0Env } from '../shared/keys';
+
 const initialState = {
   progress: 0,
   printing: false,
@@ -9,7 +11,7 @@ const initialState = {
   comparisonKeys: [],
   myCoverCropListLocation: '',
   regionToggle: true,
-  apiBaseUrl: /(localhost|dev)/i.test(window.location)
+  apiBaseUrl: testAuth0Env || /(localhost|dev)/i.test(window.location)
     ? 'developapi'
     : 'api',
   queryString: null,
@@ -193,6 +195,7 @@ const sharedReducer = (state = initialState, action = null) => {
           goBack: action.payload.goBack,
         },
       };
+
     case 'SET_SHARED_REDUX':
       return {
         ...state,

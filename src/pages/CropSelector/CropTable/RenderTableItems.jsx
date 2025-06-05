@@ -13,6 +13,7 @@ import {
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropTableCard from './CropTableCard';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   // redux vars
@@ -20,6 +21,8 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+
+  const isMobile = useIsMobile('md');
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
@@ -48,7 +51,16 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
             }}
             data-test="crop-list-tr"
           >
-            <TableCell size="small" sx={{ maxWidth: 150 }}>
+            <TableCell
+              size="small"
+              sx={{
+                padding: 0,
+                position: isMobile ? 'sticky' : 'static',
+                left: isMobile ? 0 : 'auto',
+                zIndex: isMobile ? 1 : 'auto',
+                backgroundColor: isMobile ? 'white' : 'transparent',
+              }}
+            >
               <Grid
                 container
                 direction="column"

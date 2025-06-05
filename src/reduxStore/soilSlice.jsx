@@ -6,6 +6,7 @@ const initialState = {
     latLong: [],
     drainageOptions: [],
     floodingOptions: [],
+    tileDrainage: false,
   },
   soilDataOriginal: {
     mapUnitName: '',
@@ -14,6 +15,7 @@ const initialState = {
     latLong: [],
     drainageOptions: [],
     floodingOptions: [],
+    tileDrainage: false,
   },
 };
 
@@ -87,7 +89,7 @@ const soilReducer = (state = initialState, action = null) => {
           mapUnitName: action.payload.mapUnitName,
           drainageClass: action.payload.drainageClass,
           floodingFrequency: action.payload.floodingFrequency,
-          for: action.payload.latLong,
+          latLong: action.payload.latLong,
           drainageOptions: action.payload.drainageOptions,
           floodingOptions: action.payload.floodingOptions,
         },
@@ -102,7 +104,7 @@ const soilReducer = (state = initialState, action = null) => {
           mapUnitName: action.payload.mapUnitName,
           drainageClass: action.payload.drainageClass,
           floodingFrequency: action.payload.floodingFrequency,
-          for: action.payload.latLong,
+          latLong: action.payload.latLong,
           drainageOptions: action.payload.drainageOptions,
           floodingOptions: action.payload.floodingOptions,
         },

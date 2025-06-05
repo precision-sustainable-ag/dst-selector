@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'cypress/react18';
+import moment from 'moment';
 import WeatherPrecipitation from './WeatherPrecipitation';
 import configureStore from '../../../reduxStore/store';
 import { setWeatherReduxForTest } from '../../../reduxStore/weatherSlice';
@@ -13,30 +14,21 @@ describe('<WeatherPrecipitation />', () => {
     reduxStore = configureStore({});
   });
 
-  const mountComponentWithProp = (props) => {
+  const mountComponentWithProp = () => {
     mount(
       <Provider store={reduxStore}>
-        <WeatherPrecipitation {...props} />
+        <WeatherPrecipitation />
       </Provider>,
     );
   };
 
-  it('should render the Weather Precipitation Card', () => {
-    const currentMonthFull = 'September';
-    const props = { currentMonthFull };
-    mountComponentWithProp(props);
-    cy.assertByTestId('precipitation-card');
-  });
-
-  it('should render month present in the parameter', () => {
-    const currentMonthFull = 'June';
-    const props = { currentMonthFull };
-    mountComponentWithProp(props);
+  it('should render the Weather Precipitation Card with current month', () => {
+    const currentMonthFull = moment().format('MMMM');
+    mountComponentWithProp();
     cy.assertByTestId('precipitation-card').should('contain.text', currentMonthFull);
   });
 
   it('should render correct value for average precipitation and annual precipitation according to Redux store values', () => {
-    const currentMonthFull = 'June';
     const weatherData = {
       averageFrost: {
         firstFrostDate: {
@@ -56,8 +48,7 @@ describe('<WeatherPrecipitation />', () => {
     };
     reduxStore.dispatch(setWeatherReduxForTest(weatherData));
 
-    const props = { currentMonthFull };
-    mountComponentWithProp(props);
+    mountComponentWithProp();
     cy.assertByTestId('precipitation-card').should('contain.text', weatherData.averagePrecipitation.thisMonth);
     cy.assertByTestId('precipitation-card').should('contain.text', weatherData.averagePrecipitation.annual);
   });

@@ -18,7 +18,7 @@ const Legend = ({ legendData, modal }) => {
 
   return (
     <>
-      <ListItemButton onClick={() => setLegendOpen(!legendOpen)}>
+      <ListItemButton className="legend" onClick={() => setLegendOpen(!legendOpen)}>
         <ListItemText primary="LEGEND" />
         {legendOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>

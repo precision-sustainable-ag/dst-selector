@@ -4,7 +4,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import {
-  Grid, Typography, Box,
+  Grid, Typography,
 } from '@mui/material';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
@@ -455,6 +455,7 @@ export const BinaryButton = ({ action }) => (
       }}
       color="secondary"
       title="Yes"
+      className="yesButton"
     />
     <PSAButton
       buttonType=""
@@ -810,7 +811,14 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
     });
     // add cash crop dates dates
     if (cashCropStartDate !== '' && cashCropEndDate !== '') {
-      yearArr = formatTimeToYearArr(cashCropStartDate, cashCropEndDate, 'Cash Crop Growing', yearArr);
+      if (moment(cashCropStartDate, 'MM/DD').isAfter(moment(cashCropEndDate, 'MM/DD'))) {
+        const tempStart = '01/01';
+        const tempEnd = '12/31';
+        yearArr = formatTimeToYearArr(cashCropStartDate, tempEnd, 'Cash Crop Growing', yearArr);
+        yearArr = formatTimeToYearArr(tempStart, cashCropEndDate, 'Cash Crop Growing', yearArr);
+      } else {
+        yearArr = formatTimeToYearArr(cashCropStartDate, cashCropEndDate, 'Cash Crop Growing', yearArr);
+      }
     }
 
     const yearData = formatYearArr(yearArr);
@@ -884,41 +892,6 @@ export const deleteFields = async (accessToken = null, id = null) => {
   );
 };
 // TODO: not used above
-
-export const buildPoint = (lng, lat, name = null) => ({
-  type: 'Feature',
-  label: name,
-  geometry: {
-    coordinates: [lng, lat],
-    type: 'Point',
-  },
-});
-
-export const buildGeometryCollection = (point, polygon, name = null) => {
-  const { coordinates: pointCoordinates } = point;
-  const { coordinates: polygonCoordinates } = polygon;
-  return {
-    type: 'Feature',
-    label: name,
-    geometry: {
-      type: 'GeometryCollection',
-      geometries: [
-        {
-          type: 'Point',
-          coordinates: pointCoordinates,
-        },
-        {
-          type: 'Polygon',
-          coordinates: polygonCoordinates,
-        },
-      ],
-    },
-  };
-};
-
-export const drawAreaFromGeoCollection = (geoCollection) => [
-  { type: 'Feature', geometry: { ...geoCollection.geometry.geometries[1] } },
-];
 
 export const addCropToBasket = (
   cropId,
@@ -1047,45 +1020,7 @@ export const postHistory = async (accessToken = null, historyData = null) => {
 };
 // TODO: not used above
 
-export const extractData = (attribute, from, councilShorthand) => {
-  // handles no attribute
-  if (!attribute) {
-    return <Typography variant="body2">No Data</Typography>;
-  }
-
-  // extract data
-  let dataType;
-  const attributeValues = [];
-
-  if (from === 'infoSheet') {
-    if (attribute?.values[0]?.label) {
-      return (
-        <Typography variant="body2">{attribute?.values[0]?.label}</Typography>
-      );
-    }
-    attribute?.values.forEach((ele) => {
-      attributeValues.push(`${ele.value} ${attribute?.units ? attribute?.units : ''}`);
-    });
-    dataType = attribute?.dataType.label;
-  } else {
-    // from myCoverCropComparison
-    for (let i = 0; i < attribute?.values.length; i++) {
-      if (attribute?.values[i].value) {
-        attributeValues.push(`${attribute?.values[i].value} ${attribute?.units ? attribute?.units : ''}`);
-      } else {
-        attributeValues.push(attribute?.values[i]);
-      }
-    }
-    dataType = attribute?.dataType;
-  }
-
-  const data = attributeValues;
-
-  // handles no data
-  if (!data) {
-    return <Typography variant="body2">No Data</Typography>;
-  }
-
+export const extractData = (data, dataType, attribute, councilShorthand) => {
   // handles pillbox data
   if (data && dataType === 'pillbox') {
     return getRating(data, councilShorthand);
@@ -1101,11 +1036,7 @@ export const extractData = (attribute, from, councilShorthand) => {
   }
 
   // handles default
-  return (
-    <Box>
-      {data.map((element, index) => <Typography key={index} variant="body2">{element.toString()}</Typography>)}
-    </Box>
-  );
+  return data.map((element, index) => <Typography key={index} variant="body2">{element.toString()}</Typography>);
 };
 
 export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {
@@ -1380,6 +1311,157 @@ export const getExpertsData = (councilId) => {
       ];
   }
 };
+
+export const defaultFaqs = [
+  {
+    id: 1,
+    question: 'What is the difference between dormant and non-dormant alfalfa?',
+    answer: '"Dormant" alfalfa varieties are those traditionally grown as perennials in northern climates; they have varying degrees of cold hardiness but would generally be expected to survive the winter. “Non dormant” alfalfa varieties are far less strongly perennial in cold climates due to lower levels of cold hardiness. There are some differences in growth pattern and forage quality between the two groups, as well. Non-dormant varieties produce more biomass in the first year than dormant varieties.',
+  },
+  {
+    id: 2,
+    question: 'What is a “forage brassica”?',
+    answer: 'Many forage brassicas are hybrids of B. oleracea and B. napus. (i.e. kale, rapeseed, turnip). Some are bred for their leaf production, others for their roots. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 3,
+    question: 'What is the difference between a forage, daikon, tillage, and oilseed radish?',
+    answer: 'Radishes have been bred for many purposes, including (human) food, (animal) feed and forage, and ability to improve soil structure. Confusion as to naming abounds, and is worsened by the fact that the various types of radish readily interbreed. Cover crop radishes are generally referred to as daikon-type radishes (as opposed to the globe-shaped radishes that feature in salads). According to Extension resources, ‘Tillage’ radish is actually a specific brand of radish bred to be a cover crop. Oilseed radishes have smaller, more branching roots than forage radishes. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 4,
+    question: 'What is the difference between a forage turnip vs ‘Purple Top’ turnip?',
+    answer: 'Forage turnips have been bred for use as animal feed (i.e. large tonnage per acre), as opposed to ‘Purple Top’ and similar cultivars traditionally grown for human food (i.e. bulb production). Seed costs vary widely. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 5,
+    question: 'What do you mean by “mustard”?',
+    answer: 'Our tool groups several species under the term “mustard”, including Sinapis alba (white mustard) and Brassica juncea (brown, Oriental, or Indian mustard). We include notes in the comments/notes sections on the information sheet where there are differences in characteristics or uses among the species.',
+  },
+  {
+    id: 6,
+    question: 'What’s the difference between canola and rapeseed?',
+    answer: 'In practice for cover croppers, not much. Some rapeseed was bred to have lower levels of compounds not good for human consumption, making it better for the production of cooking oil. The varieties good for the production of oil for human consumption are referred to as “canola”. Canola seed is generally more expensive than rapeseed seed.',
+  },
+  {
+    id: 7,
+    question: 'What is the difference between “winter” and “spring” small grains?',
+    answer: 'We are referring to germplasm type. For example, “winter” wheat varieties are those that would be expected to usually survive winter and require vernalization (i.e. cold) to trigger flowering. “Spring” wheat varieties are much less cold hardy and do not require vernalization to flower.',
+  },
+  {
+    id: 8,
+    question: 'Can spring small grains be planted in fall and vice versa? Why would you do so?',
+    answer: "Winter small grain cultivars can be planted in spring, but they won't flower (which may be useful since they don't get as tall and are good for a low-growing ground cover). Likewise, spring small grains may be planted in the fall (and will therefore likely winter-kill, preventing the need for spring termination).",
+  },
+  {
+    id: 9,
+    question: 'Why do ratings for a given cover crop vary by hardiness zone?',
+    answer: 'USDA hardiness zones are based on average minimum temperatures and are a simple proxy for the length of the growing season across the Northeast US. Ratings differ because these climatic features affect planting dates, crop management, and plant growth. In addition, the experts in each zone sometimes have differences in experience with the cover crop; a cover crop may be more commonly used in a vegetable rotation in one zone and an agronomic rotation in another one, with corresponding differences in traits due to the way they are used.',
+  },
+  {
+    id: 10,
+    question: 'I’m applying fall manure and want a cover crop to take up the N and prevent Prunoff. What should I use?',
+    answer: 'Choose a cover crop ranked high for the goals of “nitrogen scavenging”, “prevent fall erosion”, and “prevent spring erosion”.',
+  },
+  {
+    id: 11,
+    question: 'I want a cover crop that can prevent soil crusting. What should I use?',
+    answer: 'Pick a cover crop that is either alive during the time period of concern or has a good rating for “lasting residue” and that has a good rating for “soil aggregation” and “reduces topsoil compaction”.',
+  },
+  {
+    id: 12,
+    question: 'I am interested in a recommendation based on a goal you do not have in your tool. What can I do?',
+    answer: 'Consider what existing goals and rated traits make up the goal you are interested in.',
+  },
+];
+
+export const wcccFaqs = [
+  {
+    id: 1,
+    question: 'How was the species list generated?',
+    answer: 'The cover crop species list was generated by the Western Cover Crops Council, and the experts in the data verification groups.',
+  },
+  {
+    id: 2,
+    question: 'Why do the variables differ throughout the ecoregions and states?',
+    answer: 'Each ecoregion and state had the option to customize the variables to make the dataset relevant.',
+  },
+  {
+    id: 3,
+    question: 'Why do the ratings differ throughout the ecoregions and states?',
+    answer: 'Each region and state has its own unique setting and environmental conditions. The ratings differ based on climatic features, as well as the experience of the experts involved in data verification.',
+  },
+  {
+    id: 4,
+    question: 'Why is roller crimping not listed as a common termination method in most regions?',
+    answer: 'Roller crimping is the most difficult termination method, and may have variable results. Success is dependent on using the correct equipment during the correct maturity period of the crop. It is important that the stand is consistent. It is not currently recommended as a termination method in the west, unless you are willing to make multiple to many passes.',
+  },
+  {
+    id: 5,
+    question: 'Why is mowing and grazing not listed as a termination method in ecoregion 7?',
+    answer: 'Due to the environmental conditions in this area, if you choose to mow or graze in this area, you may need multiple passes or methods for effective termination.',
+  },
+  {
+    id: 6,
+    question: 'Why aren’t there seeding rates for the broadcast method of seeding?',
+    answer: 'In the west, seeding with a no-till seed drill is the recommended form of planting. In the future, a seeding rate calculator will be available for the other seeding methods.',
+  },
+  {
+    id: 7,
+    question: 'Will seeding rates need to be adjusted for forage production, weed suppression, or other goals that require a dense stand?',
+    answer: 'Yes. Seeding rates may need to be increased if you are planting for a special purpose. Please consult your local NRCS, Cooperative Extension office, or Conservation District for detailed guidance.',
+  },
+  {
+    id: 8,
+    question: 'What is a “forage brassica”?',
+    answer: 'Many forage brassicas are hybrids of B. oleracea and B. napus. (i.e. kale, rapeseed, turnip). Some are bred for their leaf production, others for their roots. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 9,
+    question: 'What is the difference between a forage, daikon, tillage, and oilseed radish?',
+    answer: 'Radishes have been bred for many purposes, including (human) food, (animal) feed and forage, and ability to improve soil structure. Confusion as to naming abounds, and is worsened by the fact that the various types of radish readily interbreed. Cover crop radishes are generally referred to as daikon-type radishes (as opposed to the globe-shaped radishes that feature in salads). According to Extension resources, ‘Tillage’ radish is actually a specific brand of radish bred to be a cover crop. Oilseed radishes have smaller, more branching roots than forage radishes. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 10,
+    question: 'What is the difference between a forage turnip vs ‘Purple Top’ turnip?',
+    answer: 'Forage turnips have been bred for use as animal feed (i.e. large tonnage per acre), as opposed to ‘Purple Top’ and similar cultivars traditionally grown for human food (i.e. bulb production). Seed costs vary widely. Be aware of what you are buying depending on your needs.',
+  },
+  {
+    id: 11,
+    question: 'What do you mean by “mustard”?',
+    answer: 'Our tool groups several species under the term “mustard”, including Sinapis alba (white mustard) and Brassica juncea (brown, Oriental, or Indian mustard). We include notes in the comments/notes sections on the information sheet where there are differences in characteristics or uses among the species.',
+  },
+  {
+    id: 12,
+    question: 'What’s the difference between canola and rapeseed?',
+    answer: 'In practice for cover croppers, not much. Some rapeseed was bred to have lower levels of compounds not good for human consumption, making it better for the production of cooking oil. The varieties good for the production of oil for human consumption are referred to as “canola”. Canola seed is generally more expensive than rapeseed seed.',
+  },
+  {
+    id: 13,
+    question: 'What is the difference between “winter” and “spring” small grains?',
+    answer: 'We are referring to germplasm type. For example, “winter” wheat varieties are those that would be expected to usually survive winter and require vernalization (i.e. cold) to trigger flowering. “Spring” wheat varieties are much less cold hardy and do not require vernalization to flower.',
+  },
+  {
+    id: 14,
+    question: 'Can spring small grains be planted in fall and vice versa? Why would you do so?',
+    answer: "Winter small grain cultivars can be planted in spring, but they won't flower (which may be useful since they don't get as tall and are good for a low-growing ground cover). Likewise, spring small grains may be planted in the fall (and will therefore likely winter-kill, preventing the need for spring termination).",
+  },
+  {
+    id: 15,
+    question: 'How will varieties or cultivars impact the ratings for a species?',
+    answer: 'Cover crop species have many varieties or cultivars. Winter survival, environmental tolerances and performance are highly dependent on cultivar.',
+  },
+  {
+    id: 16,
+    question: 'Will a herbicide treatment impact cover crop growth?',
+    answer: 'Chemical carryover from herbicide treatment can affect cover crop growth. Please see additional resources for further information.',
+  },
+  {
+    id: 17,
+    question: 'Does crop insurance impact recommended termination time before cash crop planting?',
+    answer: 'Yes. The NRCS recommended termination time is dependent on crop insurance. If you do not use crop insurance, you may have a different termination guideline.',
+  },
+];
 
 const useWindowSize = () => { // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/

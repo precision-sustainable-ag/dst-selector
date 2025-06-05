@@ -50,9 +50,6 @@ div.growthCellsWrapper {
   .growthCell-30.rainfed{
     background-color: $rainfedPlantingWindowsColor;
   }
-  .growthCell-30.Moisture{
-    background-color: $earlySummerColor;
-  }
 
 
   .growthCell-20 {
@@ -89,9 +86,6 @@ div.growthCellsWrapper {
   }
   .growthCell-20.rainfed{
     background-color: $rainfedPlantingWindowsColor;
-  }
-  .growthCell-20.Moisture{
-    background-color: $moistureRiskColor;
   }
   .growthCell-20.Can{
     background-color: $canInterseedColor;

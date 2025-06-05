@@ -22,24 +22,25 @@ const GoalTag = ({
   const key = id;
   const goalTitle = goaltTitle;
 
-  const updateSelectedGoals = (item) => {
+  const updateSelectedGoals = () => {
     // update history state here
     if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     const goals = [...selectedGoalsRedux];
 
-    if (goals.indexOf(item.label) === -1) {
+    if (goals.indexOf(goal.label) === -1) {
       // does not exist, dispatch to state and add to local state
-      dispatchRedux(addSelectedGoals(item.label));
-      pirschAnalytics('Goals', { meta: { goal: item.label } });
+      dispatchRedux(addSelectedGoals(goal.label));
+      pirschAnalytics('Goals', { meta: { goal: goal.label } });
     } else {
       // exists, remove it from the state and update the state
-      const index = goals.indexOf(item.label);
+      const index = goals.indexOf(goal.label);
       goals.splice(index, 1);
 
       // make it lighter on the ui
       dispatchRedux(updateSelectedGoal(goals));
     }
   };
+
   return (
     <PSATooltip
       enterDelay={1000}
@@ -60,7 +61,7 @@ const GoalTag = ({
               ) : null
             }
             label={goalTitle}
-            onClick={() => updateSelectedGoals(goal)}
+            onClick={updateSelectedGoals}
             key={`chip${key}`}
             id={`chip${key}`}
             size="medium"
