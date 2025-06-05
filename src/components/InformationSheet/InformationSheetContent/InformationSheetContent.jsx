@@ -113,9 +113,6 @@ const InformationSheetContent = ({ crop }) => {
                   detailsContent={(
                     <Grid container>
                       {cat.attributes.map((att, catIndex) => {
-                        if (councilShorthandRedux === 'WCCC' && att.order === 3) {
-                          return null; // Return null to render nothing for this attribute
-                        }
                         if (att.label.startsWith('Comments') || att.label.startsWith('Notes:') || cat.label === 'Extended Comments') {
                           return (
                             <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
