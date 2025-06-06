@@ -1,7 +1,10 @@
 /* eslint-disable no-undef */
 
 describe('Test create and import user history records', () => {
-  beforeEach(() => {
+  beforeEach(function () {
+    if (Cypress.env('test_auth0_env')) {
+      this.skip();
+    }
     cy.intercept({ url: 'https://api.mapbox.com/**' }, { log: false });
     cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
 
@@ -80,7 +83,10 @@ describe('Test create and import user history records', () => {
 });
 
 describe('Test for updating user history', () => {
-  beforeEach(() => {
+  beforeEach(function () {
+    if (Cypress.env('test_auth0_env')) {
+      this.skip();
+    }
     cy.intercept({ url: 'https://api.mapbox.com/**' }, { log: false });
     cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
     cy.intercept('https://develophistory.covercrop-data.org/v1/histories?schema=*').as('getHistory');

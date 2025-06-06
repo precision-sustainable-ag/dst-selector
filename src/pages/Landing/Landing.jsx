@@ -24,7 +24,7 @@ import { updateLocation } from '../../reduxStore/addressSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
 import pirschAnalytics from '../../shared/analytics';
-import { mapboxToken } from '../../shared/keys';
+import { mapboxToken, testAuth0Env } from '../../shared/keys';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import { setQueryString } from '../../reduxStore/sharedSlice';
 import useIsMobile from '../../hooks/useIsMobile';
@@ -76,6 +76,8 @@ const Landing = () => {
 
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
+  const isDevEnvironment = testAuth0Env || /(localhost|dev)/i.test(window.location);
+
   // handler function for stateSelect list
   const handleStateChange = (e) => {
     const selState = allStates.filter((s) => s.shorthand === e.target.value);
@@ -89,8 +91,7 @@ const Landing = () => {
   // Load map data based on current enviorment
   useEffect(() => {
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
-      const isDevEnvironment = /(localhost|dev)/i.test(window.location);
-      const productionCouncils = ['NECCC', 'SCCC'];
+      const productionCouncils = ['NECCC', 'SCCC', 'MCCC'];
       const states = isDevEnvironment
         ? stateData.data
         : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
@@ -146,6 +147,11 @@ const Landing = () => {
         dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
         dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
         dispatchRedux(updateField(null));
+      }
+      // set address for pipeline environment(when map is not available)
+      if (testAuth0Env) {
+        const [lat, lon] = statesLatLongDict[selectedState.label];
+        dispatchRedux(updateLocation({ address: '', markers: [[lat, lon]], county: null }));
       }
       // set querystring for WCCC
       if (selectedState.council.shorthand === 'WCCC') {
@@ -367,34 +373,39 @@ const Landing = () => {
             mapboxToken={mapboxToken}
             key="1"
           />
-          <StateImageButton
-            sx={{
-              position: 'absolute',
-              bottom: isMobile ? '-110px' : '140px',
-              left: '10px',
-              ...(selectedState.label === 'Alaska' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
-            }}
-            onClick={() => {
-              const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
-              setSelectedState(alaska);
-            }}
-            src={selectedState.label === 'Alaska' ? '/images/alaska-selected.jpg' : '/images/alaska.jpg'}
-            alt="select Alaska"
-          />
-          <StateImageButton
-            sx={{
-              position: 'absolute',
-              bottom: isMobile ? '-110px' : '30px',
-              left: isMobile ? '120px' : '10px',
-              ...(selectedState.label === 'Hawaii' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
-            }}
-            onClick={() => {
-              const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
-              setSelectedState(hawaii);
-            }}
-            src={selectedState.label === 'Hawaii' ? '/images/hawaii-selected.jpg' : '/images/hawaii.jpg'}
-            alt="select Hawaii"
-          />
+          {isDevEnvironment
+          && (
+            <>
+              <StateImageButton
+                sx={{
+                  position: 'absolute',
+                  bottom: isMobile ? '-110px' : '140px',
+                  left: '10px',
+                  ...(selectedState.label === 'Alaska' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
+                }}
+                onClick={() => {
+                  const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
+                  setSelectedState(alaska);
+                }}
+                src={selectedState.label === 'Alaska' ? '/images/alaska-selected.jpg' : '/images/alaska.jpg'}
+                alt="select Alaska"
+              />
+              <StateImageButton
+                sx={{
+                  position: 'absolute',
+                  bottom: isMobile ? '-110px' : '30px',
+                  left: isMobile ? '120px' : '10px',
+                  ...(selectedState.label === 'Hawaii' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
+                }}
+                onClick={() => {
+                  const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
+                  setSelectedState(hawaii);
+                }}
+                src={selectedState.label === 'Hawaii' ? '/images/hawaii-selected.jpg' : '/images/hawaii.jpg'}
+                alt="select Hawaii"
+              />
+            </>
+          )}
         </Box>
       </Grid>
     </Box>

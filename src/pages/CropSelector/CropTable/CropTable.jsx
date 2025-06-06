@@ -35,7 +35,6 @@ const CropTable = ({
   showGrowthWindow,
 }) => {
   // redux vars
-  const councilRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
@@ -113,8 +112,7 @@ const CropTable = ({
 
   useEffect(() => {
     if (cropDataRedux.length !== 0) {
-      if (councilRedux === 'WCCC') sortByPlantingWindow();
-      else sortByAverageGoals();
+      sortByAverageGoals();
     }
   }, []);
 

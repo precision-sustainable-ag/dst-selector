@@ -2,19 +2,19 @@ const initialState = {
   weatherData: {
     averageFrost: {
       firstFrostDate: {
-        month: 'October',
-        day: 21,
+        month: null,
+        day: null,
       },
       lastFrostDate: {
-        month: 'April',
-        day: 20,
+        month: null,
+        day: null,
       },
     },
     averagePrecipitation: {
-      thisMonth: 3.6, // inches
-      annual: 43, // inches
+      thisMonth: null, // inches
+      annual: null, // inches
     },
-    frostFreeDays: 173,
+    frostFreeDays: null,
   },
 };
 
