@@ -1,6 +1,6 @@
 const initialState = {
-  selectedSeason: null,
-  selectedFlowering: null,
+  selectedSeason: [],
+  selectedDuration: null,
   selectedIrrigation: 'Rainfed',
   tags: [],
 };
@@ -10,9 +10,9 @@ export const updateSelectedSeason = (season) => ({
   payload: season,
 });
 
-export const updateSelectedFlowering = (floweringType) => ({
-  type: 'UPDATE_SELECTED_FLOWERING',
-  payload: floweringType,
+export const updateSelectedDuration = (durationType) => ({
+  type: 'UPDATE_SELECTED_DURATION',
+  payload: durationType,
 });
 
 export const updateSelectedIrrigation = (irrigationType) => ({
@@ -30,8 +30,8 @@ const terminationsReducer = (state = initialState, action = null) => {
     case 'UPDATE_SELECTED_SEASON':
       return { ...state, selectedSeason: action.payload };
 
-    case 'UPDATE_SELECTED_FLOWERING':
-      return { ...state, selectedFlowering: action.payload };
+    case 'UPDATE_SELECTED_DURATION':
+      return { ...state, selectedDuration: action.payload };
 
     case 'UPDATE_SELECTED_IRRIGATION':
       return { ...state, selectedIrrigation: action.payload };

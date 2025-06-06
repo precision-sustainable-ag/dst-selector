@@ -15,7 +15,7 @@ import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 import pirschAnalytics from '../../shared/analytics';
 import {
-  updateSelectedFlowering, updateSelectedIrrigation, updateSelectedSeason, updateTags,
+  updateSelectedDuration, updateSelectedIrrigation, updateSelectedSeason, updateTags,
 } from '../../reduxStore/terminationSlice';
 import {
   setIrrigationFilter,
@@ -38,7 +38,7 @@ const GoalsSelector = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
-  const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedDuration = useSelector((stateRedux) => stateRedux.terminationData.selectedDuration);
   const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const GoalsSelector = () => {
 
   const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
 
-  const floweringTypes = ['Annual', 'Perennial'];
+  const durationTypes = ['Annual', 'Perennial'];
 
   const irrigationType = ['Rainfed', 'Irrigated'];
 
@@ -60,11 +60,11 @@ const GoalsSelector = () => {
     }
   };
 
-  const handleSelectedFlowering = (floweringType) => {
-    if (floweringType === selectedFlowering) {
-      dispatch(updateSelectedFlowering(null));
+  const handleSelectedDuration = (durationType) => {
+    if (durationType === selectedDuration) {
+      dispatch(updateSelectedDuration(null));
     } else {
-      dispatch(updateSelectedFlowering(floweringType));
+      dispatch(updateSelectedDuration(durationType));
     }
   };
 
@@ -332,11 +332,11 @@ const GoalsSelector = () => {
               justifyContent: 'center',
             }}
           >
-            {floweringTypes.map((floweringType, i) => (
+            {durationTypes.map((durationType, i) => (
               <Chip
-                key={floweringType}
-                label={floweringType}
-                id={(`floweringType${i}`)}
+                key={durationType}
+                label={durationType}
+                id={(`durationType${i}`)}
                 clickable
                 style={{ margin: '0.3rem' }}
                 sx={{
@@ -344,8 +344,8 @@ const GoalsSelector = () => {
                     boxShadow: '0 0 0 2px black',
                   },
                 }}
-                onClick={() => handleSelectedFlowering(floweringType)}
-                color={selectedFlowering === floweringType ? 'primary' : 'secondary'}
+                onClick={() => handleSelectedDuration(durationType)}
+                color={selectedDuration === durationType ? 'primary' : 'secondary'}
               />
             ))}
 

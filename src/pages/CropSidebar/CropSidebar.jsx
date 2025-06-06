@@ -78,7 +78,7 @@ const CropSidebar = ({
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
   const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
-  const selectedFloweringRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedDurationRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedDuration);
 
   // useState vars
   const [loading, setLoading] = useState(true);
@@ -192,9 +192,9 @@ const CropSidebar = ({
         || crop.plantingDates.some((date) => date.label.includes(selectedSeasonRedux)
           && date.label.includes(irrigationFilterRedux ? 'irrigation' : 'rainfed'));
         const cropDurationValues = crop.attributes.filter((a) => a.label === 'Duration')?.[0]?.values;
-        const floweringMatch = !selectedFloweringRedux
-        || cropDurationValues?.some((v) => v.value.includes(selectedFloweringRedux));
-        if (seasonMatch && floweringMatch) {
+        const durationMatch = !selectedDurationRedux
+        || cropDurationValues?.some((v) => v.value.includes(selectedDurationRedux));
+        if (seasonMatch && durationMatch) {
           match = true;
         }
       }
