@@ -95,10 +95,10 @@ const ProgressButtonsInner = ({
           Please choose what you would like to do next:
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleGetRecommendation} color="primary">
+          <Button onClick={handleGetRecommendation} color="primary" data-test="get-a-recommendation-btn">
             Get a Recommendation
           </Button>
-          <Button onClick={handleBrowseCoverCrops} color="primary">
+          <Button onClick={handleBrowseCoverCrops} color="primary" data-test="browse-cover-crops-btn">
             Browse Cover Crops
           </Button>
         </DialogActions>
