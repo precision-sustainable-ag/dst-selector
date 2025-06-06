@@ -1,7 +1,7 @@
 const initialState = {
   selectedSeason: null,
   selectedFlowering: null,
-  selectedIrrigation: null,
+  selectedIrrigation: 'Rainfed',
   tags: [],
 };
 

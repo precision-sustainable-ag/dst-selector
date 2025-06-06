@@ -48,6 +48,7 @@ import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice'
 import {
   setAjaxInProgress, regionToggleHandler,
 } from '../../reduxStore/sharedSlice';
+import { updateSelectedIrrigation } from '../../reduxStore/terminationSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -76,6 +77,8 @@ const CropSidebar = ({
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
+  const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const selectedFloweringRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
 
   // useState vars
   const [loading, setLoading] = useState(true);
@@ -114,6 +117,7 @@ const CropSidebar = ({
 
   const handleIrrigationFilter = () => {
     dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
+    dispatchRedux(updateSelectedIrrigation(!irrigationFilterRedux ? 'Irrigated' : 'Rainfed'));
   };
 
   const handleCropGroupFilter = (val) => {
@@ -180,6 +184,20 @@ const CropSidebar = ({
         ?.includes(drainageClassRedux.toLowerCase()));
 
       const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
+
+      // WCCC Additional Filters
+      if (councilShorthandRedux === 'WCCC') {
+        match = false;
+        const seasonMatch = !selectedSeasonRedux
+        || crop.plantingDates.some((date) => date.label.includes(selectedSeasonRedux)
+          && date.label.includes(irrigationFilterRedux ? 'irrigation' : 'rainfed'));
+        const cropDurationValues = crop.attributes.filter((a) => a.label === 'Duration')?.[0]?.values;
+        const floweringMatch = !selectedFloweringRedux
+        || cropDurationValues?.some((v) => v.value.includes(selectedFloweringRedux));
+        if (seasonMatch && floweringMatch) {
+          match = true;
+        }
+      }
 
       if (stateIdRedux === 7) {
         cd[n].inactive = (!match)

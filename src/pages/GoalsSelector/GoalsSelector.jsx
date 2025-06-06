@@ -15,7 +15,7 @@ import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 import pirschAnalytics from '../../shared/analytics';
 import {
-  updateSelectedFlowering, updateSelectedSeason, updateTags,
+  updateSelectedFlowering, updateSelectedIrrigation, updateSelectedSeason, updateTags,
 } from '../../reduxStore/terminationSlice';
 import {
   setIrrigationFilter,
@@ -36,12 +36,21 @@ const GoalsSelector = () => {
   ).reverse();
 
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
 
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
   const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   const dispatch = useDispatch();
+
+  // useState vars
+  const [allGoals, setAllGoals] = useState([]);
+
+  const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
+
+  const floweringTypes = ['Annual', 'Perennial'];
+
+  const irrigationType = ['Rainfed', 'Irrigated'];
 
   const handleSelectedSeason = (season) => {
     if (selectedSeason === season) {
@@ -60,22 +69,9 @@ const GoalsSelector = () => {
   };
 
   const handleSelectedIrrigation = (irrigation) => {
-    console.log(irrigation === 'Irrigation');
-    if (irrigation === irrigationFilterRedux) {
-      dispatch(setIrrigationFilter(null));
-    } else {
-      dispatch(setIrrigationFilter(irrigation));
-    }
+    dispatch(updateSelectedIrrigation(irrigation));
+    dispatch(setIrrigationFilter(irrigation === irrigationType[1]));
   };
-
-  // useState vars
-  const [allGoals, setAllGoals] = useState([]);
-
-  const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
-
-  const floweringTypes = ['Annual', 'Perennial'];
-
-  const irrigationType = ['Rainfed', 'Irrigated'];
 
   useEffect(() => {
     callCoverCropApi(
@@ -401,8 +397,8 @@ const GoalsSelector = () => {
                     boxShadow: '0 0 0 2px black',
                   },
                 }}
-                onClick={() => handleSelectedIrrigation(irrigation === 'Irrigated')}
-                color={(irrigation === 'Irrigated') === irrigationFilterRedux ? 'primary' : 'secondary'}
+                onClick={() => handleSelectedIrrigation(irrigation)}
+                color={selectedIrrigation === irrigation ? 'primary' : 'secondary'}
               />
             ))}
 
