@@ -24,7 +24,7 @@ import pirschAnalytics from '../../../shared/analytics';
 const InformationSheetContent = ({ crop }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
-  const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedDuration = useSelector((stateRedux) => stateRedux.terminationData.selectedDuration);
   const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
   const tagsRedux = useSelector((stateRedux) => stateRedux.terminationData.tags);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
@@ -37,7 +37,7 @@ const InformationSheetContent = ({ crop }) => {
 
   // Termination checks
   const seasons = ['Spring Planted', 'Summer Planted', 'Fall Planted', 'Winter Planted'];
-  const floweringTypes = ['Annual', 'Perennial'];
+  const durationTypes = ['Annual', 'Perennial'];
   const irrigationType = ['Rainfed', 'Irrigated'];
 
   const checkTermination = (label) => {
@@ -50,8 +50,8 @@ const InformationSheetContent = ({ crop }) => {
       }
     }
 
-    if (selectedFlowering) {
-      if (!labelSet.has(selectedFlowering) && floweringTypes.some((flowering) => labelSet.has(flowering))) {
+    if (selectedDuration) {
+      if (!labelSet.has(selectedDuration) && durationTypes.some((duration) => labelSet.has(duration))) {
         return false;
       }
     }

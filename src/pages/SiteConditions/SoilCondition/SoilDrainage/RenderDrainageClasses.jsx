@@ -33,7 +33,7 @@ const RenderDrainageClasses = ({
         dispatchPackage = drainageArray[i];
       }
     }
-    if (dispatchPackage !== '') dispatchRedux(updateDrainageClassRedux([dispatchPackage]));
+    dispatchRedux(updateDrainageClassRedux(dispatchPackage !== '' ? [dispatchPackage] : []));
   };
 
   useEffect(() => {
