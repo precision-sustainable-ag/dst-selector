@@ -5,7 +5,7 @@
 trigger:
   branches:
     include:
-      - wccc-testing
+      - develop
 
 pr:
   branches:
@@ -13,7 +13,6 @@ pr:
       - develop
       - feature/*
       - bugfix/*
-      - wccc-testing
 
 variables:
 
