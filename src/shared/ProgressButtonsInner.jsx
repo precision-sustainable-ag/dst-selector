@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import { reset } from '../reduxStore/store';
-import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
+import { updateProgress, setMyCoverCropReset, activateSpeicesSelectorTile } from '../reduxStore/sharedSlice';
 import useIsMobile from '../hooks/useIsMobile';
 
 const ProgressButtonsInner = ({
@@ -24,6 +24,10 @@ const ProgressButtonsInner = ({
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const isMobile = useIsMobile('sm');
+  const responseRedux = useSelector((stateRedux) => stateRedux.responseData.response);
+  const myCoverCropListLocationRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
+  );
 
   const changeProgress = (type) => {
     // setCrement(type);
@@ -36,8 +40,35 @@ const ProgressButtonsInner = ({
     }
   };
 
+  const openMyCoverCropReset = (to) => {
+    if (selectedCropIdsRedux.length > 0 && myCoverCropListLocationRedux !== to) {
+      dispatchRedux(setMyCoverCropReset(true));
+    }
+  };
+
+  const setSpeciesSelectorActivationFlag = () => {
+    openMyCoverCropReset('explorer');
+    dispatchRedux(
+      activateSpeicesSelectorTile({
+        speciesSelectorActivationFlag: true,
+        myCoverCropActivationFlag: false,
+      }),
+    );
+    history.push('/explorer');
+  };
+
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
+  };
+
+  const handleNextClick = () => {
+    if (progressRedux === 0) {
+      if (responseRedux === 'BROWSE COVER CROPS') setSpeciesSelectorActivationFlag(); else changeProgress('increment');
+    } else if (progressRedux === 4) {
+      setMyCoverCropActivationFlag();
+    } else {
+      changeProgress('increment');
+    }
   };
 
   return (
@@ -68,7 +99,7 @@ const ProgressButtonsInner = ({
                   marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
                   height: isMobile ? '35px' : 'auto',
                 }}
-                onClick={() => changeProgress('increment')}
+                onClick={handleNextClick}
                 disabled={isDisabledNext || progressRedux === 4}
                 buttonType="PillButton"
                 data-test="next-btn"
@@ -90,7 +121,7 @@ const ProgressButtonsInner = ({
               marginLeft: '3%',
               height: isMobile ? '35px' : 'auto',
             }}
-            onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
+            onClick={handleNextClick}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
             buttonType="PillButton"
             data-test={progressRedux === 4 ? 'my selected crops-btn' : 'next-btn'}

@@ -20,6 +20,7 @@ const ProgressButtons = () => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const responseRedux = useSelector((stateRedux) => stateRedux.responseData.response);
 
   const disableLogic = (progress, goalsLength, filters, regionShorthand) => {
     switch (parseInt(progress, 10)) {
@@ -27,11 +28,10 @@ const ProgressButtons = () => {
         setToolTip(false);
         setIsDisabledBack(true);
         setIsDisabledRefresh(true);
-        setIsDisabledNext(councilShorthandRedux === null);
+        setIsDisabledNext(councilShorthandRedux === null || responseRedux === null);
         break;
       case 1:
         // location selection state
-
         // handle logic separately for Ontario
         if (stateLabelRedux === 'Ontario') {
           setIsDisabledNext(regionShorthand === '');

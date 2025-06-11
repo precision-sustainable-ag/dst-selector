@@ -11,6 +11,7 @@ import sharedReducer from './sharedSlice';
 import userReducer from './userSlice';
 import pageReducer from './pageSlice';
 import terminationReducer from './terminationSlice';
+import responseReducer from './browseCoverCropsSlice';
 
 export const reset = () => ({
   type: 'RESET',
@@ -29,6 +30,7 @@ const configureStore = () => {
     userData: userReducer,
     pageData: pageReducer,
     terminationData: terminationReducer,
+    responseData: responseReducer,
   });
 
   const rootReducer = (state, action) => {
@@ -46,6 +48,7 @@ const configureStore = () => {
         userData: userReducer(undefined, action),
         pageData: pageReducer(undefined, action),
         terminationData: terminationReducer(undefined, action),
+        responseData: responseReducer(undefined, action),
       };
     }
 

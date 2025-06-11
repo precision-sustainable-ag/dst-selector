@@ -17,7 +17,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
-import { PSADropdown, PSARegionSelectorMap } from 'shared-react-components/src';
+import { PSADropdown, PSARegionSelectorMap, PSAButton } from 'shared-react-components/src';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { updateLocation } from '../../reduxStore/addressSlice';
@@ -28,6 +28,7 @@ import { mapboxToken, testAuth0Env } from '../../shared/keys';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import { setQueryString } from '../../reduxStore/sharedSlice';
 import useIsMobile from '../../hooks/useIsMobile';
+import { updateResponse } from '../../reduxStore/browseCoverCropsSlice';
 
 const StateImageButton = ({
   sx, onClick, src, alt,
@@ -63,6 +64,7 @@ const Landing = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const responseRedux = useSelector((stateRedux) => stateRedux.responseData.response);
 
   // useState vars
   // const [containerHeight, setContainerHeight] = useState(height);
@@ -190,7 +192,7 @@ const Landing = () => {
             dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id}`));
           })
           .catch((err) => {
-          // eslint-disable-next-line no-console
+            // eslint-disable-next-line no-console
             console.log(err.message);
           });
       }
@@ -332,6 +334,54 @@ const Landing = () => {
                 }}
               />
             </Grid>
+            <Box
+              sx={{
+                justifyContent: 'center',
+                marginX: 15,
+                marginY: 2,
+                padding: 2,
+                width: '100%',
+                backgroundColor: 'white',
+                borderRadius: 2,
+                boxShadow: 3,
+              }}
+            >
+              <Grid item xs={12}>
+                <Typography variant="body1" align="center">
+                  What do you want to do next?
+                </Typography>
+              </Grid>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: 2,
+                  marginTop: 2,
+                  width: '100%',
+                }}
+              >
+                <PSAButton
+                  onClick={() => { dispatchRedux(updateResponse('GET A RECOMMENDATION')); }}
+                  style={{
+                    backgroundColor: responseRedux === 'GET A RECOMMENDATION' ? '#598445' : 'transparent',
+                    color: responseRedux === 'GET A RECOMMENDATION' ? 'white' : 'black',
+                    border: responseRedux === 'GET A RECOMMENDATION' ? '2px solid #598445' : '2px solid black',
+                  }}
+                  buttonType="PillButton"
+                  title="GET A RECOMMENDATION"
+                />
+                <PSAButton
+                  onClick={() => { dispatchRedux(updateResponse('BROWSE COVER CROPS')); }}
+                  style={{
+                    backgroundColor: responseRedux === 'BROWSE COVER CROPS' ? '#598445' : 'transparent',
+                    color: responseRedux === 'BROWSE COVER CROPS' ? 'white' : 'black',
+                    border: responseRedux === 'BROWSE COVER CROPS' ? '2px solid #598445' : '2px solid black',
+                  }}
+                  buttonType="PillButton"
+                  title="BROWSE COVER CROPS"
+                />
+              </Box>
+            </Box>
             <Grid item xs={12} display="flex" justifyContent="center">
               <Typography>
                 {isAuthenticated
@@ -374,38 +424,38 @@ const Landing = () => {
             key="1"
           />
           {isDevEnvironment
-          && (
-            <>
-              <StateImageButton
-                sx={{
-                  position: 'absolute',
-                  bottom: isMobile ? '-110px' : '140px',
-                  left: '10px',
-                  ...(selectedState.label === 'Alaska' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
-                }}
-                onClick={() => {
-                  const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
-                  setSelectedState(alaska);
-                }}
-                src={selectedState.label === 'Alaska' ? '/images/alaska-selected.jpg' : '/images/alaska.jpg'}
-                alt="select Alaska"
-              />
-              <StateImageButton
-                sx={{
-                  position: 'absolute',
-                  bottom: isMobile ? '-110px' : '30px',
-                  left: isMobile ? '120px' : '10px',
-                  ...(selectedState.label === 'Hawaii' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
-                }}
-                onClick={() => {
-                  const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
-                  setSelectedState(hawaii);
-                }}
-                src={selectedState.label === 'Hawaii' ? '/images/hawaii-selected.jpg' : '/images/hawaii.jpg'}
-                alt="select Hawaii"
-              />
-            </>
-          )}
+            && (
+              <>
+                <StateImageButton
+                  sx={{
+                    position: 'absolute',
+                    bottom: isMobile ? '-110px' : '140px',
+                    left: '10px',
+                    ...(selectedState.label === 'Alaska' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
+                  }}
+                  onClick={() => {
+                    const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
+                    setSelectedState(alaska);
+                  }}
+                  src={selectedState.label === 'Alaska' ? '/images/alaska-selected.jpg' : '/images/alaska.jpg'}
+                  alt="select Alaska"
+                />
+                <StateImageButton
+                  sx={{
+                    position: 'absolute',
+                    bottom: isMobile ? '-110px' : '30px',
+                    left: isMobile ? '120px' : '10px',
+                    ...(selectedState.label === 'Hawaii' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
+                  }}
+                  onClick={() => {
+                    const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
+                    setSelectedState(hawaii);
+                  }}
+                  src={selectedState.label === 'Hawaii' ? '/images/hawaii-selected.jpg' : '/images/hawaii.jpg'}
+                  alt="select Hawaii"
+                />
+              </>
+            )}
         </Box>
       </Grid>
     </Box>
