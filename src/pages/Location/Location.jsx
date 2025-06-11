@@ -352,7 +352,7 @@ const Location = () => {
           }}
         >
           <Typography variant="body1">
-            Find your address or ZIP code using the search bar on the map and hit
+            Enter your address or ZIP code using the search bar on the map and hit
             <Search fontSize="inherit" />
             to determine your location.
             {councilShorthandRedux !== 'WCCC' && (
