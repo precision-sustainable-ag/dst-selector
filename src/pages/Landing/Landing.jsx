@@ -291,7 +291,7 @@ const Landing = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body1" align="center">
-                Choose your state* from the dropdown or the map. You can zoom by scrolling or pinching on mobile.
+                Choose your state from the dropdown or the map. You can zoom by scrolling or pinching on mobile.
               </Typography>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="center">
