@@ -65,10 +65,10 @@ const GoalTag = ({
             key={`chip${key}`}
             id={`chip${key}`}
             size="medium"
-            variant="outlined"
             data-test={`goal-tag-${key}`}
             sx={{
               '&.MuiChip-root:focus': {
+                boxShadow: 'none',
                 '&.Mui-disabled': {
                   color: '#757575',
                 },
