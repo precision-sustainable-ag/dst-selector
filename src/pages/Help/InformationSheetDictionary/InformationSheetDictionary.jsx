@@ -63,6 +63,22 @@ const InformationSheetDictionary = ({ zone, from }) => {
       <hr />
 
       <DictionaryContent dictData={dictionary} />
+
+      <Typography
+        variant="body2"
+        style={{ marginLeft: '1.5%' }}
+      >
+        If you didn&apos;t find what you were looking for it may be located
+        {' '}
+        <a
+          href="https://www.nrcs.usda.gov/sites/default/files/2022-08/SSURGO-Metadata-Domains-Report.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          here
+        </a>
+        .
+      </Typography>
     </>
   );
 };

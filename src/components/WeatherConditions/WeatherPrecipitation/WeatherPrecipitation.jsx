@@ -51,7 +51,7 @@ const WeatherPrecipitation = () => {
                   {' '}
                   and
                   {' '}
-                  <a target="_blank" rel="noopener noreferrer" href="/#">
+                  <a target="_blank" rel="noopener noreferrer" href="https://ldas.gsfc.nasa.gov/nldas/">
                     NASA NLDAS-2
                   </a>
                   {' '}

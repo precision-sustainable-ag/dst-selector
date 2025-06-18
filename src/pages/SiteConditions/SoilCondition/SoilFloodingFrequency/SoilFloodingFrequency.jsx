@@ -80,7 +80,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                       overflowing streams, by runoff from adjacent slopes, or by tides.
                       {' '}
                       <a
-                        href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
+                        href="/data-dictionary"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -94,7 +94,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                 content="The annual probability of a flood event based on the USDA NRCS Web Soil Survey,
                  where “flood” refers to the temporary inundation of an area caused by verflowing streams,
                  by runoff from adjacent slopes, or by tides.
-                 Definitions of values found here: https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
+                 Definitions of values can be found in the data dictionary."
               />
             </Typography>
           </Grid>
