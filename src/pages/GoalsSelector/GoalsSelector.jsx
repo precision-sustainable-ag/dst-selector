@@ -34,7 +34,6 @@ const GoalsSelector = () => {
   const selectedGoalsRedux = [...useSelector(
     (stateRedux) => stateRedux.goalsData.selectedGoals,
   )].reverse();
-
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
 
@@ -183,6 +182,7 @@ const GoalsSelector = () => {
                             id={key}
                             goaltTitle={goal.label}
                             goalDescription={goal.description}
+                            selectedGoalIndex={selectedGoalsRedux.includes(goal.label) ? selectedGoalsRedux.indexOf(goal.label) + 1 : null}
                           />
                         </Grid>
                       ))}
