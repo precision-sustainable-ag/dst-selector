@@ -129,7 +129,7 @@ const GoalsSelector = () => {
               </Grid>
               <Grid item xs={12} mb={2}>
                 <Typography variant="subtitle2" gutterBottom align="center">
-                  Tap and hold for more information
+                  {isMobile ? 'Tap and hold for more information' : 'Hover over a goal for more information'}
                 </Typography>
               </Grid>
               {/* chips */}
@@ -218,67 +218,86 @@ const GoalsSelector = () => {
 
       {/* Bottom Row */}
       {councilShorthandRedux === 'WCCC'
-      && (
-      <Grid
-        container
-        item
-        lg={8}
-        spacing={isLargeScreen ? 4 : 0}
-        sx={{
-          boxSizing: 'border-box',
-          borderRadius: '15px',
-          border: '2px solid #598445',
-          // margin: !isLargeScreen ? '1rem' : '0',
-          mx: 'auto',
-          mt: isLargeScreen ? 4 : 2,
-          mb: isLargeScreen ? 4 : 2,
-        }}
-        className="additionalFilters"
-        justifyContent="center"
-      >
-        <Grid item xs={12}>
-          <Typography variant="h4" align="center">
-            Additional Cover Crop Filters
-          </Typography>
-          <Typography
-            variant={isMobile ? 'subtitle2' : 'subtitle1'}
-            align="center"
-            gutterBottom
-          >
-            These options will help provide the best cover crop termination information on your information sheet.
-          </Typography>
-
-        </Grid>
-
-        {/* weather grid */}
-        {/* <Grid item container lg={3}> */}
-        <Grid
-          item
-          container
-          lg={4}
-          sx={{
-            p: '1rem',
-            mr: !isLargeScreen ? '1rem' : '0',
-            ml: !isLargeScreen ? '1rem' : '0',
-            mb: !isLargeScreen ? '1rem' : '0,',
-
-          }}
-          data-test="goals-card"
-        >
-          <Grid item xs={12}>
-            <Typography variant="h5" align="center" data-test="title-goals">
-              Planting Season
-            </Typography>
-          </Grid>
-          {/* sub-title */}
+        && (
           <Grid
+            container
             item
-            xs={12}
+            lg={8}
+            spacing={isLargeScreen ? 4 : 0}
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              boxSizing: 'border-box',
+              borderRadius: '15px',
+              border: '2px solid #598445',
+              // margin: !isLargeScreen ? '1rem' : '0',
+              mx: 'auto',
+              mt: isLargeScreen ? 4 : 2,
+              mb: isLargeScreen ? 4 : 2,
+            }}
+            className="additionalFilters"
+            justifyContent="center"
+          >
+            <Grid item xs={12}>
+              <Typography variant="h4" align="center">
+                Additional Cover Crop Filters
+              </Typography>
+              <Typography
+                variant={isMobile ? 'subtitle2' : 'subtitle1'}
+                align="center"
+                gutterBottom
+              >
+                These options will help provide the best cover crop termination information on your information sheet.
+              </Typography>
 
+            </Grid>
+
+            {/* weather grid */}
+            {/* <Grid item container lg={3}> */}
+            <Grid
+              item
+              container
+              lg={4}
+              sx={{
+                p: '1rem',
+                mr: !isLargeScreen ? '1rem' : '0',
+                ml: !isLargeScreen ? '1rem' : '0',
+                mb: !isLargeScreen ? '1rem' : '0,',
+
+              }}
+              data-test="goals-card"
+            >
+              <Grid item xs={12}>
+                <Typography variant="h5" align="center" data-test="title-goals">
+                  Planting Season
+                </Typography>
+              </Grid>
+              {/* sub-title */}
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+
+                }}
+              >
+                {seasons.map((season, i) => (
+                  <Chip
+                    key={season}
+                    label={season}
+                    id={(`season${i}`)}
+                    clickable
+                    style={{ margin: '0.3rem' }}
+                    sx={{
+                      '&:focus': {
+                        boxShadow: '0 0 0 2px black',
+                        maxWidth: !isLargeScreen ? '45%' : 'auto',
+                      },
+                    }}
+                    onClick={() => handleSelectedSeason(season)}
+                    color={selectedSeason === season ? 'primary' : 'secondary'}
+                  />
+                ))}
             }}
           >
             {seasons.map((season, i) => (
@@ -299,9 +318,55 @@ const GoalsSelector = () => {
               />
             ))}
 
-          </Grid>
-        </Grid>
+              </Grid>
+            </Grid>
 
+            {/* Annual/Perennial */}
+            <Grid
+              item
+              container
+              lg={4}
+              sx={{
+                // border: '2px solid #598445',
+                p: '1rem',
+                mr: !isLargeScreen ? '1rem' : '0',
+                ml: !isLargeScreen ? '1rem' : '0',
+                mb: !isLargeScreen ? '1rem' : '0,',
+              }}
+              justifyContent="center"
+              data-test="cashcrop-window"
+            >
+              <Grid item xs={12}>
+                <Typography variant="h5" align="center" data-test="title-goals">
+                  Lifecycle
+                </Typography>
+              </Grid>
+              {/* sub-title */}
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {floweringTypes.map((floweringType, i) => (
+                  <Chip
+                    key={floweringType}
+                    label={floweringType}
+                    id={(`floweringType${i}`)}
+                    clickable
+                    style={{ margin: '0.3rem' }}
+                    sx={{
+                      '&:focus': {
+                        boxShadow: '0 0 0 2px black',
+                      },
+                    }}
+                    onClick={() => handleSelectedFlowering(floweringType)}
+                    color={selectedFlowering === floweringType ? 'primary' : 'secondary'}
+                  />
+                ))}
         {/* Annual/Perennial */}
         <Grid
           item
@@ -349,10 +414,58 @@ const GoalsSelector = () => {
               />
             ))}
 
-          </Grid>
+              </Grid>
 
-        </Grid>
+            </Grid>
 
+            {/* Water */}
+            <Grid
+              item
+              container
+              lg={4}
+              sx={{
+                boxSizing: 'border-box',
+                borderRadius: '15px',
+                // border: '2px solid #598445',
+                p: '1rem',
+                mr: !isLargeScreen ? '1rem' : '0',
+                ml: !isLargeScreen ? '1rem' : '0',
+                mb: !isLargeScreen ? '1rem' : '0,',
+              }}
+              justifyContent="center"
+              data-test="cashcrop-window"
+            >
+              <Grid item xs={12}>
+                <Typography variant="h5" align="center" data-test="title-goals">
+                  Will you Irrigate?
+                </Typography>
+              </Grid>
+              {/* sub-title */}
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {irrigationType.map((irrigation, i) => (
+                  <Chip
+                    key={irrigation}
+                    label={i === 0 ? 'No' : 'Yes'}
+                    id={`irrigation${i}`}
+                    clickable
+                    style={{ margin: '0.3rem' }}
+                    sx={{
+                      '&:focus': {
+                        boxShadow: '0 0 0 2px black',
+                      },
+                    }}
+                    onClick={() => handleSelectedIrrigation(irrigation === 'Irrigated')}
+                    color={(irrigation === 'Irrigated') === irrigationFilterRedux ? 'primary' : 'secondary'}
+                  />
+                ))}
         {/* Water */}
         <Grid
           item
@@ -402,11 +515,11 @@ const GoalsSelector = () => {
               />
             ))}
 
-          </Grid>
-        </Grid>
+              </Grid>
+            </Grid>
 
-      </Grid>
-      )}
+          </Grid>
+        )}
     </Box>
   );
 };
