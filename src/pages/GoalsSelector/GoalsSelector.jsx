@@ -295,29 +295,9 @@ const GoalsSelector = () => {
                       },
                     }}
                     onClick={() => handleSelectedSeason(season)}
-                    color={selectedSeason === season ? 'primary' : 'secondary'}
+                    color={selectedSeasonRedux.includes(season) ? 'primary' : 'secondary'}
                   />
                 ))}
-            }}
-          >
-            {seasons.map((season, i) => (
-              <Chip
-                key={season}
-                label={season}
-                id={(`season${i}`)}
-                clickable
-                style={{ margin: '0.3rem' }}
-                sx={{
-                  '&:focus': {
-                    boxShadow: '0 0 0 2px black',
-                    maxWidth: !isLargeScreen ? '45%' : 'auto',
-                  },
-                }}
-                onClick={() => handleSelectedSeason(season)}
-                color={selectedSeasonRedux.includes(season) ? 'primary' : 'secondary'}
-              />
-            ))}
-
               </Grid>
             </Grid>
 
@@ -351,11 +331,11 @@ const GoalsSelector = () => {
                   justifyContent: 'center',
                 }}
               >
-                {floweringTypes.map((floweringType, i) => (
+                {durationTypes.map((durationType, i) => (
                   <Chip
-                    key={floweringType}
-                    label={floweringType}
-                    id={(`floweringType${i}`)}
+                    key={durationType}
+                    label={durationType}
+                    id={(`durationType${i}`)}
                     clickable
                     style={{ margin: '0.3rem' }}
                     sx={{
@@ -363,56 +343,10 @@ const GoalsSelector = () => {
                         boxShadow: '0 0 0 2px black',
                       },
                     }}
-                    onClick={() => handleSelectedFlowering(floweringType)}
-                    color={selectedFlowering === floweringType ? 'primary' : 'secondary'}
+                    onClick={() => handleSelectedDuration(durationType)}
+                    color={selectedDurationRedux === durationType ? 'primary' : 'secondary'}
                   />
                 ))}
-        {/* Annual/Perennial */}
-        <Grid
-          item
-          container
-          lg={4}
-          sx={{
-            // border: '2px solid #598445',
-            p: '1rem',
-            mr: !isLargeScreen ? '1rem' : '0',
-            ml: !isLargeScreen ? '1rem' : '0',
-            mb: !isLargeScreen ? '1rem' : '0,',
-          }}
-          justifyContent="center"
-          data-test="cashcrop-window"
-        >
-          <Grid item xs={12}>
-            <Typography variant="h5" align="center" data-test="title-goals">
-              Lifecycle
-            </Typography>
-          </Grid>
-          {/* sub-title */}
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            {durationTypes.map((durationType, i) => (
-              <Chip
-                key={durationType}
-                label={durationType}
-                id={(`durationType${i}`)}
-                clickable
-                style={{ margin: '0.3rem' }}
-                sx={{
-                  '&:focus': {
-                    boxShadow: '0 0 0 2px black',
-                  },
-                }}
-                onClick={() => handleSelectedDuration(durationType)}
-                color={selectedDurationRedux === durationType ? 'primary' : 'secondary'}
-              />
-            ))}
 
               </Grid>
 
@@ -462,58 +396,10 @@ const GoalsSelector = () => {
                         boxShadow: '0 0 0 2px black',
                       },
                     }}
-                    onClick={() => handleSelectedIrrigation(irrigation === 'Irrigated')}
-                    color={(irrigation === 'Irrigated') === irrigationFilterRedux ? 'primary' : 'secondary'}
+                    onClick={() => handleSelectedIrrigation(irrigation)}
+                    color={selectedIrrigationRedux === irrigation ? 'primary' : 'secondary'}
                   />
                 ))}
-        {/* Water */}
-        <Grid
-          item
-          container
-          lg={4}
-          sx={{
-            boxSizing: 'border-box',
-            borderRadius: '15px',
-            // border: '2px solid #598445',
-            p: '1rem',
-            mr: !isLargeScreen ? '1rem' : '0',
-            ml: !isLargeScreen ? '1rem' : '0',
-            mb: !isLargeScreen ? '1rem' : '0,',
-          }}
-          justifyContent="center"
-          data-test="cashcrop-window"
-        >
-          <Grid item xs={12}>
-            <Typography variant="h5" align="center" data-test="title-goals">
-              Will you Irrigate?
-            </Typography>
-          </Grid>
-          {/* sub-title */}
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            {irrigationType.map((irrigation, i) => (
-              <Chip
-                key={irrigation}
-                label={i === 0 ? 'No' : 'Yes'}
-                id={`irrigation${i}`}
-                clickable
-                style={{ margin: '0.3rem' }}
-                sx={{
-                  '&:focus': {
-                    boxShadow: '0 0 0 2px black',
-                  },
-                }}
-                onClick={() => handleSelectedIrrigation(irrigation)}
-                color={selectedIrrigationRedux === irrigation ? 'primary' : 'secondary'}
-              />
-            ))}
 
               </Grid>
             </Grid>
