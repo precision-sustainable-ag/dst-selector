@@ -188,9 +188,11 @@ const CropSidebar = ({
       // WCCC Additional Filters
       if (councilShorthandRedux === 'WCCC') {
         match = false;
-        const seasonMatch = !selectedSeasonRedux
-        || crop.plantingDates.some((date) => date.label.includes(selectedSeasonRedux)
-          && date.label.includes(irrigationFilterRedux ? 'irrigation' : 'rainfed'));
+        const seasonMatch = selectedSeasonRedux.length === 0
+        || crop.plantingDates.some(
+          (date) => selectedSeasonRedux.some((season) => date.label.includes(season))
+            && date.label.includes(irrigationFilterRedux ? 'irrigation' : 'rainfed'),
+        );
         const cropDurationValues = crop.attributes.filter((a) => a.label === 'Duration')?.[0]?.values;
         const durationMatch = !selectedDurationRedux
         || cropDurationValues?.some((v) => v.value.includes(selectedDurationRedux));

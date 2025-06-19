@@ -37,9 +37,9 @@ const GoalsSelector = () => {
 
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
-  const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
-  const selectedDuration = useSelector((stateRedux) => stateRedux.terminationData.selectedDuration);
-  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
+  const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const selectedDurationRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedDuration);
+  const selectedIrrigationRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   const dispatch = useDispatch();
 
@@ -53,15 +53,15 @@ const GoalsSelector = () => {
   const irrigationType = ['Rainfed', 'Irrigated'];
 
   const handleSelectedSeason = (season) => {
-    if (selectedSeason === season) {
-      dispatch(updateSelectedSeason(null));
+    if (selectedSeasonRedux.includes(season)) {
+      dispatch(updateSelectedSeason(selectedSeasonRedux.filter((s) => s !== season)));
     } else {
-      dispatch(updateSelectedSeason(season));
+      dispatch(updateSelectedSeason([...selectedSeasonRedux, season]));
     }
   };
 
   const handleSelectedDuration = (durationType) => {
-    if (durationType === selectedDuration) {
+    if (durationType === selectedDurationRedux) {
       dispatch(updateSelectedDuration(null));
     } else {
       dispatch(updateSelectedDuration(durationType));
@@ -295,7 +295,7 @@ const GoalsSelector = () => {
                   },
                 }}
                 onClick={() => handleSelectedSeason(season)}
-                color={selectedSeason === season ? 'primary' : 'secondary'}
+                color={selectedSeasonRedux.includes(season) ? 'primary' : 'secondary'}
               />
             ))}
 
@@ -345,7 +345,7 @@ const GoalsSelector = () => {
                   },
                 }}
                 onClick={() => handleSelectedDuration(durationType)}
-                color={selectedDuration === durationType ? 'primary' : 'secondary'}
+                color={selectedDurationRedux === durationType ? 'primary' : 'secondary'}
               />
             ))}
 
@@ -398,7 +398,7 @@ const GoalsSelector = () => {
                   },
                 }}
                 onClick={() => handleSelectedIrrigation(irrigation)}
-                color={selectedIrrigation === irrigation ? 'primary' : 'secondary'}
+                color={selectedIrrigationRedux === irrigation ? 'primary' : 'secondary'}
               />
             ))}
 
