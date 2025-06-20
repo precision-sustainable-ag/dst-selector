@@ -31,10 +31,9 @@ const GoalsSelector = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const selectedGoalsRedux = useSelector(
+  const selectedGoalsRedux = [...useSelector(
     (stateRedux) => stateRedux.goalsData.selectedGoals,
-  ).reverse();
-
+  )].reverse();
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
@@ -180,6 +179,7 @@ const GoalsSelector = () => {
                             id={key}
                             goaltTitle={goal.label}
                             goalDescription={goal.description}
+                            selectedGoalIndex={selectedGoalsRedux.includes(goal.label) ? selectedGoalsRedux.indexOf(goal.label) + 1 : null}
                           />
                         </Grid>
                       ))}
