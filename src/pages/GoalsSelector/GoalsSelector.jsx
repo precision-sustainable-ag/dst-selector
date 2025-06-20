@@ -4,7 +4,7 @@
 */
 // TODO: Goal tags are not responsive!
 import {
-  Typography, Grid, Box, useMediaQuery, useTheme,
+  Typography, Grid, useMediaQuery, useTheme,
   Chip,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -92,129 +92,109 @@ const GoalsSelector = () => {
   }, [selectedGoalsRedux]);
 
   return (
-    <Box>
-      <Grid container spacing={isLargeScreen ? 4 : 1}>
-        {/* top row */}
-        <Grid container item lg={12} spacing={isLargeScreen ? 4 : 1}>
-          {/* holds goal selector */}
-          <Grid item container lg={6} justifyContent={isLargeScreen ? 'flex-end' : 'center'}>
+    <>
+      <Grid container spacing={4}>
+        {/* Left Container */}
+        <Grid item container lg={6} justifyContent="flex-end">
+          <Grid
+            item
+            container
+            lg={10}
+            sx={{
+              boxSizing: 'border-box',
+              borderRadius: '15px',
+              border: '2px solid #598445',
+              p: '1rem',
+              margin: !isLargeScreen ? '1rem' : '0',
+            }}
+            data-test="goals-card"
+          >
+            {/* title */}
+            <Grid item xs={12}>
+              <Typography variant="h4" align="center" data-test="title-goals">
+                Cover Crop Goals
+              </Typography>
+            </Grid>
+            {/* sub-title */}
+            <Grid item xs={12} mb={2}>
+              <Typography
+                variant={isMobile ? 'subtitle2' : 'subtitle1'}
+                align="center"
+                gutterBottom
+              >
+                Select up to 3 goals in order of importance.
+              </Typography>
+              <Typography variant="subtitle2" gutterBottom align="center">
+                {isMobile ? 'Tap and hold for more information' : 'Hover over a goal for more information'}
+              </Typography>
+            </Grid>
+            {/* chips */}
             <Grid
               item
               container
-              lg={10}
-              sx={{
-                boxSizing: 'border-box',
-                borderRadius: '15px',
-                border: '2px solid #598445',
-                p: '1rem',
-                margin: !isLargeScreen ? '1rem' : '0',
-              }}
-              data-test="goals-card"
+              spacing={1}
             >
-              {/* title */}
-              <Grid item xs={12}>
-                <Typography variant="h4" align="center" data-test="title-goals">
-                  Cover Crop Goals
-                </Typography>
-              </Grid>
-              {/* sub-title */}
-              <Grid item xs={12}>
-                <Typography
-                  variant={isMobile ? 'subtitle2' : 'subtitle1'}
-                  align="center"
-                  gutterBottom
+              {allGoals?.length > 0 ? (
+                <Grid
+                  item
+                  container
+                  spacing={1}
+                  justifyContent="center"
+                  alignItems="center"
                 >
-                  Select up to 3 goals in order of importance.
-                </Typography>
-              </Grid>
-              <Grid item xs={12} mb={2}>
-                <Typography variant="subtitle2" gutterBottom align="center">
-                  {isMobile ? 'Tap and hold for more information' : 'Hover over a goal for more information'}
-                </Typography>
-              </Grid>
-              {/* chips */}
-              <Grid
-                item
-                container
-                spacing={1}
-                justifyContent="center"
-                alignItems="center"
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  minHeight: '100px',
-                }}
-              >
-                {allGoals?.length > 0 ? (
-                  <Grid
-                    item
-                    container
-                    spacing={1}
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    {allGoals
-                      .slice()
-                      // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
-                      .sort(
-                        (a, b) => (selectedGoalsRedux.indexOf(a.label) === -1
-                          ? 3
-                          : selectedGoalsRedux.indexOf(a.label))
+                  {allGoals
+                    .slice()
+                  // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
+                    .sort(
+                      (a, b) => (selectedGoalsRedux.indexOf(a.label) === -1
+                        ? 3
+                        : selectedGoalsRedux.indexOf(a.label))
                           - (selectedGoalsRedux.indexOf(b.label) === -1
                             ? 3
                             : selectedGoalsRedux.indexOf(b.label)),
-                      )
-                      .map((goal, key) => (
-                        <Grid
-                          item
+                    )
+                    .map((goal, key) => (
+                      <Grid
+                        item
+                        key={key}
+                      >
+                        <GoalTag
                           key={key}
-                          display="flex"
-                          xs={isMobile ? 12 : 'auto'}
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <GoalTag
-                            key={key}
-                            goal={goal}
-                            id={key}
-                            goaltTitle={goal.label}
-                            goalDescription={goal.description}
-                          />
-                        </Grid>
-                      ))}
-                  </Grid>
-                ) : (
-                  <PSALoadingSpinner />
-                )}
-              </Grid>
-            </Grid>
-          </Grid>
-          {/* holds the date selector */}
-          <Grid item container lg={6}>
-            <Grid
-              item
-              container
-              lg={10}
-              sx={{
-                boxSizing: 'border-box',
-                borderRadius: '15px',
-                border: '2px solid #598445',
-                p: '1rem',
-                mr: !isLargeScreen ? '1rem' : '0',
-                ml: !isLargeScreen ? '1rem' : '0',
-                mb: !isLargeScreen ? '1rem' : '0,',
-              }}
-              justifyContent="center"
-              data-test="cashcrop-window"
-            >
-              <PreviousCashCrop />
+                          goal={goal}
+                          id={key}
+                          goaltTitle={goal.label}
+                          goalDescription={goal.description}
+                        />
+                      </Grid>
+                    ))}
+                </Grid>
+              ) : (
+                <PSALoadingSpinner />
+              )}
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+        {/* Right Container */}
+        <Grid item container lg={6}>
+          <Grid
+            item
+            container
+            lg={10}
+            sx={{
+              boxSizing: 'border-box',
+              borderRadius: '15px',
+              border: '2px solid #598445',
+              p: '1rem',
+              margin: !isLargeScreen ? '0 1rem' : '0',
 
-      {/* =============================================== */}
+            }}
+            justifyContent="center"
+            data-test="cashcrop-window"
+          >
+            <PreviousCashCrop />
+          </Grid>
+        </Grid>
+      </Grid>
 
       {/* Bottom Row */}
       {councilShorthandRedux === 'WCCC'
@@ -406,7 +386,7 @@ const GoalsSelector = () => {
 
           </Grid>
         )}
-    </Box>
+    </>
   );
 };
 export default GoalsSelector;
