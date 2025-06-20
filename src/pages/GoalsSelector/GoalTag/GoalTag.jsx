@@ -19,8 +19,6 @@ const GoalTag = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
-  // console.log('Selected Goals Redux:', selectedGoalsRedux);
-
   const key = id;
   const goalTitle = goaltTitle;
 
