@@ -31,10 +31,9 @@ const GoalsSelector = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const selectedGoalsRedux = useSelector(
+  const selectedGoalsRedux = [...useSelector(
     (stateRedux) => stateRedux.goalsData.selectedGoals,
-  ).reverse();
-
+  )].reverse();
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
 
@@ -60,7 +59,6 @@ const GoalsSelector = () => {
   };
 
   const handleSelectedIrrigation = (irrigation) => {
-    console.log(irrigation === 'Irrigation');
     if (irrigation === irrigationFilterRedux) {
       dispatch(setIrrigationFilter(null));
     } else {
@@ -184,6 +182,7 @@ const GoalsSelector = () => {
                             id={key}
                             goaltTitle={goal.label}
                             goalDescription={goal.description}
+                            selectedGoalIndex={selectedGoalsRedux.includes(goal.label) ? selectedGoalsRedux.indexOf(goal.label) + 1 : null}
                           />
                         </Grid>
                       ))}
