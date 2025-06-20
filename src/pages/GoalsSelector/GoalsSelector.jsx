@@ -121,7 +121,7 @@ const GoalsSelector = () => {
               align="center"
               gutterBottom
             >
-              Select up to 3 goals in order of importance.
+              Select up to 3 goals in order of importance. Your first goal will apply filtering to the recommended cover crop list.
             </Typography>
             <Typography variant="subtitle2" gutterBottom align="center">
               {isMobile ? 'Tap and hold for more information' : 'Hover over a goal for more information'}

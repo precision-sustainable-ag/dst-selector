@@ -196,7 +196,8 @@ const CropSidebar = ({
         const cropDurationValues = crop.attributes.filter((a) => a.label === 'Duration')?.[0]?.values;
         const durationMatch = !selectedDurationRedux
         || cropDurationValues?.some((v) => v.value.includes(selectedDurationRedux));
-        if (seasonMatch && durationMatch) {
+        const firstGoalRating = Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value);
+        if (seasonMatch && durationMatch && firstGoalRating > 2) {
           match = true;
         }
       }
