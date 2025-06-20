@@ -3,12 +3,13 @@
   fetches data from DictionaryContent
 */
 
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import React, {
   useEffect, useState,
 } from 'react';
 import { useSelector } from 'react-redux';
+import { PSALoadingSpinner } from 'shared-react-components/src';
 import DictionaryContent from './DictionaryContent';
 import { callCoverCropApi } from '../../../shared/constants';
 
@@ -32,12 +33,22 @@ const InformationSheetDictionary = ({ zone, from }) => {
     }
   }, [regionId, stateId, zone]);
 
-  return from === 'help' ? (
-    <DictionaryContent dictData={dictionary} from="help" />
-  ) : (
+  if (dictionary.length === 0) {
+    return (
+      <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
+        <PSALoadingSpinner />
+      </Box>
+    );
+  }
+
+  if (from === 'help') {
+    return <DictionaryContent dictData={dictionary} from="help" />;
+  }
+
+  return (
     <>
-      <div
-        style={{
+      <Box
+        sx={{
           backgroundColor: 'rgb(43, 123, 121)',
           height: '50px',
           width: '100%',
@@ -47,26 +58,25 @@ const InformationSheetDictionary = ({ zone, from }) => {
       />
       <Typography
         variant="h4"
-        style={{ marginLeft: '1.5%', marginTop: '4%', width: '100%' }}
+        sx={{ ml: '1.5%', mt: '4%', width: '100%' }}
       >
         Terminology Definitions
       </Typography>
       <Typography
         variant="body2"
-        style={{ marginLeft: '1.5%' }}
+        sx={{ ml: '1.5%', display: 'flex', alignItems: 'center' }}
       >
-        <Info style={{ color: 'rgb(43, 123, 121)' }} />
-        {' '}
-        &nbsp; These terms and definitions are
-        based on expert opinion
+        <Info sx={{ color: 'rgb(43, 123, 121)', mr: 1 }} />
+        These terms and definitions are based on expert opinion
       </Typography>
       <hr />
 
-      <DictionaryContent dictData={dictionary} />
+      <DictionaryContent dictData={dictionary} from="help" />
 
       <Typography
         variant="body2"
-        style={{ marginLeft: '1.5%' }}
+        align="center"
+        p="1rem"
       >
         If you didn&apos;t find what you were looking for it may be located
         {' '}
