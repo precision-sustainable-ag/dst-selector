@@ -192,8 +192,9 @@ const CropSidebar = ({
           (date) => selectedSeasonRedux.some((season) => date.label.includes(season))
             && date.label.includes(irrigationFilterRedux ? 'irrigation' : 'rainfed'),
         );
-        const firstGoalRating = Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value);
-        if (seasonMatch && firstGoalRating > 2) {
+        const firstGoalRatingLargerThanTwo = selectedGoalsRedux.length === 0
+        || Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value) > 2;
+        if (seasonMatch && firstGoalRatingLargerThanTwo) {
           match = true;
         }
       }
