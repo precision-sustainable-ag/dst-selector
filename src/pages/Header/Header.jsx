@@ -19,7 +19,6 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import InformationBar from './InformationBar/InformationBar';
-import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { setUserHistoryList } from '../../reduxStore/userSlice';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
@@ -33,7 +32,6 @@ import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
 // import useWindowSize from '../../shared/constants';
 import { updateStateInfo } from '../../reduxStore/mapSlice';
-import useIsMobile from '../../hooks/useIsMobile';
 
 const speed = 1.3;
 
@@ -276,8 +274,6 @@ const Header = () => {
   const dispatchRedux = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-  const isMobile = useIsMobile('md');
-
   // redux vars
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
@@ -386,22 +382,6 @@ const Header = () => {
             navContent={navContent}
             onLogoClick={handleLogoClick}
           />
-          <Grid container sx={{ pb: isMobile ? '3.5rem' : '1rem' }}>
-            <Grid
-              xs={12}
-              sx={{
-                position: 'absolute',
-                top: isMobile ? '85px' : '120px',
-                display: 'flex',
-                width: isMobile ? '100%' : 'auto',
-              }}
-              mb={{ xs: 2 }}
-            >
-              {/* get a recommendation / browse cover crops */}
-              <ToggleOptions pathname={pathname} />
-            </Grid>
-          </Grid>
-
           <Grid
             item
             xs={12}
