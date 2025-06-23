@@ -78,7 +78,6 @@ const CropSidebar = ({
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
   const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
-  const selectedDurationRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedDuration);
 
   // useState vars
   const [loading, setLoading] = useState(true);
@@ -193,11 +192,8 @@ const CropSidebar = ({
           (date) => selectedSeasonRedux.some((season) => date.label.includes(season))
             && date.label.includes(irrigationFilterRedux ? 'irrigation' : 'rainfed'),
         );
-        const cropDurationValues = crop.attributes.filter((a) => a.label === 'Duration')?.[0]?.values;
-        const durationMatch = !selectedDurationRedux
-        || cropDurationValues?.some((v) => v.value.includes(selectedDurationRedux));
         const firstGoalRating = Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value);
-        if (seasonMatch && durationMatch && firstGoalRating > 2) {
+        if (seasonMatch && firstGoalRating > 2) {
           match = true;
         }
       }

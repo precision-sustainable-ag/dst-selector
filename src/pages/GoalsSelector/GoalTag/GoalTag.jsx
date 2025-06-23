@@ -13,7 +13,7 @@ import pirschAnalytics from '../../../shared/analytics';
 
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
-  goaltTitle, goalDescription, goal, id,
+  goaltTitle, goalDescription, goal, id, selectedGoalIndex,
 }) => {
   const dispatchRedux = useDispatch();
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
@@ -57,7 +57,7 @@ const GoalTag = ({
             color={selectedGoalsRedux.includes(goalTitle) ? 'primary' : 'secondary'}
             avatar={
               selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
-                <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
+                <Avatar id={`avatar${key}`}>{selectedGoalIndex}</Avatar>
               ) : null
             }
             label={goalTitle}
@@ -65,10 +65,10 @@ const GoalTag = ({
             key={`chip${key}`}
             id={`chip${key}`}
             size="medium"
-            variant="outlined"
             data-test={`goal-tag-${key}`}
             sx={{
               '&.MuiChip-root:focus': {
+                boxShadow: 'none',
                 '&.Mui-disabled': {
                   color: '#757575',
                 },
