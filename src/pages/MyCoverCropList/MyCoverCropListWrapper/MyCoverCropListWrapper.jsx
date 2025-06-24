@@ -12,7 +12,7 @@ import { setSidebarWidth } from '../../../reduxStore/pageSlice';
 import pirschAnalytics from '../../../shared/analytics';
 
 const MyCoverCropListWrapper = () => {
-  const [comparisonView, setComparisonView] = useState(false);
+  const [comparisonView, setComparisonView] = useState(true);
 
   useEffect(() => {
     pirschAnalytics(comparisonView ? 'Selected Crops: Comparison View' : 'Selected Crops: Crop List');
