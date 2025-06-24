@@ -38,9 +38,7 @@ const GoalsSelector = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const selectedGoalsRedux = [...useSelector(
-    (stateRedux) => stateRedux.goalsData.selectedGoals,
-  )].reverse();
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
