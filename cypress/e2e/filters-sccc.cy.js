@@ -77,10 +77,10 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
       });
   });
 
-  it('should display selected crops number on My Select Crops tab and show corresponding crop cards in My Selected Crops', () => {
+  it('should display selected crops number on My Crops tab and show corresponding crops in My Crops', () => {
     const btnIdx = [0, 1, 2];
     const cropLabels = [];
-    const cardLabels = [];
+    const myCropLabels = [];
 
     btnIdx.forEach((idx) => {
       cy.getByTestId(`cart-btn-${idx}`).click({ force: true });
@@ -110,20 +110,20 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
       .first()
       .click()
       .then(() => {
-        cy.get('[data-test^=crop-card-label]').each(($label) => {
+        cy.getByTestId('crop-comparison-table-header').each(($label) => {
           // Ensure the label is visible
           cy.wrap($label).should('be.visible')
             .invoke('text')
             .then((labelText) => {
-              cardLabels.push(flipCoverCropName(labelText));
+              myCropLabels.push(flipCoverCropName(labelText));
               cy.log(`Crop Card Label: ${labelText}`);
             });
         })
           .then(() => {
-            cy.log('=== CARD LABELS===', cardLabels);
-            expect(cropLabels.length).to.equal(cardLabels.length);
+            cy.log('=== CARD LABELS===', myCropLabels);
+            expect(cropLabels.length).to.equal(myCropLabels.length);
             btnIdx.forEach((idx) => {
-              expect(cropLabels[idx].trim().toLowerCase()).to.equal(cardLabels[idx].trim().toLowerCase());
+              expect(cropLabels[idx].trim().toLowerCase()).to.equal(myCropLabels[idx].trim().toLowerCase());
             });
           });
       });
@@ -139,11 +139,6 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
       cy.get("[data-test='my selected crops-btn']")
         .first()
         .click({ force: true })
-        .then(() => {
-          cy.get("[data-test='comparison-view-btn']")
-            .should('be.visible')
-            .click();
-        });
 
       const filterTypes = Cypress.env('filterTypes');
       for (let i = 0; i < filterTypes.length; i++) {

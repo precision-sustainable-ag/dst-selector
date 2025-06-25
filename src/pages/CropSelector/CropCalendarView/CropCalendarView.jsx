@@ -460,7 +460,7 @@ const CropCalendarView = ({
                       onClick={() => sortBySelectedCrops()}
                       title={(
                         <>
-                          My List
+                          My Crops
                           {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
                         </>
                         )}
