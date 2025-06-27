@@ -15,6 +15,7 @@ const ImageCarousel = ({ images }) => {
   const [maxSteps, setMaxSteps] = useState(images.length);
   const [imagesData, setImagesData] = useState([]);
   const [loaded, setLoaded] = useState([]);
+  const [paused, setPaused] = useState(false);
   const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
 
   useEffect(() => {
@@ -50,7 +51,15 @@ const ImageCarousel = ({ images }) => {
     setActiveStep(step);
   };
 
+  const handlePauseToggle = () => {
+    setPaused(!paused);
+  };
+
   useEffect(() => {
+    if (paused) {
+      return undefined;
+    }
+
     let nextStep = (activeStep + 1) % maxSteps;
     if (!loaded[nextStep]) {
       nextStep = activeStep;
@@ -59,7 +68,7 @@ const ImageCarousel = ({ images }) => {
       setActiveStep(nextStep);
     }, 2000);
     return () => clearTimeout(timer);
-  }, [activeStep, maxSteps, loaded]);
+  }, [activeStep, maxSteps, loaded, paused]);
 
   return (
     maxSteps > 0 && (
@@ -101,6 +110,7 @@ const ImageCarousel = ({ images }) => {
           </div>
         ))}
       </SwipeableViews>
+
       <MobileStepper
         steps={maxSteps}
         position="static"
@@ -145,6 +155,17 @@ const ImageCarousel = ({ images }) => {
           />
         )}
       />
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
+        <PSAButton
+          size="small"
+          buttonType=""
+          onClick={handlePauseToggle}
+          title={paused ? 'Play' : 'Pause'}
+          sx={{ color: '#5C8136' }}
+        />
+      </Box>
+
     </Box>
     )
   );
