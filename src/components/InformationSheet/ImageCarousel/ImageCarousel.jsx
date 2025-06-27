@@ -66,7 +66,7 @@ const ImageCarousel = ({ images }) => {
     }
     const timer = setTimeout(() => {
       setActiveStep(nextStep);
-    }, 2000);
+    }, 5000);
     return () => clearTimeout(timer);
   }, [activeStep, maxSteps, loaded, paused]);
 
