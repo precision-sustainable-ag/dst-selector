@@ -136,16 +136,23 @@ const CropSidebar = ({
     });
 
     // handles crop search
-    const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
+    const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g) || [];
+    // For each search word, create both singular and plural forms
+    const searchVariants = search.map((word) => {
+      if (word.endsWith('s')) {
+        return [word, word.slice(0, -1)];
+      }
+      return [word, `${word}s`];
+    });
+
     const cropData = cropDataRedux?.filter((crop, n, cd) => {
       let m;
       const match = (parm) => {
-        if (parm === 'label') {
-          m = crop[parm]?.toLowerCase().match(/\w+/g);
-        } else {
-          m = crop[parm]?.toLowerCase().match(/\w+/g);
-        }
-        return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
+        m = crop[parm]?.toLowerCase().match(/\w+/g);
+        // Check plural and singular variants
+        return !searchVariants.length || searchVariants.every(
+          (variants) => m && m.some((t) => variants.includes(t)),
+        );
       };
       cd[n].inactive = true;
       return match('label') || match('scientificName');
