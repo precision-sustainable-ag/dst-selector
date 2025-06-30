@@ -247,7 +247,7 @@ const SnackbarComponent = () => {
 };
 
 window.addEventListener('error', (err) => {
-  if (!/^https:\/\/(develop\.)?covercrop-selector\.org/.test(window.location.href)) return;
+  if (!/^https:/.test(window.location.href)) return;
 
   const requestPayload = {
     repository: 'dst-feedback',
