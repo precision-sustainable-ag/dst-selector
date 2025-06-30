@@ -154,12 +154,13 @@ const InformationBar = ({ pathname }) => {
       sx={{
         backgroundColor: '#598445',
       }}
-      justifyContent="center"
-      alignItems="center"
+      justifyContent="right"
+      alignItems="right"
       pt={0.6}
       pb={0.6}
+      pr={2}
     >
-      <NavigationButtons />
+      <NavigationButtons pathname={pathname} />
     </Grid>
   );
 };
