@@ -78,7 +78,7 @@ const ProgressButtonsInner = ({
             onClick={() => changeProgress('increment')}
             disabled={isDisabledNext}
             buttonType="PillButton"
-            data-test="next-btn"
+            data-test="get-a-recommendation-btn"
             transparent={false}
             title="Get A Recommendation"
           />
@@ -92,7 +92,7 @@ const ProgressButtonsInner = ({
             onClick={browseCoverCrops}
             disabled={isDisabledNext}
             buttonType="PillButton"
-            data-test="next-btn"
+            data-test="browse-cover-crops-btn"
             transparent={false}
             title="Browse Cover Crops"
           />
@@ -131,6 +131,7 @@ const ProgressButtonsInner = ({
       <Badge
         badgeContent={progressRedux === 4 ? selectedCropIdsRedux.length : null}
         color="error"
+        data-test="badge"
       >
         <PSAButton
           style={{
