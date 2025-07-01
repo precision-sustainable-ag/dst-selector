@@ -152,42 +152,46 @@ const ProgressButtonsInner = ({
 
   return (
     <Stack direction="row" spacing={isMobile ? 2 : 0}>
-      <PSAButton
-        style={{
-          maxWidth: '90px',
-          minWidth: '70px',
-          height: isMobile ? '35px' : 'auto',
-          marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
-        }}
-        onClick={() => changeProgress('decrement')}
-        disabled={isDisabledBack}
-        buttonType="PillButton"
-        data-test="back-btn"
-        title="BACK"
-      />
+      {progressRedux !== 0 && (
+        <PSAButton
+          style={{
+            maxWidth: '90px',
+            minWidth: '70px',
+            height: isMobile ? '35px' : 'auto',
+            marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
+          }}
+          onClick={() => changeProgress('decrement')}
+          disabled={isDisabledBack}
+          buttonType="PillButton"
+          data-test="back-btn"
+          title="BACK"
+        />
+      )}
 
       {renderNextButton()}
 
-      <PSAButton
-        style={{
-          maxWidth: '90px',
-          minWidth: '90px',
-          marginLeft: '3%',
-          height: isMobile ? '35px' : 'auto',
-        }}
-        onClick={() => {
-          if (selectedCropIdsRedux.length > 0) {
-            dispatchRedux(setMyCoverCropReset(true, false));
-          } else {
-            dispatchRedux(reset());
-          }
-        }}
-        disabled={isDisabledRefresh}
-        startIcon={<Refresh />}
-        buttonType="PillButton"
-        data-test="restart-btn"
-        title="Restart"
-      />
+      {progressRedux !== 0 && (
+        <PSAButton
+          style={{
+            maxWidth: '90px',
+            minWidth: '90px',
+            marginLeft: '3%',
+            height: isMobile ? '35px' : 'auto',
+          }}
+          onClick={() => {
+            if (selectedCropIdsRedux.length > 0) {
+              dispatchRedux(setMyCoverCropReset(true, false));
+            } else {
+              dispatchRedux(reset());
+            }
+          }}
+          disabled={isDisabledRefresh}
+          startIcon={<Refresh />}
+          buttonType="PillButton"
+          data-test="restart-btn"
+          title="Restart"
+        />
+      )}
     </Stack>
   );
 };
