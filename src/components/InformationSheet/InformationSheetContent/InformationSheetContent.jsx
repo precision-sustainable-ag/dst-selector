@@ -115,7 +115,7 @@ const InformationSheetContent = ({ crop }) => {
   return (
     dataDone ? (
       <>
-        <CoverCropInformation crop={modalData} className="page-break" />
+        <CoverCropInformation crop={modalData} />
         {modalData
           && modalData.data.map((cat, index) => {
             const isTermination = councilShorthandRedux === 'WCCC' && (cat.label === 'Termination' || cat.label === 'Termination Window');
