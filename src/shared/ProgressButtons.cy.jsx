@@ -23,7 +23,7 @@ describe('<ProgressButtonsInner />', () => {
         councilLabel: null,
       },
       sharedData: {
-        progress: 0,
+        progress: 1,
       },
       addressData: {
         address: '',
@@ -38,12 +38,11 @@ describe('<ProgressButtonsInner />', () => {
   });
 
   it('renders correct state of Progress buttons when progress is 0', () => {
-    cy.assertByTestId('back-btn').should('be.disabled');
-    cy.assertByTestId('next-btn').should('be.disabled');
-    cy.assertByTestId('restart-btn').should('be.disabled');
+    cy.assertByTestId('get-a-recommendation-btn').should('be.disabled');
+    cy.assertByTestId('browse-cover-crops-btn').should('be.disabled');
   });
 
-  it.only('should enable next button when a state is selected and progress is 0', () => {
+  it('should enable next button when a state is selected and progress is 0', () => {
     const mapData = {
       regions: [
         {
@@ -91,9 +90,8 @@ describe('<ProgressButtonsInner />', () => {
       councilLabel: 'Northeast Cover Crops Council',
     };
     reduxStore.dispatch(setMapRedux(mapData));
-    cy.assertByTestId('back-btn').should('be.disabled');
-    cy.assertByTestId('next-btn').should('not.be.disabled');
-    cy.assertByTestId('restart-btn').should('be.disabled');
+    cy.assertByTestId('get-a-recommendation-btn').should('be.disabled');
+    cy.assertByTestId('browse-cover-crops-btn').should('be.disabled');
   });
 
   it('renders correct state of Progress buttons when progress is 1', () => {

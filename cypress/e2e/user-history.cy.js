@@ -39,7 +39,7 @@ describe('Test create and import user history records', () => {
     // select state
     cy.getByTestId('state-selector-dropdown').first().click();
     cy.get("[data-test='state-selector-dropdown-NEW YORK']").click();
-    cy.getByTestId('next-btn').first().click();
+    cy.getByTestId('get-a-recommendation-btn').first().click();
     // history state should be new and the api call should not been made at this time
     cy.getReduxState().then((state) => {
       const { historyState } = state.userData;
@@ -117,7 +117,7 @@ describe('Test for updating user history', () => {
   });
 
   it('should be able to update history after Location page', () => {
-    cy.getByTestId('next-btn').first().click();
+    cy.getByTestId('get-a-recommendation-btn').first().click();
 
     cy.window().its('store').invoke('dispatch', {
       type: 'UPDATE_LOCATION',
