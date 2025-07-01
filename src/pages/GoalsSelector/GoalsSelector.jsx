@@ -74,7 +74,8 @@ const GoalsSelector = () => {
 
   useEffect(() => {
     callCoverCropApi(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${queryStringRedux}`,
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?`
+      + `${councilShorthandRedux === 'WCCC' ? 'seasons=true&' : ''}${queryStringRedux}`,
     ).then((data) => {
       if (councilShorthandRedux === 'WCCC' && data.plantingSeasons) {
         setPlantingSeasons(data.plantingSeasons);
