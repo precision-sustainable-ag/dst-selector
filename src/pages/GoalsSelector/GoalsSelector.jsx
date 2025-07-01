@@ -15,7 +15,7 @@ import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 import pirschAnalytics from '../../shared/analytics';
 import {
-  updateSelectedFlowering, updateSelectedSeason, updateTags,
+  updateSelectedDuration, updateSelectedIrrigation, updateSelectedSeason, updateTags,
 } from '../../reduxStore/terminationSlice';
 import {
   setIrrigationFilter,
@@ -31,51 +31,46 @@ const GoalsSelector = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const selectedGoalsRedux = useSelector(
+  const selectedGoalsRedux = [...useSelector(
     (stateRedux) => stateRedux.goalsData.selectedGoals,
-  ).reverse();
-
+  )].reverse();
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
 
-  const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
-  const selectedFlowering = useSelector((stateRedux) => stateRedux.terminationData.selectedFlowering);
+  const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const selectedDurationRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedDuration);
+  const selectedIrrigationRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   const dispatch = useDispatch();
-
-  const handleSelectedSeason = (season) => {
-    if (selectedSeason === season) {
-      dispatch(updateSelectedSeason(null));
-    } else {
-      dispatch(updateSelectedSeason(season));
-    }
-  };
-
-  const handleSelectedFlowering = (floweringType) => {
-    if (floweringType === selectedFlowering) {
-      dispatch(updateSelectedFlowering(null));
-    } else {
-      dispatch(updateSelectedFlowering(floweringType));
-    }
-  };
-
-  const handleSelectedIrrigation = (irrigation) => {
-    console.log(irrigation === 'Irrigation');
-    if (irrigation === irrigationFilterRedux) {
-      dispatch(setIrrigationFilter(null));
-    } else {
-      dispatch(setIrrigationFilter(irrigation));
-    }
-  };
 
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
 
   const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
 
-  const floweringTypes = ['Annual', 'Perennial'];
+  const durationTypes = ['Annual', 'Perennial'];
 
   const irrigationType = ['Rainfed', 'Irrigated'];
+
+  const handleSelectedSeason = (season) => {
+    if (selectedSeasonRedux.includes(season)) {
+      dispatch(updateSelectedSeason(selectedSeasonRedux.filter((s) => s !== season)));
+    } else {
+      dispatch(updateSelectedSeason([...selectedSeasonRedux, season]));
+    }
+  };
+
+  const handleSelectedDuration = (durationType) => {
+    if (durationType === selectedDurationRedux) {
+      dispatch(updateSelectedDuration(null));
+    } else {
+      dispatch(updateSelectedDuration(durationType));
+    }
+  };
+
+  const handleSelectedIrrigation = (irrigation) => {
+    dispatch(updateSelectedIrrigation(irrigation));
+    dispatch(setIrrigationFilter(irrigation === irrigationType[1]));
+  };
 
   useEffect(() => {
     callCoverCropApi(
@@ -184,6 +179,7 @@ const GoalsSelector = () => {
                             id={key}
                             goaltTitle={goal.label}
                             goalDescription={goal.description}
+                            selectedGoalIndex={selectedGoalsRedux.includes(goal.label) ? selectedGoalsRedux.indexOf(goal.label) + 1 : null}
                           />
                         </Grid>
                       ))}
@@ -299,10 +295,9 @@ const GoalsSelector = () => {
                       },
                     }}
                     onClick={() => handleSelectedSeason(season)}
-                    color={selectedSeason === season ? 'primary' : 'secondary'}
+                    color={selectedSeasonRedux.includes(season) ? 'primary' : 'secondary'}
                   />
                 ))}
-
               </Grid>
             </Grid>
 
@@ -336,11 +331,11 @@ const GoalsSelector = () => {
                   justifyContent: 'center',
                 }}
               >
-                {floweringTypes.map((floweringType, i) => (
+                {durationTypes.map((durationType, i) => (
                   <Chip
-                    key={floweringType}
-                    label={floweringType}
-                    id={(`floweringType${i}`)}
+                    key={durationType}
+                    label={durationType}
+                    id={(`durationType${i}`)}
                     clickable
                     style={{ margin: '0.3rem' }}
                     sx={{
@@ -348,8 +343,8 @@ const GoalsSelector = () => {
                         boxShadow: '0 0 0 2px black',
                       },
                     }}
-                    onClick={() => handleSelectedFlowering(floweringType)}
-                    color={selectedFlowering === floweringType ? 'primary' : 'secondary'}
+                    onClick={() => handleSelectedDuration(durationType)}
+                    color={selectedDurationRedux === durationType ? 'primary' : 'secondary'}
                   />
                 ))}
 
@@ -401,8 +396,8 @@ const GoalsSelector = () => {
                         boxShadow: '0 0 0 2px black',
                       },
                     }}
-                    onClick={() => handleSelectedIrrigation(irrigation === 'Irrigated')}
-                    color={(irrigation === 'Irrigated') === irrigationFilterRedux ? 'primary' : 'secondary'}
+                    onClick={() => handleSelectedIrrigation(irrigation)}
+                    color={selectedIrrigationRedux === irrigation ? 'primary' : 'secondary'}
                   />
                 ))}
 

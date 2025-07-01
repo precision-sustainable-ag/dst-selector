@@ -120,7 +120,13 @@ const Chips = ({ filter }) => {
 const Tip = ({ filter }) => (
   <PSATooltip
     enterTouchDelay={0}
-    title={`${filter.description} \n ${filter.details}`}
+    title={(
+      <>
+        {filter.description}
+        <br />
+        {filter.details}
+      </>
+    )}
     tooltipContent={(
       <span role="button">
         {filter.name}

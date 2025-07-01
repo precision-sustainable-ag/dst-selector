@@ -147,7 +147,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                       drainage classes.
                       {' '}
                       <a
-                        href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
+                        href="/data-dictionary"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -159,7 +159,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                   </div>
                 )}
                 content="Indicates your soil drainage based on the USDA NRCS Web Soil Survey drainage classes.
-                Definitions of values found here: https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
+                Definitions of values can be found in the data dictionary."
               />
             </Typography>
           </Grid>
