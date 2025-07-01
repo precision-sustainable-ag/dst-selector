@@ -19,10 +19,9 @@ import {
   Chip,
 } from '@mui/material';
 import {
-  Compare, ExpandLess, ExpandMore,
+  ExpandLess, ExpandMore,
 } from '@mui/icons-material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import ListIcon from '@mui/icons-material/List';
 import React, {
   useEffect, useState,
 } from 'react';
@@ -55,7 +54,6 @@ const CropSidebar = ({
   listView,
   from,
   setGrowthWindow,
-  setComparisonView,
   style,
 }) => {
   const dispatchRedux = useDispatch();
@@ -465,22 +463,6 @@ const CropSidebar = ({
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
-        <PSAButton
-          onClick={() => setComparisonView(false)}
-          selected={!comparisonView}
-          startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-          buttonType="PillButton"
-          title="CROP LIST"
-        />
-        <PSAButton
-          onClick={() => setComparisonView(true)}
-          selected={comparisonView}
-          startIcon={<Compare style={{ fontSize: 'larger' }} />}
-          buttonType="PillButton"
-          data-test="comparison-view-btn"
-          title="COMPARISON VIEW"
-          className="comparisonViewButton"
-        />
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}

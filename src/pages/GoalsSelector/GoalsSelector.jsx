@@ -183,7 +183,7 @@ const GoalsSelector = () => {
               <>
                 {/* Planting Season */}
                 {plantingSeasons.length > 0 && (
-                  <Grid container sx={{ m: '1rem' }}>
+                  <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
                     <Grid item xs={12}>
                       <Typography variant="h5" align="center">
                         Planting Season
@@ -225,7 +225,7 @@ const GoalsSelector = () => {
                   </Grid>
                 )}
                 {/* Will you irrigate */}
-                <Grid container sx={{ m: '1rem' }}>
+                <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
                   <Grid item xs={12}>
                     <Typography variant="h5" align="center" data-test="title-goals">
                       Will you Irrigate?
@@ -284,7 +284,7 @@ const GoalsSelector = () => {
             && (
             <>
               {/* Cropping system */}
-              <Grid container sx={{ m: '1rem' }}>
+              <Grid container sx={{ m: '1rem', display: 'flex', alignItems: 'flex-end' }}>
                 <Grid item xs={12}>
                   <Typography variant="h5" align="center" data-test="title-goals">
                     Cropping System

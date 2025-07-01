@@ -39,82 +39,74 @@ const PreviousCashCrop = () => {
   };
 
   return (
-    <>
-      <Grid item container xs={12} alignItems="center" justifyContent="center">
-        <Typography align="center" variant="h4" data-test="title-growing-window">
-          Cash Crop Growing Window
-        </Typography>
-      </Grid>
-      <Grid item container xs={12} mb={isMobile ? 4 : 7} justifyContent="center">
-        <Typography variant="subtitle1" align="center" gutterBottom>
-          Enter your cash crop growing window if you would like to see it displayed on the calendar.
-        </Typography>
-      </Grid>
-      <Grid item container>
-        <Grid
-          item
-          container
-          justifyContent={isMobile ? 'center' : 'space-between'}
-          xs={12}
-          spacing={isMobile ? 2 : 3}
-          display="flex"
-        >
-          <Grid item md={6}>
-            <LocalizationProvider dateAdapter={AdapterDayjs} data-test="planting-date-picker">
-              <DatePicker
-                slotProps={{
-                  textField: {
-                    error: false,
-                  },
-                }}
-                className="planting-date-picker"
-                sx={{ width: 1 }}
-                label="Planting Date"
-                value={startDate ? dayjs(startDate) : null}
-                onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item md={6}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                key={datePickerKey}
-                slotProps={{
-                  textField: {
-                    error: false,
-                    helperText: isError ? 'Your harvest date must be after your planting date.' : '',
-                  },
-                }}
-                className="harvest-date-picker"
-                label="Harvest Date"
-                value={endDate ? dayjs(endDate) : null}
-                onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
-                sx={{
-                  width: 1,
-                  '.MuiOutlinedInput-notchedOutline': {
-                    borderColor: isError && '#d32f2f',
-                  },
-                  '.MuiFormHelperText-root': {
-                    color: isError && '#d32f2f',
-                  },
-                }}
-              />
-            </LocalizationProvider>
-          </Grid>
+    <Grid item container xs={12} alignItems="center" justifyContent="center">
+      <Typography align="center" variant="h4" data-test="title-growing-window">
+        Cash Crop Growing Window
+      </Typography>
+      <Typography variant="subtitle1" align="center" gutterBottom>
+        Enter your cash crop growing window if you would like to see it displayed on the calendar.
+      </Typography>
+      <Grid
+        item
+        container
+        justifyContent={isMobile ? 'center' : 'space-between'}
+        xs={12}
+        spacing={isMobile ? 2 : 3}
+        display="flex"
+      >
+        <Grid item md={6}>
+          <LocalizationProvider dateAdapter={AdapterDayjs} data-test="planting-date-picker">
+            <DatePicker
+              slotProps={{
+                textField: {
+                  error: false,
+                },
+              }}
+              className="planting-date-picker"
+              sx={{ width: 1 }}
+              label="Planting Date"
+              value={startDate ? dayjs(startDate) : null}
+              onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item md={6}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              key={datePickerKey}
+              slotProps={{
+                textField: {
+                  error: false,
+                  helperText: isError ? 'Your harvest date must be after your planting date.' : '',
+                },
+              }}
+              className="harvest-date-picker"
+              label="Harvest Date"
+              value={endDate ? dayjs(endDate) : null}
+              onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
+              sx={{
+                width: 1,
+                '.MuiOutlinedInput-notchedOutline': {
+                  borderColor: isError && '#d32f2f',
+                },
+                '.MuiFormHelperText-root': {
+                  color: isError && '#d32f2f',
+                },
+              }}
+            />
+          </LocalizationProvider>
         </Grid>
       </Grid>
-      <Grid item container justifyContent="center" mt={2}>
-        <PSAButton
-          buttonType="PillButton"
-          title="Clear Selection"
-          onClick={() => {
-            handleDispatch('', '');
-          }}
-          disabled={!cashCropDataRedux.dateRange.startDate && !cashCropDataRedux.dateRange.endDate}
-          data-test="clear-dates-button"
-        />
-      </Grid>
-    </>
+      <PSAButton
+        buttonType="PillButton"
+        title="Clear Selection"
+        onClick={() => {
+          handleDispatch('', '');
+        }}
+        disabled={!cashCropDataRedux.dateRange.startDate && !cashCropDataRedux.dateRange.endDate}
+        data-test="clear-dates-button"
+      />
+    </Grid>
   );
 };
 

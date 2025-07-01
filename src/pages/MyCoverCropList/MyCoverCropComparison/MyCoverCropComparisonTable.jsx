@@ -128,6 +128,7 @@ const MyCoverCropComparisonTable = () => {
           transition: 'color 0.3s ease',
         }}
         onClick={() => handleModalOpen(crop)}
+        data-test="crop-comparison-table-header"
       >
         {crop.label}
       </Typography>
