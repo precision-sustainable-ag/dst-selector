@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateAllGoals, updatePlantingSeasons } from '../../reduxStore/goalSlice';
+import { snackHandler } from '../../reduxStore/sharedSlice';
 
 const DataLoader = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,9 @@ const DataLoader = () => {
         + `${councilShorthandRedux === 'WCCC' ? 'seasons=true&' : ''}${queryStringRedux}`,
       ).then((data) => {
         const allGoals = data.data.map((goal) => ({ label: goal.label, description: goal.description, tags: goal.tags }));
-        // console.log('allgoals', allGoals, data.plantingSeasons);
+        if (allGoals.length === 0) {
+          dispatch(snackHandler({ snackOpen: true, snackMessage: 'No data exists for your location!' }));
+        }
         dispatch(updateAllGoals(allGoals));
         if (councilShorthandRedux === 'WCCC' && data.plantingSeasons) {
           dispatch(updatePlantingSeasons(data.plantingSeasons));

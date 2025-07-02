@@ -32,7 +32,6 @@ import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
 // import useWindowSize from '../../shared/constants';
 import { updateStateInfo } from '../../reduxStore/mapSlice';
-import useIsMobile from '../../hooks/useIsMobile';
 import DataLoader from './DataLoader';
 
 const speed = 1.3;

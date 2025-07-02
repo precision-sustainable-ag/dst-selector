@@ -22,7 +22,6 @@ const ProgressButtonsInner = ({
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const history = useHistory();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const isMobile = useIsMobile('sm');
   const myCoverCropListLocationRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
@@ -104,7 +103,7 @@ const ProgressButtonsInner = ({
       return (
         <PSATooltip
           enterTouchDelay={0}
-          title={`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}
+          title={toolTip}
           tooltipContent={(
             <Box>
               <PSAButton
