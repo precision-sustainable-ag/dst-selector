@@ -34,6 +34,7 @@ import { releaseNotesURL } from '../../shared/keys';
 // import useWindowSize from '../../shared/constants';
 import { updateStateInfo } from '../../reduxStore/mapSlice';
 import useIsMobile from '../../hooks/useIsMobile';
+import DataLoader from './DataLoader';
 
 const speed = 1.3;
 
@@ -377,6 +378,7 @@ const Header = () => {
 
   return (
     <header style={{ width: '100vw' }}>
+      <DataLoader />
       <Demo />
       <Box className="header">
         <Grid container>

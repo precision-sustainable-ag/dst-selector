@@ -13,7 +13,7 @@ import pirschAnalytics from '../../../shared/analytics';
 
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
-  goaltTitle, goalDescription, goal, id, selectedGoalIndex,
+  goaltTitle, goalDescription, id, selectedGoalIndex,
 }) => {
   const dispatchRedux = useDispatch();
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
@@ -27,13 +27,13 @@ const GoalTag = ({
     if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     const goals = [...selectedGoalsRedux];
 
-    if (goals.indexOf(goal.label) === -1) {
+    if (goals.indexOf(goaltTitle) === -1) {
       // does not exist, dispatch to state and add to local state
-      dispatchRedux(addSelectedGoals(goal.label));
-      pirschAnalytics('Goals', { meta: { goal: goal.label } });
+      dispatchRedux(addSelectedGoals(goaltTitle));
+      pirschAnalytics('Goals', { meta: { goal: goaltTitle } });
     } else {
       // exists, remove it from the state and update the state
-      const index = goals.indexOf(goal.label);
+      const index = goals.indexOf(goaltTitle);
       goals.splice(index, 1);
 
       // make it lighter on the ui
