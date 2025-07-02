@@ -137,19 +137,30 @@ const CropSidebar = ({
 
     // handles crop search
     const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
+
+    // remove pluralities
+    let pluralSearch;
+    if (search) {
+      if (filterStateRedux.filters.cropSearch.endsWith('s')) {
+        pluralSearch = filterStateRedux.filters.cropSearch.slice(0, -1).toLowerCase().match(/\w+/g);
+      }
+    }
+
+    // handles pluarl words
     const cropData = cropDataRedux?.filter((crop, n, cd) => {
       let m;
       const match = (parm) => {
-        if (parm === 'label') {
-          m = crop[parm]?.toLowerCase().match(/\w+/g);
-        } else {
-          m = crop[parm]?.toLowerCase().match(/\w+/g);
-        }
-        return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
+        m = crop[parm]?.toLowerCase().match(/\w+/g);
+        // do not process singular or plural variants in
+
+        return !search
+            || (m !== null && search.every((s) => m?.some((t) => t.includes(s))))
+            || (pluralSearch && (m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s)))));
       };
       cd[n].inactive = true;
       return match('label') || match('scientificName');
     });
+
     // transforms selectedFilterObject into an array
     const nonZeroKeys2 = Object.keys(selectedFilterObject).map((key) => {
       if (selectedFilterObject[key]?.length !== 0) {
