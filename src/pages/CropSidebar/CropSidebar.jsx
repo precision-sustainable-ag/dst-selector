@@ -197,11 +197,10 @@ const CropSidebar = ({
       if (councilShorthandRedux === 'WCCC') {
         match = false;
         const seasonMatch = selectedSeasonRedux.length === 0
-        || crop.plantingDates.some(
-          (date) => selectedSeasonRedux.some((season) => date.label.includes(season))
-            && date.label.includes(irrigationFilterRedux ? 'irrigation' : 'rainfed'),
-        );
-        if (seasonMatch) {
+        || crop.plantingDates.some((date) => selectedSeasonRedux.some((season) => date.label.includes(season)));
+        const firstGoalRatingLargerThanTwo = selectedGoalsRedux.length === 0
+        || Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value) > 2;
+        if (seasonMatch && firstGoalRatingLargerThanTwo) {
           match = true;
         }
       }

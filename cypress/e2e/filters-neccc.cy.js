@@ -14,7 +14,7 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
     cy.assertByTestId('state-selector-dropdown').first().click();
     cy.get("[data-test='state-selector-dropdown-NEW YORK']").click();
     cy.getByTestId('state-selector-dropdown').first().find('input').should('have.value', 'NY');
-    cy.assertByTestId('next-btn').first().click();
+    cy.getByTestId('get-a-recommendation-btn').first().click();
     cy.assertByTestId('field-location-title');
 
     cy.window().its('store').invoke('dispatch', {

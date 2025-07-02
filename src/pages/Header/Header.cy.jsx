@@ -9,11 +9,11 @@ describe('Header Component', () => {
   });
 
   it('should have a GET A RECOMMENDATION button', () => {
-    cy.assertByTestId('get-recommendation-btn').should('have.text', 'Get A Recommendation');
+    cy.assertByTestId('get-a-recommendation-btn').should('have.text', 'Get A Recommendation');
   });
 
   it('should have a BROWSE COVER CROPS button', () => {
-    cy.assertByTestId('browse-covercrops-btn').should('have.text', 'Browse Cover Crops');
+    cy.assertByTestId('browse-cover-crops-btn').should('have.text', 'Browse Cover Crops');
   });
 
   it('should have correct navigation tabs and links', () => {

@@ -120,14 +120,14 @@ const InformationBar = ({ pathname }) => {
       spacing={1}
     >
       {progressRedux > 0 && !isMobile && (
-        <Grid item container xs={12} sm={12} md={12} lg={9.5} spacing={1}>
-          <Grid item xs={12} sm={6} md={6} lg={2.5}>
+        <Grid item container xs={12} sm={12} md={12} lg={7.5} spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
             {getData('location')}
           </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={3.5}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
             {getData('site')}
           </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={2.5}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
             {getData('goals')}
           </Grid>
         </Grid>
@@ -139,9 +139,10 @@ const InformationBar = ({ pathname }) => {
         sx={{
           backgroundColor: '#598445',
         }}
-        justifyContent="center"
+        justifyContent="right"
         xs={12}
-        lg={2.5}
+        lg={4}
+        marginRight={5}
       >
         <ProgressButtons />
       </Grid>
@@ -153,12 +154,13 @@ const InformationBar = ({ pathname }) => {
       sx={{
         backgroundColor: '#598445',
       }}
-      justifyContent="center"
-      alignItems="center"
+      justifyContent="right"
+      alignItems="right"
       pt={0.6}
       pb={0.6}
+      pr={2}
     >
-      <NavigationButtons />
+      <NavigationButtons pathname={pathname} />
     </Grid>
   );
 };

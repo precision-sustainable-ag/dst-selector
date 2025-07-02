@@ -4,7 +4,7 @@
 */
 // TODO: Goal tags are not responsive!
 import {
-  Typography, Grid, Box, useMediaQuery, useTheme,
+  Typography, Grid, useMediaQuery, useTheme,
   Chip,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -91,322 +91,227 @@ const GoalsSelector = () => {
   }, [selectedGoalsRedux]);
 
   return (
-    <Box>
-      <Grid container spacing={isLargeScreen ? 4 : 1}>
-        {/* top row */}
-        <Grid container item lg={12} spacing={isLargeScreen ? 4 : 1}>
-          {/* holds goal selector */}
-          <Grid item container lg={6} justifyContent={isLargeScreen ? 'flex-end' : 'center'}>
-            <Grid
-              item
-              container
-              lg={10}
-              sx={{
-                boxSizing: 'border-box',
-                borderRadius: '15px',
-                border: '2px solid #598445',
-                p: '1rem',
-                margin: !isLargeScreen ? '1rem' : '0',
-              }}
-              data-test="goals-card"
+    <Grid container spacing={4}>
+      {/* Left Container */}
+      <Grid item container lg={6} justifyContent={isLargeScreen ? 'flex-end' : 'center'}>
+        <Grid
+          item
+          container
+          lg={10}
+          sx={{
+            boxSizing: 'border-box',
+            borderRadius: '15px',
+            border: '2px solid #598445',
+            p: '1rem',
+            margin: !isLargeScreen ? '1rem' : '0',
+          }}
+          data-test="goals-card"
+        >
+          {/* title */}
+          <Grid item xs={12}>
+            <Typography variant="h4" align="center" data-test="title-goals">
+              Cover Crop Goals
+            </Typography>
+          </Grid>
+          {/* sub-title */}
+          <Grid item xs={12} mb={2}>
+            <Typography
+              variant={isMobile ? 'subtitle2' : 'subtitle1'}
+              align="center"
+              gutterBottom
             >
-              {/* title */}
-              <Grid item xs={12}>
-                <Typography variant="h4" align="center" data-test="title-goals">
-                  Cover Crop Goals
-                </Typography>
-              </Grid>
-              {/* sub-title */}
-              <Grid item xs={12}>
-                <Typography
-                  variant={isMobile ? 'subtitle2' : 'subtitle1'}
-                  align="center"
-                  gutterBottom
-                >
-                  Select up to 3 goals in order of importance.
-                </Typography>
-              </Grid>
-              <Grid item xs={12} mb={2}>
-                <Typography variant="subtitle2" gutterBottom align="center">
-                  {isMobile ? 'Tap and hold for more information' : 'Hover over a goal for more information'}
-                </Typography>
-              </Grid>
-              {/* chips */}
+              Select up to 3 goals in order of importance.
+              {councilShorthandRedux === 'WCCC'
+               && ' Your first goal will apply filtering to the recommended cover crop list.'}
+            </Typography>
+            <Typography variant="subtitle2" gutterBottom align="center">
+              {isMobile ? 'Tap and hold for more information' : 'Hover over a goal for more information'}
+            </Typography>
+          </Grid>
+          {/* chips */}
+          <Grid
+            item
+            container
+            spacing={1}
+            justifyContent="center"
+            alignItems="center"
+          >
+            {allGoals?.length > 0 ? (
               <Grid
                 item
                 container
                 spacing={1}
                 justifyContent="center"
                 alignItems="center"
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  minHeight: '100px',
-                }}
               >
-                {allGoals?.length > 0 ? (
-                  <Grid
-                    item
-                    container
-                    spacing={1}
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    {allGoals
-                      .slice()
-                      // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
-                      .sort(
-                        (a, b) => (selectedGoalsRedux.indexOf(a.label) === -1
-                          ? 3
-                          : selectedGoalsRedux.indexOf(a.label))
+                {allGoals
+                  .slice()
+                  // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
+                  .sort(
+                    (a, b) => (selectedGoalsRedux.indexOf(a.label) === -1
+                      ? 3
+                      : selectedGoalsRedux.indexOf(a.label))
                           - (selectedGoalsRedux.indexOf(b.label) === -1
                             ? 3
                             : selectedGoalsRedux.indexOf(b.label)),
-                      )
-                      .map((goal, key) => (
-                        <Grid
-                          item
-                          key={key}
-                          display="flex"
-                          xs={isMobile ? 12 : 'auto'}
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <GoalTag
-                            key={key}
-                            goal={goal}
-                            id={key}
-                            goaltTitle={goal.label}
-                            goalDescription={goal.description}
-                            selectedGoalIndex={selectedGoalsRedux.includes(goal.label) ? selectedGoalsRedux.indexOf(goal.label) + 1 : null}
-                          />
-                        </Grid>
-                      ))}
-                  </Grid>
-                ) : (
-                  <PSALoadingSpinner />
-                )}
+                  )
+                  .map((goal, key) => (
+                    <Grid
+                      item
+                      key={key}
+                    >
+                      <GoalTag
+                        key={key}
+                        goal={goal}
+                        id={key}
+                        goaltTitle={goal.label}
+                        goalDescription={goal.description}
+                        selectedGoalIndex={selectedGoalsRedux.includes(goal.label) ? selectedGoalsRedux.indexOf(goal.label) + 1 : null}
+                      />
+                    </Grid>
+                  ))}
               </Grid>
-            </Grid>
+            ) : (
+              <PSALoadingSpinner />
+            )}
           </Grid>
-          {/* holds the date selector */}
-          <Grid item container lg={6}>
-            <Grid
-              item
-              container
-              lg={10}
-              sx={{
-                boxSizing: 'border-box',
-                borderRadius: '15px',
-                border: '2px solid #598445',
-                p: '1rem',
-                mr: !isLargeScreen ? '1rem' : '0',
-                ml: !isLargeScreen ? '1rem' : '0',
-                mb: !isLargeScreen ? '1rem' : '0,',
-              }}
-              justifyContent="center"
-              data-test="cashcrop-window"
-            >
-              <PreviousCashCrop />
-            </Grid>
-          </Grid>
+          {councilShorthandRedux === 'WCCC'
+            && (
+              <>
+                {/* Planting Season */}
+                <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
+                  <Grid item xs={12}>
+                    <Typography variant="h5" align="center">
+                      Planting Season
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    {seasons.map((season, i) => (
+                      <Chip
+                        key={season}
+                        label={season}
+                        id={(`season${i}`)}
+                        clickable
+                        style={{ margin: '0.3rem' }}
+                        sx={{
+                          '&:focus': {
+                            boxShadow: '0 0 0 2px black',
+                            maxWidth: !isLargeScreen ? '45%' : 'auto',
+                          },
+                        }}
+                        onClick={() => handleSelectedSeason(season)}
+                        color={selectedSeasonRedux.includes(season) ? 'primary' : 'secondary'}
+                      />
+                    ))}
+                  </Grid>
+                </Grid>
+                {/* Will you irrigate */}
+                <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
+                  <Grid item xs={12}>
+                    <Typography variant="h5" align="center" data-test="title-goals">
+                      Will you Irrigate?
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {irrigationType.map((irrigation, i) => (
+                      <Chip
+                        key={irrigation}
+                        label={i === 0 ? 'No' : 'Yes'}
+                        id={`irrigation${i}`}
+                        clickable
+                        style={{ margin: '0.3rem' }}
+                        sx={{
+                          '&:focus': {
+                            boxShadow: '0 0 0 2px black',
+                          },
+                        }}
+                        onClick={() => handleSelectedIrrigation(irrigation)}
+                        color={selectedIrrigationRedux === irrigation ? 'primary' : 'secondary'}
+                      />
+                    ))}
+                  </Grid>
+                </Grid>
+              </>
+            )}
         </Grid>
       </Grid>
+      {/* Right Container */}
+      <Grid item container lg={6}>
+        <Grid
+          item
+          container
+          lg={10}
+          sx={{
+            boxSizing: 'border-box',
+            borderRadius: '15px',
+            border: '2px solid #598445',
+            p: '1rem',
+            margin: !isLargeScreen ? '0 1rem' : '0',
 
-      {/* =============================================== */}
-
-      {/* Bottom Row */}
-      {councilShorthandRedux === 'WCCC'
-        && (
-          <Grid
-            container
-            item
-            lg={8}
-            spacing={isLargeScreen ? 4 : 0}
-            sx={{
-              boxSizing: 'border-box',
-              borderRadius: '15px',
-              border: '2px solid #598445',
-              // margin: !isLargeScreen ? '1rem' : '0',
-              mx: 'auto',
-              mt: isLargeScreen ? 4 : 2,
-              mb: isLargeScreen ? 4 : 2,
-            }}
-            className="additionalFilters"
-            justifyContent="center"
-          >
-            <Grid item xs={12}>
-              <Typography variant="h4" align="center">
-                Additional Cover Crop Filters
-              </Typography>
-              <Typography
-                variant={isMobile ? 'subtitle2' : 'subtitle1'}
-                align="center"
-                gutterBottom
-              >
-                These options will help provide the best cover crop termination information on your information sheet.
-              </Typography>
-
-            </Grid>
-
-            {/* weather grid */}
-            {/* <Grid item container lg={3}> */}
-            <Grid
-              item
-              container
-              lg={4}
-              sx={{
-                p: '1rem',
-                mr: !isLargeScreen ? '1rem' : '0',
-                ml: !isLargeScreen ? '1rem' : '0',
-                mb: !isLargeScreen ? '1rem' : '0,',
-
-              }}
-              data-test="goals-card"
-            >
-              <Grid item xs={12}>
-                <Typography variant="h5" align="center" data-test="title-goals">
-                  Planting Season
-                </Typography>
+          }}
+          justifyContent="center"
+          data-test="cashcrop-window"
+        >
+          <PreviousCashCrop />
+          {councilShorthandRedux === 'WCCC'
+            && (
+            <>
+              {/* Cropping system */}
+              <Grid container sx={{ m: '1rem', display: 'flex', alignItems: 'flex-end' }}>
+                <Grid item xs={12}>
+                  <Typography variant="h5" align="center" data-test="title-goals">
+                    Cropping System
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {durationTypes.map((durationType, i) => (
+                    <Chip
+                      key={durationType}
+                      label={durationType}
+                      id={(`durationType${i}`)}
+                      clickable
+                      style={{ margin: '0.3rem' }}
+                      sx={{
+                        '&:focus': {
+                          boxShadow: '0 0 0 2px black',
+                        },
+                      }}
+                      onClick={() => handleSelectedDuration(durationType)}
+                      color={selectedDurationRedux === durationType ? 'primary' : 'secondary'}
+                    />
+                  ))}
+                </Grid>
               </Grid>
-              {/* sub-title */}
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-
-                }}
-              >
-                {seasons.map((season, i) => (
-                  <Chip
-                    key={season}
-                    label={season}
-                    id={(`season${i}`)}
-                    clickable
-                    style={{ margin: '0.3rem' }}
-                    sx={{
-                      '&:focus': {
-                        boxShadow: '0 0 0 2px black',
-                        maxWidth: !isLargeScreen ? '45%' : 'auto',
-                      },
-                    }}
-                    onClick={() => handleSelectedSeason(season)}
-                    color={selectedSeasonRedux.includes(season) ? 'primary' : 'secondary'}
-                  />
-                ))}
-              </Grid>
-            </Grid>
-
-            {/* Annual/Perennial */}
-            <Grid
-              item
-              container
-              lg={4}
-              sx={{
-                // border: '2px solid #598445',
-                p: '1rem',
-                mr: !isLargeScreen ? '1rem' : '0',
-                ml: !isLargeScreen ? '1rem' : '0',
-                mb: !isLargeScreen ? '1rem' : '0,',
-              }}
-              justifyContent="center"
-              data-test="cashcrop-window"
-            >
-              <Grid item xs={12}>
-                <Typography variant="h5" align="center" data-test="title-goals">
-                  Lifecycle
-                </Typography>
-              </Grid>
-              {/* sub-title */}
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {durationTypes.map((durationType, i) => (
-                  <Chip
-                    key={durationType}
-                    label={durationType}
-                    id={(`durationType${i}`)}
-                    clickable
-                    style={{ margin: '0.3rem' }}
-                    sx={{
-                      '&:focus': {
-                        boxShadow: '0 0 0 2px black',
-                      },
-                    }}
-                    onClick={() => handleSelectedDuration(durationType)}
-                    color={selectedDurationRedux === durationType ? 'primary' : 'secondary'}
-                  />
-                ))}
-
-              </Grid>
-
-            </Grid>
-
-            {/* Water */}
-            <Grid
-              item
-              container
-              lg={4}
-              sx={{
-                boxSizing: 'border-box',
-                borderRadius: '15px',
-                // border: '2px solid #598445',
-                p: '1rem',
-                mr: !isLargeScreen ? '1rem' : '0',
-                ml: !isLargeScreen ? '1rem' : '0',
-                mb: !isLargeScreen ? '1rem' : '0,',
-              }}
-              justifyContent="center"
-              data-test="cashcrop-window"
-            >
-              <Grid item xs={12}>
-                <Typography variant="h5" align="center" data-test="title-goals">
-                  Will you Irrigate?
-                </Typography>
-              </Grid>
-              {/* sub-title */}
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {irrigationType.map((irrigation, i) => (
-                  <Chip
-                    key={irrigation}
-                    label={i === 0 ? 'No' : 'Yes'}
-                    id={`irrigation${i}`}
-                    clickable
-                    style={{ margin: '0.3rem' }}
-                    sx={{
-                      '&:focus': {
-                        boxShadow: '0 0 0 2px black',
-                      },
-                    }}
-                    onClick={() => handleSelectedIrrigation(irrigation)}
-                    color={selectedIrrigationRedux === irrigation ? 'primary' : 'secondary'}
-                  />
-                ))}
-
-              </Grid>
-            </Grid>
-
-          </Grid>
-        )}
-    </Box>
+            </>
+            )}
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 export default GoalsSelector;

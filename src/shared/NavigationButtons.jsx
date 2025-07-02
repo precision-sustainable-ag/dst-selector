@@ -6,17 +6,19 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stack } from '@mui/material';
+import { Stack, Badge } from '@mui/material';
 import { PSAButton } from 'shared-react-components/src';
 import { Refresh } from '@mui/icons-material';
 import { reset } from '../reduxStore/store';
 import { setMyCoverCropReset } from '../reduxStore/sharedSlice';
+import useIsMobile from '../hooks/useIsMobile';
 
-const NavigationButtons = () => {
+const NavigationButtons = ({ pathname }) => {
   const dispatchRedux = useDispatch();
-
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const history = useHistory();
+  const isMobile = useIsMobile('sm');
+
   return (
     <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
       <PSAButton
@@ -31,6 +33,27 @@ const NavigationButtons = () => {
         data-test="back-btn"
         title="Back"
       />
+      {pathname === '/explorer' && (
+        <Badge
+          badgeContent={selectedCropIdsRedux.length}
+          color="error"
+        >
+          <PSAButton
+            style={{
+              maxWidth: '90px',
+              minWidth: 'max-content',
+              marginLeft: '3%',
+              height: isMobile ? '35px' : 'auto',
+            }}
+            onClick={() => history.push('/my-cover-crop-list')}
+            disabled={selectedCropIdsRedux.length === 0}
+            buttonType="PillButton"
+            data-test="my selected crops-btn"
+            title="MY CROPS"
+            className="selectedCropsButton"
+          />
+        </Badge>
+      )}
       <PSAButton
         style={{
           maxWidth: '90px',
