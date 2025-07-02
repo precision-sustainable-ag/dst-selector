@@ -39,7 +39,7 @@ const goalsReducer = (state = initialState, action = null) => {
     case 'ADD_SELECTED_GOALS':
       return {
         ...state,
-        selectedGoals: [action.payload.value, ...state.selectedGoals],
+        selectedGoals: [...state.selectedGoals, action.payload.value],
       };
 
     case 'SET_GOALS_REDUX':

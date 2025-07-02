@@ -21,6 +21,13 @@ import {
   setIrrigationFilter,
 } from '../../reduxStore/filterSlice';
 
+const seasons = ['Dormant/Frost', 'Early Spring', 'Spring', 'Early Summer', 'Summer',
+  'Late Summer', 'Late Summer / Early Fall', 'Fall', 'Winter'];
+
+const durationTypes = ['Annual', 'Perennial'];
+
+const irrigationType = ['Rainfed', 'Irrigated'];
+
 const GoalsSelector = () => {
   // theme vars
   const theme = useTheme();
@@ -31,9 +38,7 @@ const GoalsSelector = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const selectedGoalsRedux = [...useSelector(
-    (stateRedux) => stateRedux.goalsData.selectedGoals,
-  )].reverse();
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
@@ -44,12 +49,7 @@ const GoalsSelector = () => {
 
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
-
-  const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
-
-  const durationTypes = ['Annual', 'Perennial'];
-
-  const irrigationType = ['Rainfed', 'Irrigated'];
+  const [plantingSeasons, setPlantingSeasons] = useState([]);
 
   const handleSelectedSeason = (season) => {
     if (selectedSeasonRedux.includes(season)) {
@@ -74,8 +74,12 @@ const GoalsSelector = () => {
 
   useEffect(() => {
     callCoverCropApi(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${queryStringRedux}`,
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?`
+      + `${councilShorthandRedux === 'WCCC' ? 'seasons=true&' : ''}${queryStringRedux}`,
     ).then((data) => {
+      if (councilShorthandRedux === 'WCCC' && data.plantingSeasons) {
+        setPlantingSeasons(data.plantingSeasons);
+      }
       setAllGoals(data.data);
     });
     pirschAnalytics('Visited Page', { meta: { visited: 'Goals' } });
@@ -179,41 +183,48 @@ const GoalsSelector = () => {
             && (
               <>
                 {/* Planting Season */}
-                <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
-                  <Grid item xs={12}>
-                    <Typography variant="h5" align="center">
-                      Planting Season
-                    </Typography>
+                {plantingSeasons.length > 0 && (
+                  <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
+                    <Grid item xs={12}>
+                      <Typography variant="h5" align="center">
+                        Planting Season
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexWrap: 'wrap',
+                      }}
+                    >
+                      {seasons.map((season, i) => {
+                        if (plantingSeasons.includes(season)) {
+                          return (
+                            <Chip
+                              key={season}
+                              label={season}
+                              id={(`season${i}`)}
+                              clickable
+                              style={{ margin: '0.3rem' }}
+                              sx={{
+                                '&:focus': {
+                                  boxShadow: '0 0 0 2px black',
+                                  maxWidth: !isLargeScreen ? '45%' : 'auto',
+                                },
+                              }}
+                              onClick={() => handleSelectedSeason(season)}
+                              color={selectedSeasonRedux.includes(season) ? 'primary' : 'secondary'}
+                            />
+                          );
+                        }
+                        return null;
+                      })}
+                    </Grid>
                   </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexWrap: 'wrap',
-                    }}
-                  >
-                    {seasons.map((season, i) => (
-                      <Chip
-                        key={season}
-                        label={season}
-                        id={(`season${i}`)}
-                        clickable
-                        style={{ margin: '0.3rem' }}
-                        sx={{
-                          '&:focus': {
-                            boxShadow: '0 0 0 2px black',
-                            maxWidth: !isLargeScreen ? '45%' : 'auto',
-                          },
-                        }}
-                        onClick={() => handleSelectedSeason(season)}
-                        color={selectedSeasonRedux.includes(season) ? 'primary' : 'secondary'}
-                      />
-                    ))}
-                  </Grid>
-                </Grid>
+                )}
                 {/* Will you irrigate */}
                 <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
                   <Grid item xs={12}>
