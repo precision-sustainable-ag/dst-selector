@@ -111,7 +111,7 @@ export const InfoSheetTitle = ({ crop }) => {
           ? (
             <PSAButton
               buttonType="ModalLink"
-              startIcon={<CircularProgress size={20} />}
+              startIcon={<CircularProgress size={20} sx={{ color: 'white' }} />}
             />
           )
           : (
