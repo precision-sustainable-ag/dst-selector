@@ -3,9 +3,9 @@ import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
 import ProgressButtons from './ProgressButtons';
 import configureStore from '../reduxStore/store';
-import { setMapRedux } from '../reduxStore/mapSlice';
+import { setMapRedux, updateRegion, updateStateInfo } from '../reduxStore/mapSlice';
 import { gotoProgress } from '../reduxStore/sharedSlice';
-import { setAddressRedux } from '../reduxStore/addressSlice';
+import { updateAllGoals } from '../reduxStore/goalSlice';
 
 /* eslint-disable no-undef */
 
@@ -38,12 +38,11 @@ describe('<ProgressButtonsInner />', () => {
   });
 
   it('renders correct state of Progress buttons when progress is 0', () => {
-    cy.assertByTestId('back-btn').should('be.disabled');
-    cy.assertByTestId('next-btn').should('be.disabled');
-    cy.assertByTestId('restart-btn').should('be.disabled');
+    cy.assertByTestId('get-a-recommendation-btn').should('be.disabled');
+    cy.assertByTestId('browse-cover-crops-btn').should('be.disabled');
   });
 
-  it.only('should enable next button when a state is selected and progress is 0', () => {
+  it('should enable next button when a state is selected and progress is 0', () => {
     const mapData = {
       regions: [
         {
@@ -91,16 +90,27 @@ describe('<ProgressButtonsInner />', () => {
       councilLabel: 'Northeast Cover Crops Council',
     };
     reduxStore.dispatch(setMapRedux(mapData));
-    cy.assertByTestId('back-btn').should('be.disabled');
-    cy.assertByTestId('next-btn').should('not.be.disabled');
-    cy.assertByTestId('restart-btn').should('be.disabled');
+    cy.assertByTestId('get-a-recommendation-btn').should('be.disabled');
+    cy.assertByTestId('browse-cover-crops-btn').should('be.disabled');
   });
 
   it('renders correct state of Progress buttons when progress is 1', () => {
-    const addressData = {
-      address: '170 State Street',
-    };
-    reduxStore.dispatch(setAddressRedux(addressData));
+    reduxStore.dispatch(updateStateInfo({
+      stateId: 36,
+      stateLabel: 'New York',
+      councilShorthand: 'NECCC',
+      councilLabel: 'Northeast Cover Crops Council',
+    }));
+    reduxStore.dispatch(updateRegion({
+      regionId: 1,
+      regionShorthand: '4',
+    }));
+    reduxStore.dispatch(updateAllGoals([{
+      label: 'Forage Harvest Value',
+      description: '',
+      tags: [],
+    }]));
+
     reduxStore.dispatch(gotoProgress(1));
     cy.assertByTestId('back-btn').should('not.be.disabled');
     cy.assertByTestId('next-btn').should('not.be.disabled');

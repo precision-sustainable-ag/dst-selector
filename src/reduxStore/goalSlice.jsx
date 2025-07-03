@@ -1,5 +1,7 @@
 const initialState = {
+  allGoals: [],
   selectedGoals: [],
+  plantingSeasons: [],
 };
 
 export const updateSelectedGoal = (value) => ({
@@ -16,8 +18,15 @@ export const addSelectedGoals = (value) => ({
   },
 });
 
-export const addGoals = (value) => ({
-  type: 'ADD_GOALS',
+export const updateAllGoals = (value) => ({
+  type: 'UPDATE_ALL_GOALS',
+  payload: {
+    value,
+  },
+});
+
+export const updatePlantingSeasons = (value) => ({
+  type: 'UPDATE_PLANTING_SEASONS',
   payload: {
     value,
   },
@@ -39,7 +48,19 @@ const goalsReducer = (state = initialState, action = null) => {
     case 'ADD_SELECTED_GOALS':
       return {
         ...state,
-        selectedGoals: [action.payload.value, ...state.selectedGoals],
+        selectedGoals: [...state.selectedGoals, action.payload.value],
+      };
+
+    case 'UPDATE_ALL_GOALS':
+      return {
+        ...state,
+        allGoals: action.payload.value,
+      };
+
+    case 'UPDATE_PLANTING_SEASONS':
+      return {
+        ...state,
+        plantingSeasons: action.payload.value,
       };
 
     case 'SET_GOALS_REDUX':

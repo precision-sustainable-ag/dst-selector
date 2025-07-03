@@ -9,78 +9,60 @@ import { Grid } from '@mui/material';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = () => {
-  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
-  const [toolTip, setToolTip] = useState(true);
+  const [toolTip, setToolTip] = useState(null);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
+
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const allGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.allGoals);
 
-  const disableLogic = (progress, goalsLength, filters, regionShorthand) => {
-    switch (parseInt(progress, 10)) {
+  useEffect(() => {
+    switch (parseInt(progressRedux, 10)) {
       case 0:
-        setToolTip(false);
-        setIsDisabledBack(true);
-        setIsDisabledRefresh(true);
         setIsDisabledNext(councilShorthandRedux === null);
         break;
-      case 1:
-        // location selection state
+      case 1: {
+        const locationUnavailable = councilShorthandRedux === 'WCCC' ? queryStringRedux === null : regionShorthandRedux === '';
+        const isDisabled = locationUnavailable || allGoalsRedux.length === 0;
+        const disabledTooltip = `${locationUnavailable ? 'Location not available! ' : ''}`
+          + `${allGoalsRedux.length === 0 ? 'No data exists for your location!' : ''}`;
 
-        // handle logic separately for Ontario
-        if (stateLabelRedux === 'Ontario') {
-          setIsDisabledNext(regionShorthand === '');
-        } else if (councilShorthandRedux === 'WCCC') {
-          setIsDisabledNext(queryStringRedux === null);
-        } else {
-          setIsDisabledNext(regionShorthand === '');
-        }
-
-        setToolTip(true);
-        setIsDisabledBack(false);
-        setIsDisabledRefresh(false);
+        setIsDisabledNext(isDisabled);
+        setToolTip(isDisabled ? disabledTooltip : null);
+        break;
+      }
+      case 2:
         break;
       case 3:
         // goals selection state
-        setToolTip(false);
-        setIsDisabledBack(false);
-        setIsDisabledRefresh(false);
+        setIsDisabledNext(allGoalsRedux.length === 0);
+        setToolTip(allGoalsRedux.length === 0 ? 'No data exists for your location!' : null);
         break;
       default:
-        setToolTip(false);
+        setToolTip(null);
         setIsDisabledNext(false);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
     }
-  };
+  }, [progressRedux, regionShorthandRedux, allGoalsRedux, queryStringRedux, councilShorthandRedux]);
 
-  useEffect(() => {
-    const { filters } = filterStateRedux;
-    disableLogic(progressRedux, selectedGoalsRedux.length, filters, regionShorthandRedux);
-  }, [filterStateRedux, selectedGoalsRedux, stateLabelRedux, regionShorthandRedux]);
+  if (progressRedux < 0) return '';
 
-  const renderProgressButtons = (progress, disabledBack, disabledNext, disabledRefresh) => {
-    if (progress < 0) return '';
-
-    return (
-      <Grid item>
-        <ProgressButtonsInner
-          toolTip={toolTip}
-          isDisabledBack={disabledBack}
-          isDisabledNext={disabledNext}
-          isDisabledRefresh={disabledRefresh}
-        />
-      </Grid>
-    );
-  };
-
-  return renderProgressButtons(progressRedux, isDisabledBack, isDisabledNext, isDisabledRefresh);
+  return (
+    <Grid item>
+      <ProgressButtonsInner
+        toolTip={toolTip}
+        isDisabledBack={isDisabledBack}
+        isDisabledNext={isDisabledNext}
+        isDisabledRefresh={isDisabledRefresh}
+      />
+    </Grid>
+  );
 };
 
 export default ProgressButtons;

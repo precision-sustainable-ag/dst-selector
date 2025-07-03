@@ -19,10 +19,9 @@ import {
   Chip,
 } from '@mui/material';
 import {
-  Compare, ExpandLess, ExpandMore,
+  ExpandLess, ExpandMore,
 } from '@mui/icons-material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import ListIcon from '@mui/icons-material/List';
 import React, {
   useEffect, useState,
 } from 'react';
@@ -48,13 +47,13 @@ import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice'
 import {
   setAjaxInProgress, regionToggleHandler,
 } from '../../reduxStore/sharedSlice';
+import { updateSelectedIrrigation } from '../../reduxStore/terminationSlice';
 
 const CropSidebar = ({
   comparisonView,
   listView,
   from,
   setGrowthWindow,
-  setComparisonView,
   style,
 }) => {
   const dispatchRedux = useDispatch();
@@ -76,6 +75,7 @@ const CropSidebar = ({
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
+  const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
 
   // useState vars
   const [loading, setLoading] = useState(true);
@@ -114,6 +114,7 @@ const CropSidebar = ({
 
   const handleIrrigationFilter = () => {
     dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
+    dispatchRedux(updateSelectedIrrigation(!irrigationFilterRedux ? 'Irrigated' : 'Rainfed'));
   };
 
   const handleCropGroupFilter = (val) => {
@@ -136,19 +137,30 @@ const CropSidebar = ({
 
     // handles crop search
     const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
+
+    // remove pluralities
+    let pluralSearch;
+    if (search) {
+      if (filterStateRedux.filters.cropSearch.endsWith('s')) {
+        pluralSearch = filterStateRedux.filters.cropSearch.slice(0, -1).toLowerCase().match(/\w+/g);
+      }
+    }
+
+    // handles pluarl words
     const cropData = cropDataRedux?.filter((crop, n, cd) => {
       let m;
       const match = (parm) => {
-        if (parm === 'label') {
-          m = crop[parm]?.toLowerCase().match(/\w+/g);
-        } else {
-          m = crop[parm]?.toLowerCase().match(/\w+/g);
-        }
-        return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
+        m = crop[parm]?.toLowerCase().match(/\w+/g);
+        // do not process singular or plural variants in
+
+        return !search
+            || (m !== null && search.every((s) => m?.some((t) => t.includes(s))))
+            || (pluralSearch && (m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s)))));
       };
       cd[n].inactive = true;
       return match('label') || match('scientificName');
     });
+
     // transforms selectedFilterObject into an array
     const nonZeroKeys2 = Object.keys(selectedFilterObject).map((key) => {
       if (selectedFilterObject[key]?.length !== 0) {
@@ -180,6 +192,18 @@ const CropSidebar = ({
         ?.includes(drainageClassRedux.toLowerCase()));
 
       const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
+
+      // WCCC Additional Filters
+      if (councilShorthandRedux === 'WCCC') {
+        match = false;
+        const seasonMatch = selectedSeasonRedux.length === 0
+          || crop.plantingDates.some((date) => selectedSeasonRedux.some((season) => date.label.includes(season)));
+        const firstGoalRatingLargerThanTwo = selectedGoalsRedux.length === 0
+          || Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value) > 2;
+        if (seasonMatch && firstGoalRatingLargerThanTwo) {
+          match = true;
+        }
+      }
 
       if (stateIdRedux === 7) {
         cd[n].inactive = (!match)
@@ -450,22 +474,6 @@ const CropSidebar = ({
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
-        <PSAButton
-          onClick={() => setComparisonView(false)}
-          selected={!comparisonView}
-          startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-          buttonType="PillButton"
-          title="CROP LIST"
-        />
-        <PSAButton
-          onClick={() => setComparisonView(true)}
-          selected={comparisonView}
-          startIcon={<Compare style={{ fontSize: 'larger' }} />}
-          buttonType="PillButton"
-          data-test="comparison-view-btn"
-          title="COMPARISON VIEW"
-          className="comparisonViewButton"
-        />
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}

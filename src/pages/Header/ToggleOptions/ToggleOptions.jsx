@@ -139,7 +139,7 @@ const ToggleOptions = ({ pathname }) => {
               <span style={{ display: 'block', textAlign: 'center' }}>Selected Crops</span>
             </div>
           ) : (
-            'My Selected Crops'
+            'My Crops'
           )}
         />
       </Badge>
