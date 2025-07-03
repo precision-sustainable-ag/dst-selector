@@ -23,6 +23,7 @@ const ProgressButtons = () => {
   useEffect(() => {
     switch (parseInt(progressRedux, 10)) {
       case 0:
+        setIsDisabledNext(councilShorthandRedux === null);
         break;
       case 1: {
         const locationUnavailable = councilShorthandRedux === 'WCCC' ? queryStringRedux === null : regionShorthandRedux === '';

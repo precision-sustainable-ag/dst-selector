@@ -3,9 +3,9 @@ import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
 import ProgressButtons from './ProgressButtons';
 import configureStore from '../reduxStore/store';
-import { setMapRedux } from '../reduxStore/mapSlice';
+import { setMapRedux, updateRegion, updateStateInfo } from '../reduxStore/mapSlice';
 import { gotoProgress } from '../reduxStore/sharedSlice';
-import { setAddressRedux } from '../reduxStore/addressSlice';
+import { updateAllGoals } from '../reduxStore/goalSlice';
 
 /* eslint-disable no-undef */
 
@@ -23,7 +23,7 @@ describe('<ProgressButtonsInner />', () => {
         councilLabel: null,
       },
       sharedData: {
-        progress: 1,
+        progress: 0,
       },
       addressData: {
         address: '',
@@ -95,10 +95,22 @@ describe('<ProgressButtonsInner />', () => {
   });
 
   it('renders correct state of Progress buttons when progress is 1', () => {
-    const addressData = {
-      address: '170 State Street',
-    };
-    reduxStore.dispatch(setAddressRedux(addressData));
+    reduxStore.dispatch(updateStateInfo({
+      stateId: 36,
+      stateLabel: 'New York',
+      councilShorthand: 'NECCC',
+      councilLabel: 'Northeast Cover Crops Council',
+    }));
+    reduxStore.dispatch(updateRegion({
+      regionId: 1,
+      regionShorthand: '4',
+    }));
+    reduxStore.dispatch(updateAllGoals([{
+      label: 'Forage Harvest Value',
+      description: '',
+      tags: [],
+    }]));
+
     reduxStore.dispatch(gotoProgress(1));
     cy.assertByTestId('back-btn').should('not.be.disabled');
     cy.assertByTestId('next-btn').should('not.be.disabled');

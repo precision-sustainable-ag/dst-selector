@@ -132,7 +132,7 @@ const ProgressButtonsInner = ({
                   height: isMobile ? '35px' : 'auto',
                 }}
                 onClick={() => changeProgress('increment')}
-                disabled={stateLabelRedux === 'Hawaii'}
+                disabled={isDisabledNext || stateLabelRedux === 'Hawaii'}
                 buttonType="PillButton"
                 data-test="get-a-recommendation-btn"
                 transparent={false}
@@ -149,6 +149,7 @@ const ProgressButtonsInner = ({
             height: isMobile ? '35px' : 'auto',
           }}
           onClick={browseCoverCrops}
+          disabled={isDisabledNext}
           buttonType="PillButton"
           data-test="browse-cover-crops-btn"
           transparent={false}
