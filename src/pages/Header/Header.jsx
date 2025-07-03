@@ -377,12 +377,7 @@ const Header = () => {
       <DataLoader />
       <Demo />
       <Box className="header">
-        <Grid
-          container
-          sx={{
-            marginTop: '-15px',
-          }}
-        >
+        <Grid container>
           <PSAHeader
             title="Cover Crop Selector"
             council={councilShorthandRedux}
@@ -395,7 +390,6 @@ const Header = () => {
             height={pathname !== '/' ? '50px' : 'auto'}
             sx={{
               backgroundColor: '#598445',
-              marginTop: '-15px',
             }}
           >
             <InformationBar pathname={pathname} />
