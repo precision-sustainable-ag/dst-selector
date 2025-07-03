@@ -23,10 +23,6 @@ const ProgressButtons = () => {
   useEffect(() => {
     switch (parseInt(progressRedux, 10)) {
       case 0:
-        setToolTip(null);
-        setIsDisabledBack(true);
-        setIsDisabledRefresh(true);
-        setIsDisabledNext(councilShorthandRedux === null);
         break;
       case 1: {
         const locationUnavailable = councilShorthandRedux === 'WCCC' ? queryStringRedux === null : regionShorthandRedux === '';
@@ -36,16 +32,14 @@ const ProgressButtons = () => {
 
         setIsDisabledNext(isDisabled);
         setToolTip(isDisabled ? disabledTooltip : null);
-        setIsDisabledBack(false);
-        setIsDisabledRefresh(false);
         break;
       }
+      case 2:
+        break;
       case 3:
         // goals selection state
-        setToolTip(null);
-        setIsDisabledBack(false);
-        setIsDisabledNext(false);
-        setIsDisabledRefresh(false);
+        setIsDisabledNext(allGoalsRedux.length === 0);
+        setToolTip(allGoalsRedux.length === 0 ? 'No data exists for your location!' : null);
         break;
       default:
         setToolTip(null);
