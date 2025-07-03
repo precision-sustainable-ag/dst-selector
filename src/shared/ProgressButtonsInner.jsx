@@ -22,7 +22,7 @@ const ProgressButtonsInner = ({
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const history = useHistory();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const isMobile = useIsMobile('sm');
   const myCoverCropListLocationRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
@@ -65,46 +65,11 @@ const ProgressButtonsInner = ({
   };
 
   const renderNextButton = () => {
-    if (progressRedux === 0) {
-      return (
-        <Box flexDirection="row" display="flex" justifyContent="space-between" width="100%">
-          <PSAButton
-            style={{
-              width: '250px',
-              minWidth: '70px',
-              marginLeft: !isMobile ? '10px' : '0px',
-              height: isMobile ? '35px' : 'auto',
-            }}
-            onClick={() => changeProgress('increment')}
-            disabled={isDisabledNext}
-            buttonType="PillButton"
-            data-test="get-a-recommendation-btn"
-            transparent={false}
-            title="Get A Recommendation"
-          />
-          <PSAButton
-            style={{
-              width: '250px',
-              minWidth: '70px',
-              marginLeft: !isMobile ? '10px' : '0px',
-              height: isMobile ? '35px' : 'auto',
-            }}
-            onClick={browseCoverCrops}
-            disabled={isDisabledNext}
-            buttonType="PillButton"
-            data-test="browse-cover-crops-btn"
-            transparent={false}
-            title="Browse Cover Crops"
-          />
-        </Box>
-      );
-    }
-
     if (toolTip && isDisabledNext) {
       return (
         <PSATooltip
           enterTouchDelay={0}
-          title={`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}
+          title={toolTip}
           tooltipContent={(
             <Box>
               <PSAButton
@@ -151,48 +116,87 @@ const ProgressButtonsInner = ({
     );
   };
 
-  return (
-    <Stack direction="row" spacing={isMobile ? 2 : 0}>
-      {progressRedux !== 0 && (
+  if (progressRedux === 0) {
+    return (
+      <Box flexDirection="row" display="flex" justifyContent="space-between" width="100%">
+        <PSATooltip
+          enterTouchDelay={0}
+          title={stateLabelRedux === 'Hawaii' ? 'There is not enough expert data to give crop recommendations at this time.' : ''}
+          tooltipContent={(
+            <Box>
+              <PSAButton
+                style={{
+                  width: '250px',
+                  minWidth: '70px',
+                  marginLeft: !isMobile ? '10px' : '0px',
+                  height: isMobile ? '35px' : 'auto',
+                }}
+                onClick={() => changeProgress('increment')}
+                disabled={isDisabledNext || stateLabelRedux === 'Hawaii'}
+                buttonType="PillButton"
+                data-test="get-a-recommendation-btn"
+                transparent={false}
+                title="Get A Recommendation"
+              />
+            </Box>
+          )}
+        />
         <PSAButton
           style={{
-            maxWidth: '90px',
+            width: '250px',
             minWidth: '70px',
+            marginLeft: !isMobile ? '10px' : '0px',
             height: isMobile ? '35px' : 'auto',
-            marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
           }}
-          onClick={() => changeProgress('decrement')}
-          disabled={isDisabledBack}
+          onClick={browseCoverCrops}
+          disabled={isDisabledNext}
           buttonType="PillButton"
-          data-test="back-btn"
-          title="BACK"
+          data-test="browse-cover-crops-btn"
+          transparent={false}
+          title="Browse Cover Crops"
         />
-      )}
+      </Box>
+    );
+  }
+
+  return (
+    <Stack direction="row" spacing={isMobile ? 2 : 0}>
+      <PSAButton
+        style={{
+          maxWidth: '90px',
+          minWidth: '70px',
+          height: isMobile ? '35px' : 'auto',
+          marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
+        }}
+        onClick={() => changeProgress('decrement')}
+        disabled={isDisabledBack}
+        buttonType="PillButton"
+        data-test="back-btn"
+        title="BACK"
+      />
 
       {renderNextButton()}
 
-      {progressRedux !== 0 && (
-        <PSAButton
-          style={{
-            maxWidth: '90px',
-            minWidth: '90px',
-            marginLeft: '3%',
-            height: isMobile ? '35px' : 'auto',
-          }}
-          onClick={() => {
-            if (selectedCropIdsRedux.length > 0) {
-              dispatchRedux(setMyCoverCropReset(true, false));
-            } else {
-              dispatchRedux(reset());
-            }
-          }}
-          disabled={isDisabledRefresh}
-          startIcon={<Refresh />}
-          buttonType="PillButton"
-          data-test="restart-btn"
-          title="Restart"
-        />
-      )}
+      <PSAButton
+        style={{
+          maxWidth: '90px',
+          minWidth: '90px',
+          marginLeft: '3%',
+          height: isMobile ? '35px' : 'auto',
+        }}
+        onClick={() => {
+          if (selectedCropIdsRedux.length > 0) {
+            dispatchRedux(setMyCoverCropReset(true, false));
+          } else {
+            dispatchRedux(reset());
+          }
+        }}
+        disabled={isDisabledRefresh}
+        startIcon={<Refresh />}
+        buttonType="PillButton"
+        data-test="restart-btn"
+        title="Restart"
+      />
     </Stack>
   );
 };

@@ -36,16 +36,14 @@ const InformationSheetContent = ({ crop }) => {
   const [modalData, setModalData] = useState(null);
 
   // Termination checks
-  const seasons = ['Spring Planted', 'Summer Planted', 'Fall Planted', 'Winter Planted'];
   const durationTypes = ['Annual', 'Perennial'];
   const irrigationType = ['Rainfed', 'Irrigated'];
 
   const checkTermination = (label) => {
     const labelSet = new Set(label.split(',').map((item) => item.trim()));
 
-    if (selectedSeason && seasons.some((season) => labelSet.has(season))) {
-      const seasonLabel = `${selectedSeason} Planted`;
-      if (!labelSet.has(seasonLabel)) {
+    if (selectedSeason.length > 0) {
+      if (!selectedSeason.some((season) => labelSet.has(`${season} Planted`))) {
         return false;
       }
     }

@@ -7,13 +7,11 @@ import {
   Typography, Grid, useMediaQuery, useTheme,
   Chip,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { PSALoadingSpinner } from 'shared-react-components/src';
 import GoalTag from './GoalTag/GoalTag';
-import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
-import pirschAnalytics from '../../shared/analytics';
 import {
   updateSelectedDuration, updateSelectedIrrigation, updateSelectedSeason, updateTags,
 } from '../../reduxStore/terminationSlice';
@@ -35,21 +33,16 @@ const GoalsSelector = () => {
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   // redux vars
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
-  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const allGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.allGoals);
+  const plantingSeasonsRedux = useSelector((stateRedux) => stateRedux.goalsData.plantingSeasons);
 
   const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
   const selectedDurationRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedDuration);
   const selectedIrrigationRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
 
   const dispatch = useDispatch();
-
-  // useState vars
-  const [allGoals, setAllGoals] = useState([]);
-  const [plantingSeasons, setPlantingSeasons] = useState([]);
 
   const handleSelectedSeason = (season) => {
     if (selectedSeasonRedux.includes(season)) {
@@ -73,21 +66,8 @@ const GoalsSelector = () => {
   };
 
   useEffect(() => {
-    callCoverCropApi(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?`
-      + `${councilShorthandRedux === 'WCCC' ? 'seasons=true&' : ''}${queryStringRedux}`,
-    ).then((data) => {
-      if (councilShorthandRedux === 'WCCC' && data.plantingSeasons) {
-        setPlantingSeasons(data.plantingSeasons);
-      }
-      setAllGoals(data.data);
-    });
-    pirschAnalytics('Visited Page', { meta: { visited: 'Goals' } });
-  }, []);
-
-  useEffect(() => {
     if (councilShorthandRedux === 'WCCC') {
-      const selectedTags = allGoals.filter((goal) => selectedGoalsRedux.includes(goal.label))
+      const selectedTags = allGoalsRedux.filter((goal) => selectedGoalsRedux.includes(goal.label))
         .map((goal) => goal.tags).flat();
       const uniqueTags = [...new Set(selectedTags)];
       dispatch(updateTags(uniqueTags));
@@ -140,7 +120,7 @@ const GoalsSelector = () => {
             justifyContent="center"
             alignItems="center"
           >
-            {allGoals?.length > 0 ? (
+            {allGoalsRedux?.length > 0 ? (
               <Grid
                 item
                 container
@@ -148,7 +128,7 @@ const GoalsSelector = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                {allGoals
+                {allGoalsRedux
                   .slice()
                   // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
                   .sort(
@@ -166,7 +146,6 @@ const GoalsSelector = () => {
                     >
                       <GoalTag
                         key={key}
-                        goal={goal}
                         id={key}
                         goaltTitle={goal.label}
                         goalDescription={goal.description}
@@ -183,7 +162,7 @@ const GoalsSelector = () => {
             && (
               <>
                 {/* Planting Season */}
-                {plantingSeasons.length > 0 && (
+                {plantingSeasonsRedux.length > 0 && (
                   <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
                     <Grid item xs={12}>
                       <Typography variant="h5" align="center">
@@ -201,7 +180,7 @@ const GoalsSelector = () => {
                       }}
                     >
                       {seasons.map((season, i) => {
-                        if (plantingSeasons.includes(season)) {
+                        if (plantingSeasonsRedux.includes(season)) {
                           return (
                             <Chip
                               key={season}

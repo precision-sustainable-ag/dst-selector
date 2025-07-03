@@ -4,16 +4,29 @@ import { Provider } from 'react-redux';
 import GoalsSelector from './GoalsSelector';
 import configureStore from '../../reduxStore/store';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateAllGoals } from '../../reduxStore/goalSlice';
 
 /* eslint-disable no-undef */
 
 describe('<GoalsSelector />', () => {
   let reduxStore;
   const goalsData = [
-    { label: 'Forage Harvest Value' },
-    { label: 'Good Grazing' },
-    { label: 'Growing Window' },
-    { label: 'Lasting Residue' },
+    {
+      label: 'Forage Harvest Value',
+      description: '',
+      tags: [],
+    },
+    {
+      label: 'Good Grazing',
+      description: '',
+      tags: [],
+    },
+    {
+      label: 'Growing Window',
+      description: '',
+      tags: [],
+    },
+
   ];
   beforeEach(() => {
     reduxStore = configureStore({});
@@ -31,20 +44,13 @@ describe('<GoalsSelector />', () => {
         regionShorthand: '6',
       },
     ));
-    cy.intercept('GET', '**/*', {
-      statusCode: 200,
-      body: {
-        type: 'array',
-        data: goalsData,
-      },
-    }).as('getAllGoals');
+    reduxStore.dispatch(updateAllGoals(goalsData));
 
     mount(
       <Provider store={reduxStore}>
         <GoalsSelector />
       </Provider>,
     );
-    cy.wait('@getAllGoals');
   });
 
   // goals card
