@@ -159,7 +159,7 @@ const ImageCarousel = ({ images }) => {
         )}
       />
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }} className="no-print">
         <PSAButton
           size="small"
           buttonType=""
