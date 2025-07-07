@@ -5,21 +5,21 @@
 */
 
 import {
-  Snackbar,
   Box,
   Container,
   ThemeProvider,
   StyledEngineProvider,
   responsiveFontSizes,
   adaptV4Theme,
+  Grow,
 } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import React, { Suspense } from 'react';
-import { useDispatch, useSelector, Provider } from 'react-redux';
+import { useSelector, Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { PSAProfile, PSATheme } from 'shared-react-components/src';
 import { deepmerge } from '@mui/utils';
-
+import { SnackbarProvider } from 'notistack';
 import configureStore from './reduxStore/store';
 import { CustomStyles } from './shared/constants';
 
@@ -29,7 +29,6 @@ import Header from './pages/Header/Header';
 import Landing from './pages/Landing/Landing';
 import Location from './pages/Location/Location';
 // import LocationConfirmation from './pages/Location/LocationConfirmation/SiteConditions';
-import { snackHandler } from './reduxStore/sharedSlice';
 import RouteNotFound from './pages/RouteNotFound/RouteNotFound';
 import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
 import Footer from './pages/Footer/Footer';
@@ -135,53 +134,66 @@ const App = () => (
       <Provider store={store}>
         <BrowserRouter>
           <Auth0ProviderWithHistory>
-            <Suspense fallback={<div>Loading..</div>}>
-              <Box>
-                <SkipContent href="#main-content" text="Skip to content" />
-                <Header />
-                <Container disableGutters maxWidth={false} id="main-content">
-                  <Box mr={1} ml={1} mt={1} mb={1}>
-                    <Switch>
-                      <Route path="/" render={() => <LoadRelevantRoute />} exact />
-                      <Route path="/explorer" component={CoverCropExplorer} exact />
-                      <Route path="/about" component={About} exact />
-                      <Route path="/help" component={Help} exact />
-                      <Route path="/feedback" render={Feedback} exact />
-                      <Route path="/profile" render={() => <PSAProfile />} exact />
-                      <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                      <Route
-                        path="/seeding-rate-calculator"
-                        component={SeedingRateCalculator}
-                        exact
-                      />
-                      <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
-                      <Route path="/license" render={() => <License licenseType="MIT" />} exact />
-                      <Route
-                        path="/ag-informatics-license"
-                        render={() => <License licenseType="AgInformatics" />}
-                        exact
-                      />
-                      <Route path="/mix-maker" component={MixMaker} exact />
-                      <Route component={RouteNotFound} />
-                    </Switch>
-                  </Box>
-                </Container>
-              </Box>
-              <SnackbarComponent />
-              <SkipContent
-                href="#main-content"
-                text="Skip to content"
-                sx={{
-                  top: 'auto',
-                  bottom: '-80px',
-                  '&:focus': {
-                    bottom: '60px',
-                    transition: 'bottom 225ms cubic-bezier(0, 0, 0.2, 1)',
-                  },
-                }}
-              />
-              <Footer />
-            </Suspense>
+            <SnackbarProvider
+              maxSnack={3}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              dense
+              autoHideDuration={4000}
+              TransitionComponent={Grow}
+              style={{
+                fontWeight: 400,
+              }}
+            >
+              <Suspense fallback={<div>Loading..</div>}>
+                <Box>
+                  <SkipContent href="#main-content" text="Skip to content" />
+                  <Header />
+                  <Container disableGutters maxWidth={false} id="main-content">
+                    <Box mr={1} ml={1} mt={1} mb={1}>
+                      <Switch>
+                        <Route path="/" render={() => <LoadRelevantRoute />} exact />
+                        <Route path="/explorer" component={CoverCropExplorer} exact />
+                        <Route path="/about" component={About} exact />
+                        <Route path="/help" component={Help} exact />
+                        <Route path="/feedback" render={Feedback} exact />
+                        <Route path="/profile" render={() => <PSAProfile />} exact />
+                        <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                        <Route
+                          path="/seeding-rate-calculator"
+                          component={SeedingRateCalculator}
+                          exact
+                        />
+                        <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                        <Route path="/license" render={() => <License licenseType="MIT" />} exact />
+                        <Route
+                          path="/ag-informatics-license"
+                          render={() => <License licenseType="AgInformatics" />}
+                          exact
+                        />
+                        <Route path="/mix-maker" component={MixMaker} exact />
+                        <Route component={RouteNotFound} />
+                      </Switch>
+                    </Box>
+                  </Container>
+                </Box>
+                <SkipContent
+                  href="#main-content"
+                  text="Skip to content"
+                  sx={{
+                    top: 'auto',
+                    bottom: '-80px',
+                    '&:focus': {
+                      bottom: '60px',
+                      transition: 'bottom 225ms cubic-bezier(0, 0, 0.2, 1)',
+                    },
+                  }}
+                />
+                <Footer />
+              </Suspense>
+            </SnackbarProvider>
           </Auth0ProviderWithHistory>
         </BrowserRouter>
       </Provider>
@@ -209,41 +221,6 @@ const LoadRelevantRoute = () => {
     default:
       return <RouteNotFound />;
   }
-};
-
-// eslint-disable-next-line no-unused-vars
-const SnackbarComponent = () => {
-  const dispatchRedux = useDispatch();
-
-  // redux vars
-  const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
-  const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
-
-  const snackHorizontal = 'right';
-  const snackVertical = 'bottom';
-
-  const handleSnackClose = () => {
-    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: '' }));
-  };
-
-  return (
-    <Snackbar
-      anchorOrigin={{
-        vertical: snackVertical,
-        horizontal: snackHorizontal,
-      }}
-      key={snackVertical + snackHorizontal}
-      autoHideDuration={3000}
-      open={snackOpenRedux}
-      onClose={handleSnackClose}
-      ContentProps={{
-        'aria-describedby': 'message-id',
-      }}
-      message={snackMessageRedux}
-      // zIndex is used to show snackbar over dialog
-      sx={{ marginBottom: '40px', zIndex: 1000004 }}
-    />
-  );
 };
 
 window.addEventListener('error', (err) => {

@@ -105,3 +105,8 @@ code {
     display: none;
   }
 }
+
+.notistack-SnackbarContainer {
+  bottom: 80px !important;
+  z-index: 1000004 !important;
+}
