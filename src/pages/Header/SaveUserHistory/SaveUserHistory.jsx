@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import { getAuthToken } from '../../../shared/authToken';
 import { saveHistory, loadHistory } from '../../../shared/api';
 import {
   setHistoryState, setSelectedHistory, historyState, setUserHistoryList,
   setSaveHistory,
 } from '../../../reduxStore/userSlice';
-import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const SaveUserHistory = ({ pathname }) => {
   const dispatchRedux = useDispatch();
@@ -29,6 +29,8 @@ const SaveUserHistory = ({ pathname }) => {
 
   const { progress: progressRedux } = sharedDataRedux;
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleSave = () => {
     const token = getAuthToken();
     // remove cropData from cropDataRedux
@@ -47,7 +49,7 @@ const SaveUserHistory = ({ pathname }) => {
     };
     const { label, id } = selectedHistoryRedux;
     saveHistory(label, data, token, id).then((res) => {
-      if (snackMessageRedux === '') dispatchRedux(snackHandler({ snackOpen: true, snackMessage: 'History Updated.' }));
+      if (snackMessageRedux === '') enqueueSnackbar('History Updated.');
       dispatchRedux(setHistoryState(historyState.imported));
       // set history id
       dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));
@@ -57,7 +59,7 @@ const SaveUserHistory = ({ pathname }) => {
         loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
       }
     }).catch((err) => {
-      dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `Error saving history: ${err}` }));
+      enqueueSnackbar(`Error saving history: ${err}`, { variant: 'error' });
     });
   };
 

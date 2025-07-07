@@ -3,8 +3,6 @@ import { testAuth0Env } from '../shared/keys';
 const initialState = {
   progress: 0,
   printing: false,
-  snackOpen: false,
-  snackMessage: '',
   ajaxInProgress: false,
   myCoverCropActivationFlag: false,
   speciesSelectorActivationFlag: true,
@@ -46,14 +44,6 @@ export const gotoProgress = (value) => ({
   type: 'GOTO_PROGRESS',
   payload: {
     value,
-  },
-});
-
-export const snackHandler = ({ snackOpen, snackMessage }) => ({
-  type: 'SNACK',
-  payload: {
-    snackOpen,
-    snackMessage,
   },
 });
 
@@ -143,13 +133,6 @@ const sharedReducer = (state = initialState, action = null) => {
       return {
         ...state,
         progress: action.payload.value,
-      };
-
-    case 'SNACK':
-      return {
-        ...state,
-        snackOpen: action.payload.snackOpen,
-        snackMessage: action.payload.snackMessage,
       };
 
     case 'SET_AJAX_IN_PROGRESS':
