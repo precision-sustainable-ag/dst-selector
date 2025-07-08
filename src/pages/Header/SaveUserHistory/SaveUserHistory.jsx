@@ -25,8 +25,6 @@ const SaveUserHistory = ({ pathname }) => {
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData);
   const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
 
-  const snackMessageRedux = sharedDataRedux.snackMessage;
-
   const { progress: progressRedux } = sharedDataRedux;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -49,7 +47,7 @@ const SaveUserHistory = ({ pathname }) => {
     };
     const { label, id } = selectedHistoryRedux;
     saveHistory(label, data, token, id).then((res) => {
-      if (snackMessageRedux === '') enqueueSnackbar('History Updated.');
+      enqueueSnackbar('History Updated.');
       dispatchRedux(setHistoryState(historyState.imported));
       // set history id
       dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));

@@ -239,8 +239,6 @@ describe('<SiteConditions />', () => {
 
     const sharedData = {
       progress: 2,
-      snackOpen: false,
-      snackMessage: '',
       ajaxInProgress: false,
       myCoverCropActivationFlag: false,
       speciesSelectorActivationFlag: true,
