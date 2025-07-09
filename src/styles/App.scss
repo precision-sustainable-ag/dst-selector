@@ -32,6 +32,10 @@ code {
     margin: 0.25in;
   }
 
+  html, body {
+    font-size: 75% !important;
+  }
+
   /* Prevent elements from breaking across pages */
   .avoid-break {
     break-inside: avoid;
@@ -42,8 +46,13 @@ code {
     break-after: page;
   }
 
-  .no-print, .MuiAccordionSummary-expandIconWrapper {
-    visibility: hidden !important;
+  .MuiAccordionSummary-root{
+    min-height: auto !important;
+    height: 40px !important;
+  }
+
+  .no-print {
+    display: none !important;
   }
 
   .attribute-label, .attribute-value {
@@ -64,6 +73,14 @@ code {
   .info-sheet-item {
     flex-direction: row !important;
     padding-bottom: 15px !important;
+    padding: 0 !important;
+  }
+
+  .info-sheet-image-container {
+    height: 85% !important;
+    width: 85% !important;
+    margin: auto !important;
+    display: block !important; 
   }
 }
 
