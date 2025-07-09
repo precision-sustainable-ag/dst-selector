@@ -194,7 +194,7 @@ const CropSidebar = ({
       const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
 
       // WCCC Additional Filters
-      if (councilShorthandRedux === 'WCCC') {
+      if (councilShorthandRedux === 'WCCC' && match) {
         match = false;
         const seasonMatch = selectedSeasonRedux.length === 0
           || crop.plantingDates.some((date) => selectedSeasonRedux.some((season) => date.label.includes(season)));
