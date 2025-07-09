@@ -18,13 +18,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import { PSAReduxMap } from 'shared-react-components/src';
+import { useSnackbar } from 'notistack';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import { abbrRegion, reverseGEO, callCoverCropApi } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import StateChangeAlertDialog from './StateChangeAlertDialog/StateChangeAlertDialog';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
-import { setQueryString, snackHandler } from '../../reduxStore/sharedSlice';
+import { setQueryString } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
@@ -55,6 +56,8 @@ const Location = () => {
   const [isFarmable, setIsFarmable] = useState(true);
 
   const NOT_FARMABLE_HTML = '<div style="color: red; font-weight: bold; margin-top: 8 px;">The selected land is not farmable</div>';
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const updateMapFeatures = (newFeatures) => {
     if (JSON.stringify(mapFeatures) === JSON.stringify(newFeatures)) return;
@@ -162,6 +165,7 @@ const Location = () => {
         callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${latitude}&lon=${longitude}`).then((data) => {
           const query = data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&');
           dispatchRedux(setQueryString(query));
+          enqueueSnackbar('Your location has been saved.');
         });
       }
 
@@ -199,16 +203,10 @@ const Location = () => {
             if (councilShorthandRedux !== 'MCCC') {
               updateRegionRedux(zone);
             }
-            dispatchRedux(snackHandler({
-              snackOpen: true,
-              snackMessage: 'Your location has been saved.',
-            }));
+            enqueueSnackbar('Your location has been saved.');
           })
           .catch((err) => {
-            dispatchRedux(snackHandler({
-              snackOpen: true,
-              snackMessage: 'No data available for your location, Please try again.',
-            }));
+            enqueueSnackbar('No data available for your location, Please try again.');
             localStorage.setItem('regionId', '');
             dispatchRedux(updateRegion({
               regionId: '',

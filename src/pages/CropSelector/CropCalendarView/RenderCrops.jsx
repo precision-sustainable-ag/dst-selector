@@ -8,6 +8,7 @@ import {
   AcUnit, AddCircleOutline, CheckRounded, DeleteForever,
 } from '@mui/icons-material';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import { useSnackbar } from 'notistack';
 import {
   CropImage,
   flipCoverCropName,
@@ -18,7 +19,7 @@ import {
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
-import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
+import { myCropListLocation } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
 import useIsMobile from '../../../hooks/useIsMobile';
 
@@ -43,6 +44,8 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   const isMobile = useIsMobile('md');
+
+  const { enqueueSnackbar } = useSnackbar();
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
@@ -218,7 +221,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   crop.id,
                   crop.label,
                   dispatchRedux,
-                  snackHandler,
+                  enqueueSnackbar,
                   updateSelectedCropIds,
                   selectedCropIdsRedux,
                   myCropListLocation,

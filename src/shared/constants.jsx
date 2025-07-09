@@ -897,7 +897,7 @@ export const addCropToBasket = (
   cropId,
   cropName,
   dispatchRedux,
-  snackHandler,
+  enqueueSnackbar,
   updateSelectedCropIds,
   selectedCropIdsRedux,
   myCropListLocation,
@@ -909,7 +909,7 @@ export const addCropToBasket = (
 
   const buildDispatch = (action, crops) => {
     dispatchRedux(updateSelectedCropIds(crops));
-    dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
+    enqueueSnackbar(`${cropName} ${action}`);
   };
 
   // update history state
