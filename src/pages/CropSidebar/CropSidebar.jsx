@@ -185,6 +185,9 @@ const CropSidebar = ({
           if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item.value))) {
             match = false;
           }
+        } else {
+          // if there is no attribute with that filter, match = false
+          match = false;
         }
       });
 
