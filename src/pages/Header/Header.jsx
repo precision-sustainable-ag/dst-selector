@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Box } from '@mui/material';
+import { AppBar, Box } from '@mui/material';
 import { PSAHeader, PSAAuthButton } from 'shared-react-components/src';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
@@ -376,32 +376,38 @@ const Header = () => {
   ];
 
   return (
-    <header style={{ width: '100%' }}>
-      <DataLoader />
-      <Demo />
-      <Box className="header">
-        <PSAHeader
-          title="Cover Crop Selector"
-          council={councilShorthandRedux}
-          navContent={navContent}
-          onLogoClick={handleLogoClick}
-        />
-        <InformationBar pathname={pathname} />
-        <MyCoverCropReset />
-        {/* saving history here */}
-        <SaveUserHistory pathname={pathname} />
+    <>
+      <AppBar position="static" component="header" sx={{ backgroundColor: 'white' }}>
+        <Box className="header">
+          <PSAHeader
+            title="Cover Crop Selector"
+            council={councilShorthandRedux}
+            navContent={navContent}
+            onLogoClick={handleLogoClick}
+          />
+        </Box>
+      </AppBar>
 
-        {(!authModalOpen || isAuthenticated) && (
-          <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />
-        )}
-        <AuthModal
-          modalOpen={authModalOpen}
-          setModalOpen={setAuthModalOpen}
-          setConsentModalOpen={setConsentModalOpen}
-        />
-        <HistoryDialog />
-      </Box>
-    </header>
+      <AppBar position="sticky" component="nav" sx={{ zIndex: 1000 }}>
+        <InformationBar pathname={pathname} />
+      </AppBar>
+
+      <Demo />
+      <DataLoader />
+      <MyCoverCropReset />
+      {/* saving history here */}
+      <SaveUserHistory pathname={pathname} />
+
+      {(!authModalOpen || isAuthenticated) && (
+        <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />
+      )}
+      <AuthModal
+        modalOpen={authModalOpen}
+        setModalOpen={setAuthModalOpen}
+        setConsentModalOpen={setConsentModalOpen}
+      />
+      <HistoryDialog />
+    </>
   );
 };
 

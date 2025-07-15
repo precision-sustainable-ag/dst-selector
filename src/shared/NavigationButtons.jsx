@@ -17,7 +17,6 @@ const NavigationButtons = ({ pathname }) => {
   const dispatchRedux = useDispatch();
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const history = useHistory();
-  // eslint-disable-next-line no-unused-vars
   const isMobile = useIsMobile('sm');
 
   return (
