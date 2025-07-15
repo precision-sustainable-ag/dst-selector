@@ -213,11 +213,15 @@ const Landing = () => {
         .getElementsByTagName('header')[0]
         .getBoundingClientRect().height;
 
+      const navHeight = document
+        .getElementsByTagName('nav')[0]
+        .getBoundingClientRect().height;
+
       const footerHeight = document
         .getElementsByClassName('primaryFooter')[0]
         .getBoundingClientRect().height;
 
-      const contHeight = documentHeight - (headerHeight + footerHeight);
+      const contHeight = documentHeight - (headerHeight + footerHeight + navHeight);
       document.getElementById('landingWrapper').style.minHeight = `${contHeight}px`;
       setContainerHeight(contHeight);
     }
