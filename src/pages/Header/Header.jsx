@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Grid, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import { PSAHeader, PSAAuthButton } from 'shared-react-components/src';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
@@ -380,27 +380,16 @@ const Header = () => {
       <DataLoader />
       <Demo />
       <Box className="header">
-        <Grid container>
-          <PSAHeader
-            title="Cover Crop Selector"
-            council={councilShorthandRedux}
-            navContent={navContent}
-            onLogoClick={handleLogoClick}
-          />
-          <Grid
-            item
-            xs={12}
-            height={pathname !== '/' ? '50px' : 'auto'}
-            sx={{
-              backgroundColor: '#598445',
-            }}
-          >
-            <InformationBar pathname={pathname} />
-            <MyCoverCropReset />
-            {/* saving history here */}
-            <SaveUserHistory pathname={pathname} />
-          </Grid>
-        </Grid>
+        <PSAHeader
+          title="Cover Crop Selector"
+          council={councilShorthandRedux}
+          navContent={navContent}
+          onLogoClick={handleLogoClick}
+        />
+        <InformationBar pathname={pathname} />
+        <MyCoverCropReset />
+        {/* saving history here */}
+        <SaveUserHistory pathname={pathname} />
 
         {(!authModalOpen || isAuthenticated) && (
           <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />

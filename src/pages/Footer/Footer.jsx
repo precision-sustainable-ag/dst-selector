@@ -37,11 +37,9 @@ const Footer = () => {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        height={pathname !== '/' ? '50px' : 'auto'}
+        sx={{ p: '8px 0' }}
       >
-        <Grid item xs={12} mt={0.6} mb={0.6}>
-          {pathname === '/' ? <ProgressButtons /> : <NavigationButtons />}
-        </Grid>
+        {pathname === '/' ? <ProgressButtons /> : <NavigationButtons />}
       </Grid>
     </Box>
   );

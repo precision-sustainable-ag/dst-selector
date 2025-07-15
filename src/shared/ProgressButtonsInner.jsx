@@ -76,7 +76,6 @@ const ProgressButtonsInner = ({
                 style={{
                   maxWidth: '90px',
                   minWidth: '70px',
-                  marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
                   height: isMobile ? '35px' : 'auto',
                 }}
                 onClick={() => changeProgress('increment')}
@@ -97,12 +96,12 @@ const ProgressButtonsInner = ({
         badgeContent={progressRedux === 4 ? selectedCropIdsRedux.length : null}
         color="error"
         data-test="badge"
+        sx={{ '& .MuiBadge-badge': { right: '6px' } }}
       >
         <PSAButton
           style={{
             maxWidth: '90px',
             minWidth: progressRedux === 4 ? 'max-content' : '70px',
-            marginLeft: '3%',
             height: isMobile ? '35px' : 'auto',
           }}
           onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
@@ -118,7 +117,7 @@ const ProgressButtonsInner = ({
 
   if (progressRedux === 0) {
     return (
-      <Box flexDirection="row" display="flex" justifyContent="space-between" width="100%">
+      <Stack direction="row" spacing={1}>
         <PSATooltip
           enterTouchDelay={0}
           title={stateLabelRedux === 'Hawaii' ? 'There is not enough expert data to give crop recommendations at this time.' : ''}
@@ -126,10 +125,9 @@ const ProgressButtonsInner = ({
             <Box>
               <PSAButton
                 style={{
-                  width: '250px',
                   minWidth: '70px',
-                  marginLeft: !isMobile ? '10px' : '0px',
                   height: isMobile ? '35px' : 'auto',
+                  padding: isMobile ? '5px 10px' : 'auto',
                 }}
                 onClick={() => changeProgress('increment')}
                 disabled={isDisabledNext || stateLabelRedux === 'Hawaii'}
@@ -143,10 +141,10 @@ const ProgressButtonsInner = ({
         />
         <PSAButton
           style={{
-            width: '250px',
             minWidth: '70px',
-            marginLeft: !isMobile ? '10px' : '0px',
             height: isMobile ? '35px' : 'auto',
+            padding: isMobile ? '5px 10px' : 'auto',
+
           }}
           onClick={browseCoverCrops}
           disabled={isDisabledNext}
@@ -155,18 +153,17 @@ const ProgressButtonsInner = ({
           transparent={false}
           title="Browse Cover Crops"
         />
-      </Box>
+      </Stack>
     );
   }
 
   return (
-    <Stack direction="row" spacing={isMobile ? 2 : 0}>
+    <Stack direction="row" spacing={1}>
       <PSAButton
         style={{
           maxWidth: '90px',
           minWidth: '70px',
           height: isMobile ? '35px' : 'auto',
-          marginLeft: !isMobile && (progressRedux === 4) ? '-75px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
@@ -181,7 +178,6 @@ const ProgressButtonsInner = ({
         style={{
           maxWidth: '90px',
           minWidth: '90px',
-          marginLeft: '3%',
           height: isMobile ? '35px' : 'auto',
         }}
         onClick={() => {

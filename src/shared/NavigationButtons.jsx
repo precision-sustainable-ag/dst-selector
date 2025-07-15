@@ -17,14 +17,16 @@ const NavigationButtons = ({ pathname }) => {
   const dispatchRedux = useDispatch();
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const history = useHistory();
+  // eslint-disable-next-line no-unused-vars
   const isMobile = useIsMobile('sm');
 
   return (
-    <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
+    <Stack direction="row" spacing={1}>
       <PSAButton
         style={{
           maxWidth: '90px',
           minWidth: '70px',
+          height: isMobile ? '35px' : 'auto',
         }}
         onClick={() => {
           history.push('/');
@@ -42,7 +44,6 @@ const NavigationButtons = ({ pathname }) => {
             style={{
               maxWidth: '90px',
               minWidth: 'max-content',
-              marginLeft: '3%',
               height: isMobile ? '35px' : 'auto',
             }}
             onClick={() => history.push('/my-cover-crop-list')}
@@ -58,6 +59,7 @@ const NavigationButtons = ({ pathname }) => {
         style={{
           maxWidth: '90px',
           minWidth: '70px',
+          height: isMobile ? '35px' : 'auto',
         }}
         onClick={() => {
           if (selectedCropIdsRedux.length > 0) {
