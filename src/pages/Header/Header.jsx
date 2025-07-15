@@ -376,7 +376,7 @@ const Header = () => {
   ];
 
   return (
-    <header style={{ width: '100vw' }}>
+    <header style={{ width: '100%' }}>
       <DataLoader />
       <Demo />
       <Box className="header">

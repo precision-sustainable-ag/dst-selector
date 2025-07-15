@@ -27,7 +27,7 @@ const Footer = () => {
     <Box
       sx={{
         backgroundColor: '#598445',
-        width: '100vw',
+        width: '100%',
       }}
       className="primaryFooter"
       id="page-footer"
