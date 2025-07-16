@@ -215,6 +215,10 @@ const CropSidebar = ({
           || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
       }
 
+      if (councilShorthandRedux === 'WCCC') {
+        cd[n].inactive = crop.plantingDates?.length === 0;
+      }
+
       return true;
     });
     dispatchRedux(updateActiveCropIds(filtered.filter((crop) => !crop.inactive).map((crop) => crop.id)));
