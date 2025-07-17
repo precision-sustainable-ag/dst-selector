@@ -385,7 +385,6 @@ const Header = () => {
       if (navRef.current) {
         const navbarHeight = navRef.current.offsetHeight;
         document.documentElement.style.setProperty('--navbar-height', `${navbarHeight}px`);
-        console.log('--navbar-height', navbarHeight);
       }
     };
     handleResize();
@@ -408,7 +407,12 @@ const Header = () => {
         </Box>
       </AppBar>
 
-      <AppBar position="sticky" component="nav" sx={{ zIndex: 1000, right: 0 }} ref={navRef}>
+      <AppBar
+        position={pathname === '/my-cover-crop-list' ? 'static' : 'sticky'}
+        component="nav"
+        sx={{ zIndex: 1000, right: 0 }}
+        ref={navRef}
+      >
         <InformationBar pathname={pathname} />
       </AppBar>
 
