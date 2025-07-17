@@ -8,7 +8,9 @@
 */
 
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect, useState, useLayoutEffect, useRef,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { AppBar, Box } from '@mui/material';
@@ -285,6 +287,8 @@ const Header = () => {
   const [consentModalOpen, setConsentModalOpen] = useState(false);
   const [pathname, setPathname] = useState('/');
 
+  const navRef = useRef(null);
+
   const { enqueueSnackbar } = useSnackbar();
 
   const handleLogoClick = () => {
@@ -375,6 +379,22 @@ const Header = () => {
     },
   ];
 
+  useLayoutEffect(() => {
+    // calculate navbar height and set it as a css variable
+    const handleResize = () => {
+      if (navRef.current) {
+        const navbarHeight = navRef.current.offsetHeight;
+        document.documentElement.style.setProperty('--navbar-height', `${navbarHeight}px`);
+        console.log('--navbar-height', navbarHeight);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
       <AppBar position="static" component="header" sx={{ backgroundColor: 'white' }}>
@@ -388,7 +408,7 @@ const Header = () => {
         </Box>
       </AppBar>
 
-      <AppBar position="sticky" component="nav" sx={{ zIndex: 1000 }}>
+      <AppBar position="sticky" component="nav" sx={{ zIndex: 1000, right: 0 }} ref={navRef}>
         <InformationBar pathname={pathname} />
       </AppBar>
 
