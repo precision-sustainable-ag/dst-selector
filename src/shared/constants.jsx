@@ -915,6 +915,15 @@ export const addCropToBasket = (
     enqueueSnackbar(`${cropName} ${action}`);
   };
 
+  const updateActiveCrops = (inactiveValue) => {
+    const updatedCropData = [...cropDataRedux];
+    updatedCropData[index] = {
+      inactive: inactiveValue,
+      ...updatedCropData[index],
+    };
+    dispatchRedux(updateCropData(updatedCropData));
+  };
+
   // update history state
   if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
 
@@ -928,20 +937,10 @@ export const addCropToBasket = (
     });
     if (removeIndex === -1) {
       // element not in array
-      const updatedCropData = [...cropDataRedux];
-      updatedCropData[index] = {
-        ...updatedCropData[index],
-        inactive: false,
-      };
-      dispatchRedux(updateCropData(updatedCropData));
+      updateActiveCrops(false);
       buildDispatch('added', [...selectedCropIdsRedux, selectedCrops]);
     } else {
-      const updatedCropData = [...cropDataRedux];
-      updatedCropData[index] = {
-        inactive: true,
-        ...updatedCropData[index],
-      };
-      dispatchRedux(updateCropData(updatedCropData));
+      updateActiveCrops(true);
       const selectedCropsCopy = selectedCropIdsRedux;
       selectedCropsCopy.splice(removeIndex, 1);
       buildDispatch('Removed', selectedCropsCopy);
@@ -950,12 +949,7 @@ export const addCropToBasket = (
       }
     }
   } else {
-    const updatedCropData = [...cropDataRedux];
-    updatedCropData[index] = {
-      ...updatedCropData[index],
-      inactive: false,
-    };
-    dispatchRedux(updateCropData(updatedCropData));
+    updateActiveCrops(false);
     dispatchRedux(myCropListLocation({ from }));
     buildDispatch('Added', [selectedCrops]);
   }

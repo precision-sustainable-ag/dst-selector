@@ -219,14 +219,14 @@ const CropSidebar = ({
           || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
       }
 
+      if (councilShorthandRedux === 'WCCC' && !cd[n].inactive) {
+        cd[n].inactive = crop.plantingDates?.length === 0;
+      }
+
       if (cd[n].inactive) {
         if (selectedCropIdsRedux.includes(cd[n].id)) {
           cd[n].inactive = false;
         }
-      }
-
-      if (councilShorthandRedux === 'WCCC') {
-        cd[n].inactive = crop.plantingDates?.length === 0;
       }
 
       return true;
