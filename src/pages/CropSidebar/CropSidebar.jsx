@@ -223,6 +223,7 @@ const CropSidebar = ({
         if (selectedCropIdsRedux.includes(cd[n].id)) {
           cd[n].inactive = false;
         }
+      }
 
       if (councilShorthandRedux === 'WCCC') {
         cd[n].inactive = crop.plantingDates?.length === 0;
