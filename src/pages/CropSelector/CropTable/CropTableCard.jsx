@@ -17,6 +17,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
 
   const selectedBtns = selectedCropIdsRedux;
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
@@ -90,6 +91,8 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
               addCropToBasket(
                 crop.id,
                 crop.label,
+                indexKey,
+                cropDataRedux,
                 dispatchRedux,
                 enqueueSnackbar,
                 updateSelectedCropIds,
