@@ -112,28 +112,33 @@ const MyCoverCropComparisonTable = () => {
   };
   const tableRef = useRef(null);
 
-  const buildTableHeaders = () => selectedCrops.map((crop, index) => (
-    <TableCell key={index} align="center">
-      <Typography
-        variant="subtitle1"
-        sx={{
-          fontWeight: 'bold',
-          color: 'primary.main',
-          cursor: 'pointer',
-          textDecoration: 'none',
-          '&:hover': {
-            textDecoration: 'underline',
-            color: 'primary.dark',
-          },
-          transition: 'color 0.3s ease',
-        }}
-        onClick={() => handleModalOpen(crop)}
-        data-test="crop-comparison-table-header"
-      >
-        {crop.label}
-      </Typography>
-    </TableCell>
-  ));
+  const buildTableHeaders = () => (
+    <>
+      <TableCell sx={{ position: 'sticky', left: 0, background: 'white' }} />
+      {selectedCrops.map((crop, index) => (
+        <TableCell key={index} align="center" sx={{ backgroundColor: 'white' }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: 'bold',
+              color: 'primary.main',
+              cursor: 'pointer',
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'underline',
+                color: 'primary.dark',
+              },
+              transition: 'color 0.3s ease',
+            }}
+            onClick={() => handleModalOpen(crop)}
+            data-test="crop-comparison-table-header"
+          >
+            {crop.label}
+          </Typography>
+        </TableCell>
+      ))}
+    </>
+  );
 
   const buildTableRows = (row) => Object.keys(row).map((key, index) => {
     const attribute = row[`crop${index - 1}`];
@@ -212,7 +217,6 @@ const MyCoverCropComparisonTable = () => {
             />
           )}
           <TableRow>
-            <TableCell />
             {buildTableHeaders()}
           </TableRow>
         </TableHead>

@@ -149,7 +149,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       setModalOpen(!modalOpen);
                     }}
                     data-test="crop-calendar-crop-name"
-                    title={flipCoverCropName(crop.label)}
+                    title={councilShorthandRedux === 'WCCC' ? crop.label : flipCoverCropName(crop.label)}
                   />
                 </Grid>
                 {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (

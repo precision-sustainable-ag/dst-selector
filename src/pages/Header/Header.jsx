@@ -8,10 +8,12 @@
 */
 
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect, useState, useLayoutEffect, useRef,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Grid, Box } from '@mui/material';
+import { AppBar, Box } from '@mui/material';
 import { PSAHeader, PSAAuthButton } from 'shared-react-components/src';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
@@ -285,6 +287,8 @@ const Header = () => {
   const [consentModalOpen, setConsentModalOpen] = useState(false);
   const [pathname, setPathname] = useState('/');
 
+  const navRef = useRef(null);
+
   const { enqueueSnackbar } = useSnackbar();
 
   const handleLogoClick = () => {
@@ -375,44 +379,59 @@ const Header = () => {
     },
   ];
 
+  useLayoutEffect(() => {
+    // calculate navbar height and set it as a css variable
+    const handleResize = () => {
+      if (navRef.current) {
+        const navbarHeight = navRef.current.offsetHeight;
+        document.documentElement.style.setProperty('--navbar-height', `${navbarHeight}px`);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
-    <header style={{ width: '100vw' }}>
-      <DataLoader />
-      <Demo />
-      <Box className="header">
-        <Grid container>
+    <>
+      <AppBar position="static" component="header" sx={{ backgroundColor: 'white' }}>
+        <Box className="header">
           <PSAHeader
             title="Cover Crop Selector"
             council={councilShorthandRedux}
             navContent={navContent}
             onLogoClick={handleLogoClick}
           />
-          <Grid
-            item
-            xs={12}
-            height={pathname !== '/' ? '50px' : 'auto'}
-            sx={{
-              backgroundColor: '#598445',
-            }}
-          >
-            <InformationBar pathname={pathname} />
-            <MyCoverCropReset />
-            {/* saving history here */}
-            <SaveUserHistory pathname={pathname} />
-          </Grid>
-        </Grid>
+        </Box>
+      </AppBar>
 
-        {(!authModalOpen || isAuthenticated) && (
-          <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />
-        )}
-        <AuthModal
-          modalOpen={authModalOpen}
-          setModalOpen={setAuthModalOpen}
-          setConsentModalOpen={setConsentModalOpen}
-        />
-        <HistoryDialog />
-      </Box>
-    </header>
+      <AppBar
+        position={pathname === '/my-cover-crop-list' ? 'static' : 'sticky'}
+        component="nav"
+        sx={{ zIndex: 1000, right: 0 }}
+        ref={navRef}
+      >
+        <InformationBar pathname={pathname} />
+      </AppBar>
+
+      <Demo />
+      <DataLoader />
+      <MyCoverCropReset />
+      {/* saving history here */}
+      <SaveUserHistory pathname={pathname} />
+
+      {(!authModalOpen || isAuthenticated) && (
+        <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />
+      )}
+      <AuthModal
+        modalOpen={authModalOpen}
+        setModalOpen={setAuthModalOpen}
+        setConsentModalOpen={setConsentModalOpen}
+      />
+      <HistoryDialog />
+    </>
   );
 };
 

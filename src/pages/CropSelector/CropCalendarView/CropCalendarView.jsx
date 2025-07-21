@@ -202,7 +202,6 @@ const CropCalendarView = ({
             }}
           >
             <Table
-              stickyHeader
               sx={{
                 [`& .${tableCellClasses.root}`]: {
                   borderBottom: 'none',
@@ -214,9 +213,9 @@ const CropCalendarView = ({
             >
               <TableHead
                 sx={{
-                  zIndex: isMobile ? 19 : -1,
-                  position: isMobile ? 'sticky' : 'static',
-                  top: isMobile ? 0 : 'auto',
+                  zIndex: 19,
+                  position: 'sticky',
+                  top: isMobile ? -1 : 'var(--navbar-height)',
                 }}
               >
                 <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
@@ -335,14 +334,6 @@ const CropCalendarView = ({
                       )}
                     </>
                   )}
-                  <TableCell
-                    style={{
-                      borderBottom: '5px solid white',
-                      padding: 0,
-                      textAlign: 'center',
-
-                    }}
-                  />
                   {activeGrowthPeriodRedux.length > 0 ? (
                     <TableCell
                       sx={{
@@ -367,6 +358,7 @@ const CropCalendarView = ({
                 <TableRow style={{ marginTop: '5px' }}>
                   <TableCell
                     sx={{
+                      position: isMobile ? 'sticky' : 'static',
                       left: isMobile ? 0 : 'auto',
                       zIndex: isMobile ? 20 : 2,
                       borderRight: '5px solid white',

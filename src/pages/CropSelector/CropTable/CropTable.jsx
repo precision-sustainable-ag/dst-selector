@@ -165,11 +165,18 @@ const CropTable = ({
           width: '100%',
         }}
       >
-        <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }} ref={tableRef}>
-          <TableHead>
+        <Table sx={{ borderCollapse: 'separate', borderSpacing: '7px', padding: 0 }} ref={tableRef}>
+          <TableHead
+            sx={{
+              zIndex: 19,
+              position: 'sticky',
+              top: isMobile ? -1 : 'var(--navbar-height)',
+            }}
+          >
             <TableRow>
               <TableCell
                 sx={{
+                  position: isMobile ? 'sticky' : 'static',
                   left: isMobile ? 0 : 'auto',
                   zIndex: isMobile ? 20 : 2,
                   borderRight: '5px solid white',
