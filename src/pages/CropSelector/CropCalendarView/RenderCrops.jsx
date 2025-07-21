@@ -98,16 +98,16 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     title={(
                       <>
                         {isSelected && (
-                        <CheckBoxIcon
-                          style={{
-                            position: 'absolute',
-                            right: '4px',
-                            top: '4px',
-                            height: '15px',
-                            zIndex: 1,
-                            backgroundColor: '#5992E6',
-                          }}
-                        />
+                          <CheckBoxIcon
+                            style={{
+                              position: 'absolute',
+                              right: '4px',
+                              top: '4px',
+                              height: '15px',
+                              zIndex: 1,
+                              backgroundColor: '#5992E6',
+                            }}
+                          />
                         )}
                         <CropImage
                           view="calendar"
@@ -220,6 +220,8 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 addCropToBasket(
                   crop.id,
                   crop.label,
+                  index,
+                  cropDataRedux,
                   dispatchRedux,
                   enqueueSnackbar,
                   updateSelectedCropIds,
