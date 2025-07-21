@@ -76,6 +76,7 @@ const CropSidebar = ({
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
   const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   // useState vars
   const [loading, setLoading] = useState(true);
@@ -154,8 +155,8 @@ const CropSidebar = ({
         // do not process singular or plural variants in
 
         return !search
-            || (m !== null && search.every((s) => m?.some((t) => t.includes(s))))
-            || (pluralSearch && (m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s)))));
+          || (m !== null && search.every((s) => m?.some((t) => t.includes(s))))
+          || (pluralSearch && (m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s)))));
       };
       cd[n].inactive = true;
       return match('label') || match('scientificName');
@@ -216,6 +217,12 @@ const CropSidebar = ({
         cd[n].inactive = (!match)
           || !(matchesDrainageClass && cropFloodingValueIsHigher)
           || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
+      }
+
+      if (cd[n].inactive) {
+        if (selectedCropIdsRedux.includes(cd[n].id)) {
+          cd[n].inactive = false;
+        }
       }
 
       return true;
