@@ -107,19 +107,16 @@ const InformationBar = ({ pathname }) => {
     );
   };
 
-  return pathname === speciesSelectorToolName ? (
+  return (
     <Grid
       container
-      item
       sx={{
         backgroundColor: '#598445',
-        marginBottom: '7px',
+        p: '8px 0',
       }}
       justifyContent="right"
-      xs={12}
-      spacing={1}
     >
-      {progressRedux > 0 && !isMobile && (
+      {pathname === speciesSelectorToolName && progressRedux > 0 && !isMobile && (
         <Grid item container xs={12} sm={12} md={12} lg={7.5} spacing={1}>
           <Grid item xs={12} sm={6} md={6} lg={3}>
             {getData('location')}
@@ -136,31 +133,16 @@ const InformationBar = ({ pathname }) => {
       <Grid
         container
         item
-        sx={{
-          backgroundColor: '#598445',
-        }}
-        justifyContent="right"
+        justifyContent={isMobile ? 'center' : 'right'}
         xs={12}
-        lg={4}
-        marginRight={5}
+        lg={progressRedux > 0 && !isMobile ? 4 : 12}
+        marginRight={isMobile ? 0 : 2}
       >
-        <ProgressButtons />
+        {pathname === speciesSelectorToolName
+          ? <ProgressButtons />
+          : <NavigationButtons pathname={pathname} />}
       </Grid>
-    </Grid>
-  ) : (
-    <Grid
-      container
-      item
-      sx={{
-        backgroundColor: '#598445',
-      }}
-      justifyContent="right"
-      alignItems="right"
-      pt={0.6}
-      pb={0.6}
-      pr={2}
-    >
-      <NavigationButtons pathname={pathname} />
+
     </Grid>
   );
 };
