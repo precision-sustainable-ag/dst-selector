@@ -187,35 +187,14 @@ const SoilCondition = () => {
 
   return (
     <Grid item container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
-      <Grid
-        item
-        xs={12}
-        md={10}
-        sx={{
-          mb: '1rem',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100px',
-        }}
-      >
+      <Grid item xs={12} md={10} sx={{ mb: '1rem' }}>
         {drainageOptions.length > 0 ? (
           <SoilDrainage drainageOptions={drainageOptions} />
         ) : (
           <PSALoadingSpinner />
         )}
       </Grid>
-      <Grid
-        item
-        xs={12}
-        md={10}
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100px',
-        }}
-      >
+      <Grid item xs={12} md={10}>
         {floodingOptions.length > 0 ? (
           <SoilFloodingFrequency floodingOptions={floodingOptions} />
         ) : (
