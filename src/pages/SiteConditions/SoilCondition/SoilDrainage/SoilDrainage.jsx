@@ -103,6 +103,8 @@ const SoilDrainage = ({ drainageOptions }) => {
         border: '2px solid #598445',
         height: '100%',
         width: '100%',
+        display: 'flex',
+        alignItems: 'center',
       }}
       data-test="soil-drainage-card"
     >
@@ -110,10 +112,8 @@ const SoilDrainage = ({ drainageOptions }) => {
         <Grid
           item
           container
-          sx={{
-            p: '1rem',
-            mb: '1rem',
-          }}
+          sx={{ p: '1rem' }}
+          alignItems="center"
           xs={12}
         >
           <Grid item sx={{ mr: '1rem' }}>
@@ -189,7 +189,6 @@ const SoilDrainage = ({ drainageOptions }) => {
         <Grid
           item
           container
-          spacing={1}
           sx={{ mb: '1rem' }}
           alignItems="center"
           justifyContent="center"
@@ -207,7 +206,7 @@ const SoilDrainage = ({ drainageOptions }) => {
           </Grid>
           <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
           {showTiling && (
-            <Grid container justifyContent="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center" mt="1rem">
               <Grid item>
                 <Box
                   sx={{
@@ -220,31 +219,33 @@ const SoilDrainage = ({ drainageOptions }) => {
                   <InvertColors />
                 </Box>
               </Grid>
-              <Grid item container direction="column" xs={6} lg={3}>
-                <Grid item>
-                  <Typography variant="body1">
-                    <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Tile Drainage</span>
+              <Grid item>
+                <Grid container direction="column">
+                  <Grid item>
+                    <Typography variant="body1">
+                      <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Tile Drainage</span>
                     &nbsp;
-                    {' '}
-                    <ReferenceTooltip
-                      type="text"
-                      content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
+                      {' '}
+                      <ReferenceTooltip
+                        type="text"
+                        content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
+                      />
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="body1" display="inline">
+                      No
+                    </Typography>
+                    <Switch
+                      checked={tileDrainageRedux}
+                      onChange={handleTileDrainage}
+                      name="checkedC"
+                      data-test="tiling-check-switch"
                     />
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="body1" display="inline">
-                    No
-                  </Typography>
-                  <Switch
-                    checked={tileDrainageRedux}
-                    onChange={handleTileDrainage}
-                    name="checkedC"
-                    data-test="tiling-check-switch"
-                  />
-                  <Typography variant="body1" display="inline">
-                    Yes
-                  </Typography>
+                    <Typography variant="body1" display="inline">
+                      Yes
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
               {tileDrainageRedux && drainageClass()}
