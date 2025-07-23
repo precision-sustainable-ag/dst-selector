@@ -187,16 +187,26 @@ const CropTable = ({
                   textAlign: 'center',
                 }}
               >
-                <PSAButton
-                  onClick={() => sortByName()}
-                  buttonType=""
-                  sx={{ color: 'black', textTransform: 'none' }}
-                  variant="body1"
-                  title={(
-                    <>
-                      Cover Crops
-                      {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
-                    </>
+                <PSATooltip
+                  placement="bottom"
+                  arrow
+                  enterTouchDelay={0}
+                  title="Sort by Crop Name"
+                  tooltipContent={(
+                    <Box tabIndex="0">
+                      <PSAButton
+                        onClick={() => sortByName()}
+                        buttonType=""
+                        sx={{ color: 'black', textTransform: 'none' }}
+                        variant="body1"
+                        title={(
+                          <>
+                            Cover Crops
+                            {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
+                          </>
+                        )}
+                      />
+                    </Box>
                   )}
                 />
               </TableCell>
@@ -228,7 +238,7 @@ const CropTable = ({
                       placement="bottom"
                       arrow
                       enterTouchDelay={0}
-                      title={goal}
+                      title={`Sort by ${goal}`}
                       tooltipContent={(
                         <Box>
                           <PSAButton
@@ -251,32 +261,43 @@ const CropTable = ({
                         </Box>
                       )}
                     />
+
                   </TableCell>
                 ))}
 
               {showGrowthWindow && (
-              <TableCell
-                sx={{ padding: 0 }}
-                style={{
-                  backgroundColor: columnSort === 'plantingWindow' ? '#49a8ab' : '#abd08f',
-                  textAlign: 'center',
-                }}
-              >
-                <PSAButton
-                  buttonType=""
-                  variant="body1"
+                <TableCell
+                  sx={{ padding: 0 }}
                   style={{
-                    textTransform: 'none',
+                    backgroundColor: columnSort === 'plantingWindow' ? '#49a8ab' : '#abd08f',
+                    textAlign: 'center',
                   }}
-                  onClick={() => sortByPlantingWindow()}
-                  title={(
-                    <>
-                      Planting Window
-                      {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
-                    </>
+                >
+                  <PSATooltip
+                    placement="bottom"
+                    arrow
+                    enterTouchDelay={0}
+                    title="Sort by Planting Window"
+                    tooltipContent={(
+                      <Box tabIndex="0">
+                        <PSAButton
+                          buttonType=""
+                          variant="body1"
+                          style={{
+                            textTransform: 'none',
+                          }}
+                          onClick={() => sortByPlantingWindow()}
+                          title={(
+                            <>
+                              Planting Window
+                              {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
+                            </>
+                          )}
+                        />
+                      </Box>
                     )}
-                />
-              </TableCell>
+                  />
+                </TableCell>
               )}
 
               <TableCell
@@ -286,16 +307,26 @@ const CropTable = ({
                   textAlign: 'center',
                 }}
               >
-                <PSAButton
-                  buttonType=""
-                  variant="body1"
-                  style={{ textTransform: 'none' }}
-                  onClick={() => sortBySelectedCrops()}
-                  title={(
-                    <>
-                      My Crops
-                      {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
-                    </>
+                <PSATooltip
+                  placement="bottom"
+                  arrow
+                  enterTouchDelay={0}
+                  title="Sort by Selected Crops"
+                  tooltipContent={(
+                    <Box tabIndex="0">
+                      <PSAButton
+                        buttonType=""
+                        variant="body1"
+                        style={{ textTransform: 'none' }}
+                        onClick={() => sortBySelectedCrops()}
+                        title={(
+                          <>
+                            My Crops
+                            {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
+                          </>
+                        )}
+                      />
+                    </Box>
                   )}
                 />
               </TableCell>

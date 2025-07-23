@@ -369,18 +369,28 @@ const CropCalendarView = ({
                       textAlign: 'center',
                     }}
                   >
-                    <PSAButton
-                      buttonType=""
-                      sx={{
-                        textAlign: 'center', color: 'black', textTransform: 'none',
-                      }}
-                      onClick={() => sortByName()}
-                      title={(
-                        <>
-                          {' '}
-                          Crop Name
-                          {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
-                        </>
+                    <PSATooltip
+                      placement="bottom"
+                      arrow
+                      enterTouchDelay={0}
+                      title="Sort by Crop Name"
+                      tooltipContent={(
+                        <Box tabIndex="0">
+                          <PSAButton
+                            buttonType=""
+                            sx={{
+                              textAlign: 'center', color: 'black', textTransform: 'none',
+                            }}
+                            onClick={() => sortByName()}
+                            title={(
+                              <>
+                                {' '}
+                                Crop Name
+                                {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
+                              </>
+                            )}
+                          />
+                        </Box>
                       )}
                     />
                   </TableCell>
@@ -401,7 +411,7 @@ const CropCalendarView = ({
                           placement="bottom"
                           arrow
                           enterTouchDelay={0}
-                          title={goal}
+                          title={`Sort by ${goal}`}
                           tooltipContent={(
                             <Box tabIndex="0">
                               <PSAButton
@@ -437,7 +447,17 @@ const CropCalendarView = ({
                         } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
                         onClick={() => sortByPlantingWindow()}
                       >
-                        <Box>{month}</Box>
+                        <PSATooltip
+                          placement="bottom"
+                          arrow
+                          enterTouchDelay={0}
+                          title="Sort by Planting Window"
+                          tooltipContent={(
+                            <Box tabIndex="0">
+                              <Box>{month}</Box>
+                            </Box>
+                          )}
+                        />
                       </TableCell>
                     );
                   })}
@@ -445,20 +465,29 @@ const CropCalendarView = ({
                     borderLeft: '5px solid white', backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f', padding: 0, width: '75px', textAlign: 'center',
                   }}
                   >
-                    <PSAButton
-                      sx={{
-                        textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
-                      }}
-                      onClick={() => sortBySelectedCrops()}
-                      title={(
-                        <>
-                          My Crops
-                          {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
-                        </>
-                        )}
-                      buttonType=""
+                    <PSATooltip
+                      placement="bottom"
+                      arrow
+                      enterTouchDelay={0}
+                      title="Sort by Selected Crops"
+                      tooltipContent={(
+                        <Box tabIndex="0">
+                          <PSAButton
+                            sx={{
+                              textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
+                            }}
+                            onClick={() => sortBySelectedCrops()}
+                            title={(
+                              <>
+                                My Crops
+                                {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
+                              </>
+                            )}
+                            buttonType=""
+                          />
+                        </Box>
+                      )}
                     />
-
                   </TableCell>
                 </TableRow>
               </TableHead>

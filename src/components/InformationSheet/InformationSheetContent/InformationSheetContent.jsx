@@ -137,9 +137,24 @@ const InformationSheetContent = ({ crop }) => {
                   expanded={expandedAccordions.includes(cat.label)}
                   onChange={() => handleAccordion(cat.label)}
                   summaryContent={(
-                    <Typography className={`infosheetAccordionButton${index}`} variant="h4" style={{ color: 'grey' }}>
-                      {cat.label}
-                    </Typography>
+                    <PSATooltip
+                      placement="bottom"
+                      arrow
+                      enterTouchDelay={0}
+                      PopperProps={{
+                        style: {
+                          zIndex: 10000000,
+                        },
+                      }}
+                      title={cat.description}
+                      tooltipContent={(
+                        <Box tabIndex="0">
+                          <Typography className={`infosheetAccordionButton${index}`} variant="h4" style={{ color: 'grey' }}>
+                            {cat.label}
+                          </Typography>
+                        </Box>
+                      )}
+                    />
                   )}
                   detailsContent={(
                     <Grid container>
@@ -171,7 +186,7 @@ const InformationSheetContent = ({ crop }) => {
                                       {att.values[0]?.value}
                                     </Typography>
                                   </Box>
-                              )}
+                                )}
                               />
                             </Grid>
                           );
