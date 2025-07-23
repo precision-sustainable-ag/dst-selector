@@ -170,10 +170,7 @@ const CropSidebar = ({
       return '';
     });
 
-    const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
-
     const filtered = cropData?.filter((crop, n, cd) => {
-      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -192,19 +189,24 @@ const CropSidebar = ({
         }
       });
 
-      const matchesDrainageClass = (!drainageClassRedux ? true : crop.soilDrainage?.map((d) => d.toLowerCase())
-        ?.includes(drainageClassRedux.toLowerCase()));
+      const matchesDrainageClass = !drainageClassRedux ? true
+        : crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase());
 
-      const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
+      const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
+      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
+      // WCCC don't filter crops by flooding frequency
+      const cropFloodingValueIsHigher = (councilShorthandRedux === 'WCCC' || !floodingFrequencyRedux)
+        ? true : floodingFrequencyRedux <= floodingFrequencyValue;
 
-      // WCCC Additional Filters
+      // WCCC additional filters for planting season, first goal rating, planting dates
       if (councilShorthandRedux === 'WCCC' && match) {
         match = false;
         const seasonMatch = selectedSeasonRedux.length === 0
           || crop.plantingDates.some((date) => selectedSeasonRedux.some((season) => date.label.includes(season)));
         const firstGoalRatingLargerThanTwo = selectedGoalsRedux.length === 0
           || Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value) > 2;
-        if (seasonMatch && firstGoalRatingLargerThanTwo) {
+        const havePlantingDates = crop.plantingDates?.length > 0;
+        if (seasonMatch && firstGoalRatingLargerThanTwo && havePlantingDates) {
           match = true;
         }
       }
@@ -217,10 +219,6 @@ const CropSidebar = ({
         cd[n].inactive = (!match)
           || !(matchesDrainageClass && cropFloodingValueIsHigher)
           || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
-      }
-
-      if (councilShorthandRedux === 'WCCC' && !cd[n].inactive) {
-        cd[n].inactive = crop.plantingDates?.length === 0;
       }
 
       if (cd[n].inactive) {
