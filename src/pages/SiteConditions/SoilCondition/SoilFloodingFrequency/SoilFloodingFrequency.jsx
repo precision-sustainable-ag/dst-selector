@@ -35,6 +35,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
         borderRadius: '15px',
         border: '2px solid #598445',
         height: '100%',
+        width: '100%',
       }}
       data-test="flooding-frequency-card"
     >
@@ -45,11 +46,6 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
           sx={{
             p: '1rem',
             mb: '1rem',
-            height: '100%',
-            borderTopLeftRadius: '15px', // Top left corner
-            borderTopRightRadius: '15px', // Top right corner
-            borderBottomLeftRadius: '0', // Bottom left corner
-            borderBottomRightRadius: '0', // Bottom right corner
           }}
           xs={12}
         >
