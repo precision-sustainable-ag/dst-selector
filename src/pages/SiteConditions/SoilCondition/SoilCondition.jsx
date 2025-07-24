@@ -194,13 +194,15 @@ const SoilCondition = () => {
           <PSALoadingSpinner />
         )}
       </Grid>
-      <Grid item xs={12} md={10}>
-        {floodingOptions.length > 0 ? (
-          <SoilFloodingFrequency floodingOptions={floodingOptions} />
-        ) : (
-          <PSALoadingSpinner />
-        )}
-      </Grid>
+      {councilShorthandRedux !== 'WCCC' && (
+        <Grid item xs={12} md={10}>
+          {floodingOptions.length > 0 ? (
+            <SoilFloodingFrequency floodingOptions={floodingOptions} />
+          ) : (
+            <PSALoadingSpinner />
+          )}
+        </Grid>
+      )}
     </Grid>
   );
 };

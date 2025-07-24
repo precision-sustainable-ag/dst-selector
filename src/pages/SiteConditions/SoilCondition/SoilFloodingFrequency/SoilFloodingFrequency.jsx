@@ -47,6 +47,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
             p: '1rem',
             mb: '1rem',
           }}
+          alignItems="center"
           xs={12}
         >
           <Grid item sx={{ mr: '1rem' }}>

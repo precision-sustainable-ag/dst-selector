@@ -101,7 +101,6 @@ const SoilDrainage = ({ drainageOptions }) => {
         boxSizing: 'border-box',
         borderRadius: '15px',
         border: '2px solid #598445',
-        height: '100%',
         width: '100%',
       }}
       data-test="soil-drainage-card"
@@ -113,6 +112,7 @@ const SoilDrainage = ({ drainageOptions }) => {
           sx={{
             p: '1rem',
             mb: '1rem',
+            alignItems: 'center',
           }}
           xs={12}
         >
