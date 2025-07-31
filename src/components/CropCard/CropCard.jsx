@@ -92,6 +92,7 @@ const CropCard = ({
           transform: needsRotation(crop) ? 'rotate(90deg) scale(1.9)' : 'none',
           border: shouldHighlightRed ? '4px solid red' : 'none',
         },
+        minHeight: isMobile ? '160px' : '260px',
       }}
       infoSheetProps={{ fullScreen: isMobile }}
     />
