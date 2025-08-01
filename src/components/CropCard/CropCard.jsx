@@ -70,7 +70,7 @@ const CropCard = ({
       title={<InfoSheetTitle crop={crop} />}
       thumbnail={crop.thumbnailWide ?? placeHolderImg}
       fullsize={crop.thumbnail}
-      portrait={crop.thumbnail}
+      portrait
       selected={selectedBtns.includes(crop.id)}
       onSelect={() => {
         addToBasket(
