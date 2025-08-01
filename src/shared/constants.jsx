@@ -11,9 +11,10 @@ import { Info, MonetizationOn } from '@mui/icons-material';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import { mapboxToken } from './keys';
 import arrayEquals from './functions';
-import { historyState, setHistoryState } from '../reduxStore/userSlice';
+import { historyState, setHistoryState, setSaveHistory } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
-import { updateCropData } from '../reduxStore/cropSlice';
+import { updateSelectedCropIds } from '../reduxStore/cropSlice';
+import { myCropListLocation } from '../reduxStore/sharedSlice';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -897,16 +898,11 @@ export const deleteFields = async (accessToken = null, id = null) => {
 export const addCropToBasket = (
   cropId,
   cropName,
-  index,
-  cropDataRedux,
   dispatchRedux,
   enqueueSnackbar,
-  updateSelectedCropIds,
   selectedCropIdsRedux,
-  myCropListLocation,
   historyStateRedux,
   from,
-  setSaveHistory,
 ) => {
   const selectedCrops = cropId;
 
@@ -915,44 +911,18 @@ export const addCropToBasket = (
     enqueueSnackbar(`${cropName} ${action}`);
   };
 
-  const updateActiveCrops = (inactiveValue) => {
-    const updatedCropData = [...cropDataRedux];
-    updatedCropData[index] = {
-      inactive: inactiveValue,
-      ...updatedCropData[index],
-    };
-    dispatchRedux(updateCropData(updatedCropData));
-  };
-
   // update history state
   if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
 
-  if (selectedCropIdsRedux?.length > 0) {
-    // DONE: Remove crop from basket
-    let removeIndex = -1;
-    selectedCropIdsRedux.forEach((item, i) => {
-      if (item === cropId) {
-        removeIndex = i;
-      }
-    });
-    if (removeIndex === -1) {
-      // element not in array
-      updateActiveCrops(false);
-      buildDispatch('added', [...selectedCropIdsRedux, selectedCrops]);
-    } else {
-      updateActiveCrops(true);
-      const selectedCropsCopy = selectedCropIdsRedux;
-      selectedCropsCopy.splice(removeIndex, 1);
-      buildDispatch('Removed', selectedCropsCopy);
-      if (selectedCropsCopy.length === 0) {
-        dispatchRedux(myCropListLocation({ from: '' }));
-      }
-    }
+  if (!selectedCropIdsRedux.includes(cropId)) {
+    buildDispatch('Added', [...selectedCropIdsRedux, selectedCrops]);
+    if (selectedCropIdsRedux.length === 0) dispatchRedux(myCropListLocation({ from }));
   } else {
-    updateActiveCrops(false);
-    dispatchRedux(myCropListLocation({ from }));
-    buildDispatch('Added', [selectedCrops]);
+    const updatedSelectedCrops = selectedCropIdsRedux.filter((id) => id !== cropId);
+    buildDispatch('Removed', updatedSelectedCrops);
+    if (updatedSelectedCrops.length === 0) dispatchRedux(myCropListLocation({ from: '' }));
   }
+
   // save history after added crop
   if (historyStateRedux !== historyState.none) dispatchRedux(setSaveHistory(true));
   // analytics
@@ -1054,9 +1024,9 @@ export const extractData = (data, dataType, attribute, councilShorthand) => {
   return data.map((element, index) => <Typography key={index} variant="body2">{element.toString()}</Typography>);
 };
 
-export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {
-  if (selectedGoals.length === 0) return crop.inactive;
-  return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
+export const hasGoalRatingTwoOrLess = (selectedGoals, crop, activeCropIds) => {
+  if (selectedGoals.length === 0) return !activeCropIds.includes(crop.id);
+  return !activeCropIds.includes(crop.id) || selectedGoals.every((rating) => crop[rating] <= 2);
 };
 
 export const getExpertsData = (councilId) => {

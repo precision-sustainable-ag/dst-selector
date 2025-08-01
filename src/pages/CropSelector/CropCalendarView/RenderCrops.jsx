@@ -18,9 +18,6 @@ import {
 } from '../../../shared/constants';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
-import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
-import { myCropListLocation } from '../../../reduxStore/sharedSlice';
-import { setSaveHistory } from '../../../reduxStore/userSlice';
 import useIsMobile from '../../../hooks/useIsMobile';
 
 const CheckBoxIcon = ({ style }) => (
@@ -223,16 +220,11 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 addCropToBasket(
                   crop.id,
                   crop.label,
-                  index,
-                  cropDataRedux,
                   dispatchRedux,
                   enqueueSnackbar,
-                  updateSelectedCropIds,
                   selectedCropIdsRedux,
-                  myCropListLocation,
                   historyStateRedux,
                   'selector',
-                  setSaveHistory,
                 );
               }}
               aria-label={isSelected ? 'Delete' : 'Add to List'}
