@@ -42,13 +42,16 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
 
   const isMobile = useIsMobile('md');
 
   const { enqueueSnackbar } = useSnackbar();
 
-  return cropDataRedux
-    .sort((a, b) => (a.inactive || false) - (b.inactive || false))
+  const isCropInactive = (crop) => !activeCropIdsRedux.includes(crop.id);
+
+  return [...cropDataRedux]
+    .sort((a, b) => isCropInactive(a) - isCropInactive(b))
     .map((crop, index) => {
       const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
       const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
@@ -69,7 +72,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
         <TableRow
           key={`cropRow${index}`}
           style={{
-            opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.55',
+            opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop, activeCropIdsRedux) && '0.55',
             backgroundColor: isSelected ? '#EAEAEA' : 'white',
           }}
           data-test={`crop-list-tr-${index}`}
