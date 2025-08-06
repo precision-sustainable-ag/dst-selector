@@ -24,6 +24,10 @@
         "react"
     ],
     "rules": {
+
+      "linebreak-style": 0,
+      "no-alert": 0,
+
       "react/prop-types": [0],
       "react/jsx-filename-extension": [0],
       "react/no-array-index-key": [0],
