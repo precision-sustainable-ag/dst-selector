@@ -186,7 +186,7 @@ const CropSelector = (props) => {
         )}
       </Grid>
       <ScrollTop {...props}>
-        <Fab color="secondary" size="medium" aria-label="scroll back to top">
+        <Fab color="primary" size="medium" aria-label="scroll back to top">
           <KeyboardArrowUp />
         </Fab>
       </ScrollTop>

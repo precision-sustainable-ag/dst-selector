@@ -454,7 +454,7 @@ export const BinaryButton = ({ action }) => (
       onClick={() => {
         action(true);
       }}
-      color="secondary"
+      color="primary"
       title="Yes"
       className="yesButton"
     />
@@ -463,7 +463,7 @@ export const BinaryButton = ({ action }) => (
       onClick={() => {
         action(false);
       }}
-      color="secondary"
+      color="primary"
       title="No"
     />
     <PSAButton
