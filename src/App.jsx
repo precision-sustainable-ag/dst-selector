@@ -204,6 +204,9 @@ const App = () => (
 export default App;
 
 const LoadRelevantRoute = () => {
+  setTimeout(() => {
+    throw new Error('Error in LoadRelevantRoute');
+  }, 9000);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
   switch (progressRedux) {
@@ -224,14 +227,17 @@ const LoadRelevantRoute = () => {
 };
 
 window.addEventListener('error', (err) => {
-  if (!/^https:/.test(window.location.href)) return;
+  // if (!/^https:/.test(window.location.href)) return;
+
+  const reduxState = store.getState();
+  const reduxStateJson = JSON.stringify(reduxState).replace(/"/g, "'");
 
   const requestPayload = {
     repository: 'dst-feedback',
     title: 'CRASH',
     name: 'error',
     email: 'error@error.com',
-    comments: `${err?.message}: ${err?.filename}`,
+    comments: `Error: ${err?.message} | File: ${err?.filename} | Redux State: ${reduxStateJson}`,
     labels: ['crash', 'dst-selector'],
   };
 
