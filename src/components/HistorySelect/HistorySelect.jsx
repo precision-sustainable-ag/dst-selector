@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSADropdown, PSAModal } from 'shared-react-components/src';
+import { useSnackbar } from 'notistack';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory, removeHistory } from '../../shared/api';
 import {
@@ -17,7 +18,7 @@ import { setWeatherRedux } from '../../reduxStore/weatherSlice';
 import { setSoilRedux } from '../../reduxStore/soilSlice';
 import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
-import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
+import { myCropListLocation } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
 import { reset } from '../../reduxStore/store';
 
@@ -98,6 +99,8 @@ const HistorySelect = () => {
 
   const dispatch = useDispatch();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const normalizeField = (field) => {
     // Normalize if old format
     if (!Array.isArray(field)) {
@@ -125,7 +128,7 @@ const HistorySelect = () => {
     const token = getAuthToken();
     loadHistory(token, value).then((res) => {
       if (res) {
-        dispatch(snackHandler({ snackOpen: true, snackMessage: 'History Loaded.' }));
+        enqueueSnackbar('History Loaded.');
         const {
           cropData, mapData, weatherData, goalsData,
           sharedData, soilData, addressData, userData,
@@ -152,7 +155,7 @@ const HistorySelect = () => {
         setOpen(false);
       }
     }).catch((err) => {
-      dispatch(snackHandler({ snackOpen: true, snackMessage: `Error loading history: ${err}` }));
+      enqueueSnackbar(`Error loading history: ${err}`, { variant: 'error' });
     });
   };
 
@@ -169,7 +172,7 @@ const HistorySelect = () => {
         dispatch(setUserRedux({
           userHistoryList: updatedHistoryList,
         }));
-        dispatch(snackHandler({ snackOpen: true, snackMessage: 'History Deleted.' }));
+        enqueueSnackbar('History Deleted.');
         setValue('');
       }
     });

@@ -13,6 +13,7 @@ import { mapboxToken } from './keys';
 import arrayEquals from './functions';
 import { historyState, setHistoryState } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
+import { updateCropData } from '../reduxStore/cropSlice';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -896,8 +897,10 @@ export const deleteFields = async (accessToken = null, id = null) => {
 export const addCropToBasket = (
   cropId,
   cropName,
+  index,
+  cropDataRedux,
   dispatchRedux,
-  snackHandler,
+  enqueueSnackbar,
   updateSelectedCropIds,
   selectedCropIdsRedux,
   myCropListLocation,
@@ -909,7 +912,16 @@ export const addCropToBasket = (
 
   const buildDispatch = (action, crops) => {
     dispatchRedux(updateSelectedCropIds(crops));
-    dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
+    enqueueSnackbar(`${cropName} ${action}`);
+  };
+
+  const updateActiveCrops = (inactiveValue) => {
+    const updatedCropData = [...cropDataRedux];
+    updatedCropData[index] = {
+      inactive: inactiveValue,
+      ...updatedCropData[index],
+    };
+    dispatchRedux(updateCropData(updatedCropData));
   };
 
   // update history state
@@ -925,8 +937,10 @@ export const addCropToBasket = (
     });
     if (removeIndex === -1) {
       // element not in array
+      updateActiveCrops(false);
       buildDispatch('added', [...selectedCropIdsRedux, selectedCrops]);
     } else {
+      updateActiveCrops(true);
       const selectedCropsCopy = selectedCropIdsRedux;
       selectedCropsCopy.splice(removeIndex, 1);
       buildDispatch('Removed', selectedCropsCopy);
@@ -935,6 +949,7 @@ export const addCropToBasket = (
       }
     }
   } else {
+    updateActiveCrops(false);
     dispatchRedux(myCropListLocation({ from }));
     buildDispatch('Added', [selectedCrops]);
   }

@@ -76,6 +76,7 @@ const CropSidebar = ({
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
   const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   // useState vars
   const [loading, setLoading] = useState(true);
@@ -154,8 +155,8 @@ const CropSidebar = ({
         // do not process singular or plural variants in
 
         return !search
-            || (m !== null && search.every((s) => m?.some((t) => t.includes(s))))
-            || (pluralSearch && (m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s)))));
+          || (m !== null && search.every((s) => m?.some((t) => t.includes(s))))
+          || (pluralSearch && (m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s)))));
       };
       cd[n].inactive = true;
       return match('label') || match('scientificName');
@@ -169,10 +170,7 @@ const CropSidebar = ({
       return '';
     });
 
-    const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
-
     const filtered = cropData?.filter((crop, n, cd) => {
-      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -185,22 +183,30 @@ const CropSidebar = ({
           if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item.value))) {
             match = false;
           }
+        } else {
+          // if there is no attribute with that filter, match = false
+          match = false;
         }
       });
 
-      const matchesDrainageClass = (!drainageClassRedux ? true : crop.soilDrainage?.map((d) => d.toLowerCase())
-        ?.includes(drainageClassRedux.toLowerCase()));
+      const matchesDrainageClass = !drainageClassRedux ? true
+        : crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase());
 
-      const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
+      const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
+      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
+      // WCCC don't filter crops by flooding frequency
+      const cropFloodingValueIsHigher = (councilShorthandRedux === 'WCCC' || !floodingFrequencyRedux)
+        ? true : floodingFrequencyRedux <= floodingFrequencyValue;
 
-      // WCCC Additional Filters
-      if (councilShorthandRedux === 'WCCC') {
+      // WCCC additional filters for planting season, first goal rating, planting dates
+      if (councilShorthandRedux === 'WCCC' && match) {
         match = false;
         const seasonMatch = selectedSeasonRedux.length === 0
           || crop.plantingDates.some((date) => selectedSeasonRedux.some((season) => date.label.includes(season)));
         const firstGoalRatingLargerThanTwo = selectedGoalsRedux.length === 0
           || Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value) > 2;
-        if (seasonMatch && firstGoalRatingLargerThanTwo) {
+        const havePlantingDates = crop.plantingDates?.length > 0;
+        if (seasonMatch && firstGoalRatingLargerThanTwo && havePlantingDates) {
           match = true;
         }
       }
@@ -213,6 +219,12 @@ const CropSidebar = ({
         cd[n].inactive = (!match)
           || !(matchesDrainageClass && cropFloodingValueIsHigher)
           || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
+      }
+
+      if (cd[n].inactive) {
+        if (selectedCropIdsRedux.includes(cd[n].id)) {
+          cd[n].inactive = false;
+        }
       }
 
       return true;

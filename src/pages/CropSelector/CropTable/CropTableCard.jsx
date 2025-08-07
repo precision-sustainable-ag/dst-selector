@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TableCell, Box } from '@mui/material';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import { useSnackbar } from 'notistack';
 import { addCropToBasket, getRating } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
-import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
+import { myCropListLocation } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
 
 const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
@@ -16,9 +17,12 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
 
   const selectedBtns = selectedCropIdsRedux;
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -87,8 +91,10 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
               addCropToBasket(
                 crop.id,
                 crop.label,
+                indexKey,
+                cropDataRedux,
                 dispatchRedux,
-                snackHandler,
+                enqueueSnackbar,
                 updateSelectedCropIds,
                 selectedCropIdsRedux,
                 myCropListLocation,

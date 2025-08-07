@@ -8,6 +8,7 @@ import {
   AcUnit, AddCircleOutline, CheckRounded, DeleteForever,
 } from '@mui/icons-material';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import { useSnackbar } from 'notistack';
 import {
   CropImage,
   flipCoverCropName,
@@ -18,7 +19,7 @@ import {
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
-import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
+import { myCropListLocation } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
 import useIsMobile from '../../../hooks/useIsMobile';
 
@@ -43,6 +44,8 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   const isMobile = useIsMobile('md');
+
+  const { enqueueSnackbar } = useSnackbar();
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
@@ -95,16 +98,16 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     title={(
                       <>
                         {isSelected && (
-                        <CheckBoxIcon
-                          style={{
-                            position: 'absolute',
-                            right: '4px',
-                            top: '4px',
-                            height: '15px',
-                            zIndex: 1,
-                            backgroundColor: '#5992E6',
-                          }}
-                        />
+                          <CheckBoxIcon
+                            style={{
+                              position: 'absolute',
+                              right: '4px',
+                              top: '4px',
+                              height: '15px',
+                              zIndex: 1,
+                              backgroundColor: '#5992E6',
+                            }}
+                          />
                         )}
                         <CropImage
                           view="calendar"
@@ -146,7 +149,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       setModalOpen(!modalOpen);
                     }}
                     data-test="crop-calendar-crop-name"
-                    title={flipCoverCropName(crop.label)}
+                    title={councilShorthandRedux === 'WCCC' ? crop.label : flipCoverCropName(crop.label)}
                   />
                 </Grid>
                 {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
@@ -217,8 +220,10 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 addCropToBasket(
                   crop.id,
                   crop.label,
+                  index,
+                  cropDataRedux,
                   dispatchRedux,
-                  snackHandler,
+                  enqueueSnackbar,
                   updateSelectedCropIds,
                   selectedCropIdsRedux,
                   myCropListLocation,

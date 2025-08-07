@@ -83,6 +83,7 @@ const ImageCarousel = ({ images }) => {
         {imagesData.map((step, index) => (
           <div key={step.label + index}>
             <div
+              className="info-sheet-image-container"
               style={{
                 justifyContent: 'center', display: 'flex', alignItems: 'center', height: '550px',
               }}
@@ -92,6 +93,8 @@ const ImageCarousel = ({ images }) => {
                 sx={{
                   maxWidth: 400,
                   width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
                   fontSize: '8pt',
                 }}
                 style={{ cursor: 'pointer' }}
@@ -156,7 +159,7 @@ const ImageCarousel = ({ images }) => {
         )}
       />
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }} className="no-print">
         <PSAButton
           size="small"
           buttonType=""

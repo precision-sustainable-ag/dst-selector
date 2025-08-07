@@ -3,8 +3,9 @@ import React, {
 } from 'react';
 import { PSACropCard } from 'shared-react-components/src';
 import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import { addCropToBasket } from '../../shared/constants';
-import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
+import { myCropListLocation } from '../../reduxStore/sharedSlice';
 import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
 import { setSaveHistory } from '../../reduxStore/userSlice';
 // import CropDetailsModal from '../CropDetailsModal/CropDetailsModal';
@@ -25,6 +26,8 @@ const CropCard = ({
   // useState vars
   const [selectedBtns, setSelectedBtns] = useState(selectedCropIdsRedux);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   async function updateBtns() {
     await setSelectedBtns(selectedCropIdsRedux);
   }
@@ -38,7 +41,7 @@ const CropCard = ({
       cropId,
       name,
       dispatchRedux,
-      snackHandler,
+      enqueueSnackbar,
       updateSelectedCropIds,
       selectedCropIdsRedux,
       myCropListLocation,

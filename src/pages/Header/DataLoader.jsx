@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateAllGoals, updatePlantingSeasons } from '../../reduxStore/goalSlice';
-import { snackHandler } from '../../reduxStore/sharedSlice';
 
 const DataLoader = () => {
   const dispatch = useDispatch();
@@ -13,6 +13,8 @@ const DataLoader = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   // fetch goals data
   useEffect(() => {
     if (progressRedux === 1 && stateIdRedux && queryStringRedux) {
@@ -22,7 +24,7 @@ const DataLoader = () => {
       ).then((data) => {
         const allGoals = data.data.map((goal) => ({ label: goal.label, description: goal.description, tags: goal.tags }));
         if (allGoals.length === 0) {
-          dispatch(snackHandler({ snackOpen: true, snackMessage: 'No data exists for your location!' }));
+          enqueueSnackbar('No data exists for your location!', { variant: 'error' });
         }
         dispatch(updateAllGoals(allGoals));
         if (councilShorthandRedux === 'WCCC' && data.plantingSeasons) {

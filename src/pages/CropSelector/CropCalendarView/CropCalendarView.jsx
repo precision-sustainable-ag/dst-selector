@@ -202,7 +202,6 @@ const CropCalendarView = ({
             }}
           >
             <Table
-              stickyHeader
               sx={{
                 [`& .${tableCellClasses.root}`]: {
                   borderBottom: 'none',
@@ -214,9 +213,9 @@ const CropCalendarView = ({
             >
               <TableHead
                 sx={{
-                  zIndex: isMobile ? 19 : -1,
-                  position: isMobile ? 'sticky' : 'static',
-                  top: isMobile ? 0 : 'auto',
+                  zIndex: 19,
+                  position: 'sticky',
+                  top: isMobile ? -1 : 'var(--navbar-height)',
                 }}
               >
                 <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
@@ -335,14 +334,6 @@ const CropCalendarView = ({
                       )}
                     </>
                   )}
-                  <TableCell
-                    style={{
-                      borderBottom: '5px solid white',
-                      padding: 0,
-                      textAlign: 'center',
-
-                    }}
-                  />
                   {activeGrowthPeriodRedux.length > 0 ? (
                     <TableCell
                       sx={{
@@ -367,6 +358,7 @@ const CropCalendarView = ({
                 <TableRow style={{ marginTop: '5px' }}>
                   <TableCell
                     sx={{
+                      position: isMobile ? 'sticky' : 'static',
                       left: isMobile ? 0 : 'auto',
                       zIndex: isMobile ? 20 : 2,
                       borderRight: '5px solid white',
@@ -377,18 +369,28 @@ const CropCalendarView = ({
                       textAlign: 'center',
                     }}
                   >
-                    <PSAButton
-                      buttonType=""
-                      sx={{
-                        textAlign: 'center', color: 'black', textTransform: 'none',
-                      }}
-                      onClick={() => sortByName()}
-                      title={(
-                        <>
-                          {' '}
-                          Crop Name
-                          {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
-                        </>
+                    <PSATooltip
+                      placement="bottom"
+                      arrow
+                      enterTouchDelay={0}
+                      title="Sort by Crop Name"
+                      tooltipContent={(
+                        <Box tabIndex="0">
+                          <PSAButton
+                            buttonType=""
+                            sx={{
+                              textAlign: 'center', color: 'black', textTransform: 'none',
+                            }}
+                            onClick={() => sortByName()}
+                            title={(
+                              <>
+                                {' '}
+                                Crop Name
+                                {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
+                              </>
+                            )}
+                          />
+                        </Box>
                       )}
                     />
                   </TableCell>
@@ -409,7 +411,7 @@ const CropCalendarView = ({
                           placement="bottom"
                           arrow
                           enterTouchDelay={0}
-                          title={goal}
+                          title={`Sort by ${goal}`}
                           tooltipContent={(
                             <Box tabIndex="0">
                               <PSAButton
@@ -445,7 +447,17 @@ const CropCalendarView = ({
                         } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
                         onClick={() => sortByPlantingWindow()}
                       >
-                        <Box>{month}</Box>
+                        <PSATooltip
+                          placement="bottom"
+                          arrow
+                          enterTouchDelay={0}
+                          title="Sort by Planting Window"
+                          tooltipContent={(
+                            <Box tabIndex="0">
+                              <Box>{month}</Box>
+                            </Box>
+                          )}
+                        />
                       </TableCell>
                     );
                   })}
@@ -453,20 +465,29 @@ const CropCalendarView = ({
                     borderLeft: '5px solid white', backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f', padding: 0, width: '75px', textAlign: 'center',
                   }}
                   >
-                    <PSAButton
-                      sx={{
-                        textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
-                      }}
-                      onClick={() => sortBySelectedCrops()}
-                      title={(
-                        <>
-                          My Crops
-                          {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
-                        </>
-                        )}
-                      buttonType=""
+                    <PSATooltip
+                      placement="bottom"
+                      arrow
+                      enterTouchDelay={0}
+                      title="Sort by Selected Crops"
+                      tooltipContent={(
+                        <Box tabIndex="0">
+                          <PSAButton
+                            sx={{
+                              textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
+                            }}
+                            onClick={() => sortBySelectedCrops()}
+                            title={(
+                              <>
+                                My Crops
+                                {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
+                              </>
+                            )}
+                            buttonType=""
+                          />
+                        </Box>
+                      )}
                     />
-
                   </TableCell>
                 </TableRow>
               </TableHead>

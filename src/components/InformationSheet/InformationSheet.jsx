@@ -11,9 +11,10 @@ import { Print } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSAInfoSheet } from 'shared-react-components/src';
+import { useSnackbar } from 'notistack';
 import InformationSheetContent from './InformationSheetContent/InformationSheetContent';
 import pirschAnalytics from '../../shared/analytics';
-import { snackHandler, updatePrinting } from '../../reduxStore/sharedSlice';
+import { updatePrinting } from '../../reduxStore/sharedSlice';
 import useIsMobile from '../../hooks/useIsMobile';
 
 export const InfoSheetTitle = ({ crop }) => {
@@ -22,6 +23,8 @@ export const InfoSheetTitle = ({ crop }) => {
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const print = async () => {
     if (consentRedux === true) {
@@ -83,7 +86,7 @@ export const InfoSheetTitle = ({ crop }) => {
       const { fileUrl } = await response.json();
       window.open(fileUrl, '_blank');
     } catch (err) {
-      dispatch(snackHandler({ snackOpen: true, snackMessage: `Error generating PDF: ${err}` }));
+      enqueueSnackbar(`Error generating PDF: ${err}`, { variant: 'error' });
     } finally {
       dispatch(updatePrinting(false));
     }
@@ -111,7 +114,7 @@ export const InfoSheetTitle = ({ crop }) => {
           ? (
             <PSAButton
               buttonType="ModalLink"
-              startIcon={<CircularProgress size={20} />}
+              startIcon={<CircularProgress size={20} sx={{ color: 'white' }} />}
             />
           )
           : (
