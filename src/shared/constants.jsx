@@ -11,9 +11,10 @@ import { Info, MonetizationOn } from '@mui/icons-material';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import { mapboxToken } from './keys';
 import arrayEquals from './functions';
-import { historyState, setHistoryState } from '../reduxStore/userSlice';
+import { historyState, setHistoryState, setSaveHistory } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
-import { updateCropData } from '../reduxStore/cropSlice';
+import { updateSelectedCropIds } from '../reduxStore/cropSlice';
+import { myCropListLocation } from '../reduxStore/sharedSlice';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -838,75 +839,14 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
   return cropData.map((crop) => monthStringBuilder(crop));
 };
 
-// TODO: not used below
-export const apiServerUrl = 'https://history.covercrop-data.org/v1';
-
-export const getFields = async (accessToken = null) => {
-  const url = `${apiServerUrl}/fields?page=1&perPage=200`;
-  const config = {
-    method: 'GET',
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-  return (
-    fetch(url, config)
-      .then((res) => res.json())
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err))
-  );
-};
-
-export const postFields = async (accessToken = null, fieldsData = null) => {
-  const url = `${apiServerUrl}/fields`;
-  const config = {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(fieldsData),
-  };
-  return (
-    fetch(url, config)
-      .then((res) => res.json())
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err))
-  );
-};
-
-export const deleteFields = async (accessToken = null, id = null) => {
-  const url = `${apiServerUrl}/fields/${id}`;
-  const config = {
-    method: 'DELETE',
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-  return (
-    fetch(url, config)
-      .then((res) => res.json())
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err))
-  );
-};
-// TODO: not used above
-
 export const addCropToBasket = (
   cropId,
   cropName,
-  index,
-  cropDataRedux,
   dispatchRedux,
   enqueueSnackbar,
-  updateSelectedCropIds,
   selectedCropIdsRedux,
-  myCropListLocation,
   historyStateRedux,
   from,
-  setSaveHistory,
 ) => {
   const selectedCrops = cropId;
 
@@ -915,125 +855,23 @@ export const addCropToBasket = (
     enqueueSnackbar(`${cropName} ${action}`);
   };
 
-  const updateActiveCrops = (inactiveValue) => {
-    const updatedCropData = [...cropDataRedux];
-    updatedCropData[index] = {
-      inactive: inactiveValue,
-      ...updatedCropData[index],
-    };
-    dispatchRedux(updateCropData(updatedCropData));
-  };
-
   // update history state
   if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
 
-  if (selectedCropIdsRedux?.length > 0) {
-    // DONE: Remove crop from basket
-    let removeIndex = -1;
-    selectedCropIdsRedux.forEach((item, i) => {
-      if (item === cropId) {
-        removeIndex = i;
-      }
-    });
-    if (removeIndex === -1) {
-      // element not in array
-      updateActiveCrops(false);
-      buildDispatch('added', [...selectedCropIdsRedux, selectedCrops]);
-    } else {
-      updateActiveCrops(true);
-      const selectedCropsCopy = selectedCropIdsRedux;
-      selectedCropsCopy.splice(removeIndex, 1);
-      buildDispatch('Removed', selectedCropsCopy);
-      if (selectedCropsCopy.length === 0) {
-        dispatchRedux(myCropListLocation({ from: '' }));
-      }
-    }
+  if (!selectedCropIdsRedux.includes(cropId)) {
+    buildDispatch('Added', [...selectedCropIdsRedux, selectedCrops]);
+    if (selectedCropIdsRedux.length === 0) dispatchRedux(myCropListLocation({ from }));
   } else {
-    updateActiveCrops(false);
-    dispatchRedux(myCropListLocation({ from }));
-    buildDispatch('Added', [selectedCrops]);
+    const updatedSelectedCrops = selectedCropIdsRedux.filter((id) => id !== cropId);
+    buildDispatch('Removed', updatedSelectedCrops);
+    if (updatedSelectedCrops.length === 0) dispatchRedux(myCropListLocation({ from: '' }));
   }
+
   // save history after added crop
   if (historyStateRedux !== historyState.none) dispatchRedux(setSaveHistory(true));
   // analytics
   pirschAnalytics(from === 'selector' ? 'Get A Recommendation' : 'Browse Cover Crops', { meta: { addedToMyList: true } });
 };
-
-// TODO: not used below
-export const getHistory = async (accessToken = null) => {
-  const url = `${apiServerUrl}/history?schema=1`;
-  const config = {
-    method: 'GET',
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-  return (
-    fetch(url, config)
-      .then((res) => res.json())
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err))
-  );
-};
-
-export const buildHistory = (
-  stateId,
-  stateLabel,
-  regionId,
-  regionShorthand,
-  councilLabel,
-  councilShorthand,
-  consentStatus,
-  consentDate,
-  fieldId,
-) => {
-  const history = () => {
-    // temporarily we don't save region in user history
-    const historyWithoutRegion = {
-      json: {
-        state: {
-          id: stateId,
-          label: stateLabel,
-        },
-        council: {
-          label: councilLabel,
-          shorthand: councilShorthand,
-        },
-        consent: {
-          status: consentStatus,
-          date: consentDate,
-        },
-      },
-      schemaId: 1,
-    };
-    return historyWithoutRegion;
-  };
-
-  if (fieldId) {
-    return { ...history(), fieldId };
-  }
-  return history();
-};
-
-export const postHistory = async (accessToken = null, historyData = null) => {
-  const url = `${apiServerUrl}/history`;
-  const config = {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(historyData),
-  };
-  return (
-    fetch(url, config)
-      .then((res) => res.json())
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err))
-  );
-};
-// TODO: not used above
 
 export const extractData = (data, dataType, attribute, councilShorthand) => {
   // handles pillbox data
@@ -1054,9 +892,9 @@ export const extractData = (data, dataType, attribute, councilShorthand) => {
   return data.map((element, index) => <Typography key={index} variant="body2">{element.toString()}</Typography>);
 };
 
-export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {
-  if (selectedGoals.length === 0) return crop.inactive;
-  return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
+export const hasGoalRatingTwoOrLess = (selectedGoals, crop, activeCropIds) => {
+  if (selectedGoals.length === 0) return !activeCropIds.includes(crop.id);
+  return !activeCropIds.includes(crop.id) || selectedGoals.every((rating) => crop[rating] <= 2);
 };
 
 export const getExpertsData = (councilId) => {

@@ -5,10 +5,6 @@ import { PSACropCard } from 'shared-react-components/src';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { addCropToBasket } from '../../shared/constants';
-import { myCropListLocation } from '../../reduxStore/sharedSlice';
-import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
-import { setSaveHistory } from '../../reduxStore/userSlice';
-// import CropDetailsModal from '../CropDetailsModal/CropDetailsModal';
 import InformationSheetContent from '../InformationSheet/InformationSheetContent/InformationSheetContent';
 import { InfoSheetTitle } from '../InformationSheet/InformationSheet';
 import useIsMobile from '../../hooks/useIsMobile';
@@ -42,12 +38,9 @@ const CropCard = ({
       name,
       dispatchRedux,
       enqueueSnackbar,
-      updateSelectedCropIds,
       selectedCropIdsRedux,
-      myCropListLocation,
       historyStateRedux,
       'explorer',
-      setSaveHistory,
     );
     await updateBtns();
   }
