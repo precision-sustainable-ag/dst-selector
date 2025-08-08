@@ -51,7 +51,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
               title={
             info.length > 0 ? (
               <Box style={{ textAlign: 'center' }}>
-                <Typography color="secondary">
+                <Typography color="primary">
                   {hessianDate
                     ? `${startTime}`
                     : `${startTime} - ${endTime}`}
