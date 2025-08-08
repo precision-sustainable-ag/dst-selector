@@ -9,7 +9,7 @@ import React from 'react';
 import { PSAButton } from 'shared-react-components/src';
 
 const AuthButton = ({
-  type, variant = 'text', onClickCallback = () => {}, color = 'secondary',
+  type, variant = 'text', onClickCallback = () => {}, color = 'primary',
 }) => {
   const { loginWithRedirect, loginWithPopup, logout } = useAuth0();
 
