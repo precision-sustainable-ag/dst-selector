@@ -217,12 +217,44 @@ const LoadRelevantRoute = () => {
 window.addEventListener('error', (err) => {
   if (!/^https:/.test(window.location.href)) return;
 
+  const reduxState = store.getState();
+  const {
+    cropData,
+    userData,
+    goalsData,
+    addressData,
+    soilData,
+    ...rest
+  } = reduxState;
+
+  // Filter out the latLong from soilData to avoid sending sensitive information
+  const filteredSoilData = soilData
+    ? {
+      ...soilData,
+      soilData: soilData.soilData
+        ? { ...soilData.soilData, latLong: undefined }
+        : undefined,
+      soilDataOriginal: soilData.soilDataOriginal
+        ? { ...soilData.soilDataOriginal, latLong: undefined }
+        : undefined,
+    }
+    : undefined;
+
+  // Exclude sensitive information like latLong from soilData and include only necessary fields from cropData and goalsData
+  const filteredReduxState = {
+    ...rest,
+    cropData: cropData ? { selectedCropIds: cropData.selectedCropIds, cashCropData: cropData.cashCropData } : undefined,
+    goalsData: goalsData ? { selectedGoals: goalsData.selectedGoals } : undefined,
+    soilData: filteredSoilData,
+  };
+  const reduxStateJson = JSON.stringify(filteredReduxState).replace(/"/g, "'");
+
   const requestPayload = {
     repository: 'dst-feedback',
     title: 'CRASH',
     name: 'error',
     email: 'error@error.com',
-    comments: `${err?.message}: ${err?.filename}`,
+    comments: `Error: ${err?.error.stack} | File: ${err?.filename} | Redux State: ${reduxStateJson}`,
     labels: ['crash', 'dst-selector'],
   };
 
