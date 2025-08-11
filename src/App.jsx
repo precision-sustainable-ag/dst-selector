@@ -204,9 +204,6 @@ const App = () => (
 export default App;
 
 const LoadRelevantRoute = () => {
-  setTimeout(() => {
-    throw new Error('Error in LoadRelevantRoute');
-  }, 9000);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
   switch (progressRedux) {
@@ -227,17 +224,46 @@ const LoadRelevantRoute = () => {
 };
 
 window.addEventListener('error', (err) => {
-  // if (!/^https:/.test(window.location.href)) return;
+  if (!/^https:/.test(window.location.href)) return;
 
   const reduxState = store.getState();
-  const reduxStateJson = JSON.stringify(reduxState).replace(/"/g, "'");
+  const {
+    cropData,
+    userData,
+    goalsData,
+    addressData,
+    soilData,
+    ...rest
+  } = reduxState;
+
+  // Filter out the latLong from soilData to avoid sending sensitive information
+  const filteredSoilData = soilData
+    ? {
+      ...soilData,
+      soilData: soilData.soilData
+        ? { ...soilData.soilData, latLong: undefined }
+        : undefined,
+      soilDataOriginal: soilData.soilDataOriginal
+        ? { ...soilData.soilDataOriginal, latLong: undefined }
+        : undefined,
+    }
+    : undefined;
+
+  // Exclude sensitive information like latLong from soilData and include only necessary fields from cropData and goalsData
+  const filteredReduxState = {
+    ...rest,
+    cropData: cropData ? { selectedCropIds: cropData.selectedCropIds, cashCropData: cropData.cashCropData } : undefined,
+    goalsData: goalsData ? { selectedGoals: goalsData.selectedGoals } : undefined,
+    soilData: filteredSoilData,
+  };
+  const reduxStateJson = JSON.stringify(filteredReduxState).replace(/"/g, "'");
 
   const requestPayload = {
     repository: 'dst-feedback',
     title: 'CRASH',
     name: 'error',
     email: 'error@error.com',
-    comments: `Error: ${err?.message} | File: ${err?.filename} | Redux State: ${reduxStateJson}`,
+    comments: `Error: ${err?.error.stack} | File: ${err?.filename} | Redux State: ${reduxStateJson}`,
     labels: ['crash', 'dst-selector'],
   };
 
