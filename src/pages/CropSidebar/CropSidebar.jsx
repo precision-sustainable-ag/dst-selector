@@ -198,8 +198,12 @@ const CropSidebar = ({
 
       // soil drainage & flooding frequency
       if (match) {
-        const matchesDrainageClass = !drainageClassRedux ? true
-          : crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase());
+        const filteringBySoilDrainage = councilShorthandRedux === 'WCCC' ? soilDrainageFilterRedux : true;
+        let matchesDrainageClass = true;
+        if (filteringBySoilDrainage) {
+          matchesDrainageClass = !drainageClassRedux ? true
+            : crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase());
+        }
 
         const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
         const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
