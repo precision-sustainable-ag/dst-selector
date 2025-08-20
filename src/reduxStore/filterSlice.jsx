@@ -1,6 +1,7 @@
 const initialState = {
   filters: {
     cropSearch: '',
+    additionalSoilDrainageFilter: false,
     soilDrainageFilter: false,
     irrigationFilter: false,
     cropGroupFilter: '',
@@ -49,6 +50,11 @@ export const toggleFilterValue = (value) => ({
 export const setSoilDrainageFilter = (soilDrainageFilter) => ({
   type: 'SET_DRAINAGE_FILTER',
   payload: { soilDrainageFilter },
+});
+
+export const setAdditionalSoilDrainageFilter = (additionalSoilDrainageFilter) => ({
+  type: 'SET_ADDITIONAL_DRAINAGE_FILTER',
+  payload: { additionalSoilDrainageFilter },
 });
 
 export const setIrrigationFilter = (irrigationFilter) => ({
@@ -122,6 +128,15 @@ const filterReducer = (state = initialState, action = null) => {
         filters: {
           ...filters,
           soilDrainageFilter: action.payload.soilDrainageFilter,
+        },
+      };
+
+    case 'SET_ADDITIONAL_DRAINAGE_FILTER':
+      return {
+        ...state,
+        filters: {
+          ...filters,
+          additionalSoilDrainageFilter: action.payload.additionalSoilDrainageFilter,
         },
       };
 

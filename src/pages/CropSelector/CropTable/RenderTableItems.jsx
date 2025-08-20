@@ -20,7 +20,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
-  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
 
   const isMobile = useIsMobile('md');
@@ -30,8 +30,10 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   return [...cropDataRedux]
     .sort((a, b) => isCropInactive(a) - isCropInactive(b))
     .map((crop, index) => {
+      // TODO: update this to additional soil drainage
+
       const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
-      const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
+      const shouldHighlightRed = hasExcessiveDrainage && additionalSoilDrainageFilterRedux;
       const buttonStyle = { outlineOffset: '-8px' };
 
       if (shouldHighlightRed) {

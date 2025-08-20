@@ -42,6 +42,7 @@ import {
   setSoilDrainageFilter,
   setIrrigationFilter,
   setCropGroupFilter,
+  setAdditionalSoilDrainageFilter,
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import {
@@ -68,6 +69,7 @@ const CropSidebar = ({
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
   const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -111,6 +113,10 @@ const CropSidebar = ({
 
   const handleSoilDrainageFilter = () => {
     dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
+  };
+
+  const handleAdditonalSoilDrainageFilter = () => {
+    dispatchRedux(setAdditionalSoilDrainageFilter(!additionalSoilDrainageFilterRedux));
   };
 
   const handleIrrigationFilter = () => {
@@ -383,7 +389,7 @@ const CropSidebar = ({
           }}
           >
             <ListItemText>
-              Soil Drainage Filter
+              Additional Soil Drainage Filter
             </ListItemText>
             <ListItemText
               display="block"
@@ -396,8 +402,8 @@ const CropSidebar = ({
                     No
                   </Typography>
                   <Switch
-                    checked={soilDrainageFilterRedux}
-                    onChange={handleSoilDrainageFilter}
+                    checked={additionalSoilDrainageFilterRedux}
+                    onChange={handleAdditonalSoilDrainageFilter}
                     name="soilDrainageFilter"
                   />
                   <Typography variant="body1" display="inline">
@@ -409,33 +415,64 @@ const CropSidebar = ({
           </ListItem>
         )}
         {councilShorthandRedux === 'WCCC' && (
-          <ListItem style={{
-            paddingLeft: '25px',
-            marginTop: '-15px',
-          }}
-          >
-            <ListItemText>
-              Is Your Field Irrigated?
-            </ListItemText>
-            <ListItemText
-              display="block"
-              primary={(
-                <Grid item>
-                  <Typography variant="body1" display="inline">
-                    No
-                  </Typography>
-                  <Switch
-                    checked={irrigationFilterRedux}
-                    onChange={handleIrrigationFilter}
-                    name="checkedC"
-                  />
-                  <Typography variant="body1" display="inline">
-                    Yes
-                  </Typography>
-                </Grid>
+          <>
+            <ListItem style={{
+              paddingLeft: '25px',
+              marginTop: '-15px',
+            }}
+            >
+              <ListItemText>
+                Is Your Field Irrigated?
+              </ListItemText>
+              <ListItemText
+                display="block"
+                primary={(
+                  <Grid item>
+                    <Typography variant="body1" display="inline">
+                      No
+                    </Typography>
+                    <Switch
+                      checked={irrigationFilterRedux}
+                      onChange={handleIrrigationFilter}
+                      name="checkedC"
+                    />
+                    <Typography variant="body1" display="inline">
+                      Yes
+                    </Typography>
+                  </Grid>
               )}
-            />
-          </ListItem>
+              />
+            </ListItem>
+            <ListItem style={{
+              paddingLeft: '25px',
+            }}
+            >
+              <ListItemText>
+                Filter By Soil Drainage
+              </ListItemText>
+              <ListItemText
+                display="block"
+                style={{
+                  paddingLeft: '25px',
+                }}
+                primary={(
+                  <Grid item>
+                    <Typography variant="body1" display="inline">
+                      No
+                    </Typography>
+                    <Switch
+                      checked={soilDrainageFilterRedux}
+                      onChange={handleSoilDrainageFilter}
+                      name="soilDrainageFilter"
+                    />
+                    <Typography variant="body1" display="inline">
+                      Yes
+                    </Typography>
+                  </Grid>
+              )}
+              />
+            </ListItem>
+          </>
         )}
       </>
       <ListItem
