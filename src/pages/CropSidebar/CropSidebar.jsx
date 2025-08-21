@@ -101,6 +101,9 @@ const CropSidebar = ({
 
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
+  // For WA and Ecoregion 7
+  const hasAdditionalSoilDrainage = councilShorthandRedux === 'WCCC' && queryStringRedux && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302');
+
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
@@ -313,7 +316,8 @@ const CropSidebar = ({
         setSidebarFiltersData(allFilters);
         setSidebarCategoriesData(categories);
       });
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`)
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`
+      + `${hasAdditionalSoilDrainage ? '&additional_soil_drainage=true' : ''}`)
       .then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
         const start = startDate ? moment(startDate).format('MM/DD') : '';
@@ -387,7 +391,7 @@ const CropSidebar = ({
         )}
       </div>
       <>
-        {(queryStringRedux && queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) && (
+        {hasAdditionalSoilDrainage && (
           <ListItem style={{
             paddingLeft: '25px',
           }}
@@ -401,7 +405,7 @@ const CropSidebar = ({
                 paddingLeft: '25px',
               }}
               primary={(
-                <Grid item>
+                <Grid item sx={{ textAlign: 'right' }}>
                   <Typography variant="body1" display="inline">
                     No
                   </Typography>
@@ -422,7 +426,6 @@ const CropSidebar = ({
           <>
             <ListItem style={{
               paddingLeft: '25px',
-              marginTop: '-15px',
             }}
             >
               <ListItemText>
@@ -431,7 +434,7 @@ const CropSidebar = ({
               <ListItemText
                 display="block"
                 primary={(
-                  <Grid item>
+                  <Grid item sx={{ textAlign: 'right' }}>
                     <Typography variant="body1" display="inline">
                       No
                     </Typography>
@@ -456,11 +459,8 @@ const CropSidebar = ({
               </ListItemText>
               <ListItemText
                 display="block"
-                style={{
-                  paddingLeft: '25px',
-                }}
                 primary={(
-                  <Grid item>
+                  <Grid item sx={{ textAlign: 'right' }}>
                     <Typography variant="body1" display="inline">
                       No
                     </Typography>

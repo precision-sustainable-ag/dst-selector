@@ -50,9 +50,8 @@ const CropCard = ({
     return rotatedCropIds.includes(c.label);
   };
 
-  // TODO: update this to additional soil drainage
-  const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
-  const shouldHighlightRed = hasExcessiveDrainage && additionalSoilDrainageFilterRedux;
+  const hasAdditionalDrainage = crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
+  const shouldHighlightRed = hasAdditionalDrainage && additionalSoilDrainageFilterRedux;
 
   const placeHolderImg = 'https://placehold.co/260x140?text=Placeholder';
 

@@ -30,10 +30,8 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   return [...cropDataRedux]
     .sort((a, b) => isCropInactive(a) - isCropInactive(b))
     .map((crop, index) => {
-      // TODO: update this to additional soil drainage
-
-      const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
-      const shouldHighlightRed = hasExcessiveDrainage && additionalSoilDrainageFilterRedux;
+      const hasAdditionalDrainage = crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
+      const shouldHighlightRed = hasAdditionalDrainage && additionalSoilDrainageFilterRedux;
       const buttonStyle = { outlineOffset: '-8px' };
 
       if (shouldHighlightRed) {
