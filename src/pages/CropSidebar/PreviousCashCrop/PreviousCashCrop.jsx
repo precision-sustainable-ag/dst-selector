@@ -44,7 +44,7 @@ const PreviousCashCrop = () => {
         Cash Crop Growing Window
       </Typography>
       <Typography variant="subtitle1" align="center" gutterBottom>
-        Enter your cash crop growing window if you would like to see it displayed on the calendar.
+        Enter annual crop production period or main perennial crop development window.
       </Typography>
       <Grid
         item
@@ -64,7 +64,7 @@ const PreviousCashCrop = () => {
               }}
               className="planting-date-picker"
               sx={{ width: 1 }}
-              label="Planting Date"
+              label="Planting Date or Bud Break"
               value={startDate ? dayjs(startDate) : null}
               onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
             />
