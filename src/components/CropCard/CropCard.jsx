@@ -17,7 +17,7 @@ const CropCard = ({
   // redux vars
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
-  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
 
   // useState vars
   const [selectedBtns, setSelectedBtns] = useState(selectedCropIdsRedux);
@@ -50,8 +50,8 @@ const CropCard = ({
     return rotatedCropIds.includes(c.label);
   };
 
-  const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
-  const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
+  const hasAdditionalDrainage = crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
+  const shouldHighlightRed = hasAdditionalDrainage && additionalSoilDrainageFilterRedux;
 
   const placeHolderImg = 'https://placehold.co/260x140?text=Placeholder';
 

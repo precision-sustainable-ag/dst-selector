@@ -42,6 +42,7 @@ import {
   setSoilDrainageFilter,
   setIrrigationFilter,
   setCropGroupFilter,
+  setAdditionalSoilDrainageFilter,
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import {
@@ -68,6 +69,7 @@ const CropSidebar = ({
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
   const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -99,6 +101,9 @@ const CropSidebar = ({
 
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
+  // For WA and Ecoregion 7
+  const hasAdditionalSoilDrainage = councilShorthandRedux === 'WCCC' && queryStringRedux && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302');
+
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
@@ -111,6 +116,10 @@ const CropSidebar = ({
 
   const handleSoilDrainageFilter = () => {
     dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
+  };
+
+  const handleAdditonalSoilDrainageFilter = () => {
+    dispatchRedux(setAdditionalSoilDrainageFilter(!additionalSoilDrainageFilterRedux));
   };
 
   const handleIrrigationFilter = () => {
@@ -192,8 +201,12 @@ const CropSidebar = ({
 
       // soil drainage & flooding frequency
       if (match) {
-        const matchesDrainageClass = !drainageClassRedux ? true
-          : crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase());
+        const filteringBySoilDrainage = councilShorthandRedux === 'WCCC' ? soilDrainageFilterRedux : true;
+        let matchesDrainageClass = true;
+        if (filteringBySoilDrainage) {
+          matchesDrainageClass = !drainageClassRedux ? true
+            : crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase());
+        }
 
         const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
         const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
@@ -303,7 +316,8 @@ const CropSidebar = ({
         setSidebarFiltersData(allFilters);
         setSidebarCategoriesData(categories);
       });
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`)
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`
+      + `${hasAdditionalSoilDrainage ? '&additional_soil_drainage=true' : ''}`)
       .then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
         const start = startDate ? moment(startDate).format('MM/DD') : '';
@@ -377,13 +391,13 @@ const CropSidebar = ({
         )}
       </div>
       <>
-        {(queryStringRedux && queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) && (
+        {hasAdditionalSoilDrainage && (
           <ListItem style={{
             paddingLeft: '25px',
           }}
           >
             <ListItemText>
-              Soil Drainage Filter
+              Additional Soil Drainage Filter
             </ListItemText>
             <ListItemText
               display="block"
@@ -391,13 +405,13 @@ const CropSidebar = ({
                 paddingLeft: '25px',
               }}
               primary={(
-                <Grid item>
+                <Grid item sx={{ textAlign: 'right' }}>
                   <Typography variant="body1" display="inline">
                     No
                   </Typography>
                   <Switch
-                    checked={soilDrainageFilterRedux}
-                    onChange={handleSoilDrainageFilter}
+                    checked={additionalSoilDrainageFilterRedux}
+                    onChange={handleAdditonalSoilDrainageFilter}
                     name="soilDrainageFilter"
                   />
                   <Typography variant="body1" display="inline">
@@ -409,33 +423,60 @@ const CropSidebar = ({
           </ListItem>
         )}
         {councilShorthandRedux === 'WCCC' && (
-          <ListItem style={{
-            paddingLeft: '25px',
-            marginTop: '-15px',
-          }}
-          >
-            <ListItemText>
-              Is Your Field Irrigated?
-            </ListItemText>
-            <ListItemText
-              display="block"
-              primary={(
-                <Grid item>
-                  <Typography variant="body1" display="inline">
-                    No
-                  </Typography>
-                  <Switch
-                    checked={irrigationFilterRedux}
-                    onChange={handleIrrigationFilter}
-                    name="checkedC"
-                  />
-                  <Typography variant="body1" display="inline">
-                    Yes
-                  </Typography>
-                </Grid>
+          <>
+            <ListItem style={{
+              paddingLeft: '25px',
+            }}
+            >
+              <ListItemText>
+                Is Your Field Irrigated?
+              </ListItemText>
+              <ListItemText
+                display="block"
+                primary={(
+                  <Grid item sx={{ textAlign: 'right' }}>
+                    <Typography variant="body1" display="inline">
+                      No
+                    </Typography>
+                    <Switch
+                      checked={irrigationFilterRedux}
+                      onChange={handleIrrigationFilter}
+                      name="checkedC"
+                    />
+                    <Typography variant="body1" display="inline">
+                      Yes
+                    </Typography>
+                  </Grid>
               )}
-            />
-          </ListItem>
+              />
+            </ListItem>
+            <ListItem style={{
+              paddingLeft: '25px',
+            }}
+            >
+              <ListItemText>
+                Filter By Soil Drainage
+              </ListItemText>
+              <ListItemText
+                display="block"
+                primary={(
+                  <Grid item sx={{ textAlign: 'right' }}>
+                    <Typography variant="body1" display="inline">
+                      No
+                    </Typography>
+                    <Switch
+                      checked={soilDrainageFilterRedux}
+                      onChange={handleSoilDrainageFilter}
+                      name="soilDrainageFilter"
+                    />
+                    <Typography variant="body1" display="inline">
+                      Yes
+                    </Typography>
+                  </Grid>
+              )}
+              />
+            </ListItem>
+          </>
         )}
       </>
       <ListItem

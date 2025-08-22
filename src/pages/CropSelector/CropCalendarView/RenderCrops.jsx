@@ -37,7 +37,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
 
@@ -50,8 +50,8 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   return [...cropDataRedux]
     .sort((a, b) => isCropInactive(a) - isCropInactive(b))
     .map((crop, index) => {
-      const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
-      const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
+      const hasAdditionalDrainage = crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
+      const shouldHighlightRed = hasAdditionalDrainage && additionalSoilDrainageFilterRedux;
       const isSelected = selectedCropIdsRedux.includes(crop.id);
 
       const buttonStyle = { outlineOffset: '-8px', marginTop: '4px' };
