@@ -44,7 +44,7 @@ const PreviousCashCrop = () => {
         Cash Crop Growing Window
       </Typography>
       <Typography variant="subtitle1" align="center" gutterBottom>
-        Enter annual crop production period or main perennial crop development window.
+        Enter your cash crop growing period, or main perennial crop growing window.
       </Typography>
       <Grid
         item
@@ -64,7 +64,7 @@ const PreviousCashCrop = () => {
               }}
               className="planting-date-picker"
               sx={{ width: 1 }}
-              label="Planting Date or Bud Break"
+              label="Growing Season Start"
               value={startDate ? dayjs(startDate) : null}
               onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
             />
@@ -77,11 +77,11 @@ const PreviousCashCrop = () => {
               slotProps={{
                 textField: {
                   error: false,
-                  helperText: isError ? 'Your harvest date must be after your planting date.' : '',
+                  helperText: isError ? 'Your start date must be after your end date.' : '',
                 },
               }}
               className="harvest-date-picker"
-              label="Harvest Date"
+              label="Growing Season End"
               value={endDate ? dayjs(endDate) : null}
               onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
               sx={{
