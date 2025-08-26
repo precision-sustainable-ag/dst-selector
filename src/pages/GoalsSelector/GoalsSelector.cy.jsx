@@ -90,7 +90,7 @@ describe('<GoalsSelector />', () => {
   it(
     'should contain cashcrop window subtitle',
     () => {
-      cy.contains(/enter your cash crop growing window if you would like to see it displayed on the calendar./i);
+      cy.contains(/Enter your cash crop growing period, or main perennial crop growing window./i);
     },
   );
 

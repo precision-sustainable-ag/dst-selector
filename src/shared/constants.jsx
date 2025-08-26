@@ -1140,6 +1140,7 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Monsaint-Queeney', firstName: 'Victoria', Affiliation: 'Homer SWCD' },
         { lastName: 'Sagers', firstName: 'Joseph', Affiliation: 'University of Idaho: Extension' },
         { lastName: 'Walther', firstName: 'Jonathan', Affiliation: 'USDA-NRCS' },
+        { lastName: 'Stacey', firstName: 'Nathan', Affiliation: 'Oregon State University Extension' },
       ];
     default:
       return [
