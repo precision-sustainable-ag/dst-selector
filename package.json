@@ -28,7 +28,7 @@
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
     "sass-mediaqueries": "^1.6.1",
-    "shared-react-components": "github:precision-sustainable-ag/shared-react-components#feature/updateTheme",
+    "shared-react-components": "github:precision-sustainable-ag/shared-react-components#feature/wizard",
     "styled-components": "^5.3.6",
     "vite": "^5.4.4"
   },

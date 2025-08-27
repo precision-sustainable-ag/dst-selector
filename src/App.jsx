@@ -42,6 +42,7 @@ import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
 import Feedback from './pages/Feedback/Feedback';
+import Wizard from './pages/Wizard/wizard';
 
 import './styles/App.scss';
 // bootstrap import
@@ -150,6 +151,7 @@ const App = () => (
                         <Route path="/about" component={About} exact />
                         <Route path="/help" component={Help} exact />
                         <Route path="/feedback" render={Feedback} exact />
+                        <Route path="/wizard" render={Wizard} exact />
                         <Route path="/profile" render={() => <PSAProfile />} exact />
                         <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
                         <Route
