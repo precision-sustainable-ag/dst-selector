@@ -18,9 +18,6 @@ import {
 } from '../../../shared/constants';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
-import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
-import { myCropListLocation } from '../../../reduxStore/sharedSlice';
-import { setSaveHistory } from '../../../reduxStore/userSlice';
 import useIsMobile from '../../../hooks/useIsMobile';
 
 const CheckBoxIcon = ({ style }) => (
@@ -40,18 +37,21 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
 
   const isMobile = useIsMobile('md');
 
   const { enqueueSnackbar } = useSnackbar();
 
-  return cropDataRedux
-    .sort((a, b) => (a.inactive || false) - (b.inactive || false))
+  const isCropInactive = (crop) => !activeCropIdsRedux.includes(crop.id);
+
+  return [...cropDataRedux]
+    .sort((a, b) => isCropInactive(a) - isCropInactive(b))
     .map((crop, index) => {
-      const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
-      const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
+      const hasAdditionalDrainage = crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
+      const shouldHighlightRed = hasAdditionalDrainage && additionalSoilDrainageFilterRedux;
       const isSelected = selectedCropIdsRedux.includes(crop.id);
 
       const buttonStyle = { outlineOffset: '-8px', marginTop: '4px' };
@@ -69,7 +69,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
         <TableRow
           key={`cropRow${index}`}
           style={{
-            opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.55',
+            opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop, activeCropIdsRedux) && '0.55',
             backgroundColor: isSelected ? '#EAEAEA' : 'white',
           }}
           data-test={`crop-list-tr-${index}`}
@@ -220,16 +220,11 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 addCropToBasket(
                   crop.id,
                   crop.label,
-                  index,
-                  cropDataRedux,
                   dispatchRedux,
                   enqueueSnackbar,
-                  updateSelectedCropIds,
                   selectedCropIdsRedux,
-                  myCropListLocation,
                   historyStateRedux,
                   'selector',
-                  setSaveHistory,
                 );
               }}
               aria-label={isSelected ? 'Delete' : 'Add to List'}

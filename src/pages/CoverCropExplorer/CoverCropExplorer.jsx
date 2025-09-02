@@ -34,7 +34,7 @@ const CoverCropExplorer = () => {
   const urlRegionId = window.location.search.match(/region=([^\^]+)/); // for automating Information Sheet PDFs
 
   useEffect(() => {
-    const filteredActiveCropData = cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id))?.filter((a) => !a.inactive);
+    const filteredActiveCropData = cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id));
     setUpdatedActiveCropData(filteredActiveCropData);
     if (urlCrop && urlParamStateId && urlRegionId) {
       localStorage.setItem('stateId', urlParamStateId[1]);

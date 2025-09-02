@@ -5,10 +5,6 @@ import { PSACropCard } from 'shared-react-components/src';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { addCropToBasket } from '../../shared/constants';
-import { myCropListLocation } from '../../reduxStore/sharedSlice';
-import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
-import { setSaveHistory } from '../../reduxStore/userSlice';
-// import CropDetailsModal from '../CropDetailsModal/CropDetailsModal';
 import InformationSheetContent from '../InformationSheet/InformationSheetContent/InformationSheetContent';
 import { InfoSheetTitle } from '../InformationSheet/InformationSheet';
 import useIsMobile from '../../hooks/useIsMobile';
@@ -21,7 +17,7 @@ const CropCard = ({
   // redux vars
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
-  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
 
   // useState vars
   const [selectedBtns, setSelectedBtns] = useState(selectedCropIdsRedux);
@@ -42,12 +38,9 @@ const CropCard = ({
       name,
       dispatchRedux,
       enqueueSnackbar,
-      updateSelectedCropIds,
       selectedCropIdsRedux,
-      myCropListLocation,
       historyStateRedux,
       'explorer',
-      setSaveHistory,
     );
     await updateBtns();
   }
@@ -57,8 +50,8 @@ const CropCard = ({
     return rotatedCropIds.includes(c.label);
   };
 
-  const hasExcessiveDrainage = crop.soilDrainage?.includes('Excessively drained');
-  const shouldHighlightRed = hasExcessiveDrainage && soilDrainageFilterRedux;
+  const hasAdditionalDrainage = crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
+  const shouldHighlightRed = hasAdditionalDrainage && additionalSoilDrainageFilterRedux;
 
   const placeHolderImg = 'https://placehold.co/260x140?text=Placeholder';
 
@@ -70,7 +63,7 @@ const CropCard = ({
       title={<InfoSheetTitle crop={crop} />}
       thumbnail={crop.thumbnailWide ?? placeHolderImg}
       fullsize={crop.thumbnail}
-      portrait={crop.thumbnail}
+      portrait
       selected={selectedBtns.includes(crop.id)}
       onSelect={() => {
         addToBasket(
@@ -92,6 +85,7 @@ const CropCard = ({
           transform: needsRotation(crop) ? 'rotate(90deg) scale(1.9)' : 'none',
           border: shouldHighlightRed ? '4px solid red' : 'none',
         },
+        minHeight: isMobile ? '160px' : '260px',
       }}
       infoSheetProps={{ fullScreen: isMobile }}
     />

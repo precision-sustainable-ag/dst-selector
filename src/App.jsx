@@ -12,6 +12,7 @@ import {
   responsiveFontSizes,
   adaptV4Theme,
   Grow,
+  CssBaseline,
 } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import React, { Suspense } from 'react';
@@ -63,17 +64,6 @@ if (window.Cypress) {
 // AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
 const theme = createTheme(
   adaptV4Theme({
-    palette: {
-      primary: {
-        main: CustomStyles().lightGreen,
-      },
-      secondary: {
-        main: CustomStyles().lighterGreen,
-      },
-      dark: {
-        main: '#000',
-      },
-    },
     overrides: {
       MuiTooltip: {
         tooltip: {
@@ -126,7 +116,7 @@ const csTheme = responsiveFontSizes(theme, {
   breakpoints: ['xs', 'sm', 'md', 'lg', 'xl'],
 });
 
-export const dstTheme = createTheme(deepmerge(PSATheme, csTheme));
+export const dstTheme = createTheme(deepmerge(csTheme, PSATheme));
 
 const App = () => (
   <StyledEngineProvider injectFirst>
@@ -147,6 +137,7 @@ const App = () => (
                 fontWeight: 400,
               }}
             >
+              <CssBaseline />
               <Suspense fallback={<div>Loading..</div>}>
                 <Box>
                   <SkipContent href="#main-content" text="Skip to content" />

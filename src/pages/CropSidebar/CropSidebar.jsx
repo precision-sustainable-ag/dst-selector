@@ -42,6 +42,7 @@ import {
   setSoilDrainageFilter,
   setIrrigationFilter,
   setCropGroupFilter,
+  setAdditionalSoilDrainageFilter,
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import {
@@ -68,6 +69,7 @@ const CropSidebar = ({
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
   const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -99,6 +101,9 @@ const CropSidebar = ({
 
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
+  // For WA and Ecoregion 7
+  const hasAdditionalSoilDrainage = councilShorthandRedux === 'WCCC' && queryStringRedux && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302');
+
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
@@ -113,6 +118,10 @@ const CropSidebar = ({
     dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
   };
 
+  const handleAdditonalSoilDrainageFilter = () => {
+    dispatchRedux(setAdditionalSoilDrainageFilter(!additionalSoilDrainageFilterRedux));
+  };
+
   const handleIrrigationFilter = () => {
     dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
     dispatchRedux(updateSelectedIrrigation(!irrigationFilterRedux ? 'Irrigated' : 'Rainfed'));
@@ -123,6 +132,7 @@ const CropSidebar = ({
   };
 
   useEffect(() => {
+    const activeCropIds = [];
     // ex { "Heat Tolerance": [1,2,3,4,5] }
     const selectedFilterObject = {};
 
@@ -136,32 +146,6 @@ const CropSidebar = ({
       }
     });
 
-    // handles crop search
-    const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
-
-    // remove pluralities
-    let pluralSearch;
-    if (search) {
-      if (filterStateRedux.filters.cropSearch.endsWith('s')) {
-        pluralSearch = filterStateRedux.filters.cropSearch.slice(0, -1).toLowerCase().match(/\w+/g);
-      }
-    }
-
-    // handles pluarl words
-    const cropData = cropDataRedux?.filter((crop, n, cd) => {
-      let m;
-      const match = (parm) => {
-        m = crop[parm]?.toLowerCase().match(/\w+/g);
-        // do not process singular or plural variants in
-
-        return !search
-          || (m !== null && search.every((s) => m?.some((t) => t.includes(s))))
-          || (pluralSearch && (m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s)))));
-      };
-      cd[n].inactive = true;
-      return match('label') || match('scientificName');
-    });
-
     // transforms selectedFilterObject into an array
     const nonZeroKeys2 = Object.keys(selectedFilterObject).map((key) => {
       if (selectedFilterObject[key]?.length !== 0) {
@@ -170,7 +154,7 @@ const CropSidebar = ({
       return '';
     });
 
-    const filtered = cropData?.filter((crop, n, cd) => {
+    cropDataRedux?.forEach((crop) => {
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -189,14 +173,57 @@ const CropSidebar = ({
         }
       });
 
-      const matchesDrainageClass = !drainageClassRedux ? true
-        : crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase());
+      // crop search
+      if (match) {
+        // handles crop search
+        const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
 
-      const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
-      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
-      // WCCC don't filter crops by flooding frequency
-      const cropFloodingValueIsHigher = (councilShorthandRedux === 'WCCC' || !floodingFrequencyRedux)
-        ? true : floodingFrequencyRedux <= floodingFrequencyValue;
+        // remove pluralities
+        let pluralSearch;
+        if (search) {
+          if (filterStateRedux.filters.cropSearch.endsWith('s')) {
+            pluralSearch = filterStateRedux.filters.cropSearch.slice(0, -1).toLowerCase().match(/\w+/g);
+          }
+        }
+
+        let m;
+        const matchSearch = (parm) => {
+          m = crop[parm]?.toLowerCase().match(/\w+/g);
+          // do not process singular or plural variants in
+
+          return !search
+          || (m !== null && search.every((s) => m?.some((t) => t.includes(s))))
+          || (pluralSearch && (m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s)))));
+        };
+        if (matchSearch('label') || matchSearch('scientificName')) match = true;
+        else match = false;
+      }
+
+      // soil drainage & flooding frequency
+      if (match) {
+        const filteringBySoilDrainage = councilShorthandRedux === 'WCCC' ? soilDrainageFilterRedux : true;
+        let matchesDrainageClass = true;
+        if (filteringBySoilDrainage) {
+          matchesDrainageClass = !drainageClassRedux ? true
+            : crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase());
+        }
+
+        const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
+        const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
+        // WCCC don't filter crops by flooding frequency
+        const cropFloodingValueIsHigher = (councilShorthandRedux === 'WCCC' || !floodingFrequencyRedux)
+          ? true : floodingFrequencyRedux <= floodingFrequencyValue;
+
+        if (stateIdRedux === 7) {
+          // TODO: Arizona is in WCCC and does not have flooding frequency
+          if (!cropFloodingValueIsHigher) match = false;
+        } else if (!matchesDrainageClass || !cropFloodingValueIsHigher) match = false;
+      }
+
+      // crop group filter
+      if (match && cropGroupFilterRedux?.length > 0) {
+        if (!crop?.group?.includes(cropGroupFilterRedux)) match = false;
+      }
 
       // WCCC additional filters for planting season, first goal rating, planting dates
       if (councilShorthandRedux === 'WCCC' && match) {
@@ -211,26 +238,13 @@ const CropSidebar = ({
         }
       }
 
-      if (stateIdRedux === 7) {
-        cd[n].inactive = (!match)
-          || !cropFloodingValueIsHigher
-          || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
-      } else {
-        cd[n].inactive = (!match)
-          || !(matchesDrainageClass && cropFloodingValueIsHigher)
-          || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
-      }
+      // not filter selected crops
+      if (match === false && selectedCropIdsRedux.includes(crop.id)) match = true;
 
-      if (cd[n].inactive) {
-        if (selectedCropIdsRedux.includes(cd[n].id)) {
-          cd[n].inactive = false;
-        }
-      }
-
-      return true;
+      if (match) activeCropIds.push(crop.id);
     });
-    dispatchRedux(updateActiveCropIds(filtered.filter((crop) => !crop.inactive).map((crop) => crop.id)));
-  }, [cropDataRedux, dispatchRedux, filterStateRedux.filters]);
+    dispatchRedux(updateActiveCropIds(activeCropIds));
+  }, [cropDataRedux, filterStateRedux.filters, selectedCropIdsRedux]);
 
   const filtersSelected = Object.keys(filterStateRedux.filters)?.filter((key) => filterStateRedux.filters[key])?.length > 0;
 
@@ -302,7 +316,8 @@ const CropSidebar = ({
         setSidebarFiltersData(allFilters);
         setSidebarCategoriesData(categories);
       });
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`)
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`
+      + `${hasAdditionalSoilDrainage ? '&additional_soil_drainage=true' : ''}`)
       .then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
         const start = startDate ? moment(startDate).format('MM/DD') : '';
@@ -376,13 +391,13 @@ const CropSidebar = ({
         )}
       </div>
       <>
-        {(queryStringRedux && queryStringRedux.includes('regions=1198') && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302')) && (
+        {hasAdditionalSoilDrainage && (
           <ListItem style={{
             paddingLeft: '25px',
           }}
           >
             <ListItemText>
-              Soil Drainage Filter
+              Additional Soil Drainage Filter
             </ListItemText>
             <ListItemText
               display="block"
@@ -390,13 +405,13 @@ const CropSidebar = ({
                 paddingLeft: '25px',
               }}
               primary={(
-                <Grid item>
+                <Grid item sx={{ textAlign: 'right' }}>
                   <Typography variant="body1" display="inline">
                     No
                   </Typography>
                   <Switch
-                    checked={soilDrainageFilterRedux}
-                    onChange={handleSoilDrainageFilter}
+                    checked={additionalSoilDrainageFilterRedux}
+                    onChange={handleAdditonalSoilDrainageFilter}
                     name="soilDrainageFilter"
                   />
                   <Typography variant="body1" display="inline">
@@ -408,33 +423,60 @@ const CropSidebar = ({
           </ListItem>
         )}
         {councilShorthandRedux === 'WCCC' && (
-          <ListItem style={{
-            paddingLeft: '25px',
-            marginTop: '-15px',
-          }}
-          >
-            <ListItemText>
-              Is Your Field Irrigated?
-            </ListItemText>
-            <ListItemText
-              display="block"
-              primary={(
-                <Grid item>
-                  <Typography variant="body1" display="inline">
-                    No
-                  </Typography>
-                  <Switch
-                    checked={irrigationFilterRedux}
-                    onChange={handleIrrigationFilter}
-                    name="checkedC"
-                  />
-                  <Typography variant="body1" display="inline">
-                    Yes
-                  </Typography>
-                </Grid>
+          <>
+            <ListItem style={{
+              paddingLeft: '25px',
+            }}
+            >
+              <ListItemText>
+                Is Your Field Irrigated?
+              </ListItemText>
+              <ListItemText
+                display="block"
+                primary={(
+                  <Grid item sx={{ textAlign: 'right' }}>
+                    <Typography variant="body1" display="inline">
+                      No
+                    </Typography>
+                    <Switch
+                      checked={irrigationFilterRedux}
+                      onChange={handleIrrigationFilter}
+                      name="checkedC"
+                    />
+                    <Typography variant="body1" display="inline">
+                      Yes
+                    </Typography>
+                  </Grid>
               )}
-            />
-          </ListItem>
+              />
+            </ListItem>
+            <ListItem style={{
+              paddingLeft: '25px',
+            }}
+            >
+              <ListItemText>
+                Filter By Soil Drainage
+              </ListItemText>
+              <ListItemText
+                display="block"
+                primary={(
+                  <Grid item sx={{ textAlign: 'right' }}>
+                    <Typography variant="body1" display="inline">
+                      No
+                    </Typography>
+                    <Switch
+                      checked={soilDrainageFilterRedux}
+                      onChange={handleSoilDrainageFilter}
+                      name="soilDrainageFilter"
+                    />
+                    <Typography variant="body1" display="inline">
+                      Yes
+                    </Typography>
+                  </Grid>
+              )}
+              />
+            </ListItem>
+          </>
         )}
       </>
       <ListItem
