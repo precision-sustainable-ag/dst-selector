@@ -377,39 +377,36 @@ const Landing = () => {
             mapboxToken={mapboxToken}
             key="1"
           />
-          {isDevEnvironment
-          && (
-            <>
-              <StateImageButton
-                sx={{
-                  position: 'absolute',
-                  bottom: isMobile ? '-110px' : '140px',
-                  left: '10px',
-                  ...(selectedState.label === 'Alaska' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
-                }}
-                onClick={() => {
-                  const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
-                  setSelectedState(alaska);
-                }}
-                src={selectedState.label === 'Alaska' ? '/images/alaska-selected.jpg' : '/images/alaska.jpg'}
-                alt="select Alaska"
-              />
-              <StateImageButton
-                sx={{
-                  position: 'absolute',
-                  bottom: isMobile ? '-110px' : '30px',
-                  left: isMobile ? '120px' : '10px',
-                  ...(selectedState.label === 'Hawaii' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
-                }}
-                onClick={() => {
-                  const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
-                  setSelectedState(hawaii);
-                }}
-                src={selectedState.label === 'Hawaii' ? '/images/hawaii-selected.jpg' : '/images/hawaii.jpg'}
-                alt="select Hawaii"
-              />
-            </>
-          )}
+          <>
+            <StateImageButton
+              sx={{
+                position: 'absolute',
+                bottom: isMobile ? '-110px' : '140px',
+                left: '10px',
+                ...(selectedState.label === 'Alaska' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
+              }}
+              onClick={() => {
+                const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
+                setSelectedState(alaska);
+              }}
+              src={selectedState.label === 'Alaska' ? '/images/alaska-selected.jpg' : '/images/alaska.jpg'}
+              alt="select Alaska"
+            />
+            <StateImageButton
+              sx={{
+                position: 'absolute',
+                bottom: isMobile ? '-110px' : '30px',
+                left: isMobile ? '120px' : '10px',
+                ...(selectedState.label === 'Hawaii' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
+              }}
+              onClick={() => {
+                const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
+                setSelectedState(hawaii);
+              }}
+              src={selectedState.label === 'Hawaii' ? '/images/hawaii-selected.jpg' : '/images/hawaii.jpg'}
+              alt="select Hawaii"
+            />
+          </>
         </Box>
       </Grid>
     </Box>
