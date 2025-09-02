@@ -91,7 +91,7 @@ const Landing = () => {
   // Load map data based on current enviorment
   useEffect(() => {
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
-      const productionCouncils = ['NECCC', 'SCCC', 'MCCC'];
+      const productionCouncils = ['NECCC', 'SCCC', 'MCCC', 'WCCC'];
       const states = isDevEnvironment
         ? stateData.data
         : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
