@@ -64,13 +64,14 @@ const SoilCondition = () => {
 
   // retrieving drainage class and flooding frequency
   useEffect(() => {
+    if (stateLabelRedux === 'Ontario') return;
+
     const [lat, lon] = markersRedux[0];
     const { lat: latOriginal, lon: lonOriginal } = soilDataOriginalRedux.latLong;
     if (
       floodingOptions.length === 0
       || (lat === latOriginal && lon === lonOriginal)
       || historyStateRedux === historyState.imported
-      || stateLabelRedux === 'Ontario'
       || window.Cypress
     ) return;
     const getSSURGOData = () => {
