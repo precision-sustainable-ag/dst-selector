@@ -19,6 +19,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useSnackbar } from 'notistack';
 import InformationBar from './InformationBar/InformationBar';
@@ -361,6 +362,15 @@ const Header = () => {
       icon: <ChatBubbleOutlineIcon />,
       rightIcon: true,
       onClick: () => history.push('/feedback'),
+      textSx: { fontSize: '1rem' },
+    },
+    {
+      type: 'button',
+      variant: 'text',
+      text: 'Wizard',
+      icon: <AutoFixHighOutlinedIcon />,
+      rightIcon: true,
+      onClick: () => history.push('/wizard'),
       textSx: { fontSize: '1rem' },
     },
     {
