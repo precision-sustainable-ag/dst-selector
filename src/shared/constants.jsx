@@ -1128,6 +1128,7 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Sirovatka', firstName: 'Nick', Affiliation: 'Oregon Department of Agriculture' },
         { lastName: 'Smither-Kopperl', firstName: 'Margaret', Affiliation: 'USDA NRCS Plant Materials Center' },
         { lastName: 'Solomon', firstName: 'Juan', Affiliation: 'University of Nevada, Reno' },
+        { lastName: 'Stacey', firstName: 'Nathan', Affiliation: 'Oregon State University Extension' },
         { lastName: 'Sullivan', firstName: 'Clare', Affiliation: 'Oregon State University' },
         { lastName: 'Synk', firstName: 'Billy', Affiliation: 'Pollinator Partnership' },
         { lastName: 'Taulbee', firstName: 'Jacob', Affiliation: 'Humboldt County Resource Conservation District' },
