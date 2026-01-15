@@ -150,7 +150,7 @@ const App = () => (
                         <Route path="/explorer" component={CoverCropExplorer} exact />
                         <Route path="/about" component={About} exact />
                         <Route path="/help" component={Help} exact />
-                        <Route path="/feedback" render={Feedback} exact />
+                        <Route path="/feedback" component={Feedback} exact />
                         <Route path="/wizard" render={Wizard} exact />
                         <Route path="/profile" render={() => <PSAProfile />} exact />
                         <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
