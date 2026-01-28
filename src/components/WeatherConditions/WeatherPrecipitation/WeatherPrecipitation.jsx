@@ -38,7 +38,7 @@ const WeatherPrecipitation = () => {
               enterTouchDelay={0}
               title={(
                 <div>
-                  Five-year average monthly and annual precipitation from the Precision Sustainable
+                  Average monthly (5-year) and annual (15-year) precipitation from the Precision Sustainable
                   Agriculture Weather API powered by
                   {' '}
                   <a

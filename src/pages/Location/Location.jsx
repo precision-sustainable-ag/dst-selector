@@ -250,8 +250,8 @@ const Location = () => {
         //  Dynamic dates ?
         const averageRainUrl = `${weatherApiURL}/hourly?location=${city} ${abbrState}&start=2015-01-01&end=2019-12-31&email=selector@psa.org`;
         const averageRainForAMonthURL = `${averageRainUrl}&where=month=${currentMonthInt}&stats=sum(precipitation)/5&output=json`;
-        // What was the 5-year average annual rainfall for city st?
-        const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
+        // What was the 15-year average annual rainfall for this location?
+        const yearlyPrecipitationURL = `${weatherApiURL}/yearlyprecipitation?lat=${lat}&lon=${lon}`;
         const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
 
         // call the frost url and then set frostFreeDays, averageFrostObject in store
@@ -292,15 +292,15 @@ const Location = () => {
           dispatchRedux(updateAvgPrecipCurrentMonth(null));
         }
 
-        // call the frost url and then set fiveYearAvgRainAnnual in store
+        // call the yearly precipitation API and then set annual precipitation in store
         try {
-          const fiveYearAvgRainResponse = await callCoverCropApi(fiveYearAvgRainURL);
-          let fiveYearAvgRainAnnual = fiveYearAvgRainResponse[0]['sum(precipitation)/5'];
-          fiveYearAvgRainAnnual = parseFloat(fiveYearAvgRainAnnual * 0.03937).toFixed(2);
-          dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
+          const yearlyPrecipitationResponse = await callCoverCropApi(yearlyPrecipitationURL);
+          let annualPrecipitation = yearlyPrecipitationResponse.rain;
+          annualPrecipitation = parseFloat(annualPrecipitation).toFixed(2);
+          dispatchRedux(updateAvgPrecipAnnual(annualPrecipitation));
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average annual rainfall`);
+          console.log(`Weather API error code: ${error?.response?.status} for getting 15 year average annual rainfall`);
           dispatchRedux(updateAvgPrecipAnnual(null));
         }
       }
