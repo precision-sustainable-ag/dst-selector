@@ -2,7 +2,7 @@
   "name": "decision-support-tool",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://covercrop.tools/",
+  "homepage": "https://covercrop-selector.org/",
   "dependencies": {
     "@auth0/auth0-react": "^2.2.0",
     "@babel/runtime": "^7.25.6",

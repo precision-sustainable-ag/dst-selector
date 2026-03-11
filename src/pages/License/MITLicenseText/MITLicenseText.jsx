@@ -61,7 +61,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
         <Grid item xs={12}>
           <Typography variant="body1">
             The cover crop data is part of NECCC Cover Crop Decision Support Tools project
-            (https://covercrop.tools). The data files and their contents licensed under the terms of
+            (https://covercrop-selector.org). The data files and their contents licensed under the terms of
             MIT License. You may use, copy, modify and redistribute all files included in this
             distribution, individually or in aggregate, subject to the terms and conditions of the
             MIT license. See
