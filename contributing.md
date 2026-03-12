@@ -9,12 +9,12 @@ If you have personal support or setup questions the best way to ask those are by
 
 ### Bug Reports
 
-Submit a bug via our [feedback form](https://covercrop.tools/feedback). When appropriate, the project manager, program manager, or development team will escalate it, creating an issue.
+Submit a bug via our [feedback form](https://covercrop-selector.org/feedback). When appropriate, the project manager, program manager, or development team will escalate it, creating an issue.
 When reporting a bug make sure to include information about which browser and operating system you are on as well as the necessary steps to reproduce the issue. If possible please include a screenshot.
 
 ### Feature Requests
 
-Submit a feature request via our [feedback form](https://covercrop.tools/feedback). When appropriate, the program manager will escalate it, creating an issue.
+Submit a feature request via our [feedback form](https://covercrop-selector.org/feedback). When appropriate, the program manager will escalate it, creating an issue.
 When requesting a feature include sketches and pseudo code if possible.
 
 ### Pull Requests
@@ -27,7 +27,7 @@ When requesting a feature include sketches and pseudo code if possible.
 
 ### Cover Crop Data Feedback
 
-Submit Cover Crop Data feedback via our [feedback form](https://covercrop.tools/feedback). When appropriate, the project manager or program manager will update the data set and push updates to the dataset.
+Submit Cover Crop Data feedback via our [feedback form](https://covercrop-selector.org/feedback). When appropriate, the project manager or program manager will update the data set and push updates to the dataset.
 
 ### Escalating Bugs and Features to Issues
 
