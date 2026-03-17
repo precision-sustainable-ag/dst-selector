@@ -18,18 +18,16 @@ import {
   Switch,
   Chip,
 } from '@mui/material';
-import {
-  ExpandLess, ExpandMore,
-} from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import React, {
-  useEffect, useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
-  callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
+  callCoverCropApi,
+  cropDataFormatter,
+  getLegendDataBasedOnCouncil,
 } from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -45,18 +43,10 @@ import {
   setAdditionalSoilDrainageFilter,
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
-import {
-  setAjaxInProgress, regionToggleHandler,
-} from '../../reduxStore/sharedSlice';
+import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 import { updateSelectedIrrigation } from '../../reduxStore/terminationSlice';
 
-const CropSidebar = ({
-  comparisonView,
-  listView,
-  from,
-  setGrowthWindow,
-  style,
-}) => {
+const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style }) => {
   const dispatchRedux = useDispatch();
 
   // redux vars
@@ -65,19 +55,35 @@ const CropSidebar = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
-  const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
+  const speciesSelectorActivationFlagRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag,
+  );
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
-  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
-  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
-  const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
+  const soilDrainageFilterRedux = useSelector(
+    (stateRedux) => stateRedux.filterData.filters.soilDrainageFilter,
+  );
+  const additionalSoilDrainageFilterRedux = useSelector(
+    (stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter,
+  );
+  const irrigationFilterRedux = useSelector(
+    (stateRedux) => stateRedux.filterData.filters.irrigationFilter,
+  );
+  const cropGroupFilterRedux = useSelector(
+    (stateRedux) => stateRedux.filterData.filters.cropGroupFilter,
+  );
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
-  const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
-  const selectedSeasonRedux = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
+  const drainageClassRedux = useSelector(
+    (stateRedux) => stateRedux.soilData.soilData.drainageClass[0],
+  );
+  const floodingFrequencyRedux = useSelector(
+    (stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0],
+  );
+  const selectedSeasonRedux = useSelector(
+    (stateRedux) => stateRedux.terminationData.selectedSeason,
+  );
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   // useState vars
@@ -88,7 +94,12 @@ const CropSidebar = ({
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
 
-  const coverCropGroup = [{ label: 'Brassica' }, { label: 'Legume' }, { label: 'Grass' }, { label: 'Broadleaf' }];
+  const coverCropGroup = [
+    { label: 'Brassica' },
+    { label: 'Legume' },
+    { label: 'Grass' },
+    { label: 'Broadleaf' },
+  ];
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
@@ -102,15 +113,21 @@ const CropSidebar = ({
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   // For WA and Ecoregion 7
-  const hasAdditionalSoilDrainage = councilShorthandRedux === 'WCCC' && queryStringRedux && queryStringRedux.includes('regions=51') && queryStringRedux.includes('regions=1302');
+  const hasAdditionalSoilDrainage =
+    councilShorthandRedux === 'WCCC' &&
+    queryStringRedux &&
+    queryStringRedux.includes('regions=51') &&
+    queryStringRedux.includes('regions=1302');
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
-    const value = !(window.location.pathname === '/'
-      && from === 'table'
-      && !speciesSelectorActivationFlagRedux
-      && !comparisonView);
+    const value = !(
+      window.location.pathname === '/' &&
+      from === 'table' &&
+      !speciesSelectorActivationFlagRedux &&
+      !comparisonView
+    );
     setShowFilters(value);
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
 
@@ -164,7 +181,11 @@ const CropSidebar = ({
         const vals = keyObject[key];
         if (crop.attributes.filter((att) => att.label === key)?.length > 0) {
           // if there is not an intersection, match = false
-          if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item.value))) {
+          if (
+            !crop.attributes
+              .filter((att) => att.label === key)[0]
+              ?.values.some((item) => vals.includes(item.value))
+          ) {
             match = false;
           }
         } else {
@@ -182,7 +203,10 @@ const CropSidebar = ({
         let pluralSearch;
         if (search) {
           if (filterStateRedux.filters.cropSearch.endsWith('s')) {
-            pluralSearch = filterStateRedux.filters.cropSearch.slice(0, -1).toLowerCase().match(/\w+/g);
+            pluralSearch = filterStateRedux.filters.cropSearch
+              .slice(0, -1)
+              .toLowerCase()
+              .match(/\w+/g);
           }
         }
 
@@ -191,9 +215,11 @@ const CropSidebar = ({
           m = crop[parm]?.toLowerCase().match(/\w+/g);
           // do not process singular or plural variants in
 
-          return !search
-          || (m !== null && search.every((s) => m?.some((t) => t.includes(s))))
-          || (pluralSearch && (m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s)))));
+          return (
+            !search ||
+            (m !== null && search.every((s) => m?.some((t) => t.includes(s)))) ||
+            (pluralSearch && m !== null && pluralSearch.every((s) => m?.some((t) => t.includes(s))))
+          );
         };
         if (matchSearch('label') || matchSearch('scientificName')) match = true;
         else match = false;
@@ -201,18 +227,25 @@ const CropSidebar = ({
 
       // soil drainage & flooding frequency
       if (match) {
-        const filteringBySoilDrainage = councilShorthandRedux === 'WCCC' ? soilDrainageFilterRedux : true;
+        const filteringBySoilDrainage =
+          councilShorthandRedux === 'WCCC' ? soilDrainageFilterRedux : true;
         let matchesDrainageClass = true;
         if (filteringBySoilDrainage) {
-          matchesDrainageClass = !drainageClassRedux ? true
-            : crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase());
+          matchesDrainageClass = !drainageClassRedux
+            ? true
+            : crop.soilDrainage
+                ?.map((d) => d.toLowerCase())
+                ?.includes(drainageClassRedux.toLowerCase());
         }
 
-        const floodLabel = (councilShorthandRedux === 'NECCC') ? 'Flood' : 'Flood Tolerance';
-        const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]?.values[0].value;
+        const floodLabel = councilShorthandRedux === 'NECCC' ? 'Flood' : 'Flood Tolerance';
+        const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]
+          ?.values[0].value;
         // WCCC don't filter crops by flooding frequency
-        const cropFloodingValueIsHigher = (councilShorthandRedux === 'WCCC' || !floodingFrequencyRedux)
-          ? true : floodingFrequencyRedux <= floodingFrequencyValue;
+        const cropFloodingValueIsHigher =
+          councilShorthandRedux === 'WCCC' || !floodingFrequencyRedux
+            ? true
+            : floodingFrequencyRedux <= floodingFrequencyValue;
 
         if (stateIdRedux === 7) {
           // TODO: Arizona is in WCCC and does not have flooding frequency
@@ -228,10 +261,15 @@ const CropSidebar = ({
       // WCCC additional filters for planting season, first goal rating, planting dates
       if (councilShorthandRedux === 'WCCC' && match) {
         match = false;
-        const seasonMatch = selectedSeasonRedux.length === 0
-          || crop.plantingDates.some((date) => selectedSeasonRedux.some((season) => date.label.includes(season)));
-        const firstGoalRatingLargerThanTwo = selectedGoalsRedux.length === 0
-          || Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value) > 2;
+        const seasonMatch =
+          selectedSeasonRedux.length === 0 ||
+          crop.plantingDates.some((date) =>
+            selectedSeasonRedux.some((season) => date.label.includes(season)),
+          );
+        const firstGoalRatingLargerThanTwo =
+          selectedGoalsRedux.length === 0 ||
+          Number(crop.goals.filter((g) => g.label === selectedGoalsRedux[0])[0]?.values[0]?.value) >
+            2;
         const havePlantingDates = crop.plantingDates?.length > 0;
         if (seasonMatch && firstGoalRatingLargerThanTwo && havePlantingDates) {
           match = true;
@@ -246,7 +284,9 @@ const CropSidebar = ({
     dispatchRedux(updateActiveCropIds(activeCropIds));
   }, [cropDataRedux, filterStateRedux.filters, selectedCropIdsRedux]);
 
-  const filtersSelected = Object.keys(filterStateRedux.filters)?.filter((key) => filterStateRedux.filters[key])?.length > 0;
+  const filtersSelected =
+    Object.keys(filterStateRedux.filters)?.filter((key) => filterStateRedux.filters[key])?.length >
+    0;
 
   const resetAllFilters = () => {
     dispatchRedux(clearFilters());
@@ -293,7 +333,9 @@ const CropSidebar = ({
   useEffect(() => {
     generateSidebarObject()
       .then((data) => setSidebarFilters(data))
-      .then(() => { setLoading(false); })
+      .then(() => {
+        setLoading(false);
+      })
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err.message);
@@ -304,31 +346,34 @@ const CropSidebar = ({
     if (queryStringRedux === null) return;
     dispatchRedux(setAjaxInProgress(true));
     setLoading(true);
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`)
-      .then((data) => {
-        // remove termination filters for WCCC
-        const allFilters = [];
-        data.data.forEach((category) => {
-          if (councilShorthandRedux === 'WCCC' && category.label === 'Termination') return;
-          allFilters.push(category.attributes);
-        });
-        const categories = councilShorthandRedux === 'WCCC' ? data.data.filter((category) => (category.label !== 'Termination')) : data.data;
-        setSidebarFiltersData(allFilters);
-        setSidebarCategoriesData(categories);
+    callCoverCropApi(
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`,
+    ).then((data) => {
+      // remove termination filters for WCCC
+      const allFilters = [];
+      data.data.forEach((category) => {
+        if (councilShorthandRedux === 'WCCC' && category.label === 'Termination') return;
+        allFilters.push(category.attributes);
       });
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}`
-      + `${hasAdditionalSoilDrainage ? '&additional_soil_drainage=true' : ''}`)
-      .then((data) => {
-        const { startDate, endDate } = cashCropDataRedux.dateRange;
-        const start = startDate ? moment(startDate).format('MM/DD') : '';
-        const end = endDate ? moment(endDate).format('MM/DD') : '';
-        cropDataFormatter(data.data, start, end);
-        dispatchRedux(updateCropData(data.data));
-        dispatchRedux(setAjaxInProgress(false));
-      });
-  }, [
-    cashCropDataRedux, queryStringRedux,
-  ]);
+      const categories =
+        councilShorthandRedux === 'WCCC'
+          ? data.data.filter((category) => category.label !== 'Termination')
+          : data.data;
+      setSidebarFiltersData(allFilters);
+      setSidebarCategoriesData(categories);
+    });
+    callCoverCropApi(
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}` +
+        `${hasAdditionalSoilDrainage ? '&additional_soil_drainage=true' : ''}`,
+    ).then((data) => {
+      const { startDate, endDate } = cashCropDataRedux.dateRange;
+      const start = startDate ? moment(startDate).format('MM/DD') : '';
+      const end = endDate ? moment(endDate).format('MM/DD') : '';
+      cropDataFormatter(data.data, start, end);
+      dispatchRedux(updateCropData(data.data));
+      dispatchRedux(setAjaxInProgress(false));
+    });
+  }, [cashCropDataRedux, queryStringRedux]);
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
@@ -343,20 +388,21 @@ const CropSidebar = ({
     }
   }, [cashCropDataRedux.dateRange, setGrowthWindow]);
 
-  const getFilters = () => sidebarFilters.map((filter, index) => {
-    const sectionFilter = `${filter.name}`;
-    return (
-      <SidebarFilter
-        key={index}
-        filter={filter}
-        index={index}
-        sidebarFilterOptions={sidebarFilterOptions}
-        setSidebarFilterOptions={setSidebarFilterOptions}
-        resetAllFilters={resetAllFilters}
-        sectionFilter={sectionFilter}
-      />
-    );
-  }); // filters
+  const getFilters = () =>
+    sidebarFilters.map((filter, index) => {
+      const sectionFilter = `${filter.name}`;
+      return (
+        <SidebarFilter
+          key={index}
+          filter={filter}
+          index={index}
+          sidebarFilterOptions={sidebarFilterOptions}
+          setSidebarFilterOptions={setSidebarFilterOptions}
+          resetAllFilters={resetAllFilters}
+          sectionFilter={sectionFilter}
+        />
+      );
+    }); // filters
 
   const filtersList = () => (
     <List
@@ -370,14 +416,15 @@ const CropSidebar = ({
     >
       <div>
         {filtersSelected && (
-          <ListItem style={{
-            textAlign: 'center',
-            paddingBottom: '0px',
-            paddingTop: '8px',
-          }}
+          <ListItem
+            style={{
+              textAlign: 'center',
+              paddingBottom: '0px',
+              paddingTop: '8px',
+            }}
           >
             <ListItemText
-              primary={(
+              primary={
                 <PSAButton
                   buttonType=""
                   onClick={resetAllFilters}
@@ -385,26 +432,25 @@ const CropSidebar = ({
                   data-test="crop-side-bar-clear-filters"
                   title="Clear Filters"
                 />
-              )}
+              }
             />
           </ListItem>
         )}
       </div>
       <>
         {hasAdditionalSoilDrainage && (
-          <ListItem style={{
-            paddingLeft: '25px',
-          }}
+          <ListItem
+            style={{
+              paddingLeft: '25px',
+            }}
           >
-            <ListItemText>
-              Additional Soil Drainage Filter
-            </ListItemText>
+            <ListItemText>Additional Soil Drainage Filter</ListItemText>
             <ListItemText
               display="block"
               style={{
                 paddingLeft: '25px',
               }}
-              primary={(
+              primary={
                 <Grid item sx={{ textAlign: 'right' }}>
                   <Typography variant="body1" display="inline">
                     No
@@ -418,22 +464,21 @@ const CropSidebar = ({
                     Yes
                   </Typography>
                 </Grid>
-              )}
+              }
             />
           </ListItem>
         )}
         {councilShorthandRedux === 'WCCC' && (
           <>
-            <ListItem style={{
-              paddingLeft: '25px',
-            }}
+            <ListItem
+              style={{
+                paddingLeft: '25px',
+              }}
             >
-              <ListItemText>
-                Is Your Field Irrigated?
-              </ListItemText>
+              <ListItemText>Is Your Field Irrigated?</ListItemText>
               <ListItemText
                 display="block"
-                primary={(
+                primary={
                   <Grid item sx={{ textAlign: 'right' }}>
                     <Typography variant="body1" display="inline">
                       No
@@ -447,19 +492,18 @@ const CropSidebar = ({
                       Yes
                     </Typography>
                   </Grid>
-              )}
+                }
               />
             </ListItem>
-            <ListItem style={{
-              paddingLeft: '25px',
-            }}
+            <ListItem
+              style={{
+                paddingLeft: '25px',
+              }}
             >
-              <ListItemText>
-                Filter By Soil Drainage
-              </ListItemText>
+              <ListItemText>Filter By Soil Drainage</ListItemText>
               <ListItemText
                 display="block"
-                primary={(
+                primary={
                   <Grid item sx={{ textAlign: 'right' }}>
                     <Typography variant="body1" display="inline">
                       No
@@ -473,24 +517,25 @@ const CropSidebar = ({
                       Yes
                     </Typography>
                   </Grid>
-              )}
+                }
               />
             </ListItem>
           </>
         )}
       </>
-      <ListItem
-        component="div"
-      >
+      <ListItem component="div">
         <PSATooltip
           enterTouchDelay={0}
           title="Use the Cover Crop Group Filter to select specific cover crop groups to filter by."
-          tooltipContent={(
+          tooltipContent={
             <span role="button">
               Cover Crop Group Filter
-              <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} tabIndex="0" />
+              <HelpOutlineIcon
+                style={{ cursor: 'pointer', transform: 'scale(0.7)' }}
+                tabIndex="0"
+              />
             </span>
-          )}
+          }
         />
       </ListItem>
       <ListItem>
@@ -525,7 +570,7 @@ const CropSidebar = ({
   }, [sidebarFilters]);
 
   // eslint-disable-next-line no-nested-ternary
-  return !loading && (from === 'myCoverCropListStatic') ? (
+  return !loading && from === 'myCoverCropListStatic' ? (
     <Grid container spacing={3}>
       <Grid item>
         <ComparisonBar
@@ -536,86 +581,78 @@ const CropSidebar = ({
         />
       </Grid>
     </Grid>
-  ) : (
-    (speciesSelectorActivationFlagRedux || from === 'explorer') ? (
-      <Box
-        id="Filters"
-      >
-        <List
-          component="nav"
-          aria-labelledby="nested-list-subheader"
-        >
-          {from === 'table' && (
-            <>
-              {showFilters && speciesSelectorActivationFlagRedux && !listView && (
+  ) : speciesSelectorActivationFlagRedux || from === 'explorer' ? (
+    <Box id="Filters">
+      <List component="nav" aria-labelledby="nested-list-subheader">
+        {from === 'table' && (
+          <>
+            {showFilters && speciesSelectorActivationFlagRedux && !listView && <CoverCropSearch />}
+
+            {!listView && <CoverCropGoals style={style} />}
+          </>
+        )}
+        {showFilters && (
+          <>
+            {from === 'explorer' && (
+              <>
+                {councilShorthandRedux !== 'WCCC' && (
+                  <List component="div" disablePadding>
+                    <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
+                      <ListItemText
+                        primary={<Typography variant="body2">PLANT HARDINESS ZONE</Typography>}
+                      />
+                      {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <PlantHardinessZone from="Location" />
+                  </List>
+                )}
                 <CoverCropSearch />
-              )}
-
-              {!listView && (
-                <CoverCropGoals style={style} />
-              )}
-
-            </>
-          )}
-          {showFilters && (
-            <>
-              {from === 'explorer' && (
-                <>
-                  {councilShorthandRedux !== 'WCCC'
-                    && (
-                      <List component="div" disablePadding>
-                        <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
-                          <ListItemText
-                            primary={(
-                              <Typography variant="body2">
-                                PLANT HARDINESS ZONE
-                              </Typography>
-                            )}
-                          />
-                          {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
-                        </ListItemButton>
-                        <PlantHardinessZone from="Location" />
-                      </List>
-                    )}
-                  <CoverCropSearch />
-                </>
-              )}
+              </>
+            )}
+            <Box
+              sx={{
+                border: 0.5,
+                borderRadius: 2,
+                borderColor: 'black',
+                mb: 2,
+                overflow: 'hidden',
+              }}
+            >
+              <ListItemButton
+                className="sidebarFilters"
+                onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
+              >
+                <ListItemText primary="FILTERS" />
+                {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={cropFiltersOpen} timeout="auto">
+                {filtersList()}
+              </Collapse>
+            </Box>
+            {from !== 'explorer' && (
               <Box
                 sx={{
-                  border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+                  border: 0.5,
+                  borderRadius: 2,
+                  borderColor: 'black',
+                  mb: 2,
+                  overflow: 'hidden',
                 }}
               >
-                <ListItemButton className="sidebarFilters" onClick={() => setCropFiltersOpen(!cropFiltersOpen)}>
-                  <ListItemText primary="FILTERS" />
-                  {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={cropFiltersOpen} timeout="auto">
-                  {filtersList()}
-                </Collapse>
+                <Legend legendData={legendData} modal />
               </Box>
-              {from !== 'explorer'
-                && (
-                  <Box
-                    sx={{
-                      border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
-                    }}
-                  >
-                    <Legend legendData={legendData} modal />
-                  </Box>
-                )}
-            </>
-          )}
-        </List>
-      </Box>
-    ) : (
-      <ComparisonBar
-        filterData={sidebarFilters}
-        goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-        comparisonKeys={comparisonKeysRedux}
-        comparisonView={comparisonView}
-      />
-    )
-
+            )}
+          </>
+        )}
+      </List>
+    </Box>
+  ) : (
+    <ComparisonBar
+      filterData={sidebarFilters}
+      goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+      comparisonKeys={comparisonKeysRedux}
+      comparisonView={comparisonView}
+    />
   );
 };
 

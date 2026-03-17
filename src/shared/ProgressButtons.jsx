@@ -26,10 +26,14 @@ const ProgressButtons = () => {
         setIsDisabledNext(councilShorthandRedux === null);
         break;
       case 1: {
-        const locationUnavailable = councilShorthandRedux === 'WCCC' ? queryStringRedux === null : regionShorthandRedux === '';
+        const locationUnavailable =
+          councilShorthandRedux === 'WCCC'
+            ? queryStringRedux === null
+            : regionShorthandRedux === '';
         const isDisabled = locationUnavailable || allGoalsRedux.length === 0;
-        const disabledTooltip = `${locationUnavailable ? 'Location not available! ' : ''}`
-          + `${allGoalsRedux.length === 0 ? 'No data exists for your location!' : ''}`;
+        const disabledTooltip =
+          `${locationUnavailable ? 'Location not available! ' : ''}` +
+          `${allGoalsRedux.length === 0 ? 'No data exists for your location!' : ''}`;
 
         setIsDisabledNext(isDisabled);
         setToolTip(isDisabled ? disabledTooltip : null);

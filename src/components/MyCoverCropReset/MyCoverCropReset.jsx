@@ -1,9 +1,4 @@
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Typography,
-} from '@mui/material';
+import { Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,15 +27,12 @@ const MyCoverCropReset = () => {
     <Dialog disableEscapeKeyDown open={open}>
       <DialogContent dividers>
         <Typography variant="body1">
-          In order to continue you will need to reset the My Cover Crop List. Would you like to continue?
+          In order to continue you will need to reset the My Cover Crop List. Would you like to
+          continue?
         </Typography>
       </DialogContent>
-      <DialogActions
-        className="resetBox"
-      >
-        <BinaryButton
-          action={setOpen}
-        />
+      <DialogActions className="resetBox">
+        <BinaryButton action={setOpen} />
       </DialogActions>
     </Dialog>
   );

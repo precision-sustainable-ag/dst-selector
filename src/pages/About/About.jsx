@@ -5,9 +5,7 @@
   RenderContent contains all the text listed in the about section
 */
 
-import {
-  Box, Grid, Stack, Typography,
-} from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
@@ -56,17 +54,13 @@ const About = () => {
   const getContent = () => {
     switch (value) {
       case 0:
-        return (
-          <LicenseAndCopyright />
-        );
+        return <LicenseAndCopyright />;
       case 1:
-        return (
-          <FundingAndAcknowledgements />
-        );
-      case 2: return (
-        <AboutTheExperts />
-      );
-      default: return null;
+        return <FundingAndAcknowledgements />;
+      case 2:
+        return <AboutTheExperts />;
+      default:
+        return null;
     }
   };
 
@@ -77,15 +71,23 @@ const About = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setAttribution(councilShorthandRedux === null
-          ? data.attributions.generalStatement
-          : data.attributions[councilShorthandRedux].withoutModifications);
+        setAttribution(
+          councilShorthandRedux === null
+            ? data.attributions.generalStatement
+            : data.attributions[councilShorthandRedux].withoutModifications,
+        );
       });
   }, [councilShorthandRedux]);
 
   return (
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
-      <Grid container spacing={0} justifyContent="center" mt={isMobile ? 0 : 5} mb={isMobile ? 0 : 5}>
+      <Grid
+        container
+        spacing={0}
+        justifyContent="center"
+        mt={isMobile ? 0 : 5}
+        mb={isMobile ? 0 : 5}
+      >
         <Grid item xs={12} sm={12} md={3.4} lg={3.4} xl={3.4}>
           <div
             style={{
@@ -120,7 +122,11 @@ const About = () => {
           lg={8}
           xl={8}
           mt={{
-            xs: 3, sm: 3, md: 0, lg: 0, xl: 0,
+            xs: 3,
+            sm: 3,
+            md: 0,
+            lg: 0,
+            xl: 0,
           }}
         >
           <div style={{ border: `1px solid ${CustomStyles().darkGreen}`, minHeight: '320px' }}>

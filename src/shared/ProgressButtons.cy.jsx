@@ -95,21 +95,29 @@ describe('<ProgressButtonsInner />', () => {
   });
 
   it('renders correct state of Progress buttons when progress is 1', () => {
-    reduxStore.dispatch(updateStateInfo({
-      stateId: 36,
-      stateLabel: 'New York',
-      councilShorthand: 'NECCC',
-      councilLabel: 'Northeast Cover Crops Council',
-    }));
-    reduxStore.dispatch(updateRegion({
-      regionId: 1,
-      regionShorthand: '4',
-    }));
-    reduxStore.dispatch(updateAllGoals([{
-      label: 'Forage Harvest Value',
-      description: '',
-      tags: [],
-    }]));
+    reduxStore.dispatch(
+      updateStateInfo({
+        stateId: 36,
+        stateLabel: 'New York',
+        councilShorthand: 'NECCC',
+        councilLabel: 'Northeast Cover Crops Council',
+      }),
+    );
+    reduxStore.dispatch(
+      updateRegion({
+        regionId: 1,
+        regionShorthand: '4',
+      }),
+    );
+    reduxStore.dispatch(
+      updateAllGoals([
+        {
+          label: 'Forage Harvest Value',
+          description: '',
+          tags: [],
+        },
+      ]),
+    );
 
     reduxStore.dispatch(gotoProgress(1));
     cy.assertByTestId('back-btn').should('not.be.disabled');
@@ -130,7 +138,9 @@ describe('<ProgressButtonsInner />', () => {
   it('renders correct state of Progress buttons when progress is 4', () => {
     reduxStore.dispatch(gotoProgress(4));
     cy.assertByTestId('back-btn').should('not.be.disabled');
-    cy.assertByTestId('"my selected crops-btn"').should('have.text', 'MY SELECTED CROPS').should('be.disabled');
+    cy.assertByTestId('"my selected crops-btn"')
+      .should('have.text', 'MY SELECTED CROPS')
+      .should('be.disabled');
     cy.assertByTestId('restart-btn').should('not.be.disabled');
   });
 });

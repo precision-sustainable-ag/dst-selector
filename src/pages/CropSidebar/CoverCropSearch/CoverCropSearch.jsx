@@ -1,6 +1,4 @@
-import {
-  IconButton, InputAdornment, ListItem, ListItemText, Typography,
-} from '@mui/material';
+import { IconButton, InputAdornment, ListItem, ListItemText, Typography } from '@mui/material';
 import { Clear, Search } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,12 +17,12 @@ const CoverCropSearch = () => {
       <ListItemText>
         <PSATextField
           style={{ width: '100%' }}
-          label={(
+          label={
             <Typography sx={{ display: 'flex' }}>
               <Search />
               Cover Crop Name
             </Typography>
-          )}
+          }
           value={cropSearchRedux}
           onChangeCapture={(e) => dispatchRedux(cropSearch(e.target.value))}
           InputProps={{

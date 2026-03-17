@@ -27,6 +27,9 @@ describe('Header Component', () => {
   });
 
   it('should initially display PSA logo', () => {
-    cy.assertByTestId('header_logo_button').find('img').invoke('attr', 'src').should('equal', 'images/PSA_logo.png');
+    cy.assertByTestId('header_logo_button')
+      .find('img')
+      .invoke('attr', 'src')
+      .should('equal', 'images/PSA_logo.png');
   });
 });

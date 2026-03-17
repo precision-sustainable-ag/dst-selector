@@ -7,13 +7,8 @@
   styled using ../../styles/location.scss
 */
 
-import {
-  Typography, Grid, Container, Box,
-} from '@mui/material';
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import { Typography, Grid, Container, Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
@@ -27,7 +22,10 @@ import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { setQueryString } from '../../reduxStore/sharedSlice';
 import {
-  updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
+  updateAvgFrostDates,
+  updateAvgPrecipAnnual,
+  updateAvgPrecipCurrentMonth,
+  updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
@@ -50,12 +48,19 @@ const Location = () => {
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [mapFeatures, setMapFeatures] = useState(userFieldRedux);
   // eslint-disable-next-line no-nested-ternary
-  const [latLon, setLatLon] = useState(markersRedux ? markersRedux[0] : stateLabelRedux ? statesLatLongDict[stateLabelRedux] : [47, -122]);
+  const [latLon, setLatLon] = useState(
+    markersRedux
+      ? markersRedux[0]
+      : stateLabelRedux
+        ? statesLatLongDict[stateLabelRedux]
+        : [47, -122],
+  );
   const [stateLabel, setStateLabel] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isFarmable, setIsFarmable] = useState(true);
 
-  const NOT_FARMABLE_HTML = '<div style="color: red; font-weight: bold; margin-top: 8 px;">The selected land is not farmable</div>';
+  const NOT_FARMABLE_HTML =
+    '<div style="color: red; font-weight: bold; margin-top: 8 px;">The selected land is not farmable</div>';
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -98,10 +103,12 @@ const Location = () => {
       return;
     }
     localStorage.setItem('regionId', selectedRegion.id);
-    dispatchRedux(updateRegion({
-      regionId: selectedRegion.id,
-      regionShorthand: selectedRegion.shorthand,
-    }));
+    dispatchRedux(
+      updateRegion({
+        regionId: selectedRegion.id,
+        regionShorthand: selectedRegion.shorthand,
+      }),
+    );
     dispatchRedux(setQueryString(`regions=${selectedRegion.id}`));
     pirschAnalytics('Location', { meta: { mapUpdate: true } });
   };
@@ -162,14 +169,20 @@ const Location = () => {
       } = selectedToEditSite;
 
       if (councilShorthandRedux === 'WCCC') {
-        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${latitude}&lon=${longitude}`).then((data) => {
-          const query = data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&');
+        callCoverCropApi(
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${latitude}&lon=${longitude}`,
+        ).then((data) => {
+          const query = data.data
+            .filter((i) => i?.id !== null && i?.id !== undefined)
+            .map((i) => `regions=${i.id}`)
+            .join('&');
           dispatchRedux(setQueryString(query));
           enqueueSnackbar('Your location has been saved.');
         });
       }
 
-      if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
+      if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1])
+        return;
 
       // if user imported a history, this will prevent the user from changing the marker location
       if (historyStateRedux === historyState.imported) {
@@ -178,13 +191,13 @@ const Location = () => {
         return;
       }
 
-      dispatchRedux(updateLocation(
-        {
+      dispatchRedux(
+        updateLocation({
           address,
           markers: [[latitude, longitude]],
           county,
-        },
-      ));
+        }),
+      );
 
       // no need to set region in WCCC(will work with queryStringRedux)
       if (councilShorthandRedux === 'WCCC') return;
@@ -194,7 +207,9 @@ const Location = () => {
           updateRegionRedux(county.replace(' County', ''));
         }
       } else {
-        callCoverCropApi(`https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}&email=selector@psa.org`)
+        callCoverCropApi(
+          `https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}&email=selector@psa.org`,
+        )
           .then((response) => {
             let { zone } = response;
 
@@ -208,10 +223,12 @@ const Location = () => {
           .catch((err) => {
             enqueueSnackbar('No data available for your location, Please try again.');
             localStorage.setItem('regionId', '');
-            dispatchRedux(updateRegion({
-              regionId: '',
-              regionShorthand: '',
-            }));
+            dispatchRedux(
+              updateRegion({
+                regionId: '',
+                regionShorthand: '',
+              }),
+            );
             // eslint-disable-next-line no-console
             console.log(err);
             // for places where api didn't work, set region to default.
@@ -234,13 +251,22 @@ const Location = () => {
       // get current lat long and get county, state and city
       if (progressRedux >= 1 && markersRedux.length > 0) {
         const reverseGEOresult = await reverseGEO(lat, lon);
-        if (reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text === undefined) return;
+        if (
+          reverseGEOresult?.features?.filter((feature) =>
+            feature?.place_type?.includes('region'),
+          )[0]?.text === undefined
+        )
+          return;
         const abbrState = abbrRegion(
-          reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
+          reverseGEOresult?.features?.filter((feature) =>
+            feature?.place_type?.includes('region'),
+          )[0]?.text,
           'abbr',
         ).toLowerCase();
 
-        const city = reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
+        const city = reverseGEOresult?.features
+          ?.filter((feature) => feature?.place_type?.includes('place'))[0]
+          ?.text?.toLowerCase();
 
         const currentMonthInt = moment().month() + 1;
 
@@ -259,28 +285,35 @@ const Location = () => {
           const frostResponse = await callCoverCropApi(frostUrl);
           const firstFrost = new Date(frostResponse.firstfrost);
           const lastFrost = new Date(frostResponse.lastfrost);
-          const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
+          const frostFreeDays = Math.round(
+            Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay),
+          );
           dispatchRedux(updateFrostFreeDays(frostFreeDays));
-          dispatchRedux(updateAvgFrostDates({
-            firstFrostDate: {
-              month: firstFrost.toLocaleString('en-US', { month: 'long' }),
-              day: firstFrost.getDate().toString(),
-            },
-            lastFrostDate: {
-              month: lastFrost.toLocaleString('en-US', { month: 'long' }),
-              day: lastFrost.getDate().toString(),
-            },
-          }));
+          dispatchRedux(
+            updateAvgFrostDates({
+              firstFrostDate: {
+                month: firstFrost.toLocaleString('en-US', { month: 'long' }),
+                day: firstFrost.getDate().toString(),
+              },
+              lastFrostDate: {
+                month: lastFrost.toLocaleString('en-US', { month: 'long' }),
+                day: lastFrost.getDate().toString(),
+              },
+            }),
+          );
         } catch (error) {
           // eslint-disable-next-line
-          console.log(`Weather API error code: ${error?.response?.status} for getting frost dates.`);
+          console.log(
+            `Weather API error code: ${error?.response?.status} for getting frost dates.`,
+          );
         }
 
         // call the frost url and then set averagePrecipitationForCurrentMonth in store
         // TODO annual and monthly are the same
         try {
           const rainForAMonthResponse = await callCoverCropApi(averageRainForAMonthURL);
-          let averagePrecipitationForCurrentMonth = rainForAMonthResponse[0]['sum(precipitation)/5'];
+          let averagePrecipitationForCurrentMonth =
+            rainForAMonthResponse[0]['sum(precipitation)/5'];
           averagePrecipitationForCurrentMonth = parseFloat(
             averagePrecipitationForCurrentMonth * 0.03937,
           ).toFixed(2);
@@ -288,7 +321,9 @@ const Location = () => {
           dispatchRedux(updateAvgPrecipCurrentMonth(averagePrecipitationForCurrentMonth));
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          console.log(
+            `Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`,
+          );
           dispatchRedux(updateAvgPrecipCurrentMonth(null));
         }
 
@@ -300,7 +335,9 @@ const Location = () => {
           dispatchRedux(updateAvgPrecipAnnual(annualPrecipitation));
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log(`Weather API error code: ${error?.response?.status} for getting 15 year average annual rainfall`);
+          console.log(
+            `Weather API error code: ${error?.response?.status} for getting 15 year average annual rainfall`,
+          );
           dispatchRedux(updateAvgPrecipAnnual(null));
         }
       }
@@ -315,7 +352,8 @@ const Location = () => {
     }
 
     // If WCCC, check is the land is farmable
-    if (councilShorthandRedux === 'WCCC' && markersRedux) getSSURGOData(markersRedux[0][0], markersRedux[0][1]);
+    if (councilShorthandRedux === 'WCCC' && markersRedux)
+      getSSURGOData(markersRedux[0][0], markersRedux[0][1]);
   }, [markersRedux]);
 
   return (
@@ -354,15 +392,12 @@ const Location = () => {
             <Search fontSize="inherit" />
             to determine your location.
             {councilShorthandRedux !== 'WCCC' && (
-            <>
-              If needed, adjust your
-              {' '}
-              {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
-              {' '}
-              in the dropdown.
-            </>
+              <>
+                If needed, adjust your{' '}
+                {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'} in the
+                dropdown.
+              </>
             )}
-
           </Typography>
         </Grid>
 

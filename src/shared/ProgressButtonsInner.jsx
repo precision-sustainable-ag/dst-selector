@@ -5,19 +5,19 @@
 
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import {
-  Stack, Badge, Box,
-} from '@mui/material';
+import { Stack, Badge, Box } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import { reset } from '../reduxStore/store';
-import { updateProgress, setMyCoverCropReset, activateSpeicesSelectorTile } from '../reduxStore/sharedSlice';
+import {
+  updateProgress,
+  setMyCoverCropReset,
+  activateSpeicesSelectorTile,
+} from '../reduxStore/sharedSlice';
 import useIsMobile from '../hooks/useIsMobile';
 
-const ProgressButtonsInner = ({
-  isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
-}) => {
+const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip }) => {
   const dispatchRedux = useDispatch();
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const history = useHistory();
@@ -70,7 +70,7 @@ const ProgressButtonsInner = ({
         <PSATooltip
           enterTouchDelay={0}
           title={toolTip}
-          tooltipContent={(
+          tooltipContent={
             <Box>
               <PSAButton
                 style={{
@@ -86,7 +86,7 @@ const ProgressButtonsInner = ({
                 title="NEXT"
               />
             </Box>
-          )}
+          }
         />
       );
     }
@@ -104,7 +104,9 @@ const ProgressButtonsInner = ({
             minWidth: progressRedux === 4 ? 'max-content' : '70px',
             height: isMobile ? '35px' : 'auto',
           }}
-          onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
+          onClick={() =>
+            progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment')
+          }
           disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
           buttonType="PillButton"
           data-test={progressRedux === 4 ? 'my selected crops-btn' : 'next-btn'}
@@ -120,8 +122,12 @@ const ProgressButtonsInner = ({
       <Stack direction="row" spacing={1}>
         <PSATooltip
           enterTouchDelay={0}
-          title={stateLabelRedux === 'Hawaii' ? 'There is not enough expert data to give crop recommendations at this time.' : ''}
-          tooltipContent={(
+          title={
+            stateLabelRedux === 'Hawaii'
+              ? 'There is not enough expert data to give crop recommendations at this time.'
+              : ''
+          }
+          tooltipContent={
             <Box>
               <PSAButton
                 style={{
@@ -137,14 +143,13 @@ const ProgressButtonsInner = ({
                 title="Get A Recommendation"
               />
             </Box>
-          )}
+          }
         />
         <PSAButton
           style={{
             minWidth: '70px',
             height: isMobile ? '35px' : 'auto',
             padding: isMobile ? '5px 10px' : 'auto',
-
           }}
           onClick={browseCoverCrops}
           disabled={isDisabledNext}

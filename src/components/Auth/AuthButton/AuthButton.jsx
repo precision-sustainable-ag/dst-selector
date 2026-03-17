@@ -8,9 +8,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 import { PSAButton } from 'shared-react-components/src';
 
-const AuthButton = ({
-  type, variant = 'text', onClickCallback = () => {}, color = 'primary',
-}) => {
+const AuthButton = ({ type, variant = 'text', onClickCallback = () => {}, color = 'primary' }) => {
   const { loginWithRedirect, loginWithPopup, logout } = useAuth0();
 
   const handleLogin = async () => {
@@ -54,11 +52,11 @@ const AuthButton = ({
       color={color}
       data-test="auth-btn"
       buttonType=""
-      title={(
+      title={
         <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
           {type}
         </Typography>
-      )}
+      }
     />
   );
 };

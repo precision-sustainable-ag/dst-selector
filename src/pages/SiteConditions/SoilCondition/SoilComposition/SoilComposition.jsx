@@ -23,17 +23,15 @@ const SoilComposition = () => {
             <Grid item>
               <Typography variant="body1">
                 <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Soil Composition</span>
-                &nbsp;
-                {' '}
+                &nbsp;{' '}
                 <ReferenceTooltip
                   type="text"
                   hasLink
-                  title={(
+                  title={
                     <div>
                       <Typography variant="body1">
                         {' '}
-                        The tool auto-completes your soil composition based on location and the
-                        {' '}
+                        The tool auto-completes your soil composition based on location and the{' '}
                         <a
                           href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                           target="_blank"
@@ -44,7 +42,7 @@ const SoilComposition = () => {
                         .
                       </Typography>
                     </div>
-                  )}
+                  }
                   content="The tool auto-completes your soil composition based on location and the USDA NRCS Web Soil Survey."
                 />
               </Typography>

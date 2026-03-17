@@ -9,9 +9,12 @@ describe('Test create and import user history records', () => {
     cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
 
     cy.intercept('POST', 'https://develophistory.covercrop-data.org/v1/history', {
-      statusCode: 200, body: { data: { id: 0 } },
+      statusCode: 200,
+      body: { data: { id: 0 } },
     }).as('createHistory');
-    cy.intercept('https://develophistory.covercrop-data.org/v1/histories?schema=*').as('getHistory');
+    cy.intercept('https://develophistory.covercrop-data.org/v1/histories?schema=*').as(
+      'getHistory',
+    );
     cy.intercept('PUT', 'https://develophistory.covercrop-data.org/v1/history/*', {
       statusCode: 200,
       body: {},
@@ -47,14 +50,22 @@ describe('Test create and import user history records', () => {
       expect(historyState).to.equal('new');
     });
 
-    cy.window().its('store').invoke('dispatch', {
-      type: 'UPDATE_LOCATION',
-      payload: { address: '170 State Street', markers: [[42.652843, -73.757874]], county: 'Albany County' },
-    });
-    cy.window().its('store').invoke('dispatch', {
-      type: 'UPDATE_REGION',
-      payload: { regionId: 3, regionShorthand: '6' },
-    });
+    cy.window()
+      .its('store')
+      .invoke('dispatch', {
+        type: 'UPDATE_LOCATION',
+        payload: {
+          address: '170 State Street',
+          markers: [[42.652843, -73.757874]],
+          county: 'Albany County',
+        },
+      });
+    cy.window()
+      .its('store')
+      .invoke('dispatch', {
+        type: 'UPDATE_REGION',
+        payload: { regionId: 3, regionShorthand: '6' },
+      });
 
     cy.getByTestId('next-btn').first().click();
     // api call when reach Site Condition page
@@ -89,7 +100,9 @@ describe('Test for updating user history', () => {
     }
     cy.intercept({ url: 'https://api.mapbox.com/**' }, { log: false });
     cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
-    cy.intercept('https://develophistory.covercrop-data.org/v1/histories?schema=*').as('getHistory');
+    cy.intercept('https://develophistory.covercrop-data.org/v1/histories?schema=*').as(
+      'getHistory',
+    );
     cy.intercept('PUT', 'https://develophistory.covercrop-data.org/v1/history/*', {
       statusCode: 200,
       body: {},
@@ -119,14 +132,22 @@ describe('Test for updating user history', () => {
   it('should be able to update history after Location page', () => {
     cy.getByTestId('get-a-recommendation-btn').first().click();
 
-    cy.window().its('store').invoke('dispatch', {
-      type: 'UPDATE_LOCATION',
-      payload: { address: '170 State Street', markers: [[42.652843, -73.757874]], county: 'Albany County' },
-    });
-    cy.window().its('store').invoke('dispatch', {
-      type: 'UPDATE_REGION',
-      payload: { regionId: 3, regionShorthand: '6' },
-    });
+    cy.window()
+      .its('store')
+      .invoke('dispatch', {
+        type: 'UPDATE_LOCATION',
+        payload: {
+          address: '170 State Street',
+          markers: [[42.652843, -73.757874]],
+          county: 'Albany County',
+        },
+      });
+    cy.window()
+      .its('store')
+      .invoke('dispatch', {
+        type: 'UPDATE_REGION',
+        payload: { regionId: 3, regionShorthand: '6' },
+      });
 
     cy.getByTestId('next-btn').first().click();
     cy.assertByTestId('drainage-class-chip-box');

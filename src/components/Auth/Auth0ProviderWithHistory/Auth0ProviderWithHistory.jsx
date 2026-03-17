@@ -7,26 +7,23 @@
 import React, { useMemo } from 'react';
 import { Auth0Provider, Auth0Context } from '@auth0/auth0-react';
 import { useHistory } from 'react-router-dom';
-import {
-  auth0Domain, auth0ClientId, auth0Audience, testAuth0Env,
-} from '../../../shared/keys';
+import { auth0Domain, auth0ClientId, auth0Audience, testAuth0Env } from '../../../shared/keys';
 
 // This is a mock Auth0Provider which does not provide real auth0 features, this is only for testing build
 const TestAuth0Provider = ({ children }) => {
-  const testAuth0Values = useMemo(() => ({
-    // Mock all the values and functions that useAuth0 provides
-    isAuthenticated: false,
-    getAccessTokenSilently: async () => 'mock-token',
-    loginWithPopup: () => console.log('Auth0: loginWithPopup called'),
-    loginWithRedirect: () => console.log('Auth0: loginWithRedirect called'),
-    logout: () => console.log('Auth0: logout called'),
-  }), []);
-
-  return (
-    <Auth0Context.Provider value={testAuth0Values}>
-      {children}
-    </Auth0Context.Provider>
+  const testAuth0Values = useMemo(
+    () => ({
+      // Mock all the values and functions that useAuth0 provides
+      isAuthenticated: false,
+      getAccessTokenSilently: async () => 'mock-token',
+      loginWithPopup: () => console.log('Auth0: loginWithPopup called'),
+      loginWithRedirect: () => console.log('Auth0: loginWithRedirect called'),
+      logout: () => console.log('Auth0: logout called'),
+    }),
+    [],
   );
+
+  return <Auth0Context.Provider value={testAuth0Values}>{children}</Auth0Context.Provider>;
 };
 
 const Auth0ProviderWithHistory = ({ children }) => {

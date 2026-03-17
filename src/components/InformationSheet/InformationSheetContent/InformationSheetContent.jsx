@@ -7,14 +7,13 @@
 */
 
 import React, { useEffect, useState } from 'react';
-import {
-  Typography,
-  Box,
-  Grid,
-} from '@mui/material';
+import { Typography, Box, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 import {
-  PSAAccordion, PSATooltip, PSAInfoSheetAttributeBox, PSALoadingSpinner,
+  PSAAccordion,
+  PSATooltip,
+  PSAInfoSheetAttributeBox,
+  PSALoadingSpinner,
 } from 'shared-react-components/src';
 import CoverCropInformation from '../CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from '../InformationSheetReferences/InformationSheetReferences';
@@ -25,7 +24,9 @@ const InformationSheetContent = ({ crop }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const selectedSeason = useSelector((stateRedux) => stateRedux.terminationData.selectedSeason);
   const selectedDuration = useSelector((stateRedux) => stateRedux.terminationData.selectedDuration);
-  const selectedIrrigation = useSelector((stateRedux) => stateRedux.terminationData.selectedIrrigation);
+  const selectedIrrigation = useSelector(
+    (stateRedux) => stateRedux.terminationData.selectedIrrigation,
+  );
   const tagsRedux = useSelector((stateRedux) => stateRedux.terminationData.tags);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -49,13 +50,19 @@ const InformationSheetContent = ({ crop }) => {
     }
 
     if (selectedDuration) {
-      if (!labelSet.has(selectedDuration) && durationTypes.some((duration) => labelSet.has(duration))) {
+      if (
+        !labelSet.has(selectedDuration) &&
+        durationTypes.some((duration) => labelSet.has(duration))
+      ) {
         return false;
       }
     }
 
     if (selectedIrrigation) {
-      if (!labelSet.has(selectedIrrigation) && irrigationType.some((irrigation) => labelSet.has(irrigation))) {
+      if (
+        !labelSet.has(selectedIrrigation) &&
+        irrigationType.some((irrigation) => labelSet.has(irrigation))
+      ) {
         return false;
       }
     }
@@ -70,13 +77,15 @@ const InformationSheetContent = ({ crop }) => {
     }
     // if attribute.values.label exist, return label
     if (attribute?.values[0]?.label) {
-      return (
-        <Typography variant="body2">{attribute?.values[0]?.label}</Typography>
-      );
+      return <Typography variant="body2">{attribute?.values[0]?.label}</Typography>;
     }
     const attributeValues = [];
     attribute?.values.forEach((value) => {
-      if (councilShorthandRedux === 'WCCC' && category === 'Termination Window' && tagsRedux.length > 0) {
+      if (
+        councilShorthandRedux === 'WCCC' &&
+        category === 'Termination Window' &&
+        tagsRedux.length > 0
+      ) {
         // filter attr by tags
         const { tags } = value;
         if (tags.some((tag) => tagsRedux.includes(tag))) attributeValues.push(value.value);
@@ -101,124 +110,145 @@ const InformationSheetContent = ({ crop }) => {
   useEffect(() => {
     const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${queryStringRedux}`;
     if (crop.id !== undefined) {
-      callCoverCropApi(url).then((data) => {
-        setModalData(data.data);
-        setExpandedAccordions(data.data.data.map((cat) => cat.label));
-      }).then(() => {
-        setDataDone(true);
-      });
+      callCoverCropApi(url)
+        .then((data) => {
+          setModalData(data.data);
+          setExpandedAccordions(data.data.data.map((cat) => cat.label));
+        })
+        .then(() => {
+          setDataDone(true);
+        });
     }
   }, [crop]);
 
-  return (
-    dataDone ? (
-      <>
-        <CoverCropInformation crop={modalData} />
-        {modalData
-          && modalData.data.map((cat, index) => {
-            const isTermination = councilShorthandRedux === 'WCCC' && (cat.label === 'Termination' || cat.label === 'Termination Window');
-            return (
-              <Grid
-                item
-                key={index}
-                xs={12}
-                className={`avoid-break infosheetAccordion${index}`}
-                sx={{ marginBottom: '16px' }}
-              >
-                <PSAAccordion
-                  sx={{
-                    border: '1px solid #e3e1e1',
-                    '& .MuiAccordionDetails-root': {
-                      backgroundColor: { xs: '#F5F5F5', md: 'white' },
-                      borderRadius: '0 0 30px 30px',
-                      padding: { xs: '0', md: '8px' },
-                    },
-                  }}
-                  expanded={expandedAccordions.includes(cat.label)}
-                  onChange={() => handleAccordion(cat.label)}
-                  summaryContent={(
-                    <PSATooltip
-                      placement="bottom"
-                      arrow
-                      enterTouchDelay={0}
-                      PopperProps={{
-                        style: {
-                          zIndex: 10000000,
-                        },
-                      }}
-                      title={cat.description}
-                      tooltipContent={(
-                        <Box tabIndex="0">
-                          <Typography className={`infosheetAccordionButton${index}`} variant="h4" style={{ color: 'grey' }}>
-                            {cat.label}
-                          </Typography>
-                        </Box>
-                      )}
-                    />
-                  )}
-                  detailsContent={(
-                    <Grid container>
-                      {cat.attributes.map((att, catIndex) => {
-                        if (councilShorthandRedux === 'WCCC' && att.order === 3 && !checkTermination(att.label)) {
-                          return null; // Return null to render nothing for this attribute
-                        }
-                        if (att.label.startsWith('Comments') || att.label.startsWith('Notes:') || cat.label === 'Extended Comments') {
-                          return (
-                            <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
-                              <PSATooltip
-                                placement="top-end"
-                                enterTouchDelay={0}
-                                title={att.description}
-                                arrow
-                                tooltipContent={(
-                                  <Box xs={12} tabIndex="0">
-                                    <Typography
-                                      display="flex"
-                                      justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
-                                      sx={{ fontWeight: 'bold' }}
-                                    >
-                                      {att.label}
-                                    </Typography>
-                                    <Typography
-                                      display="flex"
-                                      justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
-                                    >
-                                      {att.values[0]?.value}
-                                    </Typography>
-                                  </Box>
-                                )}
-                              />
-                            </Grid>
-                          );
-                        }
+  return dataDone ? (
+    <>
+      <CoverCropInformation crop={modalData} />
+      {modalData &&
+        modalData.data.map((cat, index) => {
+          const isTermination =
+            councilShorthandRedux === 'WCCC' &&
+            (cat.label === 'Termination' || cat.label === 'Termination Window');
+          return (
+            <Grid
+              item
+              key={index}
+              xs={12}
+              className={`avoid-break infosheetAccordion${index}`}
+              sx={{ marginBottom: '16px' }}
+            >
+              <PSAAccordion
+                sx={{
+                  border: '1px solid #e3e1e1',
+                  '& .MuiAccordionDetails-root': {
+                    backgroundColor: { xs: '#F5F5F5', md: 'white' },
+                    borderRadius: '0 0 30px 30px',
+                    padding: { xs: '0', md: '8px' },
+                  },
+                }}
+                expanded={expandedAccordions.includes(cat.label)}
+                onChange={() => handleAccordion(cat.label)}
+                summaryContent={
+                  <PSATooltip
+                    placement="bottom"
+                    arrow
+                    enterTouchDelay={0}
+                    PopperProps={{
+                      style: {
+                        zIndex: 10000000,
+                      },
+                    }}
+                    title={cat.description}
+                    tooltipContent={
+                      <Box tabIndex="0">
+                        <Typography
+                          className={`infosheetAccordionButton${index}`}
+                          variant="h4"
+                          style={{ color: 'grey' }}
+                        >
+                          {cat.label}
+                        </Typography>
+                      </Box>
+                    }
+                  />
+                }
+                detailsContent={
+                  <Grid container>
+                    {cat.attributes.map((att, catIndex) => {
+                      if (
+                        councilShorthandRedux === 'WCCC' &&
+                        att.order === 3 &&
+                        !checkTermination(att.label)
+                      ) {
+                        return null; // Return null to render nothing for this attribute
+                      }
+                      if (
+                        att.label.startsWith('Comments') ||
+                        att.label.startsWith('Notes:') ||
+                        cat.label === 'Extended Comments'
+                      ) {
                         return (
-                          <PSAInfoSheetAttributeBox
-                            variant={isTermination ? 'texts' : ''}
-                            key={catIndex}
-                            description={att.description}
-                            label={att.label}
-                            value={getAttributeData(att, cat.label)}
-                          />
+                          <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
+                            <PSATooltip
+                              placement="top-end"
+                              enterTouchDelay={0}
+                              title={att.description}
+                              arrow
+                              tooltipContent={
+                                <Box xs={12} tabIndex="0">
+                                  <Typography
+                                    display="flex"
+                                    justifyContent={
+                                      cat.label !== 'Extended Comments' ? 'center' : 'left'
+                                    }
+                                    sx={{ fontWeight: 'bold' }}
+                                  >
+                                    {att.label}
+                                  </Typography>
+                                  <Typography
+                                    display="flex"
+                                    justifyContent={
+                                      cat.label !== 'Extended Comments' ? 'center' : 'left'
+                                    }
+                                  >
+                                    {att.values[0]?.value}
+                                  </Typography>
+                                </Box>
+                              }
+                            />
+                          </Grid>
                         );
-                      })}
-                    </Grid>
-                  )}
-                />
-              </Grid>
-            );
-          })}
+                      }
+                      return (
+                        <PSAInfoSheetAttributeBox
+                          variant={isTermination ? 'texts' : ''}
+                          key={catIndex}
+                          description={att.description}
+                          label={att.label}
+                          value={getAttributeData(att, cat.label)}
+                        />
+                      );
+                    })}
+                  </Grid>
+                }
+              />
+            </Grid>
+          );
+        })}
 
-        <InformationSheetReferences cropId={crop.id} />
-      </>
-    )
-      : (
-        <Box sx={{
-          width: '1200px', height: '1000px', display: 'flex', justifyContent: 'center',
-        }}
-        >
-          <PSALoadingSpinner />
-        </Box>
-      )
+      <InformationSheetReferences cropId={crop.id} />
+    </>
+  ) : (
+    <Box
+      sx={{
+        width: '1200px',
+        height: '1000px',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <PSALoadingSpinner />
+    </Box>
   );
 };
 

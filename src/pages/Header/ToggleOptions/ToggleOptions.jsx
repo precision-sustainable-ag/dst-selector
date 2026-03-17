@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Badge,
-} from '@mui/material';
+import { Badge } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
@@ -77,17 +75,20 @@ const ToggleOptions = ({ pathname }) => {
         to="/"
         sx={{
           fontWeight: 'bold',
-          fontSize: selectedCropIdsRedux.length > 0 && isMobile ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
+          fontSize:
+            selectedCropIdsRedux.length > 0 && isMobile ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
         }}
         data-test="get-recommendation-btn"
-        title={selectedCropIdsRedux.length > 0 && isMobile ? (
-          <div>
-            <span style={{ display: 'block', textAlign: 'center' }}>Get A</span>
-            <span style={{ display: 'block', textAlign: 'center' }}>Recommendation</span>
-          </div>
-        ) : (
-          'Get A Recommendation'
-        )}
+        title={
+          selectedCropIdsRedux.length > 0 && isMobile ? (
+            <div>
+              <span style={{ display: 'block', textAlign: 'center' }}>Get A</span>
+              <span style={{ display: 'block', textAlign: 'center' }}>Recommendation</span>
+            </div>
+          ) : (
+            'Get A Recommendation'
+          )
+        }
       />
       <PSATooltip
         title={
@@ -96,7 +97,7 @@ const ToggleOptions = ({ pathname }) => {
             : ''
         }
         enterTouchDelay={0}
-        tooltipContent={(
+        tooltipContent={
           <span>
             <PSAButton
               size={isMobile && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
@@ -107,42 +108,56 @@ const ToggleOptions = ({ pathname }) => {
               data-test="browse-covercrops-btn"
               sx={{
                 fontWeight: 'bold',
-                fontSize: selectedCropIdsRedux.length > 0 && isMobile ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
+                fontSize:
+                  selectedCropIdsRedux.length > 0 && isMobile
+                    ? 'clamp(0.75rem, 1.5vw, 1rem)'
+                    : 'auto',
               }}
-              title={selectedCropIdsRedux.length > 0 && isMobile ? (
-                <div>
-                  <span style={{ display: 'block', textAlign: 'center' }}>Browse</span>
-                  <span style={{ display: 'block', textAlign: 'center' }}>Cover Crops</span>
-                </div>
-              ) : (
-                'Browse Cover Crops'
-              )}
+              title={
+                selectedCropIdsRedux.length > 0 && isMobile ? (
+                  <div>
+                    <span style={{ display: 'block', textAlign: 'center' }}>Browse</span>
+                    <span style={{ display: 'block', textAlign: 'center' }}>Cover Crops</span>
+                  </div>
+                ) : (
+                  'Browse Cover Crops'
+                )
+              }
             />
           </span>
-        )}
+        }
       />
 
       {selectedCropIdsRedux.length > 0 && (
-      <Badge badgeContent={!isMobile ? selectedCropIdsRedux.length : null} color="error" data-test="badge">
-        <PSAButton
-          size={isMobile && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
-          selected={pathname === '/my-cover-crop-list'}
-          buttonType="ToggleOptions"
-          onClick={setMyCoverCropActivationFlag}
-          sx={{
-            fontWeight: 'bold',
-            fontSize: selectedCropIdsRedux.length > 0 && isMobile ? 'clamp(0.75rem, 1.5vw, 1rem)' : 'auto',
-          }}
-          title={selectedCropIdsRedux.length > 0 && isMobile ? (
-            <div>
-              <span style={{ display: 'block', textAlign: 'center' }}>My</span>
-              <span style={{ display: 'block', textAlign: 'center' }}>Selected Crops</span>
-            </div>
-          ) : (
-            'My Crops'
-          )}
-        />
-      </Badge>
+        <Badge
+          badgeContent={!isMobile ? selectedCropIdsRedux.length : null}
+          color="error"
+          data-test="badge"
+        >
+          <PSAButton
+            size={isMobile && selectedCropIdsRedux.length > 0 ? 'small' : 'medium'}
+            selected={pathname === '/my-cover-crop-list'}
+            buttonType="ToggleOptions"
+            onClick={setMyCoverCropActivationFlag}
+            sx={{
+              fontWeight: 'bold',
+              fontSize:
+                selectedCropIdsRedux.length > 0 && isMobile
+                  ? 'clamp(0.75rem, 1.5vw, 1rem)'
+                  : 'auto',
+            }}
+            title={
+              selectedCropIdsRedux.length > 0 && isMobile ? (
+                <div>
+                  <span style={{ display: 'block', textAlign: 'center' }}>My</span>
+                  <span style={{ display: 'block', textAlign: 'center' }}>Selected Crops</span>
+                </div>
+              ) : (
+                'My Crops'
+              )
+            }
+          />
+        </Badge>
       )}
     </div>
   );

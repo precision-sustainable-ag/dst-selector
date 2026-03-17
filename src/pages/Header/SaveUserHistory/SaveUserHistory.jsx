@@ -4,7 +4,10 @@ import { useSnackbar } from 'notistack';
 import { getAuthToken } from '../../../shared/authToken';
 import { saveHistory, loadHistory } from '../../../shared/api';
 import {
-  setHistoryState, setSelectedHistory, historyState, setUserHistoryList,
+  setHistoryState,
+  setSelectedHistory,
+  historyState,
+  setUserHistoryList,
   setSaveHistory,
 } from '../../../reduxStore/userSlice';
 
@@ -46,19 +49,21 @@ const SaveUserHistory = ({ pathname }) => {
       addressData: addressDataRedux,
     };
     const { label, id } = selectedHistoryRedux;
-    saveHistory(label, data, token, id).then((res) => {
-      enqueueSnackbar('History Updated.');
-      dispatchRedux(setHistoryState(historyState.imported));
-      // set history id
-      dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));
-      // if id is null, it means a new history record is created, load history list again to get the new history
-      if (!id) {
-        // eslint-disable-next-line no-shadow
-        loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
-      }
-    }).catch((err) => {
-      enqueueSnackbar(`Error saving history: ${err}`, { variant: 'error' });
-    });
+    saveHistory(label, data, token, id)
+      .then((res) => {
+        enqueueSnackbar('History Updated.');
+        dispatchRedux(setHistoryState(historyState.imported));
+        // set history id
+        dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));
+        // if id is null, it means a new history record is created, load history list again to get the new history
+        if (!id) {
+          // eslint-disable-next-line no-shadow
+          loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
+        }
+      })
+      .catch((err) => {
+        enqueueSnackbar(`Error saving history: ${err}`, { variant: 'error' });
+      });
   };
 
   // useEffect to save user history when switching pages
@@ -66,8 +71,8 @@ const SaveUserHistory = ({ pathname }) => {
     // only save history when history state is new or updated
     // not saving history when switch from landing to location since it'll not let location selection available
     if (
-      (historyStateRedux === historyState.new || historyStateRedux === historyState.updated)
-       && progressRedux !== 1
+      (historyStateRedux === historyState.new || historyStateRedux === historyState.updated) &&
+      progressRedux !== 1
     ) {
       handleSave();
     }

@@ -22,9 +22,8 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
 
   return (
     <>
-      {selectedGoalsRedux.length > 0
-        && selectedGoalsRedux.map((goal, index) => (
-
+      {selectedGoalsRedux.length > 0 &&
+        selectedGoalsRedux.map((goal, index) => (
           <TableCell
             size="small"
             style={{
@@ -38,15 +37,16 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                 arrow
                 placement="bottom"
                 enterTouchDelay={0}
-                title={(
+                title={
                   <p>
                     {`Goal ${index + 1}`}
                     {': '}
                     {goal}
                   </p>
-                )}
-                tooltipContent={(
-                  getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
+                }
+                tooltipContent={getRating(
+                  crop.goals.filter((a) => a.label === goal)[0].values[0].value,
+                  councilShorthandRedux,
                 )}
               />
             </div>

@@ -30,7 +30,11 @@ const CoverCropGoals = () => {
   return (
     <Box
       sx={{
-        border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+        border: 0.5,
+        borderRadius: 2,
+        borderColor: 'black',
+        mb: 2,
+        overflow: 'hidden',
       }}
     >
       {' '}
@@ -53,7 +57,7 @@ const CoverCropGoals = () => {
             <List component="div" disablePadding>
               <ListItem sx={{ paddingLeft: 3 }}>
                 <ListItemText
-                  primary={(
+                  primary={
                     <>
                       <Typography variant="body1"> Goal Priority Order</Typography>
                       {selectedGoalsRedux?.map((goal, index) => (
@@ -69,7 +73,7 @@ const CoverCropGoals = () => {
                         </Typography>
                       ))}
                     </>
-                  )}
+                  }
                 />
               </ListItem>
             </List>

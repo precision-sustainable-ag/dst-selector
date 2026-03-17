@@ -97,11 +97,14 @@ const InformationBar = ({ pathname }) => {
           borderRadius: '200px',
           color: 'black',
           width: '100%',
-
         }}
-        transparent={!((type === 'location' && progressRedux > 0)
-        || (type === 'site' && progressRedux > 1)
-        || (type === 'goals' && progressRedux > 2))}
+        transparent={
+          !(
+            (type === 'location' && progressRedux > 0) ||
+            (type === 'site' && progressRedux > 1) ||
+            (type === 'goals' && progressRedux > 2)
+          )
+        }
         title={getIconInfo(type)}
       />
     );
@@ -138,11 +141,12 @@ const InformationBar = ({ pathname }) => {
         lg={progressRedux > 0 && !isMobile ? 4 : 12}
         marginRight={isMobile ? 0 : 2}
       >
-        {pathname === speciesSelectorToolName
-          ? <ProgressButtons />
-          : <NavigationButtons pathname={pathname} />}
+        {pathname === speciesSelectorToolName ? (
+          <ProgressButtons />
+        ) : (
+          <NavigationButtons pathname={pathname} />
+        )}
       </Grid>
-
     </Grid>
   );
 };

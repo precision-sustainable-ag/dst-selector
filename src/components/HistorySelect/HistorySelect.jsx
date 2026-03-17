@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Grid, Box,
-  Typography,
-} from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSADropdown, PSAModal } from 'shared-react-components/src';
 import { useSnackbar } from 'notistack';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory, removeHistory } from '../../shared/api';
 import {
-  setSelectedHistory, setHistoryDialogState, setHistoryState,
-  historyState, setUserRedux,
+  setSelectedHistory,
+  setHistoryDialogState,
+  setHistoryState,
+  historyState,
+  setUserRedux,
 } from '../../reduxStore/userSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
 import { setAddressRedux } from '../../reduxStore/addressSlice';
@@ -74,10 +74,18 @@ const modalStyles = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   maxWidth: {
-    xs: '90%', sm: '80%', md: '80%', lg: '80%', xl: '80%',
+    xs: '90%',
+    sm: '80%',
+    md: '80%',
+    lg: '80%',
+    xl: '80%',
   },
   minWidth: {
-    xs: '90%', sm: 'auto', md: 'auto', lg: 'auto', xl: 'auto',
+    xs: '90%',
+    sm: 'auto',
+    md: 'auto',
+    lg: 'auto',
+    xl: 'auto',
   },
   marginTop: '15px',
   marginBottom: '15px',
@@ -85,14 +93,18 @@ const modalStyles = {
   border: '2px solid #000',
   boxShadow: 24,
   p: {
-    xs: 2, sm: 2, md: 3, lg: 4, xl: 4,
+    xs: 2,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 4,
   },
 };
 
 const HistorySelect = () => {
-  const {
-    userHistoryList, selectedHistory, historyDialogState,
-  } = useSelector((state) => state.userData);
+  const { userHistoryList, selectedHistory, historyDialogState } = useSelector(
+    (state) => state.userData,
+  );
 
   const [value, setValue] = useState('');
   const [open, setOpen] = useState(false);
@@ -126,37 +138,45 @@ const HistorySelect = () => {
     const selectedHistory = userHistoryList.find((history) => history.label === value);
     if (selectedHistory) dispatch(setSelectedHistory(selectedHistory));
     const token = getAuthToken();
-    loadHistory(token, value).then((res) => {
-      if (res) {
-        enqueueSnackbar('History Loaded.');
-        const {
-          cropData, mapData, weatherData, goalsData,
-          sharedData, soilData, addressData, userData,
-        } = res.json;
-        // this is used to specify where the crop from (selector/ explorer)
-        const { myCoverCropListLocation } = sharedData;
+    loadHistory(token, value)
+      .then((res) => {
+        if (res) {
+          enqueueSnackbar('History Loaded.');
+          const {
+            cropData,
+            mapData,
+            weatherData,
+            goalsData,
+            sharedData,
+            soilData,
+            addressData,
+            userData,
+          } = res.json;
+          // this is used to specify where the crop from (selector/ explorer)
+          const { myCoverCropListLocation } = sharedData;
 
-        const normalizedField = normalizeField(userData?.field);
-        const updatedUserData = {
-          ...userData,
-          field: normalizedField,
-        };
+          const normalizedField = normalizeField(userData?.field);
+          const updatedUserData = {
+            ...userData,
+            field: normalizedField,
+          };
 
-        // update redux
-        dispatch(setCropRedux(cropData));
-        dispatch(setMapRedux(mapData));
-        dispatch(setWeatherRedux(weatherData));
-        dispatch(setGoalsRedux(goalsData));
-        dispatch(myCropListLocation({ from: myCoverCropListLocation }));
-        dispatch(setSoilRedux(soilData));
-        dispatch(setAddressRedux(addressData));
-        dispatch(setUserRedux(updatedUserData));
-        dispatch(setHistoryState(historyState.imported));
-        setOpen(false);
-      }
-    }).catch((err) => {
-      enqueueSnackbar(`Error loading history: ${err}`, { variant: 'error' });
-    });
+          // update redux
+          dispatch(setCropRedux(cropData));
+          dispatch(setMapRedux(mapData));
+          dispatch(setWeatherRedux(weatherData));
+          dispatch(setGoalsRedux(goalsData));
+          dispatch(myCropListLocation({ from: myCoverCropListLocation }));
+          dispatch(setSoilRedux(soilData));
+          dispatch(setAddressRedux(addressData));
+          dispatch(setUserRedux(updatedUserData));
+          dispatch(setHistoryState(historyState.imported));
+          setOpen(false);
+        }
+      })
+      .catch((err) => {
+        enqueueSnackbar(`Error loading history: ${err}`, { variant: 'error' });
+      });
   };
 
   const handleDeleteHistory = () => {
@@ -169,9 +189,11 @@ const HistorySelect = () => {
           (history) => history.id !== selectedUserHistory.id,
         );
         dispatch(reset());
-        dispatch(setUserRedux({
-          userHistoryList: updatedHistoryList,
-        }));
+        dispatch(
+          setUserRedux({
+            userHistoryList: updatedHistoryList,
+          }),
+        );
         enqueueSnackbar('History Deleted.');
         setValue('');
       }
@@ -200,7 +222,7 @@ const HistorySelect = () => {
     <>
       <PSAModal
         open={open}
-        modalContent={(
+        modalContent={
           <Box sx={modalStyles}>
             <Grid container spacing={6}>
               <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
@@ -212,7 +234,10 @@ const HistorySelect = () => {
                   formSx={{ minWidth: '80%' }}
                   inputSx={inputLabelStyles}
                   label="Select History"
-                  items={userHistoryList.map((history) => ({ value: history.label, label: history.label }))}
+                  items={userHistoryList.map((history) => ({
+                    value: history.label,
+                    label: history.label,
+                  }))}
                   SelectProps={{
                     value,
                     onChange: (e) => setValue(e.target.value),
@@ -223,7 +248,15 @@ const HistorySelect = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} md={5} display="flex" justifyContent="center" alignItems="center" gap={3}>
+              <Grid
+                item
+                xs={12}
+                md={5}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                gap={3}
+              >
                 <PSAButton
                   onClick={handleLoadHistory}
                   variant="contained"
@@ -245,15 +278,26 @@ const HistorySelect = () => {
               </Grid>
 
               <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-                <PSAButton onClick={() => setOpen(false)} variant="contained" title="Cancel" buttonType="" />
+                <PSAButton
+                  onClick={() => setOpen(false)}
+                  variant="contained"
+                  title="Cancel"
+                  buttonType=""
+                />
               </Grid>
             </Grid>
           </Box>
-        )}
+        }
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-        <PSAButton variant="contained" onClick={handleAddHistory} data-test="create-new-history" title="Create New History" buttonType="" />
+        <PSAButton
+          variant="contained"
+          onClick={handleAddHistory}
+          data-test="create-new-history"
+          title="Create New History"
+          buttonType=""
+        />
         <PSAButton
           variant="contained"
           onClick={handleHistoryImport}
@@ -262,7 +306,6 @@ const HistorySelect = () => {
           buttonType=""
         />
       </Box>
-
     </>
   );
 };

@@ -1,11 +1,10 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import './commands';
 import { ThemeProvider } from '@mui/material';
 import { mount } from 'cypress/react18';
-import configureStore from '../../src/reduxStore/store';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import { dstTheme } from '../../src/App';
-import './commands';
+import configureStore from '../../src/reduxStore/store';
 
 /* eslint-disable no-undef */
 

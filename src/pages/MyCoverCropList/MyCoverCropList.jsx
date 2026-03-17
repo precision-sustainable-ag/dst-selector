@@ -6,9 +6,7 @@
   TopBar contains the blue bar for adding crops
 */
 
-import {
-  Typography, Grid, Box,
-} from '@mui/material';
+import { Typography, Grid, Box } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -31,7 +29,12 @@ const MyCoverCropList = ({ from }) => {
 
   const redirectToSpeciesSelector = () => {
     history.replace('/');
-    dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
+    dispatchRedux(
+      activateSpeicesSelectorTile({
+        speciesSelectorActivationFlag: true,
+        myCoverCropActivationFlag: false,
+      }),
+    );
   };
 
   const redirectToExplorer = () => {
@@ -45,26 +48,24 @@ const MyCoverCropList = ({ from }) => {
   return (
     <>
       {/* eslint-disable-next-line no-nested-ternary */}
-      {selectedCropIdsRedux.length > 0
-       && selectedCropIdsRedux.length === 0 ? (
-         <Typography variant="body1">
-           Your list is empty.
-           {' '}
-           <PSAButton
-             buttonType=""
-             onClick={
+      {selectedCropIdsRedux.length > 0 && selectedCropIdsRedux.length === 0 ? (
+        <Typography variant="body1">
+          Your list is empty.{' '}
+          <PSAButton
+            buttonType=""
+            onClick={
               from === 'myCoverCropListStatic' ? redirectToExplorer : redirectToSpeciesSelector
             }
-             title="Add Crops"
-           />
-         </Typography>
-        ) : (
-          <Box flexDirection="column" display="flex" height="100%" mt={2}>
-            <Grid container spacing={2}>
-              <MyCoverCropComparisonTable />
-            </Grid>
-          </Box>
-        )}
+            title="Add Crops"
+          />
+        </Typography>
+      ) : (
+        <Box flexDirection="column" display="flex" height="100%" mt={2}>
+          <Grid container spacing={2}>
+            <MyCoverCropComparisonTable />
+          </Grid>
+        </Box>
+      )}
     </>
   );
 };

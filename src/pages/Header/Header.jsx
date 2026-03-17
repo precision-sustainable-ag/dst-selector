@@ -8,9 +8,7 @@
 */
 
 import { useDispatch, useSelector } from 'react-redux';
-import React, {
-  useEffect, useState, useLayoutEffect, useRef,
-} from 'react';
+import React, { useEffect, useState, useLayoutEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { AppBar, Box } from '@mui/material';
@@ -42,9 +40,10 @@ const speed = 1.3;
 
 let lastCaption;
 
-const sleep = (ms) => new Promise((resolve) => {
-  setTimeout(resolve, ms * speed);
-});
+const sleep = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms * speed);
+  });
 
 const Demo = () => {
   const dispatchRedux = useDispatch();
@@ -91,7 +90,8 @@ const Demo = () => {
       cap.style.left = '50%';
       cap.style.top = '100%';
       cap.style.fontSize = '20px';
-      setTimeout(() => { // wait for CSS transition
+      setTimeout(() => {
+        // wait for CSS transition
         cap.innerHTML = caption;
         const cbr = cap.getBoundingClientRect();
         // console.log(cbr);
@@ -161,83 +161,197 @@ const Demo = () => {
   }; // moveTo
 
   const landing = async () => {
-    dispatchRedux(updateStateInfo({
-      stateLabel: 'California',
-      stateId: 9,
-      councilShorthand: 'WCCC',
-      councilLabel: 'Western Cover Crop Council',
-    }));
-    await moveTo('[data-test="state-selector-dropdown"]', 'Select your state from this drop-down, or click it on the map.', 5000);
-    await moveTo('[data-test="next-btn"]', 'After selecting your state, press NEXT to advance to the next screen.', 3000, { click: true });
+    dispatchRedux(
+      updateStateInfo({
+        stateLabel: 'California',
+        stateId: 9,
+        councilShorthand: 'WCCC',
+        councilLabel: 'Western Cover Crop Council',
+      }),
+    );
+    await moveTo(
+      '[data-test="state-selector-dropdown"]',
+      'Select your state from this drop-down, or click it on the map.',
+      5000,
+    );
+    await moveTo(
+      '[data-test="next-btn"]',
+      'After selecting your state, press NEXT to advance to the next screen.',
+      3000,
+      { click: true },
+    );
   };
 
   const location = async () => {
-    await moveTo('.MapBox', ' There are 3 ways you can navigate to your field.  <p>Double click</p>  <p>The Polygon tool in the top left of the map </p> or...', 6000);
-    await moveTo('.mapboxgl-ctrl-geocoder--input', 'Enter your field address here.', 500, { value: '10th Avenue, Kettleman City', keyspeed: 100 });
+    await moveTo(
+      '.MapBox',
+      ' There are 3 ways you can navigate to your field.  <p>Double click</p>  <p>The Polygon tool in the top left of the map </p> or...',
+      6000,
+    );
+    await moveTo('.mapboxgl-ctrl-geocoder--input', 'Enter your field address here.', 500, {
+      value: '10th Avenue, Kettleman City',
+      keyspeed: 100,
+    });
     await moveTo('.suggestions li:nth-child(1)', 'Select from the list.', 2000, { mouseup: true });
-    await moveTo('[data-test="next-btn"]', 'After selecting your location, press NEXT to advance to the next screen.', 5000, { click: true });
+    await moveTo(
+      '[data-test="next-btn"]',
+      'After selecting your location, press NEXT to advance to the next screen.',
+      5000,
+      { click: true },
+    );
   };
 
   const siteConditions = async () => {
-    await moveTo('[data-test="soil-composition-card"]', 'This shows your soil composition based on web soil survey data (SSURGO).', 5000);
-    await moveTo('[data-test="frost-dates-card"]', 'This shows frost dates as predicted over the past 30 years.', 5000);
-    await moveTo('[data-test="precipitation-card"]', 'This shows average annual precipitation for your location.', 5000);
-    await moveTo('[data-test="soil-drainage-card"]', 'This shows your soil drainage based on soil survey data.<p>You can make changes appropriate for your location.</p>', 5000);
-    await moveTo('[data-test="flooding-frequency-card"]', 'This shows the annual probability of a flood event.<p>You can make changes appropriate for your location.</p>', 5000);
-    await moveTo('[data-test="next-btn"]', 'When satisfied with your conditions, press NEXT to advance to the next screen.', 5000, { click: true });
+    await moveTo(
+      '[data-test="soil-composition-card"]',
+      'This shows your soil composition based on web soil survey data (SSURGO).',
+      5000,
+    );
+    await moveTo(
+      '[data-test="frost-dates-card"]',
+      'This shows frost dates as predicted over the past 30 years.',
+      5000,
+    );
+    await moveTo(
+      '[data-test="precipitation-card"]',
+      'This shows average annual precipitation for your location.',
+      5000,
+    );
+    await moveTo(
+      '[data-test="soil-drainage-card"]',
+      'This shows your soil drainage based on soil survey data.<p>You can make changes appropriate for your location.</p>',
+      5000,
+    );
+    await moveTo(
+      '[data-test="flooding-frequency-card"]',
+      'This shows the annual probability of a flood event.<p>You can make changes appropriate for your location.</p>',
+      5000,
+    );
+    await moveTo(
+      '[data-test="next-btn"]',
+      'When satisfied with your conditions, press NEXT to advance to the next screen.',
+      5000,
+      { click: true },
+    );
   };
 
   const goalSelector = async () => {
     await moveTo('#chip6', 'You can select up to 3 goals', 4000, { click: true });
     await moveTo('#chip3', '', 500, { click: true });
     await moveTo('#chip8', '', 500, { click: true });
-    await moveTo('.additionalFilters', 'Optional: <p>To filter your cover crop termination information select your</p> <p>Planting Season</p> <p>Life Cycle</p> <p>Irrigation type</p> <p>Select up to one of each.</p> ', 7000);
+    await moveTo(
+      '.additionalFilters',
+      'Optional: <p>To filter your cover crop termination information select your</p> <p>Planting Season</p> <p>Life Cycle</p> <p>Irrigation type</p> <p>Select up to one of each.</p> ',
+      7000,
+    );
     await moveTo('#floweringType0', 'Optional: <p>Select Life Cycle.</p>', 2000, { click: true });
-    await moveTo('#irrigation1', 'Optional: <p>Select an irrigation Type.</p>', 2000, { click: true });
+    await moveTo('#irrigation1', 'Optional: <p>Select an irrigation Type.</p>', 2000, {
+      click: true,
+    });
     await moveTo('.planting-date-picker', 'Optional:<p>Enter cash crop planting date.</p>', 5000);
     await moveTo('.harvest-date-picker', 'Optional:<p>Enter cash crop harvest date.</p>', 5000);
-    await moveTo('[data-test="next-btn"]', 'When satisfied with your conditions, press NEXT to advance to the next screen.', 5000, { click: true });
+    await moveTo(
+      '[data-test="next-btn"]',
+      'When satisfied with your conditions, press NEXT to advance to the next screen.',
+      5000,
+      { click: true },
+    );
   };
 
   const mySelectedCrops = async () => {
     await moveTo('.myCropsCards', 'Here are the crops you selected.', 5000);
-    await moveTo('.comparisonViewButton', 'Click here to compare and contrast your selections.', 5000, { click: true });
-    await moveTo('.showAllBox', 'In the sidebar select individual filters to compare by or select them all by clicking...', 6500, { click: true });
+    await moveTo(
+      '.comparisonViewButton',
+      'Click here to compare and contrast your selections.',
+      5000,
+      { click: true },
+    );
+    await moveTo(
+      '.showAllBox',
+      'In the sidebar select individual filters to compare by or select them all by clicking...',
+      6500,
+      { click: true },
+    );
     await moveTo('.showAllButton', 'Here', 2000, { click: true });
-    await moveTo('.header', 'This concludes our automated demo.  You can click on the logo to return to the beginning and get started for yourself.', 5000);
+    await moveTo(
+      '.header',
+      'This concludes our automated demo.  You can click on the logo to return to the beginning and get started for yourself.',
+      5000,
+    );
     await moveTo('[data-test="header_logo_button"]', '', 1000, { click: true });
-    await moveTo('.resetBox', 'If you have added items to your List you will need to reset that list before starting over.', 6000, { click: true });
+    await moveTo(
+      '.resetBox',
+      'If you have added items to your List you will need to reset that list before starting over.',
+      6000,
+      { click: true },
+    );
     await moveTo('.yesButton', '', 1000, { click: true });
   };
 
   const infosheet = async () => {
-    await moveTo('.coverCropDescription', 'Here is a brief description of the crop you have selected', 5000);
+    await moveTo(
+      '.coverCropDescription',
+      'Here is a brief description of the crop you have selected',
+      5000,
+    );
     await moveTo('.imageCarousel', 'And a few images that will rotate through a carousel', 5000);
     await moveTo('.infosheetAccordion0', 'Click the header to hide or show each accordion.', 4000);
     await moveTo('.infosheetAccordionButton2', '', 1000, { click: true });
     await moveTo('.infosheetAccordionButton3', '', 1000, { click: true });
     await moveTo('.infosheetAccordionButton4', '', 1000, { click: true });
-    await moveTo('.infosheetPrint', 'Here you can create then print or save a PDF copy of the infosheet.  This will open in a new tab.', 8000);
-    await moveTo('.modalClose', 'Return to where you were by clicking the X.', 5000, { click: true });
-    await moveTo('.cropToBasket0', 'Click the plus button to add crops to your Crop List.', 5000, { click: true });
+    await moveTo(
+      '.infosheetPrint',
+      'Here you can create then print or save a PDF copy of the infosheet.  This will open in a new tab.',
+      8000,
+    );
+    await moveTo('.modalClose', 'Return to where you were by clicking the X.', 5000, {
+      click: true,
+    });
+    await moveTo('.cropToBasket0', 'Click the plus button to add crops to your Crop List.', 5000, {
+      click: true,
+    });
     await moveTo('.cropToBasket1', '', 1000, { click: true });
     await moveTo('.cropToBasket2', '', 1000, { click: true });
-    await moveTo('.selectedCropsButton', 'Click here to go to the My Selected Crops Section', 5000, { click: true });
+    await moveTo(
+      '.selectedCropsButton',
+      'Click here to go to the My Selected Crops Section',
+      5000,
+      { click: true },
+    );
     mySelectedCrops();
   };
 
   const cropSelector = async () => {
     // Sidebar
     await moveTo('.sidebarGoals', '', 1000, { click: true });
-    await moveTo('.sidebarGoals', 'Here you can see the goals you have selected and their priority', 4000);
+    await moveTo(
+      '.sidebarGoals',
+      'Here you can see the goals you have selected and their priority',
+      4000,
+    );
     await moveTo('.sidebarEditGoals', 'This button allows you to change your selections', 3000);
     await moveTo('.sidebarGoals', '', 1000, { click: true });
-    await moveTo('.sidebarFilters', 'The filters allow you to adjust your results by values that may be more important to you.', 5000);
+    await moveTo(
+      '.sidebarFilters',
+      'The filters allow you to adjust your results by values that may be more important to you.',
+      5000,
+    );
     await moveTo('.cropGroup3', '', 1000, { click: true });
-    await moveTo('.sidebarFilters', 'You can see the crops filter in the calendar view. --> ', 4000, { click: true });
+    await moveTo(
+      '.sidebarFilters',
+      'You can see the crops filter in the calendar view. --> ',
+      4000,
+      { click: true },
+    );
     await moveTo('.legend', '', 1000, { click: true });
-    await moveTo('.legend', 'This legend will help you understand the color scheme on the calendar.  Hover over the colored bars to see their tooltips.', 7000);
-    await moveTo('.crop3', 'Clicking on any of the crops will open up their infosheet.', 7000, { click: true });
+    await moveTo(
+      '.legend',
+      'This legend will help you understand the color scheme on the calendar.  Hover over the colored bars to see their tooltips.',
+      7000,
+    );
+    await moveTo('.crop3', 'Clicking on any of the crops will open up their infosheet.', 7000, {
+      click: true,
+    });
     infosheet();
   };
 
@@ -318,9 +432,7 @@ const Header = () => {
           dispatchRedux(setUserHistoryList(res));
         })
         .catch((err) => {
-          dispatchRedux(
-            enqueueSnackbar(`Error loading history: ${err}`, { variant: 'error' }),
-          );
+          dispatchRedux(enqueueSnackbar(`Error loading history: ${err}`, { variant: 'error' }));
         });
     };
     if (isAuthenticated) fetchUserData();

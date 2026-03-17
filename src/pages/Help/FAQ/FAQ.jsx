@@ -7,9 +7,7 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import {
-  Box, Container, Link, Typography,
-} from '@mui/material';
+import { Box, Container, Link, Typography } from '@mui/material';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { defaultFaqs, wcccFaqs } from '../../../shared/constants';
@@ -22,22 +20,22 @@ const FAQ = () => {
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
       <Typography component="div" variant="body1" align="left">
         <ol>
-          {faqs.map(((faq) => (
+          {faqs.map((faq) => (
             <>
-              <li><b>{faq.question}</b></li>
+              <li>
+                <b>{faq.question}</b>
+              </li>
               <Container style={{ marginBottom: '3%' }}>
                 {faq.answer}
                 {faq.id === 12 && (
-                <>
-                  <br />
-                  <Link to="/feedback">Send us feedback!</Link>
-                  {' '}
-                  Let us know.
-                </>
+                  <>
+                    <br />
+                    <Link to="/feedback">Send us feedback!</Link> Let us know.
+                  </>
                 )}
               </Container>
             </>
-          )))}
+          ))}
         </ol>
       </Typography>
     </Box>

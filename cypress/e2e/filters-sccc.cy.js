@@ -17,14 +17,22 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
     cy.getByTestId('get-a-recommendation-btn').first().click();
     cy.assertByTestId('field-location-title');
 
-    cy.window().its('store').invoke('dispatch', {
-      type: 'UPDATE_LOCATION',
-      payload: { address: '1 East Edenton Street', markers: [[35.78043, -78.639099]], county: 'Wake County' },
-    });
-    cy.window().its('store').invoke('dispatch', {
-      type: 'UPDATE_REGION',
-      payload: { regionId: 60, regionShorthand: '8' },
-    });
+    cy.window()
+      .its('store')
+      .invoke('dispatch', {
+        type: 'UPDATE_LOCATION',
+        payload: {
+          address: '1 East Edenton Street',
+          markers: [[35.78043, -78.639099]],
+          county: 'Wake County',
+        },
+      });
+    cy.window()
+      .its('store')
+      .invoke('dispatch', {
+        type: 'UPDATE_REGION',
+        payload: { regionId: 60, regionShorthand: '8' },
+      });
 
     cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('site-conditions-title');
@@ -32,23 +40,28 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
     cy.assertByTestId('title-goals');
     cy.intercept('GET', '**/v1/states/37/crops?minimal=true&*').as('getCropsData');
     cy.intercept('GET', '**/v1/states/37/filters?*').as('getFilters');
-    cy.get("[data-test='next-btn']").first().click().then(() => {
-      cy.wait('@getCropsData').then((interception) => {
-        const { data } = interception.response.body;
-        Cypress.env('cropData', data);
+    cy.get("[data-test='next-btn']")
+      .first()
+      .click()
+      .then(() => {
+        cy.wait('@getCropsData').then((interception) => {
+          const { data } = interception.response.body;
+          Cypress.env('cropData', data);
+        });
+        cy.wait('@getFilters').then((interception) => {
+          const { data } = interception.response.body;
+          // 'Goals' are for goals not filters, remove the data from it
+          const filterTypes = data
+            .map((filter) => filter.label)
+            .filter((label) => label !== 'Goals');
+          const allFilters = data.reduce((res, filter) => {
+            if (filter.label === 'Goals') return res;
+            return [...res, ...filter.attributes];
+          }, []);
+          Cypress.env('filterTypes', filterTypes);
+          Cypress.env('allFilters', allFilters);
+        });
       });
-      cy.wait('@getFilters').then((interception) => {
-        const { data } = interception.response.body;
-        // 'Goals' are for goals not filters, remove the data from it
-        const filterTypes = data.map((filter) => filter.label).filter((label) => label !== 'Goals');
-        const allFilters = data.reduce((res, filter) => {
-          if (filter.label === 'Goals') return res;
-          return [...res, ...filter.attributes];
-        }, []);
-        Cypress.env('filterTypes', filterTypes);
-        Cypress.env('allFilters', allFilters);
-      });
-    });
   });
 
   // FIXME: need further data verification for the filter tests
@@ -110,20 +123,24 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
       .first()
       .click()
       .then(() => {
-        cy.getByTestId('crop-comparison-table-header').each(($label) => {
-          // Ensure the label is visible
-          cy.wrap($label).should('be.visible')
-            .invoke('text')
-            .then((labelText) => {
-              myCropLabels.push(flipCoverCropName(labelText));
-              cy.log(`Crop Card Label: ${labelText}`);
-            });
-        })
+        cy.getByTestId('crop-comparison-table-header')
+          .each(($label) => {
+            // Ensure the label is visible
+            cy.wrap($label)
+              .should('be.visible')
+              .invoke('text')
+              .then((labelText) => {
+                myCropLabels.push(flipCoverCropName(labelText));
+                cy.log(`Crop Card Label: ${labelText}`);
+              });
+          })
           .then(() => {
             cy.log('=== CARD LABELS===', myCropLabels);
             expect(cropLabels.length).to.equal(myCropLabels.length);
             btnIdx.forEach((idx) => {
-              expect(cropLabels[idx].trim().toLowerCase()).to.equal(myCropLabels[idx].trim().toLowerCase());
+              expect(cropLabels[idx].trim().toLowerCase()).to.equal(
+                myCropLabels[idx].trim().toLowerCase(),
+              );
             });
           });
       });
@@ -136,9 +153,7 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
       btnIdx.forEach((idx) => {
         cy.getByTestId(`cart-btn-${idx}`).click();
       });
-      cy.get("[data-test='my selected crops-btn']")
-        .first()
-        .click({ force: true })
+      cy.get("[data-test='my selected crops-btn']").first().click({ force: true });
 
       const filterTypes = Cypress.env('filterTypes');
       for (let i = 0; i < filterTypes.length; i++) {
@@ -156,9 +171,12 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
 
       for (let i = 0; i < allFilterName.length; i++) {
         // FIXME: need verification for this
-        if (allFilterName[i] === 'Soil Moisture Use' 
-          || allFilterName[i] === 'Success under Low Nutrient Levels' 
-          || allFilterName[i] === 'Supports Mycorrhizae') continue;
+        if (
+          allFilterName[i] === 'Soil Moisture Use' ||
+          allFilterName[i] === 'Success under Low Nutrient Levels' ||
+          allFilterName[i] === 'Supports Mycorrhizae'
+        )
+          continue;
 
         cy.get(`[data-test='${allFilterName[i]}-checkbox']`)
           .click()
@@ -181,17 +199,23 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
       cy.getByTestId('my-selected-crops-show-all').click();
       allFilterName.forEach((filter) => {
         // FIXME: need verification for this
-        if (filter === 'Soil Moisture Use' 
-          || filter === 'Success under Low Nutrient Levels' 
-          || filter === 'Supports Mycorrhizae') return;
+        if (
+          filter === 'Soil Moisture Use' ||
+          filter === 'Success under Low Nutrient Levels' ||
+          filter === 'Supports Mycorrhizae'
+        )
+          return;
         cy.assertByTestId(`"${filter}-row"`);
       });
       cy.getByTestId('my-selected-crops-clear-variables').click();
       allFilterName.forEach((filter) => {
         // FIXME: need verification for this
-        if (filter === 'Soil Moisture Use' 
-          || filter === 'Success under Low Nutrient Levels' 
-          || filter === 'Supports Mycorrhizae') return;
+        if (
+          filter === 'Soil Moisture Use' ||
+          filter === 'Success under Low Nutrient Levels' ||
+          filter === 'Supports Mycorrhizae'
+        )
+          return;
         cy.getByTestId(`${filter}-rows`).should('not.exist');
       });
     });

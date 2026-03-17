@@ -48,17 +48,21 @@ describe('<WeatherFrostDates />', () => {
     mountComponentWithProvider();
 
     // Assert that the first frost date is displayed correctly
-    cy.assertByTestId('frost-dates-card')
-      .should(
-        'contain.text',
-        `${weatherData.averageFrost.firstFrostDate.month} ${weatherData.averageFrost.firstFrostDate.day}`,
-      );
+    cy.assertByTestId('frost-dates-card').should(
+      'contain.text',
+      `${weatherData.averageFrost.firstFrostDate.month} ${weatherData.averageFrost.firstFrostDate.day}`,
+    );
 
     // Assert that the last frost date is displayed correctly
-    cy.assertByTestId('frost-dates-card')
-      .should('contain.text', `${weatherData.averageFrost.lastFrostDate.month} ${weatherData.averageFrost.lastFrostDate.day}`);
+    cy.assertByTestId('frost-dates-card').should(
+      'contain.text',
+      `${weatherData.averageFrost.lastFrostDate.month} ${weatherData.averageFrost.lastFrostDate.day}`,
+    );
 
     // Assert that the frost free days are displayed correctly
-    cy.assertByTestId('frost-dates-card').should('contain.text', weatherData.frostFreeDays.toString());
+    cy.assertByTestId('frost-dates-card').should(
+      'contain.text',
+      weatherData.frostFreeDays.toString(),
+    );
   });
 });

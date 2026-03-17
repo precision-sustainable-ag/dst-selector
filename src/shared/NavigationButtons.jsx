@@ -35,10 +35,7 @@ const NavigationButtons = ({ pathname }) => {
         title="Back"
       />
       {pathname === '/explorer' && (
-        <Badge
-          badgeContent={selectedCropIdsRedux.length}
-          color="error"
-        >
+        <Badge badgeContent={selectedCropIdsRedux.length} color="error">
           <PSAButton
             style={{
               maxWidth: '90px',

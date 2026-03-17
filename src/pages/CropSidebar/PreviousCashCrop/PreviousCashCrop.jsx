@@ -1,6 +1,4 @@
-import {
-  Grid, Typography,
-} from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -25,7 +23,8 @@ const PreviousCashCrop = () => {
 
   const handleDispatch = (start = '', end = '') => {
     // update history state here
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
     pirschAnalytics('Previous Cash Crop', { meta: { updated: true } });
     if (dayjs(end).isBefore(dayjs(start))) {
       setIsError(true);
@@ -35,7 +34,12 @@ const PreviousCashCrop = () => {
       return;
     }
     setIsError(false);
-    dispatchRedux(updateDateRange({ startDate: start ? start.toString() : null, endDate: end ? end.toString() : null }));
+    dispatchRedux(
+      updateDateRange({
+        startDate: start ? start.toString() : null,
+        endDate: end ? end.toString() : null,
+      }),
+    );
   };
 
   return (

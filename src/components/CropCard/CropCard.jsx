@@ -1,6 +1,4 @@
-import React, {
-  useEffect, useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { PSACropCard } from 'shared-react-components/src';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -9,15 +7,15 @@ import InformationSheetContent from '../InformationSheet/InformationSheetContent
 import { InfoSheetTitle } from '../InformationSheet/InformationSheet';
 import useIsMobile from '../../hooks/useIsMobile';
 
-const CropCard = ({
-  crop, dispatchRedux,
-}) => {
+const CropCard = ({ crop, dispatchRedux }) => {
   const isMobile = useIsMobile('sm');
 
   // redux vars
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
-  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector(
+    (stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter,
+  );
 
   // useState vars
   const [selectedBtns, setSelectedBtns] = useState(selectedCropIdsRedux);
@@ -50,7 +48,8 @@ const CropCard = ({
     return rotatedCropIds.includes(c.label);
   };
 
-  const hasAdditionalDrainage = crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
+  const hasAdditionalDrainage =
+    crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
   const shouldHighlightRed = hasAdditionalDrainage && additionalSoilDrainageFilterRedux;
 
   const placeHolderImg = 'https://placehold.co/260x140?text=Placeholder';
@@ -66,16 +65,10 @@ const CropCard = ({
       portrait
       selected={selectedBtns.includes(crop.id)}
       onSelect={() => {
-        addToBasket(
-          crop.id,
-          crop.label,
-        );
+        addToBasket(crop.id, crop.label);
       }}
       onRemove={() => {
-        addToBasket(
-          crop.id,
-          crop.label,
-        );
+        addToBasket(crop.id, crop.label);
       }}
       sx={{
         img: {

@@ -2,9 +2,7 @@
   Handles the popup on hovering over one of the goal rankings in the crop selector
 */
 
-import {
-  Grid, Typography,
-} from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Print } from '@mui/icons-material';
@@ -56,7 +54,9 @@ export const InfoSheetTitle = ({ crop }) => {
 
     try {
       dispatch(updatePrinting(true));
-      await new Promise((resolve) => { setTimeout(resolve, 2000); });
+      await new Promise((resolve) => {
+        setTimeout(resolve, 2000);
+      });
 
       const cropDetailModal = document.querySelector('[id^=cropDetailModal]');
       const clonedModal = cropDetailModal.cloneNode(true);
@@ -100,7 +100,6 @@ export const InfoSheetTitle = ({ crop }) => {
         </Typography>
       </Grid>
       <Grid item>
-
         <PSAButton
           startIcon={<OpenInNewIcon />}
           buttonType="ModalLink"
@@ -109,34 +108,26 @@ export const InfoSheetTitle = ({ crop }) => {
           }}
           title="Terminology Definitions"
         />
-        {
-        printing
-          ? (
-            <PSAButton
-              buttonType="ModalLink"
-              startIcon={<CircularProgress size={20} sx={{ color: 'white' }} />}
-            />
-          )
-          : (
-            <PSAButton
-              startIcon={<Print />}
-              buttonType="ModalLink"
-              onClick={print}
-              title="Print"
-              className="infosheetPrint"
-            />
-          )
-      }
+        {printing ? (
+          <PSAButton
+            buttonType="ModalLink"
+            startIcon={<CircularProgress size={20} sx={{ color: 'white' }} />}
+          />
+        ) : (
+          <PSAButton
+            startIcon={<Print />}
+            buttonType="ModalLink"
+            onClick={print}
+            title="Print"
+            className="infosheetPrint"
+          />
+        )}
       </Grid>
     </Grid>
   );
 };
 
-const InformationSheet = ({
-  crop,
-  setModalOpen,
-  modalOpen,
-}) => {
+const InformationSheet = ({ crop, setModalOpen, modalOpen }) => {
   const isMobile = useIsMobile('sm');
 
   return (

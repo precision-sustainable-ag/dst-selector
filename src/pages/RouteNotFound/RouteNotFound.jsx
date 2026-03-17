@@ -1,9 +1,4 @@
-import {
-  Grid,
-  Typography,
-  Container,
-  Link,
-} from '@mui/material';
+import { Grid, Typography, Container, Link } from '@mui/material';
 import React from 'react';
 
 const RouteNotFound = () => (
@@ -27,9 +22,7 @@ const RouteNotFound = () => (
           Looks like you&apos;re lost
         </Typography>
 
-        <Typography variant="body1">
-          The page you are looking for is not available!
-        </Typography>
+        <Typography variant="body1">The page you are looking for is not available!</Typography>
 
         <Link
           href="/"

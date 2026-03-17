@@ -3,9 +3,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
-import {
-  Grid, Typography,
-} from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
@@ -16,9 +14,7 @@ import pirschAnalytics from './analytics';
 import { updateSelectedCropIds } from '../reduxStore/cropSlice';
 import { myCropListLocation } from '../reduxStore/sharedSlice';
 
-export const ReferenceTooltip = ({
-  url, source, type, content, hasLink, title,
-}) => {
+export const ReferenceTooltip = ({ url, source, type, content, hasLink, title }) => {
   const sourceURL = url;
   const sourceName = source;
   const sourceType = type || 'link';
@@ -28,7 +24,7 @@ export const ReferenceTooltip = ({
   return sourceType === 'link' ? (
     <PSATooltip
       enterTouchDelay={0}
-      title={(
+      title={
         <div>
           Source
           {': '}
@@ -36,16 +32,13 @@ export const ReferenceTooltip = ({
             {sourceName}
           </a>
         </div>
-      )}
+      }
       arrow
-      tooltipContent={(
-        <span
-          role="button"
-          aria-label={`Source:${sourceName}`}
-        >
+      tooltipContent={
+        <span role="button" aria-label={`Source:${sourceName}`}>
           <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
         </span>
-      )}
+      }
     />
   ) : sourceType === 'html' ? (
     <PSATooltip
@@ -53,9 +46,7 @@ export const ReferenceTooltip = ({
       sourceType={sourceType}
       dangerouslySetInnerHTML={{ content }}
       enterTouchDelay={0}
-      tooltipContent={(
-        <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
-      )}
+      tooltipContent={<Info sx={{ fontSize: '1rem' }} tabIndex="0" />}
     />
   ) : link ? (
     <PSATooltip
@@ -63,30 +54,27 @@ export const ReferenceTooltip = ({
       placement="right"
       arrow
       enterTouchDelay={0}
-      tooltipContent={(
+      tooltipContent={
         <span role="button" aria-label={sourceContent}>
           <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
         </span>
-      )}
+      }
     />
   ) : (
     <PSATooltip
       enterTouchDelay={0}
-      title={(
+      title={
         <div>
           <Typography variant="body1">{sourceContent}</Typography>
         </div>
-      )}
+      }
       placement="right"
       arrow
-      tooltipContent={(
-        <span
-          role="button"
-          aria-label={sourceContent}
-        >
+      tooltipContent={
+        <span role="button" aria-label={sourceContent}>
           <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
         </span>
-      )}
+      }
     />
   );
 };
@@ -97,14 +85,11 @@ export const DataTooltip = ({ data, placement = 'top-start' }) => (
     placement={placement}
     arrow
     enterTouchDelay={0}
-    tooltipContent={(
-      <span
-        role="button"
-        aria-label={data}
-      >
+    tooltipContent={
+      <span role="button" aria-label={data}>
         <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
       </span>
-    )}
+    }
   />
 );
 
@@ -282,11 +267,53 @@ export const getRating = (rating, councilShorthand) => {
       strokeLinejoin="miter"
       aria-label={`Rating: ${ratingInt}`}
     >
-      {councilShorthand !== 'MCCC' && <line x1="22" y1="3" x2="22" y2="21" stroke={ratingInt >= 5 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />}
-      <line x1="17" y1="7" x2="17" y2="21" stroke={ratingInt >= 4 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />
-      <line x1="12" y1="11" x2="12" y2="21" stroke={ratingInt >= 3 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />
-      <line x1="7" y1="14" x2="7" y2="21" stroke={ratingInt >= 2 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />
-      <line x1="2" y1="17" x2="2" y2="21" stroke={ratingInt >= 1 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} aria-hidden />
+      {councilShorthand !== 'MCCC' && (
+        <line
+          x1="22"
+          y1="3"
+          x2="22"
+          y2="21"
+          stroke={ratingInt >= 5 ? '#2d7b7b' : '#d3d3d3'}
+          strokeWidth={3}
+          aria-hidden
+        />
+      )}
+      <line
+        x1="17"
+        y1="7"
+        x2="17"
+        y2="21"
+        stroke={ratingInt >= 4 ? '#2d7b7b' : '#d3d3d3'}
+        strokeWidth={3}
+        aria-hidden
+      />
+      <line
+        x1="12"
+        y1="11"
+        x2="12"
+        y2="21"
+        stroke={ratingInt >= 3 ? '#2d7b7b' : '#d3d3d3'}
+        strokeWidth={3}
+        aria-hidden
+      />
+      <line
+        x1="7"
+        y1="14"
+        x2="7"
+        y2="21"
+        stroke={ratingInt >= 2 ? '#2d7b7b' : '#d3d3d3'}
+        strokeWidth={3}
+        aria-hidden
+      />
+      <line
+        x1="2"
+        y1="17"
+        x2="2"
+        y2="21"
+        stroke={ratingInt >= 1 ? '#2d7b7b' : '#d3d3d3'}
+        strokeWidth={3}
+        aria-hidden
+      />
     </svg>
   );
 };
@@ -355,7 +382,7 @@ export const CropImage = ({
   alt = '',
   view = '',
   className = '',
-  onClick = () => { },
+  onClick = () => {},
 }) => {
   const placeholder = '//placehold.it/100x100';
   let imageStyle = {};
@@ -401,11 +428,12 @@ export const CropImage = ({
     />
   );
 };
-export const ucFirst = (text = '') => text
-  .toLowerCase()
-  .split(' ')
-  .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-  .join(' ');
+export const ucFirst = (text = '') =>
+  text
+    .toLowerCase()
+    .split(' ')
+    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(' ');
 
 export const flipCoverCropName = (cropName = '') => {
   if (cropName.toLowerCase() === 'Sorghum-sudangrass'.toLowerCase()) {
@@ -487,17 +515,22 @@ const compareValues = (aValue, bValue, sortFlag) => {
 
 const getAverageGoals = (crop, selectedItems) => {
   let total = 0;
-  selectedItems.slice().reverse().forEach((g) => {
-    const goalData = crop.goals.find((data) => data.label === g);
-    if (goalData?.values.length > 0) {
-      total += +goalData.values[0].value;
-    }
-  });
+  selectedItems
+    .slice()
+    .reverse()
+    .forEach((g) => {
+      const goalData = crop.goals.find((data) => data.label === g);
+      if (goalData?.values.length > 0) {
+        total += +goalData.values[0].value;
+      }
+    });
   return total / selectedItems.length;
 };
 
 export const sortByAverageGoals = (crops, { selectedItems }) => {
-  crops.sort((a, b) => compareValues(getAverageGoals(b, selectedItems), getAverageGoals(a, selectedItems), false));
+  crops.sort((a, b) =>
+    compareValues(getAverageGoals(b, selectedItems), getAverageGoals(a, selectedItems), false),
+  );
 };
 
 export const sortByGoal = (crops, { goal, sortFlag }) => {
@@ -536,7 +569,9 @@ export const sortByCropName = (crops, { sortFlag }) => {
 };
 
 const getReliableEstablishmentDate = (plantingDates, sortFlag) => {
-  const reliableEstablishmentData = plantingDates.filter((date) => date.label === 'Reliable Establishment');
+  const reliableEstablishmentData = plantingDates.filter(
+    (date) => date.label === 'Reliable Establishment',
+  );
   if (reliableEstablishmentData.length === 0) return null;
 
   const { values } = reliableEstablishmentData[0];
@@ -546,11 +581,7 @@ const getReliableEstablishmentDate = (plantingDates, sortFlag) => {
     ? values[values.length - 1].value.split(' - ')[sortFlag ? 0 : 1]
     : values[values.length - 1].value.split(' - ')[1];
 
-  return new Date(dateString)
-    .toLocaleDateString('en-GB')
-    .split('/')
-    .reverse()
-    .join('');
+  return new Date(dateString).toLocaleDateString('en-GB').split('/').reverse().join('');
 };
 
 export const sortByPlantingWindow = (crops, { sortFlag }) => {
@@ -694,7 +725,11 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
   ];
   const MCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
-    { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment', color: '#f2c94c' },
+    {
+      className: 'temperatureRisk',
+      label: 'Freeze/Moisture Risk to Establishment',
+      color: '#f2c94c',
+    },
     { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
     { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#f8a504' },
@@ -738,14 +773,19 @@ export const reverseGEO = async (lat, lng) => {
   return data;
 };
 
-export const callCoverCropApi = async (url) => fetch(url)
-  .then((res) => res.json())
-  .catch((err) => {
-    // eslint-disable-next-line no-console
-    console.log(err.message);
-  });
+export const callCoverCropApi = async (url) =>
+  fetch(url)
+    .then((res) => res.json())
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.log(err.message);
+    });
 
-export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashCropEndDate = '') => {
+export const cropDataFormatter = (
+  cropData = [{}],
+  cashCropStartDate = '',
+  cashCropEndDate = '',
+) => {
   const formatYearArr = (yearArr = []) => {
     const result = [];
     let i = 0;
@@ -755,7 +795,9 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
         j += 1;
       }
       result.push({
-        startTime: moment().dayOfYear(i + 1).format('MM/DD'),
+        startTime: moment()
+          .dayOfYear(i + 1)
+          .format('MM/DD'),
         endTime: moment().dayOfYear(j).format('MM/DD'),
         info: yearArr[i].info,
         length: j - i,
@@ -798,8 +840,8 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
           valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
         }
         if (
-          moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD'))
-          && date.label !== 'Hessian Fly Free Date'
+          moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD')) &&
+          date.label !== 'Hessian Fly Free Date'
         ) {
           // Average Frost date should be divided into two years
           const tempStart = '01/01';
@@ -819,7 +861,12 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
         yearArr = formatTimeToYearArr(cashCropStartDate, tempEnd, 'Cash Crop Growing', yearArr);
         yearArr = formatTimeToYearArr(tempStart, cashCropEndDate, 'Cash Crop Growing', yearArr);
       } else {
-        yearArr = formatTimeToYearArr(cashCropStartDate, cashCropEndDate, 'Cash Crop Growing', yearArr);
+        yearArr = formatTimeToYearArr(
+          cashCropStartDate,
+          cashCropEndDate,
+          'Cash Crop Growing',
+          yearArr,
+        );
       }
     }
 
@@ -856,7 +903,8 @@ export const addCropToBasket = (
   };
 
   // update history state
-  if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+  if (historyStateRedux === historyState.imported)
+    dispatchRedux(setHistoryState(historyState.updated));
 
   if (!selectedCropIdsRedux.includes(cropId)) {
     buildDispatch('Added', [...selectedCropIdsRedux, selectedCrops]);
@@ -870,7 +918,9 @@ export const addCropToBasket = (
   // save history after added crop
   if (historyStateRedux !== historyState.none) dispatchRedux(setSaveHistory(true));
   // analytics
-  pirschAnalytics(from === 'selector' ? 'Get A Recommendation' : 'Browse Cover Crops', { meta: { addedToMyList: true } });
+  pirschAnalytics(from === 'selector' ? 'Get A Recommendation' : 'Browse Cover Crops', {
+    meta: { addedToMyList: true },
+  });
 };
 
 export const extractData = (data, dataType, attribute, councilShorthand) => {
@@ -889,7 +939,11 @@ export const extractData = (data, dataType, attribute, councilShorthand) => {
   }
 
   // handles default
-  return data.map((element, index) => <Typography key={index} variant="body2">{element.toString()}</Typography>);
+  return data.map((element, index) => (
+    <Typography key={index} variant="body2">
+      {element.toString()}
+    </Typography>
+  ));
 };
 
 export const hasGoalRatingTwoOrLess = (selectedGoals, crop, activeCropIds) => {
@@ -902,7 +956,11 @@ export const getExpertsData = (councilId) => {
     case 1:
       return [
         { lastName: 'Davis', firstName: 'Brian', Affiliation: 'North Carolina State University' },
-        { lastName: 'Marcillo', firstName: 'Guillermo', Affiliation: 'North Carolina State University' },
+        {
+          lastName: 'Marcillo',
+          firstName: 'Guillermo',
+          Affiliation: 'North Carolina State University',
+        },
         { lastName: 'Peterson', firstName: 'Cara', Affiliation: 'University of Maryland' },
         { lastName: 'Sweep', firstName: 'Ethan', Affiliation: 'USDA ARS' },
         { lastName: 'Schomberg', firstName: 'Harry', Affiliation: 'USDA ARS' },
@@ -936,15 +994,14 @@ export const getExpertsData = (councilId) => {
       return (
         <>
           <Typography style={{ paddingTop: '15px' }} variant="body1" align="left">
-            The MCCC verifies cover crop data at the state/provence level with cover crop experts from diverse state geographies and a breadth of experience.
-            These experts include University Extension, Government Agencies, seed industry, and farmers.
+            The MCCC verifies cover crop data at the state/provence level with cover crop experts
+            from diverse state geographies and a breadth of experience. These experts include
+            University Extension, Government Agencies, seed industry, and farmers.
           </Typography>
           <br />
           <a
             target="_blank"
-            style={
-              { fontSize: '20px', display: 'flex', justifyContent: 'center' }
-            }
+            style={{ fontSize: '20px', display: 'flex', justifyContent: 'center' }}
             href="https://midwestcovercrops.org/decision-tool-collaborators/"
             rel="noreferrer"
           >
@@ -959,7 +1016,11 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Björkman', firstName: 'Thomas', Affiliation: 'Cornell University' },
         { lastName: 'Brown', firstName: 'Rebecca', Affiliation: 'Rhode Island State University' },
         { lastName: 'Cavigelli', firstName: 'Michel', Affiliation: 'USDA ARS' },
-        { lastName: 'Clark', firstName: 'Shawnna', Affiliation: 'USDA NRCS Plant Materials Center' },
+        {
+          lastName: 'Clark',
+          firstName: 'Shawnna',
+          Affiliation: 'USDA NRCS Plant Materials Center',
+        },
         { lastName: 'Cochrane', firstName: 'Chad', Affiliation: 'USDA NRCS' },
         { lastName: 'Cooper', firstName: 'Aaron', Affiliation: 'Maryland farmer' },
         { lastName: 'Darby', firstName: 'Heather', Affiliation: 'University of Vermont' },
@@ -977,13 +1038,21 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Mallory', firstName: 'Ellen', Affiliation: 'University of Maine' },
         { lastName: 'Mehl', firstName: 'Hillary', Affiliation: 'USDA ARS' },
         { lastName: 'Mirsky', firstName: 'Steven', Affiliation: 'USDA ARS' },
-        { lastName: 'O Reilly', firstName: 'Christine', Affiliation: 'Ontario Ministry of Agriculture, Food, and Rural Affairs' },
+        {
+          lastName: 'O Reilly',
+          firstName: 'Christine',
+          Affiliation: 'Ontario Ministry of Agriculture, Food, and Rural Affairs',
+        },
         { lastName: 'Raubenstein', firstName: 'Scott', Affiliation: 'Perdue AgriBusinesses' },
         { lastName: 'Ruhl', firstName: 'Lindsey', Affiliation: 'University of Vermont' },
         { lastName: 'Salon', firstName: 'Paul', Affiliation: 'USDA NRCS, retired' },
         { lastName: 'Smith', firstName: 'Brandon', Affiliation: 'American Farmland Trust' },
         { lastName: 'VanGessel', firstName: 'Mark', Affiliation: 'University of Delaware' },
-        { lastName: 'Verhallen', firstName: 'Anne', Affiliation: 'Ontario Ministry of Agriculture, Food, and Rural Affairs, ret.' },
+        {
+          lastName: 'Verhallen',
+          firstName: 'Anne',
+          Affiliation: 'Ontario Ministry of Agriculture, Food, and Rural Affairs, ret.',
+        },
         { lastName: 'Wallace', firstName: 'John', Affiliation: 'Penn State University' },
         { lastName: 'Wilson', firstName: 'Dave', Affiliation: 'Kings AgriSeeds' },
         { lastName: 'Workman', firstName: 'Kirsten', Affiliation: 'Cornell University' },
@@ -991,7 +1060,11 @@ export const getExpertsData = (councilId) => {
     case 4:
       return [
         { lastName: 'Cappellazzi', firstName: 'Shannon', Affiliation: 'GO Seed' },
-        { lastName: 'Berns', firstName: 'Keith ', Affiliation: 'Nebraska farmer, Green Cover Seed' },
+        {
+          lastName: 'Berns',
+          firstName: 'Keith ',
+          Affiliation: 'Nebraska farmer, Green Cover Seed',
+        },
         { lastName: 'Chase', firstName: 'Carlene', Affiliation: 'University of Florida' },
         { lastName: 'Treadwell', firstName: 'Danielle', Affiliation: 'University of Florida' },
         { lastName: 'Haramoto', firstName: 'Erin', Affiliation: 'University of Kentucky' },
@@ -1005,12 +1078,28 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Basinger', firstName: 'Nicholas', Affiliation: 'Unversity of Georgia' },
         { lastName: 'Stout Evans', firstName: 'Rachel', Affiliation: 'USDA NRCS' },
         { lastName: 'Waring', firstName: 'Robert', Affiliation: 'Virginia farmer ' },
-        { lastName: 'Seehaver', firstName: 'Sarah', Affiliation: 'North Carolina State University' },
-        { lastName: 'Dempsey', firstName: 'Mark', Affiliation: 'Carolina Farm Stewardship Association' },
+        {
+          lastName: 'Seehaver',
+          firstName: 'Sarah',
+          Affiliation: 'North Carolina State University',
+        },
+        {
+          lastName: 'Dempsey',
+          firstName: 'Mark',
+          Affiliation: 'Carolina Farm Stewardship Association',
+        },
         { lastName: 'Singh Farmaha', firstName: 'Bhupinder', Affiliation: 'Clemson University' },
-        { lastName: 'Fultz', firstName: 'Lisa', Affiliation: 'Louisiana State University AgCenter, USDA ARS' },
+        {
+          lastName: 'Fultz',
+          firstName: 'Lisa',
+          Affiliation: 'Louisiana State University AgCenter, USDA ARS',
+        },
         { lastName: 'Gamble', firstName: 'Audrey', Affiliation: 'Auburn University' },
-        { lastName: 'Hendrix', firstName: 'James', Affiliation: 'Louisiana State University AgCenter' },
+        {
+          lastName: 'Hendrix',
+          firstName: 'James',
+          Affiliation: 'Louisiana State University AgCenter',
+        },
         { lastName: 'Kelton', firstName: 'Jessica', Affiliation: 'Auburn University' },
         { lastName: 'McWhirt', firstName: 'Amanda', Affiliation: 'University of Arkansas' },
         { lastName: 'Panicker', firstName: 'Girish', Affiliation: 'Alcorn State University' },
@@ -1021,7 +1110,11 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Thomas', firstName: 'Mark', Affiliation: 'Mountain View Seeds' },
         { lastName: 'Walker', firstName: 'Forbes', Affiliation: 'University of Tennessee' },
         { lastName: 'Ye', firstName: 'Rongzhong', Affiliation: 'Clemson University' },
-        { lastName: 'Williams', firstName: 'Mary (Mimi)', Affiliation: 'USDA NRCS Plant Materials Center' },
+        {
+          lastName: 'Williams',
+          firstName: 'Mary (Mimi)',
+          Affiliation: 'USDA NRCS Plant Materials Center',
+        },
         { lastName: 'Cole', firstName: 'Tracy', Affiliation: 'USDA NRCS' },
         { lastName: 'Proctor', firstName: 'Stuart', Affiliation: 'USDA NRCS' },
         { lastName: 'Scoggins', firstName: 'Keith', Affiliation: 'USDA NRCS' },
@@ -1030,7 +1123,11 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Vega', firstName: 'Rafael', Affiliation: 'USDA NRCS' },
         { lastName: 'Valencia', firstName: 'Elide', Affiliation: 'University of Puerto Rico' },
         { lastName: 'Leonard', firstName: 'Thomas', Affiliation: 'Gaia Herbs' },
-        { lastName: 'Anoruo', firstName: 'Florence', Affiliation: 'South Carolina State University' },
+        {
+          lastName: 'Anoruo',
+          firstName: 'Florence',
+          Affiliation: 'South Carolina State University',
+        },
         { lastName: 'Best', firstName: 'Terry', Affiliation: 'USDA NRCS' },
         { lastName: 'Sykes', firstName: 'Virginia', Affiliation: 'University of Tennessee' },
         { lastName: 'Rodriguez', firstName: 'Mario', Affiliation: 'USDA NRCS' },
@@ -1040,33 +1137,69 @@ export const getExpertsData = (councilId) => {
       ];
     case 5:
       return [
-        { lastName: 'Akin', firstName: 'Clair', Affiliation: 'University of California Agriculture and Natural Resources' },
+        {
+          lastName: 'Akin',
+          firstName: 'Clair',
+          Affiliation: 'University of California Agriculture and Natural Resources',
+        },
         { lastName: 'Andrews', firstName: 'Nick', Affiliation: 'Oregon State University' },
         { lastName: 'Bartow', firstName: 'Amy', Affiliation: 'USDA - NRCS' },
-        { lastName: 'Benedict', firstName: 'Chris', Affiliation: 'Washington State University Extension' },
-        { lastName: 'Bernau', firstName: 'Christopher', Affiliation: 'USDA NRCS Plant Materials Center' },
+        {
+          lastName: 'Benedict',
+          firstName: 'Chris',
+          Affiliation: 'Washington State University Extension',
+        },
+        {
+          lastName: 'Bernau',
+          firstName: 'Christopher',
+          Affiliation: 'USDA NRCS Plant Materials Center',
+        },
         { lastName: 'Bobo-Shisler', firstName: 'Cora', Affiliation: 'Oregon State University' },
         { lastName: 'Bose', firstName: 'Fred', Affiliation: 'Hearne Seed Co' },
         { lastName: 'Bowman', firstName: 'Josh', Affiliation: 'Rio Gro' },
         { lastName: 'Brennan', firstName: 'Eric', Affiliation: 'USDA - ARS' },
-        { lastName: 'Brondt', firstName: 'Sonja', Affiliation: 'University of California Agriculture and Natural Resources' },
+        {
+          lastName: 'Brondt',
+          firstName: 'Sonja',
+          Affiliation: 'University of California Agriculture and Natural Resources',
+        },
         { lastName: 'Bullard', firstName: 'Valerie', Affiliation: 'USDA - NRCS' },
         { lastName: 'Carter', firstName: 'Andrea', Affiliation: 'Native Seeds' },
         { lastName: 'Chaney', firstName: 'Marty', Affiliation: 'USDA - NRCS' },
         { lastName: 'Clements', firstName: 'Charlie', Affiliation: 'USDA - NRCS' },
-        { lastName: 'Collins', firstName: 'Doug', Affiliation: 'Washington State University Extension' },
+        {
+          lastName: 'Collins',
+          firstName: 'Doug',
+          Affiliation: 'Washington State University Extension',
+        },
         { lastName: 'Crane', firstName: 'Robert', Affiliation: 'USDA - NRCS' },
         { lastName: 'David', firstName: 'Brian', Affiliation: 'USDA - NRCS' },
-        { lastName: 'DeVincentis', firstName: 'Alyssa', Affiliation: 'University of California Davis' },
+        {
+          lastName: 'DeVincentis',
+          firstName: 'Alyssa',
+          Affiliation: 'University of California Davis',
+        },
         { lastName: 'Deaton', firstName: 'Keela', Affiliation: 'USDA - NRCS' },
-        { lastName: 'Dufour', firstName: 'Rex Bayard', Affiliation: 'National Center for Appropriate Technology' },
+        {
+          lastName: 'Dufour',
+          firstName: 'Rex Bayard',
+          Affiliation: 'National Center for Appropriate Technology',
+        },
         { lastName: 'Duyck', firstName: 'Garrett', Affiliation: 'USDA - NRCS' },
-        { lastName: 'Finkelburg', firstName: 'Douglas', Affiliation: 'University of Idaho Extension' },
+        {
+          lastName: 'Finkelburg',
+          firstName: 'Douglas',
+          Affiliation: 'University of Idaho Extension',
+        },
         { lastName: 'Flynn', firstName: 'Robert', Affiliation: 'New Mexico State Universtity' },
         { lastName: 'Frey', firstName: 'Joe', Affiliation: 'Western States Hemp' },
         { lastName: 'Gasch', firstName: 'Caley', Affiliation: 'University of Alaska Fairbanks' },
         { lastName: 'Gaudin', firstName: 'Amelie', Affiliation: 'University of California Davis' },
-        { lastName: 'Gearhart', firstName: 'Trevor', Affiliation: 'Whatcom Resource Conservation District' },
+        {
+          lastName: 'Gearhart',
+          firstName: 'Trevor',
+          Affiliation: 'Whatcom Resource Conservation District',
+        },
         { lastName: 'Gemperle', firstName: 'Christine', Affiliation: 'Gemperle Orchards' },
         { lastName: 'Ghajar', firstName: 'Shayan', Affiliation: 'Oregon State University' },
         { lastName: 'Ghimire', firstName: 'Rajan', Affiliation: 'New Mexico State Universtity' },
@@ -1077,78 +1210,170 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Harrigan', firstName: 'James', Affiliation: 'USDA - NRCS' },
         { lastName: 'Hart', firstName: 'Josie', Affiliation: 'Denver Botanic Gardens' },
         { lastName: 'Hines', firstName: 'Steven', Affiliation: 'University of Idaho Extension' },
-        { lastName: 'Hollingsworth', firstName: 'Joy', Affiliation: 'University of California Agriculture and Natural Resources' },
+        {
+          lastName: 'Hollingsworth',
+          firstName: 'Joy',
+          Affiliation: 'University of California Agriculture and Natural Resources',
+        },
         { lastName: 'Ianson', firstName: 'David', Affiliation: 'USDA - NRCS' },
-        { lastName: 'Jani', firstName: 'Arun', Affiliation: 'California State University, Monterey Bay' },
+        {
+          lastName: 'Jani',
+          firstName: 'Arun',
+          Affiliation: 'California State University, Monterey Bay',
+        },
         { lastName: 'Johnson', firstName: 'Tom', Affiliation: 'Kamprath Seed Company' },
         { lastName: 'Jones', firstName: 'Tyler', Affiliation: 'University of Wyoming' },
         { lastName: 'Kabir', firstName: 'Zahangir', Affiliation: 'USDA - NRCS' },
         { lastName: 'Kadas', firstName: 'Steve', Affiliation: 'Soil Health LLC' },
-        { lastName: 'Kay-Cruz', firstName: 'Jessa', Affiliation: 'The Xerces Society for Invertebrate Conservation' },
+        {
+          lastName: 'Kay-Cruz',
+          firstName: 'Jessa',
+          Affiliation: 'The Xerces Society for Invertebrate Conservation',
+        },
         { lastName: 'Kell', firstName: 'Sarah', Affiliation: 'Growing Gardens' },
         { lastName: 'Kenagy', firstName: 'Peter', Affiliation: 'Kenagy Family Farm' },
         { lastName: 'Kling', firstName: 'Michael', Affiliation: 'Kamprath Seeds' },
-        { lastName: 'Koop', firstName: 'Monica', Affiliation: 'Homer Soil and Water Conservation District' },
-        { lastName: 'Kovalenko', firstName: 'Tammie', Affiliation: 'Salcha-Delta Soil & Water Conservation District' },
+        {
+          lastName: 'Koop',
+          firstName: 'Monica',
+          Affiliation: 'Homer Soil and Water Conservation District',
+        },
+        {
+          lastName: 'Kovalenko',
+          firstName: 'Tammie',
+          Affiliation: 'Salcha-Delta Soil & Water Conservation District',
+        },
         { lastName: 'Lee', firstName: 'Steven', Affiliation: 'USDA - NRCS' },
         { lastName: 'Lempka', firstName: 'Larry', Affiliation: 'Los Rios Farm' },
-        { lastName: 'Light', firstName: 'Sarah', Affiliation: 'University of California Agriculture and Natural Resources' },
+        {
+          lastName: 'Light',
+          firstName: 'Sarah',
+          Affiliation: 'University of California Agriculture and Natural Resources',
+        },
         { lastName: 'Lohse', firstName: 'Brian', Affiliation: 'Lockeford Seed' },
         { lastName: 'MCCoy', firstName: 'Jamilah', Affiliation: 'USDA - NRCS' },
         { lastName: 'Machado', firstName: 'Stephen', Affiliation: 'Oregon State University' },
         { lastName: 'Maldonado', firstName: 'Stetcyn', Affiliation: 'Project Apis m.' },
         { lastName: 'Marion', firstName: 'Annie', Affiliation: 'USDA - NRCS' },
-        { lastName: 'McGuire', firstName: 'Andy', Affiliation: 'Washington State University Extension' },
+        {
+          lastName: 'McGuire',
+          firstName: 'Andy',
+          Affiliation: 'Washington State University Extension',
+        },
         { lastName: 'McIntyre', firstName: 'Brad', Affiliation: 'McIntyre Family Farms' },
         { lastName: 'Meyer', firstName: 'Katie', Affiliation: 'Advancing Eco Agriculture' },
         { lastName: 'Meyer', firstName: 'Ron', Affiliation: 'Colorado State University' },
-        { lastName: 'Michel', firstName: 'Leslie', Affiliation: 'Washington State Department of Agriculture' },
+        {
+          lastName: 'Michel',
+          firstName: 'Leslie',
+          Affiliation: 'Washington State Department of Agriculture',
+        },
         { lastName: 'Miller', firstName: 'Perry', Affiliation: 'Montana State University' },
         { lastName: 'Mirro', firstName: 'Jason', Affiliation: 'King Conservation District' },
-        { lastName: 'Moberg', firstName: 'Dean', Affiliation: 'Tualatin Soil and Water Conservation District' },
+        {
+          lastName: 'Moberg',
+          firstName: 'Dean',
+          Affiliation: 'Tualatin Soil and Water Conservation District',
+        },
         { lastName: 'Mon', firstName: 'Jarai', Affiliation: 'USDA - NRCS' },
-        { lastName: 'Monsaint-Queeney', firstName: 'Victoria', Affiliation: 'Homer Soil and Water Conservation District' },
+        {
+          lastName: 'Monsaint-Queeney',
+          firstName: 'Victoria',
+          Affiliation: 'Homer Soil and Water Conservation District',
+        },
         { lastName: 'Moody', firstName: 'Allen', Affiliation: 'USDA - NRCS' },
         { lastName: 'Newton', firstName: 'Christine', Affiliation: 'USDA - NRCS' },
         { lastName: 'Nichols', firstName: 'Alison', Affiliation: 'Pierce Conservation District' },
         { lastName: 'Omeg', firstName: 'Mike', Affiliation: 'Orchard View Inc' },
         { lastName: 'Palic', firstName: 'Daniel', Affiliation: 'USDA - NRCS' },
         { lastName: 'Pickett', firstName: 'Terron', Affiliation: 'USDA - NRCS' },
-        { lastName: 'Pinnamaneni', firstName: 'Srinivas', Affiliation: 'Colorado State University' },
+        {
+          lastName: 'Pinnamaneni',
+          firstName: 'Srinivas',
+          Affiliation: 'Colorado State University',
+        },
         { lastName: 'Pistacchio', firstName: 'Randy', Affiliation: "Long's Gardens" },
         { lastName: 'Qin', firstName: 'Ruijun', Affiliation: 'Oregon State University' },
         { lastName: 'Reeve', firstName: 'Jennifer', Affiliation: 'Utah State University' },
-        { lastName: 'Reyes', firstName: 'Anthony', Affiliation: 'Oxbow Farm and Conservation Center' },
+        {
+          lastName: 'Reyes',
+          firstName: 'Anthony',
+          Affiliation: 'Oxbow Farm and Conservation Center',
+        },
         { lastName: 'Rossow', firstName: 'Silas', Affiliation: 'Cal Ag Solutions' },
         { lastName: 'Russell', firstName: 'Katie', Affiliation: 'Colorado State University' },
         { lastName: 'Sagers', firstName: 'Joseph', Affiliation: 'University of Idaho Extension' },
         { lastName: 'Sanyal', firstName: 'Debankur', Affiliation: 'University of Arizona' },
         { lastName: 'Schembre', firstName: 'Chuck', Affiliation: 'Understanding Ag' },
         { lastName: 'Serrano', firstName: 'Belinda', Affiliation: 'USDA - NRCS' },
-        { lastName: 'Sirovatka', firstName: 'Nick', Affiliation: 'Oregon Department of Agriculture' },
-        { lastName: 'Smither-Kopperl', firstName: 'Margaret', Affiliation: 'USDA NRCS Plant Materials Center' },
+        {
+          lastName: 'Sirovatka',
+          firstName: 'Nick',
+          Affiliation: 'Oregon Department of Agriculture',
+        },
+        {
+          lastName: 'Smither-Kopperl',
+          firstName: 'Margaret',
+          Affiliation: 'USDA NRCS Plant Materials Center',
+        },
         { lastName: 'Solomon', firstName: 'Juan', Affiliation: 'University of Nevada, Reno' },
-        { lastName: 'Stacey', firstName: 'Nathan', Affiliation: 'Oregon State University Extension' },
+        {
+          lastName: 'Stacey',
+          firstName: 'Nathan',
+          Affiliation: 'Oregon State University Extension',
+        },
         { lastName: 'Sullivan', firstName: 'Clare', Affiliation: 'Oregon State University' },
         { lastName: 'Synk', firstName: 'Billy', Affiliation: 'Pollinator Partnership' },
-        { lastName: 'Taulbee', firstName: 'Jacob', Affiliation: 'Humboldt County Resource Conservation District' },
+        {
+          lastName: 'Taulbee',
+          firstName: 'Jacob',
+          Affiliation: 'Humboldt County Resource Conservation District',
+        },
         { lastName: 'Thomas', firstName: 'Jim', Affiliation: 'USDA NRCS Plant Materials Center' },
-        { lastName: 'Thompson', firstName: 'Anita', Affiliation: 'University of Arizona Cooperative Extension' },
-        { lastName: 'Thompson', firstName: 'Marni', Affiliation: 'USDA - NRCS Soil Health Division' },
+        {
+          lastName: 'Thompson',
+          firstName: 'Anita',
+          Affiliation: 'University of Arizona Cooperative Extension',
+        },
+        {
+          lastName: 'Thompson',
+          firstName: 'Marni',
+          Affiliation: 'USDA - NRCS Soil Health Division',
+        },
         { lastName: 'Walther', firstName: 'Jonathan', Affiliation: 'USDA - NRCS' },
         { lastName: 'Wang', firstName: 'Yadi', Affiliation: 'Arizona SOL' },
-        { lastName: 'Waring', firstName: 'Emily R', Affiliation: 'University of California Merced' },
-        { lastName: 'Wauters', firstName: 'Vivian', Affiliation: 'University of California Agriculture and Natural Resources' },
+        {
+          lastName: 'Waring',
+          firstName: 'Emily R',
+          Affiliation: 'University of California Merced',
+        },
+        {
+          lastName: 'Wauters',
+          firstName: 'Vivian',
+          Affiliation: 'University of California Agriculture and Natural Resources',
+        },
         { lastName: 'Weldon', firstName: 'Megan', Affiliation: 'King Conservation District' },
         { lastName: 'Winfield', firstName: 'Emilie', Affiliation: 'North Coast Soil Hub' },
-        { lastName: 'Wingerg', firstName: 'Marlon', Affiliation: 'USDA - NRCS Soil Health Division' },
+        {
+          lastName: 'Wingerg',
+          firstName: 'Marlon',
+          Affiliation: 'USDA - NRCS Soil Health Division',
+        },
         { lastName: 'Zesiger', firstName: 'Cody', Affiliation: 'Utah State University' },
       ];
     default:
       return [
         { lastName: 'Mirsky', firstName: 'Steven', Affiliation: 'USDA-ARS' },
-        { lastName: 'Reberg-Horton', firstName: 'Chris', Affiliation: 'North Carolina State University' },
-        { lastName: 'Bandooni', firstName: 'Rohit', Affiliation: 'North Carolina State University' },
+        {
+          lastName: 'Reberg-Horton',
+          firstName: 'Chris',
+          Affiliation: 'North Carolina State University',
+        },
+        {
+          lastName: 'Bandooni',
+          firstName: 'Rohit',
+          Affiliation: 'North Carolina State University',
+        },
         { lastName: 'Raturi', firstName: 'Ankita', Affiliation: 'Purdue University' },
         { lastName: 'Norton', firstName: 'Juliet', Affiliation: 'Purdue University' },
         { lastName: 'Morrow', firstName: 'Anna', Affiliation: 'Purdue University' },
@@ -1158,11 +1383,27 @@ export const getExpertsData = (councilId) => {
         { lastName: 'Pinegar', firstName: 'Mikah', Affiliation: 'North Carolina State University' },
         { lastName: 'Hitchcock', firstName: 'Rick', Affiliation: 'University of Georga' },
         { lastName: 'Smith', firstName: 'Adam', Affiliation: 'North Carolina State University' },
-        { lastName: 'Puckett', firstName: 'Trevor', Affiliation: 'North Carolina State University' },
-        { lastName: 'Agamohammadnia', firstName: 'Milad', Affiliation: 'North Carolina State University' },
+        {
+          lastName: 'Puckett',
+          firstName: 'Trevor',
+          Affiliation: 'North Carolina State University',
+        },
+        {
+          lastName: 'Agamohammadnia',
+          firstName: 'Milad',
+          Affiliation: 'North Carolina State University',
+        },
         { lastName: 'Xu', firstName: 'Jingtong', Affiliation: 'North Carolina State University' },
-        { lastName: 'Adusumelli', firstName: 'Vyshnavi', Affiliation: 'North Carolina State University' },
-        { lastName: 'Chittilapilly', firstName: 'Boscosylvester John', Affiliation: 'North Carolina State University' },
+        {
+          lastName: 'Adusumelli',
+          firstName: 'Vyshnavi',
+          Affiliation: 'North Carolina State University',
+        },
+        {
+          lastName: 'Chittilapilly',
+          firstName: 'Boscosylvester John',
+          Affiliation: 'North Carolina State University',
+        },
         { lastName: 'Chavan', firstName: 'Ameya', Affiliation: 'North Carolina State University' },
       ];
   }
@@ -1172,61 +1413,74 @@ export const defaultFaqs = [
   {
     id: 1,
     question: 'What is the difference between dormant and non-dormant alfalfa?',
-    answer: '"Dormant" alfalfa varieties are those traditionally grown as perennials in northern climates; they have varying degrees of cold hardiness but would generally be expected to survive the winter. “Non dormant” alfalfa varieties are far less strongly perennial in cold climates due to lower levels of cold hardiness. There are some differences in growth pattern and forage quality between the two groups, as well. Non-dormant varieties produce more biomass in the first year than dormant varieties.',
+    answer:
+      '"Dormant" alfalfa varieties are those traditionally grown as perennials in northern climates; they have varying degrees of cold hardiness but would generally be expected to survive the winter. “Non dormant” alfalfa varieties are far less strongly perennial in cold climates due to lower levels of cold hardiness. There are some differences in growth pattern and forage quality between the two groups, as well. Non-dormant varieties produce more biomass in the first year than dormant varieties.',
   },
   {
     id: 2,
     question: 'What is a “forage brassica”?',
-    answer: 'Many forage brassicas are hybrids of B. oleracea and B. napus. (i.e. kale, rapeseed, turnip). Some are bred for their leaf production, others for their roots. Be aware of what you are buying depending on your needs.',
+    answer:
+      'Many forage brassicas are hybrids of B. oleracea and B. napus. (i.e. kale, rapeseed, turnip). Some are bred for their leaf production, others for their roots. Be aware of what you are buying depending on your needs.',
   },
   {
     id: 3,
     question: 'What is the difference between a forage, daikon, tillage, and oilseed radish?',
-    answer: 'Radishes have been bred for many purposes, including (human) food, (animal) feed and forage, and ability to improve soil structure. Confusion as to naming abounds, and is worsened by the fact that the various types of radish readily interbreed. Cover crop radishes are generally referred to as daikon-type radishes (as opposed to the globe-shaped radishes that feature in salads). According to Extension resources, ‘Tillage’ radish is actually a specific brand of radish bred to be a cover crop. Oilseed radishes have smaller, more branching roots than forage radishes. Be aware of what you are buying depending on your needs.',
+    answer:
+      'Radishes have been bred for many purposes, including (human) food, (animal) feed and forage, and ability to improve soil structure. Confusion as to naming abounds, and is worsened by the fact that the various types of radish readily interbreed. Cover crop radishes are generally referred to as daikon-type radishes (as opposed to the globe-shaped radishes that feature in salads). According to Extension resources, ‘Tillage’ radish is actually a specific brand of radish bred to be a cover crop. Oilseed radishes have smaller, more branching roots than forage radishes. Be aware of what you are buying depending on your needs.',
   },
   {
     id: 4,
     question: 'What is the difference between a forage turnip vs ‘Purple Top’ turnip?',
-    answer: 'Forage turnips have been bred for use as animal feed (i.e. large tonnage per acre), as opposed to ‘Purple Top’ and similar cultivars traditionally grown for human food (i.e. bulb production). Seed costs vary widely. Be aware of what you are buying depending on your needs.',
+    answer:
+      'Forage turnips have been bred for use as animal feed (i.e. large tonnage per acre), as opposed to ‘Purple Top’ and similar cultivars traditionally grown for human food (i.e. bulb production). Seed costs vary widely. Be aware of what you are buying depending on your needs.',
   },
   {
     id: 5,
     question: 'What do you mean by “mustard”?',
-    answer: 'Our tool groups several species under the term “mustard”, including Sinapis alba (white mustard) and Brassica juncea (brown, Oriental, or Indian mustard). We include notes in the comments/notes sections on the information sheet where there are differences in characteristics or uses among the species.',
+    answer:
+      'Our tool groups several species under the term “mustard”, including Sinapis alba (white mustard) and Brassica juncea (brown, Oriental, or Indian mustard). We include notes in the comments/notes sections on the information sheet where there are differences in characteristics or uses among the species.',
   },
   {
     id: 6,
     question: 'What’s the difference between canola and rapeseed?',
-    answer: 'In practice for cover croppers, not much. Some rapeseed was bred to have lower levels of compounds not good for human consumption, making it better for the production of cooking oil. The varieties good for the production of oil for human consumption are referred to as “canola”. Canola seed is generally more expensive than rapeseed seed.',
+    answer:
+      'In practice for cover croppers, not much. Some rapeseed was bred to have lower levels of compounds not good for human consumption, making it better for the production of cooking oil. The varieties good for the production of oil for human consumption are referred to as “canola”. Canola seed is generally more expensive than rapeseed seed.',
   },
   {
     id: 7,
     question: 'What is the difference between “winter” and “spring” small grains?',
-    answer: 'We are referring to germplasm type. For example, “winter” wheat varieties are those that would be expected to usually survive winter and require vernalization (i.e. cold) to trigger flowering. “Spring” wheat varieties are much less cold hardy and do not require vernalization to flower.',
+    answer:
+      'We are referring to germplasm type. For example, “winter” wheat varieties are those that would be expected to usually survive winter and require vernalization (i.e. cold) to trigger flowering. “Spring” wheat varieties are much less cold hardy and do not require vernalization to flower.',
   },
   {
     id: 8,
     question: 'Can spring small grains be planted in fall and vice versa? Why would you do so?',
-    answer: "Winter small grain cultivars can be planted in spring, but they won't flower (which may be useful since they don't get as tall and are good for a low-growing ground cover). Likewise, spring small grains may be planted in the fall (and will therefore likely winter-kill, preventing the need for spring termination).",
+    answer:
+      "Winter small grain cultivars can be planted in spring, but they won't flower (which may be useful since they don't get as tall and are good for a low-growing ground cover). Likewise, spring small grains may be planted in the fall (and will therefore likely winter-kill, preventing the need for spring termination).",
   },
   {
     id: 9,
     question: 'Why do ratings for a given cover crop vary by hardiness zone?',
-    answer: 'USDA hardiness zones are based on average minimum temperatures and are a simple proxy for the length of the growing season across the Northeast US. Ratings differ because these climatic features affect planting dates, crop management, and plant growth. In addition, the experts in each zone sometimes have differences in experience with the cover crop; a cover crop may be more commonly used in a vegetable rotation in one zone and an agronomic rotation in another one, with corresponding differences in traits due to the way they are used.',
+    answer:
+      'USDA hardiness zones are based on average minimum temperatures and are a simple proxy for the length of the growing season across the Northeast US. Ratings differ because these climatic features affect planting dates, crop management, and plant growth. In addition, the experts in each zone sometimes have differences in experience with the cover crop; a cover crop may be more commonly used in a vegetable rotation in one zone and an agronomic rotation in another one, with corresponding differences in traits due to the way they are used.',
   },
   {
     id: 10,
-    question: 'I’m applying fall manure and want a cover crop to take up the N and prevent Prunoff. What should I use?',
-    answer: 'Choose a cover crop ranked high for the goals of “nitrogen scavenging”, “prevent fall erosion”, and “prevent spring erosion”.',
+    question:
+      'I’m applying fall manure and want a cover crop to take up the N and prevent Prunoff. What should I use?',
+    answer:
+      'Choose a cover crop ranked high for the goals of “nitrogen scavenging”, “prevent fall erosion”, and “prevent spring erosion”.',
   },
   {
     id: 11,
     question: 'I want a cover crop that can prevent soil crusting. What should I use?',
-    answer: 'Pick a cover crop that is either alive during the time period of concern or has a good rating for “lasting residue” and that has a good rating for “soil aggregation” and “reduces topsoil compaction”.',
+    answer:
+      'Pick a cover crop that is either alive during the time period of concern or has a good rating for “lasting residue” and that has a good rating for “soil aggregation” and “reduces topsoil compaction”.',
   },
   {
     id: 12,
-    question: 'I am interested in a recommendation based on a goal you do not have in your tool. What can I do?',
+    question:
+      'I am interested in a recommendation based on a goal you do not have in your tool. What can I do?',
     answer: 'Consider what existing goals and rated traits make up the goal you are interested in.',
   },
 ];
@@ -1235,91 +1489,110 @@ export const wcccFaqs = [
   {
     id: 1,
     question: 'How was the species list generated?',
-    answer: 'The cover crop species list was generated by the Western Cover Crops Council, and the experts in the data verification groups.',
+    answer:
+      'The cover crop species list was generated by the Western Cover Crops Council, and the experts in the data verification groups.',
   },
   {
     id: 2,
     question: 'Why do the variables differ throughout the ecoregions and states?',
-    answer: 'Each ecoregion and state had the option to customize the variables to make the dataset relevant.',
+    answer:
+      'Each ecoregion and state had the option to customize the variables to make the dataset relevant.',
   },
   {
     id: 3,
     question: 'Why do the ratings differ throughout the ecoregions and states?',
-    answer: 'Each region and state has its own unique setting and environmental conditions. The ratings differ based on climatic features, as well as the experience of the experts involved in data verification.',
+    answer:
+      'Each region and state has its own unique setting and environmental conditions. The ratings differ based on climatic features, as well as the experience of the experts involved in data verification.',
   },
   {
     id: 4,
     question: 'Why is roller crimping not listed as a common termination method in most regions?',
-    answer: 'Roller crimping is the most difficult termination method, and may have variable results. Success is dependent on using the correct equipment during the correct maturity period of the crop. It is important that the stand is consistent. It is not currently recommended as a termination method in the west, unless you are willing to make multiple to many passes.',
+    answer:
+      'Roller crimping is the most difficult termination method, and may have variable results. Success is dependent on using the correct equipment during the correct maturity period of the crop. It is important that the stand is consistent. It is not currently recommended as a termination method in the west, unless you are willing to make multiple to many passes.',
   },
   {
     id: 5,
     question: 'Why is mowing and grazing not listed as a termination method in ecoregion 7?',
-    answer: 'Due to the environmental conditions in this area, if you choose to mow or graze in this area, you may need multiple passes or methods for effective termination.',
+    answer:
+      'Due to the environmental conditions in this area, if you choose to mow or graze in this area, you may need multiple passes or methods for effective termination.',
   },
   {
     id: 6,
     question: 'Why aren’t there seeding rates for the broadcast method of seeding?',
-    answer: 'In the west, seeding with a no-till seed drill is the recommended form of planting. In the future, a seeding rate calculator will be available for the other seeding methods.',
+    answer:
+      'In the west, seeding with a no-till seed drill is the recommended form of planting. In the future, a seeding rate calculator will be available for the other seeding methods.',
   },
   {
     id: 7,
-    question: 'Will seeding rates need to be adjusted for forage production, weed suppression, or other goals that require a dense stand?',
-    answer: 'Yes. Seeding rates may need to be increased if you are planting for a special purpose. Please consult your local NRCS, Cooperative Extension office, or Conservation District for detailed guidance.',
+    question:
+      'Will seeding rates need to be adjusted for forage production, weed suppression, or other goals that require a dense stand?',
+    answer:
+      'Yes. Seeding rates may need to be increased if you are planting for a special purpose. Please consult your local NRCS, Cooperative Extension office, or Conservation District for detailed guidance.',
   },
   {
     id: 8,
     question: 'What is a “forage brassica”?',
-    answer: 'Many forage brassicas are hybrids of B. oleracea and B. napus. (i.e. kale, rapeseed, turnip). Some are bred for their leaf production, others for their roots. Be aware of what you are buying depending on your needs.',
+    answer:
+      'Many forage brassicas are hybrids of B. oleracea and B. napus. (i.e. kale, rapeseed, turnip). Some are bred for their leaf production, others for their roots. Be aware of what you are buying depending on your needs.',
   },
   {
     id: 9,
     question: 'What is the difference between a forage, daikon, tillage, and oilseed radish?',
-    answer: 'Radishes have been bred for many purposes, including (human) food, (animal) feed and forage, and ability to improve soil structure. Confusion as to naming abounds, and is worsened by the fact that the various types of radish readily interbreed. Cover crop radishes are generally referred to as daikon-type radishes (as opposed to the globe-shaped radishes that feature in salads). According to Extension resources, ‘Tillage’ radish is actually a specific brand of radish bred to be a cover crop. Oilseed radishes have smaller, more branching roots than forage radishes. Be aware of what you are buying depending on your needs.',
+    answer:
+      'Radishes have been bred for many purposes, including (human) food, (animal) feed and forage, and ability to improve soil structure. Confusion as to naming abounds, and is worsened by the fact that the various types of radish readily interbreed. Cover crop radishes are generally referred to as daikon-type radishes (as opposed to the globe-shaped radishes that feature in salads). According to Extension resources, ‘Tillage’ radish is actually a specific brand of radish bred to be a cover crop. Oilseed radishes have smaller, more branching roots than forage radishes. Be aware of what you are buying depending on your needs.',
   },
   {
     id: 10,
     question: 'What is the difference between a forage turnip vs ‘Purple Top’ turnip?',
-    answer: 'Forage turnips have been bred for use as animal feed (i.e. large tonnage per acre), as opposed to ‘Purple Top’ and similar cultivars traditionally grown for human food (i.e. bulb production). Seed costs vary widely. Be aware of what you are buying depending on your needs.',
+    answer:
+      'Forage turnips have been bred for use as animal feed (i.e. large tonnage per acre), as opposed to ‘Purple Top’ and similar cultivars traditionally grown for human food (i.e. bulb production). Seed costs vary widely. Be aware of what you are buying depending on your needs.',
   },
   {
     id: 11,
     question: 'What do you mean by “mustard”?',
-    answer: 'Our tool groups several species under the term “mustard”, including Sinapis alba (white mustard) and Brassica juncea (brown, Oriental, or Indian mustard). We include notes in the comments/notes sections on the information sheet where there are differences in characteristics or uses among the species.',
+    answer:
+      'Our tool groups several species under the term “mustard”, including Sinapis alba (white mustard) and Brassica juncea (brown, Oriental, or Indian mustard). We include notes in the comments/notes sections on the information sheet where there are differences in characteristics or uses among the species.',
   },
   {
     id: 12,
     question: 'What’s the difference between canola and rapeseed?',
-    answer: 'In practice for cover croppers, not much. Some rapeseed was bred to have lower levels of compounds not good for human consumption, making it better for the production of cooking oil. The varieties good for the production of oil for human consumption are referred to as “canola”. Canola seed is generally more expensive than rapeseed seed.',
+    answer:
+      'In practice for cover croppers, not much. Some rapeseed was bred to have lower levels of compounds not good for human consumption, making it better for the production of cooking oil. The varieties good for the production of oil for human consumption are referred to as “canola”. Canola seed is generally more expensive than rapeseed seed.',
   },
   {
     id: 13,
     question: 'What is the difference between “winter” and “spring” small grains?',
-    answer: 'We are referring to germplasm type. For example, “winter” wheat varieties are those that would be expected to usually survive winter and require vernalization (i.e. cold) to trigger flowering. “Spring” wheat varieties are much less cold hardy and do not require vernalization to flower.',
+    answer:
+      'We are referring to germplasm type. For example, “winter” wheat varieties are those that would be expected to usually survive winter and require vernalization (i.e. cold) to trigger flowering. “Spring” wheat varieties are much less cold hardy and do not require vernalization to flower.',
   },
   {
     id: 14,
     question: 'Can spring small grains be planted in fall and vice versa? Why would you do so?',
-    answer: "Winter small grain cultivars can be planted in spring, but they won't flower (which may be useful since they don't get as tall and are good for a low-growing ground cover). Likewise, spring small grains may be planted in the fall (and will therefore likely winter-kill, preventing the need for spring termination).",
+    answer:
+      "Winter small grain cultivars can be planted in spring, but they won't flower (which may be useful since they don't get as tall and are good for a low-growing ground cover). Likewise, spring small grains may be planted in the fall (and will therefore likely winter-kill, preventing the need for spring termination).",
   },
   {
     id: 15,
     question: 'How will varieties or cultivars impact the ratings for a species?',
-    answer: 'Cover crop species have many varieties or cultivars. Winter survival, environmental tolerances and performance are highly dependent on cultivar.',
+    answer:
+      'Cover crop species have many varieties or cultivars. Winter survival, environmental tolerances and performance are highly dependent on cultivar.',
   },
   {
     id: 16,
     question: 'Will a herbicide treatment impact cover crop growth?',
-    answer: 'Chemical carryover from herbicide treatment can affect cover crop growth. Please see additional resources for further information.',
+    answer:
+      'Chemical carryover from herbicide treatment can affect cover crop growth. Please see additional resources for further information.',
   },
   {
     id: 17,
     question: 'Does crop insurance impact recommended termination time before cash crop planting?',
-    answer: 'Yes. The NRCS recommended termination time is dependent on crop insurance. If you do not use crop insurance, you may have a different termination guideline.',
+    answer:
+      'Yes. The NRCS recommended termination time is dependent on crop insurance. If you do not use crop insurance, you may have a different termination guideline.',
   },
 ];
 
-const useWindowSize = () => { // Initialize state with undefined width/height so server and client renders match
+const useWindowSize = () => {
+  // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [windowSize, setWindowSize] = useState({
     width: undefined,

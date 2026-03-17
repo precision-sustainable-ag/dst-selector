@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Chip, Grid, Box,
-} from '@mui/material';
+import { Chip, Grid, Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
@@ -18,7 +16,8 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
 
   const updateFloodingFrequency = (label = '') => {
     // update history state here
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
     let floodings = soilDataRedux?.floodingFrequency ? [...soilDataRedux.floodingFrequency] : [];
     if (floodings.indexOf('None') !== -1) {
       // does exist, remove none because something else was selected
@@ -33,8 +32,11 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
       floodings = [label];
       dispatchRedux(updateFloodingFrequencyRedux(floodings));
       pirschAnalytics('Site Conditions', {
-        meta:
-        { floodingFrequency: floodingOptions.filter((floodClass) => floodClass.value === floodings[0])[0].label },
+        meta: {
+          floodingFrequency: floodingOptions.filter(
+            (floodClass) => floodClass.value === floodings[0],
+          )[0].label,
+        },
       });
     } else {
       // exists, remove it from state

@@ -2,9 +2,7 @@
   Improved login/signup popup with a more appealing message.
 */
 
-import {
-  Box, Typography, Grid,
-} from '@mui/material';
+import { Box, Typography, Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { PSAModal } from 'shared-react-components/src';
@@ -30,10 +28,18 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     maxWidth: {
-      xs: '90%', sm: '80%', md: '80%', lg: '80%', xl: '80%',
+      xs: '90%',
+      sm: '80%',
+      md: '80%',
+      lg: '80%',
+      xl: '80%',
     },
     minWidth: {
-      xs: '90%', sm: 'auto', md: 'auto', lg: 'auto', xl: 'auto',
+      xs: '90%',
+      sm: 'auto',
+      md: 'auto',
+      lg: 'auto',
+      xl: 'auto',
     },
     marginTop: '15px',
     marginBottom: '15px',
@@ -41,7 +47,11 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
     borderRadius: '12px',
     boxShadow: 24,
     p: {
-      xs: 3, sm: 3, md: 4, lg: 5, xl: 5,
+      xs: 3,
+      sm: 3,
+      md: 4,
+      lg: 5,
+      xl: 5,
     },
   };
 
@@ -55,35 +65,35 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
   };
 
   return (
-    (!isAuthenticated && !isLoading)
-    && (
-    <PSAModal
-      open={modalOpen}
-      closeAfterTransition
-      onClose={handleModal}
-      modalContent={(
-        <Box sx={style}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Unlock Exclusive Features!
-          </Typography>
-          <Typography variant="body1" mb={2}>
-            Sign in to access your personalized history and seamless cross-device experience.
-            Your data is safe with us!
-          </Typography>
-          <Grid container spacing={2} justifyContent="center">
-            <Grid item>
-              <AuthButton variant="contained" type="Login" />
+    !isAuthenticated &&
+    !isLoading && (
+      <PSAModal
+        open={modalOpen}
+        closeAfterTransition
+        onClose={handleModal}
+        modalContent={
+          <Box sx={style}>
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              Unlock Exclusive Features!
+            </Typography>
+            <Typography variant="body1" mb={2}>
+              Sign in to access your personalized history and seamless cross-device experience. Your
+              data is safe with us!
+            </Typography>
+            <Grid container spacing={2} justifyContent="center">
+              <Grid item>
+                <AuthButton variant="contained" type="Login" />
+              </Grid>
+              <Grid item>
+                <AuthButton variant="outlined" type="Signup" />
+              </Grid>
+              <Grid item>
+                <AuthButton variant="outlined" type="Not now" onClickCallback={handleModal} />
+              </Grid>
             </Grid>
-            <Grid item>
-              <AuthButton variant="outlined" type="Signup" />
-            </Grid>
-            <Grid item>
-              <AuthButton variant="outlined" type="Not now" onClickCallback={handleModal} />
-            </Grid>
-          </Grid>
-        </Box>
-      )}
-    />
+          </Box>
+        }
+      />
     )
   );
 };

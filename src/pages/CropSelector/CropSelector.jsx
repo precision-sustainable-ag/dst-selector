@@ -5,13 +5,7 @@
   The CropSelector is the top level component for the crop selector tool and allows users to choose crops based on their needs.
 */
 
-import {
-  Fab,
-  useScrollTrigger,
-  Zoom,
-  Box,
-  Grid,
-} from '@mui/material';
+import { Fab, useScrollTrigger, Zoom, Box, Grid } from '@mui/material';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -59,7 +53,9 @@ const CropSelector = (props) => {
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
+  const speciesSelectorActivationFlagRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag,
+  );
 
   // useState vars
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
@@ -72,7 +68,9 @@ const CropSelector = (props) => {
   }, []);
 
   useEffect(() => {
-    pirschAnalytics('Get A Recommendation', { meta: { view: listView ? 'Calendar View' : 'List View' } });
+    pirschAnalytics('Get A Recommendation', {
+      meta: { view: listView ? 'Calendar View' : 'List View' },
+    });
   }, [listView]);
 
   useEffect(() => {
@@ -119,7 +117,6 @@ const CropSelector = (props) => {
   return (
     <Grid container spacing={3}>
       <Grid item xl={3} lg={4} md={4} sm={12} xs={12} ref={sidebarRef}>
-
         <SkipContent
           href="#crop-form"
           text="Skip to form"
@@ -131,7 +128,7 @@ const CropSelector = (props) => {
           }}
         />
 
-        {(size.width < 1680) && (
+        {size.width < 1680 && (
           <PSAButton
             startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
             buttonType=""
@@ -166,14 +163,19 @@ const CropSelector = (props) => {
         }}
       />
 
-      <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12} sm={12} xs={12} id="crop-form">
+      <Grid
+        item
+        xl={showSidebar ? 9 : 12}
+        lg={showSidebar ? 8 : 12}
+        md={showSidebar ? 8 : 12}
+        sm={12}
+        xs={12}
+        id="crop-form"
+      >
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {speciesSelectorActivationFlagRedux ? (
           listView ? (
-            <CropCalendarView
-              setListView={setListView}
-              listView={listView}
-            />
+            <CropCalendarView setListView={setListView} listView={listView} />
           ) : (
             <CropTable
               setListView={setListView}

@@ -49,7 +49,13 @@ describe('<WeatherPrecipitation />', () => {
     reduxStore.dispatch(setWeatherReduxForTest(weatherData));
 
     mountComponentWithProp();
-    cy.assertByTestId('precipitation-card').should('contain.text', weatherData.averagePrecipitation.thisMonth);
-    cy.assertByTestId('precipitation-card').should('contain.text', weatherData.averagePrecipitation.annual);
+    cy.assertByTestId('precipitation-card').should(
+      'contain.text',
+      weatherData.averagePrecipitation.thisMonth,
+    );
+    cy.assertByTestId('precipitation-card').should(
+      'contain.text',
+      weatherData.averagePrecipitation.annual,
+    );
   });
 });

@@ -203,12 +203,7 @@ describe('<SiteConditions />', () => {
   it('should render all site condition cards', () => {
     const addressData = {
       address: '209 West Capitol Avenue',
-      markers: [
-        [
-          38.579201,
-          -92.172935,
-        ],
-      ],
+      markers: [[38.579201, -92.172935]],
       county: 'Cole County',
     };
 
@@ -225,7 +220,6 @@ describe('<SiteConditions />', () => {
           updatedAt: '2023-02-27T20:56:26.049Z',
           deletedAt: null,
         },
-
       ],
       regionId: 676,
       regionShorthand: 'Cole',
