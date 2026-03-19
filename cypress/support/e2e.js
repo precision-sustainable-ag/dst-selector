@@ -28,7 +28,7 @@ export const testFiltersByType = () => {
       ...res,
       filter.values.map((v) =>
         v.dataType === 'number' && filter.dataType.label !== 'currency'
-          ? parseInt(v.value)
+          ? parseInt(v.value, 10)
           : v.value,
       ),
     ];

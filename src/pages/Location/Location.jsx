@@ -7,29 +7,29 @@
   styled using ../../styles/location.scss
 */
 
-import { Typography, Grid, Container, Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
+import { Box, Container, Grid, Typography } from '@mui/material';
 import moment from 'moment';
-import { PSAReduxMap } from 'shared-react-components/src';
 import { useSnackbar } from 'notistack';
-import statesLatLongDict from '../../shared/stateslatlongdict';
-import { abbrRegion, reverseGEO, callCoverCropApi } from '../../shared/constants';
-import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
-import StateChangeAlertDialog from './StateChangeAlertDialog/StateChangeAlertDialog';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { PSAReduxMap } from 'shared-react-components/src';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { setQueryString } from '../../reduxStore/sharedSlice';
+import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import {
   updateAvgFrostDates,
   updateAvgPrecipAnnual,
   updateAvgPrecipCurrentMonth,
   updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
-import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
+import { abbrRegion, callCoverCropApi, reverseGEO } from '../../shared/constants';
 import { mapboxToken } from '../../shared/keys';
+import statesLatLongDict from '../../shared/stateslatlongdict';
+import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
+import StateChangeAlertDialog from './StateChangeAlertDialog/StateChangeAlertDialog';
 
 const Location = () => {
   const dispatchRedux = useDispatch();
@@ -203,7 +203,7 @@ const Location = () => {
       if (councilShorthandRedux === 'WCCC') return;
       if (councilShorthandRedux === 'MCCC') {
         // if council is MCCC, change selectedRegion based on county
-        if (county && county.includes(' County')) {
+        if (county?.includes(' County')) {
           updateRegionRedux(county.replace(' County', ''));
         }
       } else {

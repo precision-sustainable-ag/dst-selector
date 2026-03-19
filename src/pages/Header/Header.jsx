@@ -1,40 +1,33 @@
-/* eslint-disable no-console */
-/* eslint-disable no-fallthrough */
-/* eslint-disable max-len */
-/*
-  This file contains the Header component, helper functions
-  The Header shows the header for all the pages
-  styled using ../../styles/header.scss
-*/
+/** biome-ignore-all lint/suspicious/noFallthroughSwitchClause: <> */
 
-import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useState, useLayoutEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { AppBar, Box } from '@mui/material';
-import { PSAHeader, PSAAuthButton } from 'shared-react-components/src';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
+import { AppBar, Box } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import InformationBar from './InformationBar/InformationBar';
-import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { setUserHistoryList } from '../../reduxStore/userSlice';
-import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
-import AuthModal from '../Landing/AuthModal/AuthModal';
-import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
-import { reset } from '../../reduxStore/store';
-import { setAuthToken } from '../../shared/authToken';
-import { loadHistory } from '../../shared/api';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { PSAAuthButton, PSAHeader } from 'shared-react-components/src';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
-import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
-import { releaseNotesURL } from '../../shared/keys';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 // import useWindowSize from '../../shared/constants';
 import { updateStateInfo } from '../../reduxStore/mapSlice';
+import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
+import { reset } from '../../reduxStore/store';
+import { setUserHistoryList } from '../../reduxStore/userSlice';
+import { loadHistory } from '../../shared/api';
+import { setAuthToken } from '../../shared/authToken';
+import { releaseNotesURL } from '../../shared/keys';
+import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
+import AuthModal from '../Landing/AuthModal/AuthModal';
 import DataLoader from './DataLoader';
+import InformationBar from './InformationBar/InformationBar';
+import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 
 const speed = 1.3;
 
@@ -358,7 +351,6 @@ const Demo = () => {
   useEffect(() => {
     const keydown = async (e) => {
       if (e.key === 'd' && e.ctrlKey && e.altKey) {
-        // eslint-disable-next-line default-case
         switch (progressRedux) {
           case 0:
             await landing();

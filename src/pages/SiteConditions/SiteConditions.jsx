@@ -3,11 +3,11 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React, { useEffect } from 'react';
-import { Grid, Typography, Box, useTheme, useMediaQuery } from '@mui/material';
-import SoilCondition from './SoilCondition/SoilCondition';
+import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useEffect } from 'react';
 import WeatherConditions from '../../components/WeatherConditions/WeatherConditions';
 import pirschAnalytics from '../../shared/analytics';
+import SoilCondition from './SoilCondition/SoilCondition';
 
 const SiteConditions = () => {
   const theme = useTheme();

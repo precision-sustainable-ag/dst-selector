@@ -9,20 +9,20 @@
 */
 
 import {
-  Typography,
+  Grid,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  Grid,
-  TableContainer,
+  Typography,
 } from '@mui/material';
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { DataTooltip, extractData, trimString } from '../../../shared/constants';
-import { setTableWidth } from '../../../reduxStore/pageSlice';
 import InformationSheet from '../../../components/InformationSheet/InformationSheet';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
+import { DataTooltip, extractData, trimString } from '../../../shared/constants';
 
 const MyCoverCropComparisonTable = () => {
   const dispatchRedux = useDispatch();

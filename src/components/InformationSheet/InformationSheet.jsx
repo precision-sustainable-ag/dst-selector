@@ -2,18 +2,17 @@
   Handles the popup on hovering over one of the goal rankings in the crop selector
 */
 
-import { Grid, Typography } from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import CircularProgress from '@mui/material/CircularProgress';
 import { Print } from '@mui/icons-material';
-import React from 'react';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Grid, Typography } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSAInfoSheet } from 'shared-react-components/src';
-import { useSnackbar } from 'notistack';
-import InformationSheetContent from './InformationSheetContent/InformationSheetContent';
-import pirschAnalytics from '../../shared/analytics';
-import { updatePrinting } from '../../reduxStore/sharedSlice';
 import useIsMobile from '../../hooks/useIsMobile';
+import { updatePrinting } from '../../reduxStore/sharedSlice';
+import pirschAnalytics from '../../shared/analytics';
+import InformationSheetContent from './InformationSheetContent/InformationSheetContent';
 
 export const InfoSheetTitle = ({ crop }) => {
   const dispatch = useDispatch();
@@ -45,7 +44,7 @@ export const InfoSheetTitle = ({ crop }) => {
             styles += rule.cssText;
           });
         } catch (e) {
-          throw new Error('Error in extracting CSS');
+          throw new Error(`Error in extracting CSS: ${e.message}`);
         }
       });
 

@@ -1,15 +1,14 @@
-import { Typography, Grid, Box } from '@mui/material';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { WavesOutlined } from '@mui/icons-material';
-import React from 'react';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { Box, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
+import useIsMobile from '../../../../hooks/useIsMobile';
+import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
+import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import RenderFloodingOptions from './RenderFloodingOptions';
-import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
-import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
-import useIsMobile from '../../../../hooks/useIsMobile';
 
 const SoilFloodingFrequency = ({ floodingOptions }) => {
   const dispatchRedux = useDispatch();

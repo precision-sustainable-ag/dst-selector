@@ -1,6 +1,5 @@
-import { IconButton, InputAdornment, ListItem, ListItemText, Typography } from '@mui/material';
 import { Clear, Search } from '@mui/icons-material';
-import React from 'react';
+import { IconButton, InputAdornment, ListItem, ListItemText, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSATextField } from 'shared-react-components/src';
 import { cropSearch } from '../../../reduxStore/filterSlice';

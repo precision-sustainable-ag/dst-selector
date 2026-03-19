@@ -3,13 +3,13 @@
   fetches data from DictionaryContent
 */
 
-import { Typography, Box } from '@mui/material';
 import { Info } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
+import { Box, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PSALoadingSpinner } from 'shared-react-components/src';
-import DictionaryContent from './DictionaryContent';
 import { callCoverCropApi } from '../../../shared/constants';
+import DictionaryContent from './DictionaryContent';
 
 const InformationSheetDictionary = ({ zone, from }) => {
   // redux vars

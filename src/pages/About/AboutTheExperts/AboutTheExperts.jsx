@@ -7,8 +7,8 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import { Box, Typography, Grid } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Grid, Typography } from '@mui/material';
+import { useState } from 'react';
 import { PSAButton } from 'shared-react-components/src';
 import { getExpertsData } from '../../../shared/constants';
 
@@ -32,7 +32,7 @@ const AboutTheExperts = () => {
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
       <Grid container>
         {expertGroups.map((group) => (
-          <Grid item xs={6} sm={4} md={2}>
+          <Grid key={group.id} item xs={6} sm={4} md={2}>
             <PSAButton
               buttonType=""
               key={group.id}
@@ -56,7 +56,7 @@ const AboutTheExperts = () => {
           ? getExpertsData(value)
               .sort((a, b) => a.lastName.localeCompare(b.lastName))
               .map((expert) => (
-                <p>
+                <p key={expert.id}>
                   <strong>{`${expert.lastName}, ${expert.firstName}; `}</strong>
                   <span>{expert.Affiliation}</span>
                 </p>

@@ -5,20 +5,20 @@
   The CropSelector is the top level component for the crop selector tool and allows users to choose crops based on their needs.
 */
 
-import { Fab, useScrollTrigger, Zoom, Box, Grid } from '@mui/material';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
-import React, { useEffect, useState, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Box, Fab, Grid, useScrollTrigger, Zoom } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-// import '../../styles/cropSelector.scss';
-import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
-import CropCalendarView from './CropCalendarView/CropCalendarView';
-import CropSidebar from '../CropSidebar/CropSidebar';
-import CropTable from './CropTable/CropTable';
+import SkipContent from '../../components/SkipContent/SkipContent';
 import { setSidebarWidth } from '../../reduxStore/pageSlice';
 import pirschAnalytics from '../../shared/analytics';
 import useWindowSize from '../../shared/constants';
-import SkipContent from '../../components/SkipContent/SkipContent';
+import CropSidebar from '../CropSidebar/CropSidebar';
+// import '../../styles/cropSelector.scss';
+import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
+import CropCalendarView from './CropCalendarView/CropCalendarView';
+import CropTable from './CropTable/CropTable';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({

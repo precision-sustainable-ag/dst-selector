@@ -1,8 +1,8 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Typography, Box } from '@mui/material';
-import { PSAAccordion } from 'shared-react-components/src';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Box, Typography } from '@mui/material';
+import { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { PSAAccordion } from 'shared-react-components/src';
 import { callCoverCropApi } from '../../../shared/constants';
 
 const InformationSheetReferences = ({ cropId }) => {

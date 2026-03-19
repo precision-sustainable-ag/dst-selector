@@ -1,13 +1,13 @@
-import { Chip, Grid, Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Box, Chip, Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useIsMobile from '../../../../hooks/useIsMobile';
 import {
   setTileDrainage,
   updateDrainageClass as updateDrainageClassRedux,
 } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../../shared/analytics';
-import useIsMobile from '../../../../hooks/useIsMobile';
 
 const RenderDrainageClasses = ({
   setNewDrainage,

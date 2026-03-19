@@ -4,11 +4,10 @@
 */
 
 import { Grid } from '@mui/material';
-import React from 'react';
 import { useSelector } from 'react-redux';
-import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
-import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import SoilComposition from '../../pages/SiteConditions/SoilCondition/SoilComposition/SoilComposition';
+import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
+import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 
 const WeatherConditions = () => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);

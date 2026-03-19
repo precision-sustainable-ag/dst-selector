@@ -1,7 +1,6 @@
-import { Typography, Grid } from '@mui/material';
 import { Info, Opacity } from '@mui/icons-material';
+import { Grid, Typography } from '@mui/material';
 import moment from 'moment';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { PSATooltip } from 'shared-react-components/src';
 
@@ -53,13 +52,19 @@ const WeatherPrecipitation = () => {
                 </div>
               }
               tooltipContent={
-                <span
-                  role="button"
+                <button
+                  type="button"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                  }}
                   aria-label="Five-year average monthly and annual precipitation from the Precision Sustainable
                   Agriculture Weather API powered by NSSL MRMS and NASA NLDAS-2 weather data."
                 >
                   <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
-                </span>
+                </button>
               }
             />
           </Typography>

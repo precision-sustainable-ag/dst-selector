@@ -3,9 +3,9 @@
   The ProgressButtons allow the user to navigate steps
 */
 
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = () => {

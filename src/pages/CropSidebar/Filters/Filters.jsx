@@ -1,6 +1,5 @@
-import { Chip, Grid } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import React from 'react';
+import { Chip, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSATooltip } from 'shared-react-components/src';
 import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore/filterSlice';
@@ -129,10 +128,18 @@ const Tip = ({ filter }) => (
       </>
     }
     tooltipContent={
-      <span role="button">
+      <button
+        type="button"
+        style={{
+          background: 'none',
+          border: 'none',
+          padding: 0,
+          cursor: 'pointer',
+        }}
+      >
         {filter.name}
         <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} tabIndex="0" />
-      </span>
+      </button>
     }
   />
 ); // Tip

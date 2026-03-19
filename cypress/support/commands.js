@@ -33,7 +33,7 @@ Cypress.Commands.add('loginToAuth0', () => {
   const log = Cypress.log({
     displayName: 'AUTH0 LOGIN',
     message: [`🔐 Authenticating | ${args.username}`],
-    // @ts-ignore
+    // @ts-expect-error
     autoEnd: false,
   });
   log.snapshot('before');

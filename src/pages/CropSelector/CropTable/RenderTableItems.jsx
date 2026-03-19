@@ -1,17 +1,16 @@
-import React from 'react';
+import { Grid, TableCell, TableRow, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { TableCell, Typography, TableRow, Grid } from '@mui/material';
 import { PSAButton } from 'shared-react-components/src';
 import {
   CropImage,
   flipCoverCropName,
-  trimString,
   hasGoalRatingTwoOrLess,
+  trimString,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
-import CropTableCard from './CropTableCard';
 import useIsMobile from '../../../hooks/useIsMobile';
+import CropTableCard from './CropTableCard';
 
 const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   // redux vars
@@ -124,7 +123,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                 <table>
                   <tbody>
                     {crop.keyTraits.map((trait) => (
-                      <tr>
+                      <tr key={`${trait.label}`}>
                         <td>
                           {' '}
                           <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>

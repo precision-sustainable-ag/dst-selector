@@ -2,6 +2,7 @@
   Handles rendering the goals and updating them when selected
 */
 
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   Collapse,
   FormControlLabel,
@@ -12,8 +13,6 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { PSACheckbox } from 'shared-react-components/src';
 import { updateComparisonKeys } from '../../../../reduxStore/sharedSlice';

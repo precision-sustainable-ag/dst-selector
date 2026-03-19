@@ -4,10 +4,10 @@
   For example: https://developer.auth0.com/resources/guides/spa/react/basic-authentication/v17-javascript-react-router-5
 */
 
-import React, { useMemo } from 'react';
-import { Auth0Provider, Auth0Context } from '@auth0/auth0-react';
+import { Auth0Context, Auth0Provider } from '@auth0/auth0-react';
+import { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { auth0Domain, auth0ClientId, auth0Audience, testAuth0Env } from '../../../shared/keys';
+import { auth0Audience, auth0ClientId, auth0Domain, testAuth0Env } from '../../../shared/keys';
 
 // This is a mock Auth0Provider which does not provide real auth0 features, this is only for testing build
 const TestAuth0Provider = ({ children }) => {
@@ -27,11 +27,12 @@ const TestAuth0Provider = ({ children }) => {
 };
 
 const Auth0ProviderWithHistory = ({ children }) => {
+  const history = useHistory();
+
   if (testAuth0Env) {
     return <TestAuth0Provider>{children}</TestAuth0Provider>;
   }
 
-  const history = useHistory();
   const redirectUri = window.location.origin;
 
   const onRedirectCallback = (appState) => {

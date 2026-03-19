@@ -6,14 +6,14 @@
   TopBar contains the blue bar for adding crops
 */
 
-import { Typography, Grid, Box } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Box, Grid, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton } from 'shared-react-components/src';
-import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropComparisonTable';
 import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
+import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropComparisonTable';
 
 const MyCoverCropList = ({ from }) => {
   const dispatchRedux = useDispatch();

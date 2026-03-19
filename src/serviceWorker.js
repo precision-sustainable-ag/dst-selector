@@ -35,10 +35,10 @@ function registerValidSW(swUrl, config) {
               // content until all client tabs are closed.
 
               // Execute callback
-              if (config && config.onUpdate) {
+              if (config?.onUpdate) {
                 config.onUpdate(registration);
               }
-            } else if (config && config.onSuccess) {
+            } else if (config?.onSuccess) {
               // At this point, everything has been precached.
               // It's the perfect time to display a
               // "Content is cached for offline use." message.

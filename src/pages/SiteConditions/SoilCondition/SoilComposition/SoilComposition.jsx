@@ -1,6 +1,5 @@
-import React from 'react';
-import { Typography, Grid, Box } from '@mui/material';
 import { Terrain } from '@mui/icons-material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { ReferenceTooltip } from '../../../../shared/constants';
 

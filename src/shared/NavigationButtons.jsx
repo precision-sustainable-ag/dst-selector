@@ -3,15 +3,14 @@
   The ProgressButtons allow the user to navigate steps
 */
 
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Stack, Badge } from '@mui/material';
-import { PSAButton } from 'shared-react-components/src';
 import { Refresh } from '@mui/icons-material';
-import { reset } from '../reduxStore/store';
-import { setMyCoverCropReset } from '../reduxStore/sharedSlice';
+import { Badge, Stack } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { PSAButton } from 'shared-react-components/src';
 import useIsMobile from '../hooks/useIsMobile';
+import { setMyCoverCropReset } from '../reduxStore/sharedSlice';
+import { reset } from '../reduxStore/store';
 
 const NavigationButtons = ({ pathname }) => {
   const dispatchRedux = useDispatch();

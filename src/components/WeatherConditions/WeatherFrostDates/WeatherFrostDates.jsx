@@ -1,6 +1,5 @@
-import { Typography, Grid } from '@mui/material';
 import { AcUnit, Info } from '@mui/icons-material';
-import React from 'react';
+import { Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { PSATooltip } from 'shared-react-components/src';
 
@@ -51,14 +50,20 @@ const WeatherFrostDates = () => {
                 </div>
               }
               tooltipContent={
-                <span
-                  role="button"
+                <button
+                  type="button"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                  }}
                   aria-label="Average dates of the first and last frosts for your location, based on frost dates
                   for the last thirty years from the Precision Sustainable Agriculture Weather API
                   powered by NSSL MRMS and NASA NLDAS-2 weather data."
                 >
                   <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
-                </span>
+                </button>
               }
             />
           </Typography>

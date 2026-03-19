@@ -8,16 +8,16 @@
 */
 
 import { Box, Grid, Stack, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import { CustomStyles } from '../../shared/constants';
-import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
-import HowTo from './HowTo/HowTo';
-import FAQ from './FAQ/FAQ';
-import InfoSheets from './InfoSheets/InfoSheets';
-import pirschAnalytics from '../../shared/analytics';
 import useIsMobile from '../../hooks/useIsMobile';
+import pirschAnalytics from '../../shared/analytics';
+import { CustomStyles } from '../../shared/constants';
+import FAQ from './FAQ/FAQ';
+import HowTo from './HowTo/HowTo';
+import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
+import InfoSheets from './InfoSheets/InfoSheets';
 
 const Help = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);

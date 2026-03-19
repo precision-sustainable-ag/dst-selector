@@ -4,17 +4,16 @@
   Styles are created using CustomStyles from ../../../shared/constants and ../../../styles/greenBar.scss
 */
 
-import { Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
 import { LocationOn } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
-import React from 'react';
+import { Grid } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import ProgressButtons from '../../../shared/ProgressButtons';
+import useIsMobile from '../../../hooks/useIsMobile';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
 import NavigationButtons from '../../../shared/NavigationButtons';
-import useIsMobile from '../../../hooks/useIsMobile';
+import ProgressButtons from '../../../shared/ProgressButtons';
 
 const speciesSelectorToolName = '/';
 

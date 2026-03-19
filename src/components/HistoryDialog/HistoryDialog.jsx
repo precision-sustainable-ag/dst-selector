@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Dialog,
   DialogActions,
@@ -6,8 +5,10 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSATextField, PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSATextField } from 'shared-react-components/src';
+import { reset } from '../../reduxStore/store';
 import {
   historyState,
   setHistoryDialogState,
@@ -15,7 +16,6 @@ import {
   setSelectedHistory,
   updateField,
 } from '../../reduxStore/userSlice';
-import { reset } from '../../reduxStore/store';
 
 export const historyDialogDefaultState = {
   open: false,

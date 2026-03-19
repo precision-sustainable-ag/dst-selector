@@ -1,5 +1,4 @@
 import { Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
-import React from 'react';
 import { PSAButton } from 'shared-react-components/src';
 
 const StateChangeAlertDialog = ({ isOpen, setIsOpen }) => {

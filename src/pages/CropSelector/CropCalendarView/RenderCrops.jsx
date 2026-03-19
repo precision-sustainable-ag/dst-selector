@@ -1,17 +1,16 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { TableCell, TableRow, Grid, Box } from '@mui/material';
 import { AcUnit, AddCircleOutline, CheckRounded, DeleteForever } from '@mui/icons-material';
-import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import { Box, Grid, TableCell, TableRow } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { useDispatch, useSelector } from 'react-redux';
+import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import {
+  addCropToBasket,
   CropImage,
   flipCoverCropName,
   getRating,
-  addCropToBasket,
   hasGoalRatingTwoOrLess,
 } from '../../../shared/constants';
-import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
 import useIsMobile from '../../../hooks/useIsMobile';
 
@@ -163,15 +162,21 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
                       arrow
                       tooltipContent={
-                        <span
-                          role="button"
+                        <button
+                          type="button"
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            padding: 0,
+                            cursor: 'pointer',
+                          }}
                           aria-label={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
                         >
                           <AcUnit
                             sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
                             tabIndex="0"
                           />
-                        </span>
+                        </button>
                       }
                     />
                   </Grid>

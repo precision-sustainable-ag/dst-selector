@@ -6,15 +6,15 @@
 */
 
 import { Box, Grid, Stack, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import { CustomStyles } from '../../shared/constants';
-import LicenseAndCopyright from './LicenseAndCopyright/LicenseAndCopyright';
-import FundingAndAcknowledgements from './FundingAndAcknowledgements/FundingAndAcknowledgements';
-import AboutTheExperts from './AboutTheExperts/AboutTheExperts';
-import pirschAnalytics from '../../shared/analytics';
 import useIsMobile from '../../hooks/useIsMobile';
+import pirschAnalytics from '../../shared/analytics';
+import { CustomStyles } from '../../shared/constants';
+import AboutTheExperts from './AboutTheExperts/AboutTheExperts';
+import FundingAndAcknowledgements from './FundingAndAcknowledgements/FundingAndAcknowledgements';
+import LicenseAndCopyright from './LicenseAndCopyright/LicenseAndCopyright';
 
 const About = () => {
   const [value, setValue] = useState(0);

@@ -8,7 +8,6 @@
 */
 
 import { Box, Typography } from '@mui/material';
-import React from 'react';
 
 const FundingAndAcknowledgements = () => (
   <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>

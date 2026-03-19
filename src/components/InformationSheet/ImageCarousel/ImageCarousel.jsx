@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MobileStepper from '@mui/material/MobileStepper';
-import Typography from '@mui/material/Typography';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import Box from '@mui/material/Box';
+import MobileStepper from '@mui/material/MobileStepper';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { PSAButton } from 'shared-react-components/src';
 

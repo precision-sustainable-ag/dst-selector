@@ -4,7 +4,6 @@
 */
 
 import { Avatar, Chip } from '@mui/material';
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSATooltip } from 'shared-react-components/src';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';

@@ -8,7 +8,6 @@
 */
 
 import { Box, Container, Link, Typography } from '@mui/material';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { defaultFaqs, wcccFaqs } from '../../../shared/constants';
 

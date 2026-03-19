@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { flipCoverCropName } from '../../src/shared/constants';
-import { testFiltersByType } from '../support/e2e';
 
 /* eslint-disable no-undef */
 

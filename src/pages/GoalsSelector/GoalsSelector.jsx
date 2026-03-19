@@ -3,19 +3,19 @@
   The GoalsSelector is the window where the user selects their goals
 */
 // TODO: Goal tags are not responsive!
-import { Typography, Grid, useMediaQuery, useTheme, Chip } from '@mui/material';
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Chip, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSALoadingSpinner } from 'shared-react-components/src';
-import GoalTag from './GoalTag/GoalTag';
-import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
+import { setIrrigationFilter } from '../../reduxStore/filterSlice';
 import {
   updateSelectedDuration,
   updateSelectedIrrigation,
   updateSelectedSeason,
   updateTags,
 } from '../../reduxStore/terminationSlice';
-import { setIrrigationFilter } from '../../reduxStore/filterSlice';
+import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
+import GoalTag from './GoalTag/GoalTag';
 
 const seasons = [
   'Dormant/Frost',
@@ -82,8 +82,7 @@ const GoalsSelector = () => {
     if (councilShorthandRedux === 'WCCC') {
       const selectedTags = allGoalsRedux
         .filter((goal) => selectedGoalsRedux.includes(goal.label))
-        .map((goal) => goal.tags)
-        .flat();
+        .flatMap((goal) => goal.tags);
       const uniqueTags = [...new Set(selectedTags)];
       dispatch(updateTags(uniqueTags));
     }

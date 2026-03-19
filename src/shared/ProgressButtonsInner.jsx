@@ -3,19 +3,18 @@
   The ProgressButtonsInner allow the user to navigate steps
 */
 
-import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import { Stack, Badge, Box } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
+import { Badge, Box, Stack } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
-import { reset } from '../reduxStore/store';
-import {
-  updateProgress,
-  setMyCoverCropReset,
-  activateSpeicesSelectorTile,
-} from '../reduxStore/sharedSlice';
 import useIsMobile from '../hooks/useIsMobile';
+import {
+  activateSpeicesSelectorTile,
+  setMyCoverCropReset,
+  updateProgress,
+} from '../reduxStore/sharedSlice';
+import { reset } from '../reduxStore/store';
 
 const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip }) => {
   const dispatchRedux = useDispatch();

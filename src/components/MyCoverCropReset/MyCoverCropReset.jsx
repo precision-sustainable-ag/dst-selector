@@ -1,10 +1,9 @@
 import { Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { BinaryButton } from '../../shared/constants';
-import { reset } from '../../reduxStore/store';
+import { useHistory } from 'react-router-dom';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
+import { reset } from '../../reduxStore/store';
+import { BinaryButton } from '../../shared/constants';
 
 const MyCoverCropReset = () => {
   const dispatchRedux = useDispatch();

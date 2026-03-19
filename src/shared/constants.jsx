@@ -1,18 +1,15 @@
-/* eslint-disable no-console */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable max-len */
-/* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+/** biome-ignore-all lint/security/noDangerouslySetInnerHtml: <> */
+import { Info, MonetizationOn } from '@mui/icons-material';
 import { Grid, Typography } from '@mui/material';
 import moment from 'moment';
-import { Info, MonetizationOn } from '@mui/icons-material';
+import { useEffect, useState } from 'react';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
-import { mapboxToken } from './keys';
-import arrayEquals from './functions';
-import { historyState, setHistoryState, setSaveHistory } from '../reduxStore/userSlice';
-import pirschAnalytics from './analytics';
 import { updateSelectedCropIds } from '../reduxStore/cropSlice';
 import { myCropListLocation } from '../reduxStore/sharedSlice';
+import { historyState, setHistoryState, setSaveHistory } from '../reduxStore/userSlice';
+import pirschAnalytics from './analytics';
+import arrayEquals from './functions';
+import { mapboxToken } from './keys';
 
 export const ReferenceTooltip = ({ url, source, type, content, hasLink, title }) => {
   const sourceURL = url;
@@ -35,9 +32,18 @@ export const ReferenceTooltip = ({ url, source, type, content, hasLink, title })
       }
       arrow
       tooltipContent={
-        <span role="button" aria-label={`Source:${sourceName}`}>
+        <button
+          type="button"
+          aria-label={`Source:${sourceName}`}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
+          }}
+        >
           <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
-        </span>
+        </button>
       }
     />
   ) : sourceType === 'html' ? (
@@ -55,9 +61,18 @@ export const ReferenceTooltip = ({ url, source, type, content, hasLink, title })
       arrow
       enterTouchDelay={0}
       tooltipContent={
-        <span role="button" aria-label={sourceContent}>
+        <button
+          type="button"
+          aria-label={sourceContent}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
+          }}
+        >
           <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
-        </span>
+        </button>
       }
     />
   ) : (
@@ -71,9 +86,18 @@ export const ReferenceTooltip = ({ url, source, type, content, hasLink, title })
       placement="right"
       arrow
       tooltipContent={
-        <span role="button" aria-label={sourceContent}>
+        <button
+          type="button"
+          aria-label={sourceContent}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
+          }}
+        >
           <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
-        </span>
+        </button>
       }
     />
   );
@@ -86,15 +110,32 @@ export const DataTooltip = ({ data, placement = 'top-start' }) => (
     arrow
     enterTouchDelay={0}
     tooltipContent={
-      <span role="button" aria-label={data}>
+      <button
+        type="button"
+        aria-label={data}
+        style={{
+          background: 'none',
+          border: 'none',
+          padding: 0,
+          cursor: 'pointer',
+        }}
+      >
         <Info sx={{ fontSize: '1rem' }} tabIndex="0" />
-      </span>
+      </button>
     }
   />
 );
 
 export const zoneIcon = (w, h) => (
-  <svg height={h} width={w} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    height={h}
+    width={w}
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby={`zoneIcon${w}-${h}`}
+  >
+    <title id={`zoneIcon${w}-${h}`}>Zone Icon</title>
     <path
       d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM6 15.5C4.62 15.5 3.5 14.38 3.5 13C3.5 11.62 4.62 10.5 6 10.5C7.38 10.5 8.5 11.62 8.5 13C8.5 14.38 7.38 15.5 6 15.5ZM7.5 6C7.5 4.62 8.62 3.5 10 3.5C11.38 3.5 12.5 4.62 12.5 6C12.5 7.38 11.38 8.5 10 8.5C8.62 8.5 7.5 7.38 7.5 6ZM14 15.5C12.62 15.5 11.5 14.38 11.5 13C11.5 11.62 12.62 10.5 14 10.5C15.38 10.5 16.5 11.62 16.5 13C16.5 14.38 15.38 15.5 14 15.5Z"
       fill="white"
@@ -103,7 +144,15 @@ export const zoneIcon = (w, h) => (
 );
 
 export const cloudIcon = (w, h) => (
-  <svg width={w} height={h} viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    width={w}
+    height={h}
+    viewBox="0 0 24 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby={`cloudIcon${w}-${h}`}
+  >
+    <title id={`cloudIcon${w}-${h}`}>Cloud Icon</title>
     <path
       d="M19.35 6.04C18.67 2.59 15.64 0 12 0C9.11 0 6.6 1.64 5.35 4.04C2.34 4.36 0 6.91 0 10C0 13.31 2.69 16 6 16H19C21.76 16 24 13.76 24 11C24 8.36 21.95 6.22 19.35 6.04Z"
       fill="black"
@@ -418,14 +467,19 @@ export const CropImage = ({
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-    <img
-      className={className || `image-for-${alt}`}
+    <button
+      type="button"
       onClick={onClick}
-      src={present ? src : placeholder}
-      alt={present ? alt : 'Placeholder'}
-      style={imageStyle}
-    />
+      className="image-button"
+      style={{ border: 'none', padding: 0, background: 'none' }}
+    >
+      <img
+        className={className || `image-for-${alt}`}
+        src={present ? src : placeholder}
+        alt={present ? alt : 'Placeholder'}
+        style={imageStyle}
+      />
+    </button>
   );
 };
 export const ucFirst = (text = '') =>

@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, Box, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSADropdown, PSAModal } from 'shared-react-components/src';
-import { useSnackbar } from 'notistack';
-import { getAuthToken } from '../../shared/authToken';
-import { loadHistory, removeHistory } from '../../shared/api';
+import { setAddressRedux } from '../../reduxStore/addressSlice';
+import { setCropRedux } from '../../reduxStore/cropSlice';
+import { setGoalsRedux } from '../../reduxStore/goalSlice';
+import { setMapRedux } from '../../reduxStore/mapSlice';
+import { myCropListLocation } from '../../reduxStore/sharedSlice';
+import { setSoilRedux } from '../../reduxStore/soilSlice';
+import { reset } from '../../reduxStore/store';
 import {
-  setSelectedHistory,
+  historyState,
   setHistoryDialogState,
   setHistoryState,
-  historyState,
+  setSelectedHistory,
   setUserRedux,
 } from '../../reduxStore/userSlice';
-import { setMapRedux } from '../../reduxStore/mapSlice';
-import { setAddressRedux } from '../../reduxStore/addressSlice';
 import { setWeatherRedux } from '../../reduxStore/weatherSlice';
-import { setSoilRedux } from '../../reduxStore/soilSlice';
-import { setGoalsRedux } from '../../reduxStore/goalSlice';
-import { setCropRedux } from '../../reduxStore/cropSlice';
-import { myCropListLocation } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
-import { reset } from '../../reduxStore/store';
+import { loadHistory, removeHistory } from '../../shared/api';
+import { getAuthToken } from '../../shared/authToken';
 
 const menuProps = {
   PaperProps: {

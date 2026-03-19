@@ -5,7 +5,6 @@
 */
 
 import { Grid, Typography } from '@mui/material';
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSALoadingSpinner } from 'shared-react-components/src';
 import CropCard from '../../../components/CropCard/CropCard';

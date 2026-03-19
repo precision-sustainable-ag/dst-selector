@@ -1,21 +1,21 @@
 /* eslint-disable max-len */
 
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Typography, Switch, Grid, Box } from '@mui/material';
-import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
+import { InvertColors, LocalDrinkOutlined } from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { Box, Grid, Switch, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import { ReferenceTooltip } from '../../../../shared/constants';
-import arrayEquals from '../../../../shared/functions';
-import RenderDrainageClasses from './RenderDrainageClasses';
+import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
+import useIsMobile from '../../../../hooks/useIsMobile';
 import {
   setTileDrainage,
   updateDrainageClass as updateDrainageClassRedux,
 } from '../../../../reduxStore/soilSlice';
-import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
-import useIsMobile from '../../../../hooks/useIsMobile';
+import { ReferenceTooltip } from '../../../../shared/constants';
+import arrayEquals from '../../../../shared/functions';
+import RenderDrainageClasses from './RenderDrainageClasses';
 
 const SoilDrainage = ({ drainageOptions }) => {
   const dispatchRedux = useDispatch();

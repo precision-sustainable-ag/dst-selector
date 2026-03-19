@@ -1,12 +1,11 @@
 /* eslint-disable max-len */
 import { Collapse, List, ListItem, Typography } from '@mui/material';
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSADropdown } from 'shared-react-components/src';
 import { updateRegion } from '../../../reduxStore/mapSlice';
+import { setQueryString } from '../../../reduxStore/sharedSlice';
 import { historyState, setHistoryDialogState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
-import { setQueryString } from '../../../reduxStore/sharedSlice';
 
 const PlantHardinessZone = ({ from }) => {
   const dispatchRedux = useDispatch();

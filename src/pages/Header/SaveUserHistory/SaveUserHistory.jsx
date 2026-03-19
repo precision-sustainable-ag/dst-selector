@@ -1,15 +1,15 @@
+import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
-import { getAuthToken } from '../../../shared/authToken';
-import { saveHistory, loadHistory } from '../../../shared/api';
 import {
-  setHistoryState,
-  setSelectedHistory,
   historyState,
-  setUserHistoryList,
+  setHistoryState,
   setSaveHistory,
+  setSelectedHistory,
+  setUserHistoryList,
 } from '../../../reduxStore/userSlice';
+import { loadHistory, saveHistory } from '../../../shared/api';
+import { getAuthToken } from '../../../shared/authToken';
 
 const SaveUserHistory = ({ pathname }) => {
   const dispatchRedux = useDispatch();

@@ -1,9 +1,8 @@
-import React from 'react';
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
-import WeatherFrostDates from './WeatherFrostDates';
 import configureStore from '../../../reduxStore/store';
 import { setWeatherReduxForTest } from '../../../reduxStore/weatherSlice';
+import WeatherFrostDates from './WeatherFrostDates';
 
 /* eslint-disable no-undef */
 

@@ -1,10 +1,9 @@
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Collapse, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { Fragment } from 'react';
 import { PSATooltip } from 'shared-react-components/src';
-import Filters from '../Filters/Filters';
 import { toggleFilterValue } from '../../../reduxStore/filterSlice';
+import Filters from '../Filters/Filters';
 
 const SidebarFilter = ({
   filter,

@@ -5,46 +5,46 @@
   The CropSidebar is the sidebar which contains the filtering and calendar view (crop calendar) components
 */
 
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import {
   Box,
+  Chip,
   Collapse,
+  Grid,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
+  Switch,
   // ListSubheader,
   Typography,
-  Grid,
-  Switch,
-  Chip,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import Legend from '../../components/Legend/Legend';
+import { updateActiveCropIds, updateCropData } from '../../reduxStore/cropSlice';
+import {
+  clearFilters,
+  setAdditionalSoilDrainageFilter,
+  setCropGroupFilter,
+  setIrrigationFilter,
+  setSoilDrainageFilter,
+} from '../../reduxStore/filterSlice';
+import { regionToggleHandler, setAjaxInProgress } from '../../reduxStore/sharedSlice';
+import { updateSelectedIrrigation } from '../../reduxStore/terminationSlice';
 import {
   callCoverCropApi,
   cropDataFormatter,
   getLegendDataBasedOnCouncil,
 } from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
-import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
-import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
+import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
-import Legend from '../../components/Legend/Legend';
-import {
-  clearFilters,
-  setSoilDrainageFilter,
-  setIrrigationFilter,
-  setCropGroupFilter,
-  setAdditionalSoilDrainageFilter,
-} from '../../reduxStore/filterSlice';
-import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
-import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
-import { updateSelectedIrrigation } from '../../reduxStore/terminationSlice';
+import SidebarFilter from './SidebarFilter/SidebarFilter';
 
 const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style }) => {
   const dispatchRedux = useDispatch();
@@ -437,27 +437,79 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
           </ListItem>
         )}
       </div>
-      <>
-        {hasAdditionalSoilDrainage && (
+      {hasAdditionalSoilDrainage && (
+        <ListItem
+          style={{
+            paddingLeft: '25px',
+          }}
+        >
+          <ListItemText>Additional Soil Drainage Filter</ListItemText>
+          <ListItemText
+            display="block"
+            style={{
+              paddingLeft: '25px',
+            }}
+            primary={
+              <Grid item sx={{ textAlign: 'right' }}>
+                <Typography variant="body1" display="inline">
+                  No
+                </Typography>
+                <Switch
+                  checked={additionalSoilDrainageFilterRedux}
+                  onChange={handleAdditonalSoilDrainageFilter}
+                  name="soilDrainageFilter"
+                />
+                <Typography variant="body1" display="inline">
+                  Yes
+                </Typography>
+              </Grid>
+            }
+          />
+        </ListItem>
+      )}
+      {councilShorthandRedux === 'WCCC' && (
+        <>
           <ListItem
             style={{
               paddingLeft: '25px',
             }}
           >
-            <ListItemText>Additional Soil Drainage Filter</ListItemText>
+            <ListItemText>Is Your Field Irrigated?</ListItemText>
             <ListItemText
               display="block"
-              style={{
-                paddingLeft: '25px',
-              }}
               primary={
                 <Grid item sx={{ textAlign: 'right' }}>
                   <Typography variant="body1" display="inline">
                     No
                   </Typography>
                   <Switch
-                    checked={additionalSoilDrainageFilterRedux}
-                    onChange={handleAdditonalSoilDrainageFilter}
+                    checked={irrigationFilterRedux}
+                    onChange={handleIrrigationFilter}
+                    name="checkedC"
+                  />
+                  <Typography variant="body1" display="inline">
+                    Yes
+                  </Typography>
+                </Grid>
+              }
+            />
+          </ListItem>
+          <ListItem
+            style={{
+              paddingLeft: '25px',
+            }}
+          >
+            <ListItemText>Filter By Soil Drainage</ListItemText>
+            <ListItemText
+              display="block"
+              primary={
+                <Grid item sx={{ textAlign: 'right' }}>
+                  <Typography variant="body1" display="inline">
+                    No
+                  </Typography>
+                  <Switch
+                    checked={soilDrainageFilterRedux}
+                    onChange={handleSoilDrainageFilter}
                     name="soilDrainageFilter"
                   />
                   <Typography variant="body1" display="inline">
@@ -467,74 +519,29 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
               }
             />
           </ListItem>
-        )}
-        {councilShorthandRedux === 'WCCC' && (
-          <>
-            <ListItem
-              style={{
-                paddingLeft: '25px',
-              }}
-            >
-              <ListItemText>Is Your Field Irrigated?</ListItemText>
-              <ListItemText
-                display="block"
-                primary={
-                  <Grid item sx={{ textAlign: 'right' }}>
-                    <Typography variant="body1" display="inline">
-                      No
-                    </Typography>
-                    <Switch
-                      checked={irrigationFilterRedux}
-                      onChange={handleIrrigationFilter}
-                      name="checkedC"
-                    />
-                    <Typography variant="body1" display="inline">
-                      Yes
-                    </Typography>
-                  </Grid>
-                }
-              />
-            </ListItem>
-            <ListItem
-              style={{
-                paddingLeft: '25px',
-              }}
-            >
-              <ListItemText>Filter By Soil Drainage</ListItemText>
-              <ListItemText
-                display="block"
-                primary={
-                  <Grid item sx={{ textAlign: 'right' }}>
-                    <Typography variant="body1" display="inline">
-                      No
-                    </Typography>
-                    <Switch
-                      checked={soilDrainageFilterRedux}
-                      onChange={handleSoilDrainageFilter}
-                      name="soilDrainageFilter"
-                    />
-                    <Typography variant="body1" display="inline">
-                      Yes
-                    </Typography>
-                  </Grid>
-                }
-              />
-            </ListItem>
-          </>
-        )}
-      </>
+        </>
+      )}
+
       <ListItem component="div">
         <PSATooltip
           enterTouchDelay={0}
           title="Use the Cover Crop Group Filter to select specific cover crop groups to filter by."
           tooltipContent={
-            <span role="button">
+            <button
+              type="button"
+              style={{
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+              }}
+            >
               Cover Crop Group Filter
               <HelpOutlineIcon
                 style={{ cursor: 'pointer', transform: 'scale(0.7)' }}
                 tabIndex="0"
               />
-            </span>
+            </button>
           }
         />
       </ListItem>

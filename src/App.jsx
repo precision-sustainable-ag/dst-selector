@@ -5,44 +5,43 @@
 */
 
 import {
+  adaptV4Theme,
   Box,
   Container,
-  ThemeProvider,
-  StyledEngineProvider,
-  responsiveFontSizes,
-  adaptV4Theme,
-  Grow,
   CssBaseline,
+  Grow,
+  responsiveFontSizes,
+  StyledEngineProvider,
+  ThemeProvider,
 } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import React, { Suspense } from 'react';
-import { useSelector, Provider } from 'react-redux';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { PSAProfile, PSATheme } from 'shared-react-components/src';
 import { deepmerge } from '@mui/utils';
 import { SnackbarProvider } from 'notistack';
-import configureStore from './reduxStore/store';
-import { CustomStyles } from './shared/constants';
-
+import { Suspense } from 'react';
+import { Provider, useSelector } from 'react-redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { PSAProfile, PSATheme } from 'shared-react-components/src';
+import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
+import About from './pages/About/About';
+import CoverCropExplorer from './pages/CoverCropExplorer/CoverCropExplorer';
 import CropSelector from './pages/CropSelector/CropSelector';
+import Feedback from './pages/Feedback/Feedback';
+import Footer from './pages/Footer/Footer';
 import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
 import Header from './pages/Header/Header';
+import Help from './pages/Help/Help';
+import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/InformationSheetDictionary';
 import Landing from './pages/Landing/Landing';
+import License from './pages/License/License';
 import Location from './pages/Location/Location';
+import MixMaker from './pages/MixMaker/MixMaker';
+import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 // import LocationConfirmation from './pages/Location/LocationConfirmation/SiteConditions';
 import RouteNotFound from './pages/RouteNotFound/RouteNotFound';
-import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
-import Footer from './pages/Footer/Footer';
-import About from './pages/About/About';
 import SeedingRateCalculator from './pages/SeedingRateCalculator/SeedingRateCalculator';
-import MixMaker from './pages/MixMaker/MixMaker';
-import CoverCropExplorer from './pages/CoverCropExplorer/CoverCropExplorer';
-import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/InformationSheetDictionary';
-import License from './pages/License/License';
-import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
-import Help from './pages/Help/Help';
-import Feedback from './pages/Feedback/Feedback';
 import Wizard from './pages/Wizard/wizard';
+import configureStore from './reduxStore/store';
+import { CustomStyles } from './shared/constants';
 
 import './styles/App.scss';
 // bootstrap import

@@ -1,13 +1,12 @@
-import React from 'react';
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
-import SiteConditions from './SiteConditions';
 import { setAddressRedux } from '../../reduxStore/addressSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
 import { setSharedRedux } from '../../reduxStore/sharedSlice';
-import configureStore from '../../reduxStore/store';
 import { setSoilRedux } from '../../reduxStore/soilSlice';
+import configureStore from '../../reduxStore/store';
 import { setWeatherReduxForTest } from '../../reduxStore/weatherSlice';
+import SiteConditions from './SiteConditions';
 
 /* eslint-disable no-undef */
 

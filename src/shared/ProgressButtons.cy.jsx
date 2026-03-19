@@ -1,11 +1,10 @@
-import React from 'react';
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
-import ProgressButtons from './ProgressButtons';
-import configureStore from '../reduxStore/store';
+import { updateAllGoals } from '../reduxStore/goalSlice';
 import { setMapRedux, updateRegion, updateStateInfo } from '../reduxStore/mapSlice';
 import { gotoProgress } from '../reduxStore/sharedSlice';
-import { updateAllGoals } from '../reduxStore/goalSlice';
+import configureStore from '../reduxStore/store';
+import ProgressButtons from './ProgressButtons';
 
 /* eslint-disable no-undef */
 

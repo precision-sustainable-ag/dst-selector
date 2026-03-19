@@ -1,16 +1,16 @@
-import { legacy_createStore as createStore, combineReducers } from 'redux';
+import { combineReducers, legacy_createStore as createStore } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
-import cropDataReducer from './cropSlice';
-import weatherReducer from './weatherSlice';
-import MapReducer from './mapSlice';
-import goalsReducer from './goalSlice';
-import soilReducer from './soilSlice';
-import filterReducer from './filterSlice';
 import addressReducer from './addressSlice';
-import sharedReducer from './sharedSlice';
-import userReducer from './userSlice';
+import cropDataReducer from './cropSlice';
+import filterReducer from './filterSlice';
+import goalsReducer from './goalSlice';
+import MapReducer from './mapSlice';
 import pageReducer from './pageSlice';
+import sharedReducer from './sharedSlice';
+import soilReducer from './soilSlice';
 import terminationReducer from './terminationSlice';
+import userReducer from './userSlice';
+import weatherReducer from './weatherSlice';
 
 export const reset = () => ({
   type: 'RESET',

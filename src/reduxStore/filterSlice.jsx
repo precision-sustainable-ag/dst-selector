@@ -69,7 +69,7 @@ export const setCropGroupFilter = (cropGroupFilter) => ({
 
 const filterReducer = (state = initialState, action = null) => {
   let filters = { ...state.filters };
-  const value = action && action.payload && action.payload.value;
+  const value = action?.payload?.value;
   switch (action.type) {
     case 'CLEAR_FILTERS':
       filters = {

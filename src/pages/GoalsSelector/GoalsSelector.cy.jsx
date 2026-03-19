@@ -1,10 +1,9 @@
-import React from 'react';
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
-import GoalsSelector from './GoalsSelector';
-import configureStore from '../../reduxStore/store';
-import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 import { updateAllGoals } from '../../reduxStore/goalSlice';
+import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
+import configureStore from '../../reduxStore/store';
+import GoalsSelector from './GoalsSelector';
 
 /* eslint-disable no-undef */
 

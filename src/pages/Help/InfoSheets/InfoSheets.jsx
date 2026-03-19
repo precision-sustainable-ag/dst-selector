@@ -8,7 +8,6 @@
 */
 
 import { Box, Typography } from '@mui/material';
-import React from 'react';
 
 const infoSheets = [
   {
@@ -151,7 +150,7 @@ const FAQ = () => (
             </li>
             <ul>
               {info.content.map((content) => (
-                <li>
+                <li key={content.link}>
                   <a href={content.link} target="_blank" rel="noopener noreferrer">
                     {content.subtitle}
                   </a>

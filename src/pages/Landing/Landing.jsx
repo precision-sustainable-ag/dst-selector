@@ -1,27 +1,25 @@
-// /* eslint-disable */
-/* eslint-disable no-alert */
 /*
   This file contains the Landing component, helper functions, and styles
   The Landing page is a static pages that has information about the project and prompts the user to select their location and goals
   styled using ../../styles/landing.scss
 */
 
-import { Grid, Typography, Box, Button } from '@mui/material';
-// import SelectUSState from 'react-select-us-states';
-import React, { useEffect, useState, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Box, Button, Grid, Typography } from '@mui/material';
+// import SelectUSState from 'react-select-us-states';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSADropdown, PSARegionSelectorMap } from 'shared-react-components/src';
-import { callCoverCropApi } from '../../shared/constants';
-import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
-import { updateLocation } from '../../reduxStore/addressSlice';
-import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
+import useIsMobile from '../../hooks/useIsMobile';
+import { updateLocation } from '../../reduxStore/addressSlice';
+import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
+import { setQueryString } from '../../reduxStore/sharedSlice';
+import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
+import { callCoverCropApi } from '../../shared/constants';
 import { mapboxToken, testAuth0Env } from '../../shared/keys';
 import statesLatLongDict from '../../shared/stateslatlongdict';
-import { setQueryString } from '../../reduxStore/sharedSlice';
-import useIsMobile from '../../hooks/useIsMobile';
 
 const StateImageButton = ({ sx, onClick, src, alt }) => (
   <Button
@@ -373,48 +371,46 @@ const Landing = () => {
             mapboxToken={mapboxToken}
             key="1"
           />
-          <>
-            <StateImageButton
-              sx={{
-                position: 'absolute',
-                bottom: isMobile ? '-110px' : '140px',
-                left: '10px',
-                ...(selectedState.label === 'Alaska'
-                  ? { border: '2px solid', borderColor: 'primary.main' }
-                  : {}),
-              }}
-              onClick={() => {
-                const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
-                setSelectedState(alaska);
-              }}
-              src={
-                selectedState.label === 'Alaska'
-                  ? '/images/alaska-selected.jpg'
-                  : '/images/alaska.jpg'
-              }
-              alt="select Alaska"
-            />
-            <StateImageButton
-              sx={{
-                position: 'absolute',
-                bottom: isMobile ? '-110px' : '30px',
-                left: isMobile ? '120px' : '10px',
-                ...(selectedState.label === 'Hawaii'
-                  ? { border: '2px solid', borderColor: 'primary.main' }
-                  : {}),
-              }}
-              onClick={() => {
-                const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
-                setSelectedState(hawaii);
-              }}
-              src={
-                selectedState.label === 'Hawaii'
-                  ? '/images/hawaii-selected.jpg'
-                  : '/images/hawaii.jpg'
-              }
-              alt="select Hawaii"
-            />
-          </>
+          <StateImageButton
+            sx={{
+              position: 'absolute',
+              bottom: isMobile ? '-110px' : '140px',
+              left: '10px',
+              ...(selectedState.label === 'Alaska'
+                ? { border: '2px solid', borderColor: 'primary.main' }
+                : {}),
+            }}
+            onClick={() => {
+              const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
+              setSelectedState(alaska);
+            }}
+            src={
+              selectedState.label === 'Alaska'
+                ? '/images/alaska-selected.jpg'
+                : '/images/alaska.jpg'
+            }
+            alt="select Alaska"
+          />
+          <StateImageButton
+            sx={{
+              position: 'absolute',
+              bottom: isMobile ? '-110px' : '30px',
+              left: isMobile ? '120px' : '10px',
+              ...(selectedState.label === 'Hawaii'
+                ? { border: '2px solid', borderColor: 'primary.main' }
+                : {}),
+            }}
+            onClick={() => {
+              const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
+              setSelectedState(hawaii);
+            }}
+            src={
+              selectedState.label === 'Hawaii'
+                ? '/images/hawaii-selected.jpg'
+                : '/images/hawaii.jpg'
+            }
+            alt="select Hawaii"
+          />
         </Box>
       </Grid>
     </Box>

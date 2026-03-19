@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
-import dotenv from 'dotenv';
 import vitePreprocessor from 'cypress-vite';
+import dotenv from 'dotenv';
 
 dotenv.config();
 

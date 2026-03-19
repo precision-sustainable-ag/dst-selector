@@ -1,10 +1,9 @@
-import React from 'react';
-import { Chip, Grid, Box } from '@mui/material';
+import { Box, Chip, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import useIsMobile from '../../../../hooks/useIsMobile';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../../shared/analytics';
-import useIsMobile from '../../../../hooks/useIsMobile';
 
 const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
   const dispatchRedux = useDispatch();

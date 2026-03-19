@@ -2,9 +2,9 @@
   Improved login/signup popup with a more appealing message.
 */
 
-import { Box, Typography, Grid } from '@mui/material';
-import React, { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Box, Grid, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import { PSAModal } from 'shared-react-components/src';
 import AuthButton from '../../../components/Auth/AuthButton/AuthButton';
 
@@ -16,7 +16,7 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
   useEffect(() => {
     if (localStorage.getItem(localStorageKey) !== null) {
       const { expiredAt } = JSON.parse(localStorage.getItem(localStorageKey));
-      if (new Date().getTime() < expiredAt) {
+      if (Date.now() < expiredAt) {
         setModalOpen(false);
       }
     }
@@ -57,7 +57,7 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
 
   const handleModal = () => {
     const authObject = {
-      expiredAt: new Date().getTime() + 14 * 24 * 60 * 60 * 1000,
+      expiredAt: Date.now() + 14 * 24 * 60 * 60 * 1000,
     };
     localStorage.setItem(localStorageKey, JSON.stringify(authObject));
     setModalOpen((open) => !open);

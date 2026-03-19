@@ -1,5 +1,4 @@
-import { Grid, Typography, Container, Link } from '@mui/material';
-import React from 'react';
+import { Container, Grid, Link, Typography } from '@mui/material';
 
 const RouteNotFound = () => (
   <Container maxWidth="sm">

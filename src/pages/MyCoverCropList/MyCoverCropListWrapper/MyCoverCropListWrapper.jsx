@@ -4,11 +4,11 @@
 */
 
 import { Grid } from '@mui/material';
-import React, { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { setSidebarWidth } from '../../../reduxStore/pageSlice';
 import CropSidebar from '../../CropSidebar/CropSidebar';
 import MyCoverCropList from '../MyCoverCropList';
-import { setSidebarWidth } from '../../../reduxStore/pageSlice';
 
 const MyCoverCropListWrapper = () => {
   const [comparisonView, setComparisonView] = useState(true);

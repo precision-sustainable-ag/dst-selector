@@ -1,15 +1,16 @@
 // eslint-disable react/jsx-one-expression-per-line
+
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   Box,
   Collapse,
   List,
-  ListItemButton,
   ListItem,
+  ListItemButton,
   ListItemText,
   Typography,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
 import { updateProgress } from '../../../reduxStore/sharedSlice';

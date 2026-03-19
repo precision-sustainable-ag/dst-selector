@@ -1,14 +1,13 @@
-import React from 'react';
 import { Badge } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import useIsMobile from '../../../hooks/useIsMobile';
 import {
   activateMyCoverCropListTile,
   activateSpeicesSelectorTile,
   setMyCoverCropReset,
 } from '../../../reduxStore/sharedSlice';
-import useIsMobile from '../../../hooks/useIsMobile';
 
 const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();

@@ -4,9 +4,6 @@
 */
 
 import { Grid, Typography } from '@mui/material';
-import React, {
-  // useEffect, useMemo, useState,
-} from 'react';
 
 const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   const getGridItem = (att, index2) => {

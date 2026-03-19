@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { PSACropCard } from 'shared-react-components/src';
-import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { addCropToBasket } from '../../shared/constants';
-import InformationSheetContent from '../InformationSheet/InformationSheetContent/InformationSheetContent';
-import { InfoSheetTitle } from '../InformationSheet/InformationSheet';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { PSACropCard } from 'shared-react-components/src';
 import useIsMobile from '../../hooks/useIsMobile';
+import { addCropToBasket } from '../../shared/constants';
+import { InfoSheetTitle } from '../InformationSheet/InformationSheet';
+import InformationSheetContent from '../InformationSheet/InformationSheetContent/InformationSheetContent';
 
 const CropCard = ({ crop, dispatchRedux }) => {
   const isMobile = useIsMobile('sm');

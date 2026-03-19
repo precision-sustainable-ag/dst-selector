@@ -1,8 +1,7 @@
-import React from 'react';
-import { Typography, Grid, Box } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import '../../styles/cropSelectorCalendarView.scss';
-import { PSATooltip } from 'shared-react-components/src';
 import { useSelector } from 'react-redux';
+import { PSATooltip } from 'shared-react-components/src';
 
 const isHessianDate = (item) => {
   if (item.info.includes('Hessian Fly Free Date')) {
@@ -87,7 +86,10 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 100 100"
                         preserveAspectRatio="none"
+                        role="img"
+                        aria-labelledby={`hessianFlyFreeDate${index}`}
                       >
+                        <title id={`hessianFlyFreeDate${index}`}>Hessian Fly Free Date</title>
                         <polygon points="50,0 100,50 50,100 0,50" fill="#f8a504" strokeWidth={0} />
                       </svg>
                     </Grid>

@@ -5,14 +5,14 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Grid, useTheme, useMediaQuery } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Grid, useMediaQuery, useTheme } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSALoadingSpinner } from 'shared-react-components/src';
-import SoilDrainage from './SoilDrainage/SoilDrainage';
-import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
 import { historyState } from '../../../reduxStore/userSlice';
+import SoilDrainage from './SoilDrainage/SoilDrainage';
+import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 
 const SoilCondition = () => {
   // theme
@@ -84,7 +84,7 @@ const SoilCondition = () => {
 
       let longLatString = '';
 
-      markersCopy.forEach((val, i) => {
+      markersCopy.forEach((_val, i) => {
         // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
         // saved as longLatString
         if (i === markersCopy.length - 1) {

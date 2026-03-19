@@ -6,19 +6,19 @@
   RenderExtendedComments returns the extended notes for a crop if they exist
 */
 
-import React, { useEffect, useState } from 'react';
-import { Typography, Box, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   PSAAccordion,
-  PSATooltip,
   PSAInfoSheetAttributeBox,
   PSALoadingSpinner,
+  PSATooltip,
 } from 'shared-react-components/src';
+import pirschAnalytics from '../../../shared/analytics';
+import { callCoverCropApi, extractData } from '../../../shared/constants';
 import CoverCropInformation from '../CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from '../InformationSheetReferences/InformationSheetReferences';
-import { callCoverCropApi, extractData } from '../../../shared/constants';
-import pirschAnalytics from '../../../shared/analytics';
 
 const InformationSheetContent = ({ crop }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -124,117 +124,116 @@ const InformationSheetContent = ({ crop }) => {
   return dataDone ? (
     <>
       <CoverCropInformation crop={modalData} />
-      {modalData &&
-        modalData.data.map((cat, index) => {
-          const isTermination =
-            councilShorthandRedux === 'WCCC' &&
-            (cat.label === 'Termination' || cat.label === 'Termination Window');
-          return (
-            <Grid
-              item
-              key={index}
-              xs={12}
-              className={`avoid-break infosheetAccordion${index}`}
-              sx={{ marginBottom: '16px' }}
-            >
-              <PSAAccordion
-                sx={{
-                  border: '1px solid #e3e1e1',
-                  '& .MuiAccordionDetails-root': {
-                    backgroundColor: { xs: '#F5F5F5', md: 'white' },
-                    borderRadius: '0 0 30px 30px',
-                    padding: { xs: '0', md: '8px' },
-                  },
-                }}
-                expanded={expandedAccordions.includes(cat.label)}
-                onChange={() => handleAccordion(cat.label)}
-                summaryContent={
-                  <PSATooltip
-                    placement="bottom"
-                    arrow
-                    enterTouchDelay={0}
-                    PopperProps={{
-                      style: {
-                        zIndex: 10000000,
-                      },
-                    }}
-                    title={cat.description}
-                    tooltipContent={
-                      <Box tabIndex="0">
-                        <Typography
-                          className={`infosheetAccordionButton${index}`}
-                          variant="h4"
-                          style={{ color: 'grey' }}
-                        >
-                          {cat.label}
-                        </Typography>
-                      </Box>
+      {modalData?.data.map((cat, index) => {
+        const isTermination =
+          councilShorthandRedux === 'WCCC' &&
+          (cat.label === 'Termination' || cat.label === 'Termination Window');
+        return (
+          <Grid
+            item
+            key={index}
+            xs={12}
+            className={`avoid-break infosheetAccordion${index}`}
+            sx={{ marginBottom: '16px' }}
+          >
+            <PSAAccordion
+              sx={{
+                border: '1px solid #e3e1e1',
+                '& .MuiAccordionDetails-root': {
+                  backgroundColor: { xs: '#F5F5F5', md: 'white' },
+                  borderRadius: '0 0 30px 30px',
+                  padding: { xs: '0', md: '8px' },
+                },
+              }}
+              expanded={expandedAccordions.includes(cat.label)}
+              onChange={() => handleAccordion(cat.label)}
+              summaryContent={
+                <PSATooltip
+                  placement="bottom"
+                  arrow
+                  enterTouchDelay={0}
+                  PopperProps={{
+                    style: {
+                      zIndex: 10000000,
+                    },
+                  }}
+                  title={cat.description}
+                  tooltipContent={
+                    <Box tabIndex="0">
+                      <Typography
+                        className={`infosheetAccordionButton${index}`}
+                        variant="h4"
+                        style={{ color: 'grey' }}
+                      >
+                        {cat.label}
+                      </Typography>
+                    </Box>
+                  }
+                />
+              }
+              detailsContent={
+                <Grid container>
+                  {cat.attributes.map((att, catIndex) => {
+                    if (
+                      councilShorthandRedux === 'WCCC' &&
+                      att.order === 3 &&
+                      !checkTermination(att.label)
+                    ) {
+                      return null; // Return null to render nothing for this attribute
                     }
-                  />
-                }
-                detailsContent={
-                  <Grid container>
-                    {cat.attributes.map((att, catIndex) => {
-                      if (
-                        councilShorthandRedux === 'WCCC' &&
-                        att.order === 3 &&
-                        !checkTermination(att.label)
-                      ) {
-                        return null; // Return null to render nothing for this attribute
-                      }
-                      if (
-                        att.label.startsWith('Comments') ||
-                        att.label.startsWith('Notes:') ||
-                        cat.label === 'Extended Comments'
-                      ) {
-                        return (
-                          <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
-                            <PSATooltip
-                              placement="top-end"
-                              enterTouchDelay={0}
-                              title={att.description}
-                              arrow
-                              tooltipContent={
-                                <Box xs={12} tabIndex="0">
-                                  <Typography
-                                    display="flex"
-                                    justifyContent={
-                                      cat.label !== 'Extended Comments' ? 'center' : 'left'
-                                    }
-                                    sx={{ fontWeight: 'bold' }}
-                                  >
-                                    {att.label}
-                                  </Typography>
-                                  <Typography
-                                    display="flex"
-                                    justifyContent={
-                                      cat.label !== 'Extended Comments' ? 'center' : 'left'
-                                    }
-                                  >
-                                    {att.values[0]?.value}
-                                  </Typography>
-                                </Box>
-                              }
-                            />
-                          </Grid>
-                        );
-                      }
+                    if (
+                      att.label.startsWith('Comments') ||
+                      att.label.startsWith('Notes:') ||
+                      cat.label === 'Extended Comments'
+                    ) {
                       return (
-                        <PSAInfoSheetAttributeBox
-                          variant={isTermination ? 'texts' : ''}
-                          key={catIndex}
-                          description={att.description}
-                          label={att.label}
-                          value={getAttributeData(att, cat.label)}
-                        />
+                        <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
+                          <PSATooltip
+                            placement="top-end"
+                            enterTouchDelay={0}
+                            title={att.description}
+                            arrow
+                            tooltipContent={
+                              <Box xs={12} tabIndex="0">
+                                <Typography
+                                  display="flex"
+                                  justifyContent={
+                                    cat.label !== 'Extended Comments' ? 'center' : 'left'
+                                  }
+                                  sx={{ fontWeight: 'bold' }}
+                                >
+                                  {att.label}
+                                </Typography>
+                                <Typography
+                                  display="flex"
+                                  justifyContent={
+                                    cat.label !== 'Extended Comments' ? 'center' : 'left'
+                                  }
+                                >
+                                  {att.values[0]?.value}
+                                </Typography>
+                              </Box>
+                            }
+                          />
+                        </Grid>
                       );
-                    })}
-                  </Grid>
-                }
-              />
-            </Grid>
-          );
-        })}
+                    }
+                    return (
+                      <PSAInfoSheetAttributeBox
+                        variant={isTermination ? 'texts' : ''}
+                        key={catIndex}
+                        description={att.description}
+                        label={att.label}
+                        value={getAttributeData(att, cat.label)}
+                      />
+                    );
+                  })}
+                </Grid>
+              }
+            />
+          </Grid>
+        );
+      })}
 
       <InformationSheetReferences cropId={crop.id} />
     </>

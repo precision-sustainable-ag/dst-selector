@@ -1,8 +1,8 @@
+import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
-import { callCoverCropApi } from '../../shared/constants';
 import { updateAllGoals, updatePlantingSeasons } from '../../reduxStore/goalSlice';
+import { callCoverCropApi } from '../../shared/constants';
 
 const DataLoader = () => {
   const dispatch = useDispatch();

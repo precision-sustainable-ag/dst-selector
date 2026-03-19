@@ -27,13 +27,18 @@
         "useSingleVarDeclarator": "off"
       },
       "suspicious": {
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "warn"
       },
       "correctness": {
-        "noUndeclaredVariables": "error"
+        "noUndeclaredVariables": "error",
+        "useExhaustiveDependencies": "off"
+      },
+      "performance": {
+        "noAccumulatingSpread": "off"
       }
     }
   },
@@ -52,17 +57,9 @@
   },
   "overrides": [
     {
-      "includes": ["cypress/**/*.js*", "**/*.cy.js"],
+      "includes": ["cypress/**/*.js*", "**/*.cy.js", "**/*.cy.jsx"],
       "javascript": {
-        "globals": [
-          "cy",
-          "Cypress",
-          "describe",
-          "it",
-          "beforeEach",
-          "afterEach",
-          "expect"
-        ]
+        "globals": ["cy", "Cypress", "describe", "it", "beforeEach", "afterEach", "expect"]
       }
     }
   ]

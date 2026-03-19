@@ -5,14 +5,14 @@
 */
 
 import { Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
-import CropSidebar from '../CropSidebar/CropSidebar';
+import SkipContent from '../../components/SkipContent/SkipContent';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 import pirschAnalytics from '../../shared/analytics';
-import SkipContent from '../../components/SkipContent/SkipContent';
+import CropSidebar from '../CropSidebar/CropSidebar';
+import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 
 const CoverCropExplorer = () => {
   const history = useHistory();
@@ -25,11 +25,11 @@ const CoverCropExplorer = () => {
 
   // open crop if url exists
   // eslint-disable-next-line
-  const urlCrop = window.location.search.match(/crop=([^\^]+)/);
+  const urlCrop = window.location.search.match(/crop=([^^]+)/);
   // eslint-disable-next-line
-  const urlParamStateId = window.location.search.match(/state=([^\^]+)/); // for automating Information Sheet PDFs
+  const urlParamStateId = window.location.search.match(/state=([^^]+)/); // for automating Information Sheet PDFs
   // eslint-disable-next-line
-  const urlRegionId = window.location.search.match(/region=([^\^]+)/); // for automating Information Sheet PDFs
+  const urlRegionId = window.location.search.match(/region=([^^]+)/); // for automating Information Sheet PDFs
 
   useEffect(() => {
     const filteredActiveCropData = cropDataRedux.filter((crop) =>

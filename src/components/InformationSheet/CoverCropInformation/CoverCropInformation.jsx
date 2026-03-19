@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import ImageCarousel from '../ImageCarousel/ImageCarousel';
 import { callCoverCropApi } from '../../../shared/constants';
+import ImageCarousel from '../ImageCarousel/ImageCarousel';
 
 const CoverCropInformation = ({ crop, className }) => {
   const [allThumbs, setAllThumbs] = useState([]);

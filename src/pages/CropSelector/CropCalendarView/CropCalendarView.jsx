@@ -4,7 +4,12 @@
   The CropCalendarViewComponent shows the crops in calendar format
 */
 
+import { AcUnit, AddCircle, CalendarToday, LocalFlorist, WbSunny } from '@mui/icons-material';
+import ListIcon from '@mui/icons-material/List';
+import StraightIcon from '@mui/icons-material/Straight';
 import {
+  Box,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -12,23 +17,18 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Box,
-  Grid,
 } from '@mui/material';
-import ListIcon from '@mui/icons-material/List';
 import { tableCellClasses } from '@mui/material/TableCell';
-import { AcUnit, AddCircle, CalendarToday, LocalFlorist, WbSunny } from '@mui/icons-material';
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { PSAButton, PSATooltip, PSALoadingSpinner } from 'shared-react-components/src';
-import StraightIcon from '@mui/icons-material/Straight';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { PSAButton, PSALoadingSpinner, PSATooltip } from 'shared-react-components/src';
 import { allMonths, CustomStyles, sortCrops } from '../../../shared/constants';
 
 import '../../../styles/cropCalendarViewComponent.scss';
-import RenderCrops from './RenderCrops';
-import { setTableWidth } from '../../../reduxStore/pageSlice';
 import InformationSheet from '../../../components/InformationSheet/InformationSheet';
 import useIsMobile from '../../../hooks/useIsMobile';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
+import RenderCrops from './RenderCrops';
 
 const growthIcon = {
   color: 'white',

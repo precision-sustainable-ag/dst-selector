@@ -8,7 +8,6 @@
 */
 
 import { Box, Typography } from '@mui/material';
-import React from 'react';
 import MITLicenseText from '../../License/MITLicenseText/MITLicenseText';
 
 const LicenseAndCopyright = () => (

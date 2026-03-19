@@ -2,9 +2,13 @@
 /*
   This file contains the CropTable component
 */
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+
+import { CalendarToday } from '@mui/icons-material';
+import ListIcon from '@mui/icons-material/List';
+import StraightIcon from '@mui/icons-material/Straight';
 import {
+  Box,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -12,20 +16,17 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Grid,
-  Box,
 } from '@mui/material';
-import ListIcon from '@mui/icons-material/List';
-import { CalendarToday } from '@mui/icons-material';
-import StraightIcon from '@mui/icons-material/Straight';
-import { PSAButton, PSATooltip, PSALoadingSpinner } from 'shared-react-components/src';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { PSAButton, PSALoadingSpinner, PSATooltip } from 'shared-react-components/src';
 import { sortCrops, sudotype } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
-import RenderTableItems from './RenderTableItems';
-import { setTableWidth } from '../../../reduxStore/pageSlice';
 import InformationSheet from '../../../components/InformationSheet/InformationSheet';
 import useIsMobile from '../../../hooks/useIsMobile';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
+import RenderTableItems from './RenderTableItems';
 
 const CropTable = ({ listView, setListView, showGrowthWindow }) => {
   // redux vars
