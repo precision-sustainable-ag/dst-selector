@@ -53,7 +53,8 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
             .filter((label) => label !== 'Goals');
           const allFilters = data.reduce((res, filter) => {
             if (filter.label === 'Goals') return res;
-            return [...res, ...filter.attributes];
+            res.push(...filter.attributes);
+            return res;
           }, []);
           Cypress.env('filterTypes', filterTypes);
           Cypress.env('allFilters', allFilters);

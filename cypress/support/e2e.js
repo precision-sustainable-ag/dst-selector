@@ -10,28 +10,32 @@ export const testFiltersByType = () => {
 
   const allFilterDataTypes = allFilters.reduce((res, filter) => {
     const dataType = filter.dataType.label;
-    if (res.includes(dataType)) return res;
-    return [...res, dataType];
+    if (!res.includes(dataType)) {
+      res.push(dataType);
+    }
+    return res;
   }, []);
 
   const testFilters = allFilterDataTypes.reduce((res, dataType) => {
     // TODO: for each filter type, find first available filter
     const filterName = allFilters.find((filter) => filter.dataType.label === dataType)?.label;
-    if (!filterName) return res;
-    return [...res, filterName];
+    if (filterName) {
+      res.push(filterName);
+    }
+    return res;
   }, []);
 
   const testFilterValues = allFilterDataTypes.reduce((res, dataType) => {
     const filter = allFilters.find((filter) => filter.dataType.label === dataType);
     if (!filter) return res;
-    return [
-      ...res,
+    res.push(
       filter.values.map((v) =>
         v.dataType === 'number' && filter.dataType.label !== 'currency'
           ? parseInt(v.value, 10)
           : v.value,
       ),
-    ];
+    );
+    return res;
   }, []);
 
   const filterResults = {};
