@@ -15,15 +15,14 @@ import { CustomStyles } from '../../shared/constants';
 import LicenseAndCopyright from './LicenseAndCopyright/LicenseAndCopyright';
 import FundingAndAcknowledgements from './FundingAndAcknowledgements/FundingAndAcknowledgements';
 import AboutTheExperts from './AboutTheExperts/AboutTheExperts';
+import Attribution from './Attribution/Attribution';
 import pirschAnalytics from '../../shared/analytics';
 import useIsMobile from '../../hooks/useIsMobile';
 
 const About = () => {
   const [value, setValue] = useState(0);
-  const [attribution, setAttribution] = useState(null);
 
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const isMobile = useIsMobile('md');
 
@@ -43,11 +42,16 @@ const About = () => {
     },
     {
       id: 1,
+      menuOption: 'Attribution',
+      title: 'Attribution',
+    },
+    {
+      id: 2,
       menuOption: 'Funding and Acknowledgements',
       title: 'Funding and Acknowledgements',
     },
     {
-      id: 2,
+      id: 3,
       menuOption: 'About the Experts',
       title: 'About The Experts',
     },
@@ -61,27 +65,18 @@ const About = () => {
         );
       case 1:
         return (
+          <Attribution />
+        );
+      case 2:
+        return (
           <FundingAndAcknowledgements />
         );
-      case 2: return (
+      case 3: return (
         <AboutTheExperts />
       );
       default: return null;
     }
   };
-
-  useEffect(() => {
-    const url = `https://${
-      /(localhost|dev)/i.test(window.location) ? 'developapi' : 'api'
-    }.covercrop-selector.org/v2/regions?locality=state&context=seed_calc`;
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setAttribution(councilShorthandRedux === null
-          ? data.attributions.generalStatement
-          : data.attributions[councilShorthandRedux].withoutModifications);
-      });
-  }, [councilShorthandRedux]);
 
   return (
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
@@ -103,6 +98,7 @@ const About = () => {
                   justifyContent: 'flex-start',
                   borderRadius: '0px',
                   width: '100%',
+                  paddingLeft: section.id === 1 ? '30px' : '10px',
                 }}
                 onClick={() => handleChange(section.id)}
                 variant={value === section.id ? 'contained' : 'text'}
@@ -131,9 +127,6 @@ const About = () => {
                 </Typography>
               </center>
               {getContent()}
-              <br />
-              <br />
-              <Typography fontSize="12px">{attribution}</Typography>
             </Stack>
           </div>
         </Grid>
