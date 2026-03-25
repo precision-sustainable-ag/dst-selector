@@ -19,7 +19,7 @@ const Legend = ({ legendData, modal }) => {
       <Collapse in={legendOpen} timeout="auto" unmountOnExit>
         {legendData.length > 0 &&
           legendData.map((item, key) => (
-            <List disablePadding className="legendModalRow" key={`gird index ${key}`}>
+            <List disablePadding className="legendModalRow" key={item.className}>
               <ListItem>
                 <ListItemText style={{ paddingLeft: '1rem' }}>{`${item.label}`}</ListItemText>
                 {modal &&

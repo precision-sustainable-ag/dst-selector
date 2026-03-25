@@ -141,9 +141,9 @@ const GoalsSelector = () => {
                         : selectedGoalsRedux.indexOf(b.label)),
                   )
                   .map((goal, key) => (
-                    <Grid item key={key}>
+                    <Grid item key={goal.label}>
                       <GoalTag
-                        key={key}
+                        key={goal.label}
                         id={key}
                         goaltTitle={goal.label}
                         goalDescription={goal.description}

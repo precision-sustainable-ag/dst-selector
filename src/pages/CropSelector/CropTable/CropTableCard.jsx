@@ -28,7 +28,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
             style={{
               textAlign: 'center',
             }}
-            key={index}
+            key={goal}
             className="goalCells"
           >
             <div>

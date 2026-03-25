@@ -81,12 +81,12 @@ const Chips = ({ filter }) => {
   };
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   if (filter.dataType === 'boolean') {
-    return filter.values.map((val, i) => {
+    return filter.values.map((val) => {
       const selected = filterStateRedux.filters[`${filter.name}: ${val.value}`];
       return (
-        <Grid key={filter.name + val.value + i} item>
+        <Grid key={filter.name + val.value + val.id} item>
           <Chip
-            key={filter.name + val.value + i}
+            key={filter.name + val.value + val.id}
             data-test={`${filter.name}-${val.value}`}
             onClick={() => chipChange(filter.name, val.value)}
             component="li"
@@ -98,12 +98,12 @@ const Chips = ({ filter }) => {
       );
     });
   }
-  return filter.values.map((val, i) => {
+  return filter.values.map((val) => {
     const selected = filterStateRedux.filters[`${filter.name}: ${val.value}`];
     return (
-      <Grid key={filter.name + val.value + i} item>
+      <Grid key={filter.name + val.value + val.id} item>
         <Chip
-          key={filter.name + val.value + i}
+          key={filter.name + val.value + val.id}
           onClick={() => chipChange(filter.name, val.value)}
           component="li"
           size="medium"
@@ -147,33 +147,33 @@ const Tip = ({ filter }) => (
 // renders sidebar
 const Filters = ({ filters }) => (
   <Grid container spacing={2}>
-    {filters.values.map((filter, i) => {
+    {filters.values.map((filter) => {
       if (filter.dataType === 'string') {
         return (
-          <Grid container item spacing={1} key={i}>
-            <Grid item key={i} xs={12}>
+          <Grid container item spacing={1} key={filter.name}>
+            <Grid item key={filter.name} xs={12}>
               <Tip filter={filter} />
             </Grid>
             <Grid item container xs={12} spacing={0.3}>
-              <Chips key={i} filter={filter} />
+              <Chips key={filter.name} filter={filter} />
             </Grid>
           </Grid>
         );
       }
       if (filter.dataType === 'boolean') {
         return (
-          <Grid container item spacing={1} key={i}>
-            <Grid item key={i} xs={12}>
+          <Grid container item spacing={1} key={filter.name}>
+            <Grid item key={filter.name} xs={12}>
               <Tip filter={filter} />
             </Grid>
             <Grid item container xs={12} spacing={0.3}>
-              <Chips key={i} filter={filter} />
+              <Chips key={filter.name} filter={filter} />
             </Grid>
           </Grid>
         );
       }
       return (
-        <Grid container item spacing={1} key={i}>
+        <Grid container item spacing={1} key={filter.name}>
           <Grid item xs={12}>
             <Tip filter={filter} />
           </Grid>

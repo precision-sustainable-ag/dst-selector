@@ -34,8 +34,8 @@ const ExplorerCardView = ({ activeCropData }) => {
     <Grid container spacing={2} justifyContent="center">
       {/* eslint-disable-next-line no-nested-ternary */}
       {activeCropData?.length > 0 ? (
-        activeCropData.map((crop, index) => (
-          <Grid item key={index}>
+        activeCropData.map((crop) => (
+          <Grid item key={crop.id}>
             <CropCard crop={crop} dispatchRedux={dispatchRedux} />
           </Grid>
         ))

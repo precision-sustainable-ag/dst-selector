@@ -57,7 +57,7 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
       flexBasis="0"
     >
       {floodingOptions.map((f, index) => (
-        <Box key={index} sx={{ width: 'auto' }}>
+        <Box key={f.label} sx={{ width: 'auto' }}>
           <Chip
             label={f.label}
             color={flooding.includes(f.value) ? 'primary' : 'secondary'}

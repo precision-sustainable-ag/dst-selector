@@ -105,7 +105,7 @@ const RenderDrainageClasses = ({
       data-test="drainage-class-chip-box"
     >
       {drainageArray.map((d, index) => (
-        <Box key={index} sx={{ width: 'auto' }}>
+        <Box key={d} sx={{ width: 'auto' }}>
           <Chip
             label={d}
             data-test={`drainage-class-chip-${index}`}

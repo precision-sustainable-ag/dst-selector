@@ -44,8 +44,8 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
         const classNames = `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'} ${
           isMultiple && !hessianDate ? 'Multiple' : info.join(' ')
         } ${isCashCropTime ? 'cashCropMonth' : ''}`;
-
         return (
+          // biome-ignore lint/suspicious/noArrayIndexKey: <No unique element to use as key>
           <Box flex={length} key={index}>
             <PSATooltip
               sx={{ flex: length }}
@@ -66,7 +66,6 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
               tooltipContent={
                 <Box
                   className={classNames}
-                  key={index}
                   tabIndex="0"
                   aria-label={`${generateToolTipText(filteredWindow)}
                  ${hessianDate ? `${startTime}` : `${startTime} - ${endTime}`}`}

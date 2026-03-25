@@ -81,7 +81,7 @@ const ImageCarousel = ({ images }) => {
           interval={5000}
         >
           {imagesData.map((step, index) => (
-            <div key={step.label + index}>
+            <div key={step.imgPath}>
               <div
                 className="info-sheet-image-container"
                 style={{

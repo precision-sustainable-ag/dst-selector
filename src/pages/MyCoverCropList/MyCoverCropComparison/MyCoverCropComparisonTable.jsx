@@ -114,8 +114,8 @@ const MyCoverCropComparisonTable = () => {
   const buildTableHeaders = () => (
     <>
       <TableCell sx={{ position: 'sticky', left: 0, background: 'white' }} />
-      {selectedCrops.map((crop, index) => (
-        <TableCell key={index} align="center" sx={{ backgroundColor: 'white' }}>
+      {selectedCrops.map((crop) => (
+        <TableCell key={crop.id} align="center" sx={{ backgroundColor: 'white' }}>
           <Typography
             variant="subtitle1"
             sx={{
@@ -146,7 +146,7 @@ const MyCoverCropComparisonTable = () => {
       if (key === 'comparisonKey') {
         return (
           <TableCell
-            key={index}
+            key={key}
             component="th"
             scope="row"
             sx={{
@@ -193,7 +193,7 @@ const MyCoverCropComparisonTable = () => {
       };
 
       return (
-        <TableCell align="center" key={index}>
+        <TableCell align="center" key={key}>
           {getAttributeData()}
         </TableCell>
       );
@@ -221,8 +221,8 @@ const MyCoverCropComparisonTable = () => {
           <TableRow>{buildTableHeaders()}</TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
-            <TableRow key={`${row.comparisonKey} ${index}`} data-test={`${row.comparisonKey}-row`}>
+          {rows.map((row) => (
+            <TableRow key={`${row.comparisonKey}`} data-test={`${row.comparisonKey}-row`}>
               {buildTableRows(row)}
             </TableRow>
           ))}

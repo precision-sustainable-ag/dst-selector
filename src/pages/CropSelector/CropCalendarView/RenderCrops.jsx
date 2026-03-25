@@ -66,7 +66,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
 
       return (
         <TableRow
-          key={`cropRow${index}`}
+          key={crop.id}
           style={{
             opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop, activeCropIdsRedux) && '0.55',
             backgroundColor: isSelected ? '#EAEAEA' : 'white',
@@ -191,7 +191,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 style={{
                   textAlign: 'center',
                 }}
-                key={i}
+                key={goal}
                 className="goalCells"
               >
                 <div>

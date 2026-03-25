@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /*
   Contains the top level information sheet popup
   BasicCrop contains the default crop
@@ -131,7 +130,7 @@ const InformationSheetContent = ({ crop }) => {
         return (
           <Grid
             item
-            key={index}
+            key={cat.id}
             xs={12}
             className={`avoid-break infosheetAccordion${index}`}
             sx={{ marginBottom: '16px' }}
@@ -173,7 +172,7 @@ const InformationSheetContent = ({ crop }) => {
               }
               detailsContent={
                 <Grid container>
-                  {cat.attributes.map((att, catIndex) => {
+                  {cat.attributes.map((att) => {
                     if (
                       councilShorthandRedux === 'WCCC' &&
                       att.order === 3 &&
@@ -187,7 +186,7 @@ const InformationSheetContent = ({ crop }) => {
                       cat.label === 'Extended Comments'
                     ) {
                       return (
-                        <Grid item key={catIndex} xs={12} sx={{ padding: '6px 18px' }}>
+                        <Grid item key={att.id} xs={12} sx={{ padding: '6px 18px' }}>
                           <PSATooltip
                             placement="top-end"
                             enterTouchDelay={0}
@@ -221,7 +220,7 @@ const InformationSheetContent = ({ crop }) => {
                     return (
                       <PSAInfoSheetAttributeBox
                         variant={isTermination ? 'texts' : ''}
-                        key={catIndex}
+                        key={att.id}
                         description={att.description}
                         label={att.label}
                         value={getAttributeData(att, cat.label)}

@@ -993,8 +993,8 @@ export const extractData = (data, dataType, attribute, councilShorthand) => {
   }
 
   // handles default
-  return data.map((element, index) => (
-    <Typography key={index} variant="body2">
+  return data.map((element) => (
+    <Typography key={element} variant="body2">
       {element.toString()}
     </Typography>
   ));

@@ -20,8 +20,8 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   };
 
   const RenderCats = () =>
-    dictData.map((catData, index) => (
-      <Grid container key={index} xs={12} sm={12} md={12} lg={12} xl={12}>
+    dictData.map((catData) => (
+      <Grid container key={catData.id} xs={12} sm={12} md={12} lg={12} xl={12}>
         <Typography
           variant="h6"
           style={

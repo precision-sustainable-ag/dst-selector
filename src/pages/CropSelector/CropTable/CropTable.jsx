@@ -223,7 +223,7 @@ const CropTable = ({ listView, setListView, showGrowthWindow }) => {
                 selectedGoalsRedux.map((goal, index) => (
                   <TableCell
                     sx={{ padding: 0 }}
-                    key={index}
+                    key={goal}
                     style={{
                       wordBreak: 'break-word',
                       backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',

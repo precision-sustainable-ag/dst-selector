@@ -406,7 +406,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                   {selectedGoalsRedux.length > 0 &&
                     selectedGoalsRedux.map((goal, index) => (
                       <TableCell
-                        key={index}
+                        key={goal}
                         style={{
                           wordBreak: 'break-word',
                           backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',
@@ -448,7 +448,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                         />
                       </TableCell>
                     ))}
-                  {allMonths.map((month, index) => {
+                  {allMonths.map((month) => {
                     const growthMonth = checkIfGrowthMonth(month);
                     const growthMonthSeparator = growthMonth
                       ? !!(month === 'Feb' || month === 'May' || month === 'Aug' || month === 'Nov')
@@ -456,7 +456,7 @@ const CropCalendarView = ({ listView, setListView }) => {
                     return (
                       <TableCell
                         sx={{ padding: 1, backgroundColor: '#abd08f', cursor: 'pointer' }}
-                        key={`monthskey${index}`}
+                        key={month}
                         className={`calendarSecondHeadMonth ${
                           growthMonth ? 'activeGrowthMonth' : ''
                         } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}

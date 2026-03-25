@@ -46,14 +46,14 @@ const RenderFilters = ({
       return null;
     }
     return (
-      <Fragment key={`filters-outer-${index}`}>
+      <Fragment key={`filters-outer-${filter.name}`}>
         {filter.description !== null ? (
           <PSATooltip
             arrow
             placement="right-start"
             enterTouchDelay={0}
             title={filter.description}
-            key={`tooltip-outer-${index}`}
+            key={`tooltip-outer-${filter.name}`}
             tooltipContent={
               <ListItemButton
                 sx={{ backgroundColor: filterValues[index].open ? '#add08f' : 'white' }}
@@ -123,15 +123,15 @@ const RenderFilters = ({
                     label={<small>{filter.name}</small>}
                   />
                 ) : (
-                  filter.values.map((val, index2) =>
+                  filter.values.map((val) =>
                     val.name !== 'Roller Crimp at Flowering' ? (
-                      <Grid item xs={12} key={`filter-inner-${index2}`}>
+                      <Grid item xs={12} key={`filter-inner-${val.name}`}>
                         <PSATooltip
                           arrow
                           placement="right"
                           enterTouchDelay={0}
                           title={val.description}
-                          key={`tooltip${index}`}
+                          key={`tooltip${val.name}`}
                           tooltipContent={
                             <FormControlLabel
                               control={

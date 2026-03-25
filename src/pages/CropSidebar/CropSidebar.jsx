@@ -393,7 +393,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       const sectionFilter = `${filter.name}`;
       return (
         <SidebarFilter
-          key={index}
+          key={filter.name}
           filter={filter}
           index={index}
           sidebarFilterOptions={sidebarFilterOptions}

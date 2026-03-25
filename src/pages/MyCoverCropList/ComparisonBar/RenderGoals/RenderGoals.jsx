@@ -34,8 +34,8 @@ const RenderGoals = ({ goals, goalsOpen, setGoalsOpen, comparisonKeys }) => {
         <List component="div" disablePadding>
           <ListItem component="div">
             <Grid container spacing={1}>
-              {goals.map((goal, index) => (
-                <Grid item xs={12} key={`goals-inner-${index}`}>
+              {goals.map((goal) => (
+                <Grid item xs={12} key={`goals-inner-${goal.name}`}>
                   <FormControlLabel
                     control={
                       <PSACheckbox

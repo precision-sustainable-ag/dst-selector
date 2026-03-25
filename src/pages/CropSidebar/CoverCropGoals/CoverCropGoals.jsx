@@ -63,7 +63,7 @@ const CoverCropGoals = () => {
                       <Typography variant="body1"> Goal Priority Order</Typography>
                       {selectedGoalsRedux?.map((goal, index) => (
                         <Typography
-                          key={index}
+                          key={goal}
                           variant="body1"
                           sx={{ fontWeight: 'normal', fontSize: '10pt', color: '#367F81' }}
                         >
