@@ -9,7 +9,13 @@ const Attribution = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const [expandedAccordions, setExpandedAccordions] = useState([]);
   const [attributions, setAttributions] = useState({});
-  const councils = ['General', 'MCCC', 'NECCC', 'SCCC', 'WCCC'];
+  const councils = [
+    'General',
+    'Midwest Cover Crops Council',
+    'Northeast Cover Crops Council',
+    'Southern Cover Crops Council',
+    'Western Cover Crops Council',
+  ];
 
   useEffect(() => {
     const url = `https://${
