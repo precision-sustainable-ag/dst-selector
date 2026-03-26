@@ -43,6 +43,7 @@ const SoilDrainage = ({ drainageOptions }) => {
     }
   }, [selectedCropIdsRedux, myCoverCropListLocationRedux]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <Its an initial load>
   useEffect(() => {
     // set new drainage value
     if (tileDrainageRedux) {
@@ -68,7 +69,7 @@ const SoilDrainage = ({ drainageOptions }) => {
       setShowTiling(false);
     }
     window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.drainageClass));
-  }, [soilDataRedux?.drainageClass]);
+  }, [soilDataRedux?.drainageClass, tileDrainageRedux, drainageOptions]);
 
   const resetDrainageClasses = () => {
     // update history state here

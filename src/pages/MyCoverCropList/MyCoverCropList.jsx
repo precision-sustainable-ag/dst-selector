@@ -25,7 +25,7 @@ const MyCoverCropList = ({ from }) => {
     if (stateLabelRedux === null) {
       history.push('/');
     }
-  }, [stateLabelRedux]);
+  }, [stateLabelRedux, history]);
 
   const redirectToSpeciesSelector = () => {
     history.replace('/');

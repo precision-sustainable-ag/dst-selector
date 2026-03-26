@@ -123,6 +123,7 @@ const CropCalendarView = ({ listView, setListView }) => {
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <sortByAverageGoals changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     if (cropDataRedux.length !== 0) {
       sortByAverageGoals();
@@ -136,7 +137,7 @@ const CropCalendarView = ({ listView, setListView }) => {
       const tableWidth = tableRef.current.scrollWidth;
       dispatchRedux(setTableWidth(tableWidth));
     }
-  }, [dispatchRedux, tableRef]);
+  }, [dispatchRedux]);
 
   return (
     <>

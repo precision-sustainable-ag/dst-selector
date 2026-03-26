@@ -67,6 +67,7 @@ const SaveUserHistory = ({ pathname }) => {
   };
 
   // useEffect to save user history when switching pages
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <handleSave changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     // only save history when history state is new or updated
     // not saving history when switch from landing to location since it'll not let location selection available
@@ -76,14 +77,15 @@ const SaveUserHistory = ({ pathname }) => {
     ) {
       handleSave();
     }
-  }, [progressRedux, pathname]);
+  }, [progressRedux, pathname, historyStateRedux]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <handleSave changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     if (saveHistoryRedux === true) {
       handleSave();
       dispatchRedux(setSaveHistory(false));
     }
-  }, [saveHistoryRedux]);
+  }, [saveHistoryRedux, dispatchRedux]);
 
   return null;
 };

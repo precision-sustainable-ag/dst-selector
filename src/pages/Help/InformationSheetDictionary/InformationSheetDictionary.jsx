@@ -11,7 +11,7 @@ import { PSALoadingSpinner } from 'shared-react-components/src';
 import { callCoverCropApi } from '../../../shared/constants';
 import DictionaryContent from './DictionaryContent';
 
-const InformationSheetDictionary = ({ zone, from }) => {
+const InformationSheetDictionary = ({ from }) => {
   // redux vars
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
 
@@ -30,7 +30,7 @@ const InformationSheetDictionary = ({ zone, from }) => {
         setDictionary(data.data);
       });
     }
-  }, [regionId, stateId, zone]);
+  }, [regionId, stateId, apiBaseUrlRedux, query]);
 
   if (dictionary.length === 0) {
     return (

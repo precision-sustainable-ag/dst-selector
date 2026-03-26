@@ -27,7 +27,7 @@ const CropCard = ({ crop, dispatchRedux }) => {
   }
 
   useEffect(() => {
-    updateBtns();
+    setSelectedBtns(selectedCropIdsRedux);
   }, [selectedCropIdsRedux]);
 
   async function addToBasket(cropId, name) {

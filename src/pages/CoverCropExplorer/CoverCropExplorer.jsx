@@ -19,7 +19,6 @@ const CoverCropExplorer = () => {
   const dispatchRedux = useDispatch();
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
@@ -61,17 +60,17 @@ const CoverCropExplorer = () => {
         }
       }
     }
-  }, [activeCropIdsRedux]);
+  }, [activeCropIdsRedux, cropDataRedux, dispatchRedux, urlCrop, urlParamStateId, urlRegionId]);
 
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Browse Cover Crops' } });
-  }, [consentRedux]);
+  }, []);
 
   useEffect(() => {
     if (stateIdRedux === null && !urlParamStateId) {
       history.replace('/');
     }
-  }, [stateIdRedux]);
+  }, [stateIdRedux, urlParamStateId, history]);
 
   return (
     <Grid container spacing={3}>

@@ -20,7 +20,6 @@ const About = () => {
   const [value, setValue] = useState(0);
   const [attribution, setAttribution] = useState(null);
 
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const isMobile = useIsMobile('md');
@@ -31,7 +30,7 @@ const About = () => {
 
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'About' } });
-  }, [consentRedux]);
+  }, []);
 
   const pageSections = [
     {

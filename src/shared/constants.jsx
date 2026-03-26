@@ -993,8 +993,9 @@ export const extractData = (data, dataType, attribute, councilShorthand) => {
   }
 
   // handles default
-  return data.map((element) => (
-    <Typography key={element} variant="body2">
+  return data.map((element, index) => (
+    // biome-ignore lint/suspicious/noArrayIndexKey: <No unique identifier for this data>
+    <Typography key={index} variant="body2">
       {element.toString()}
     </Typography>
   ));

@@ -28,7 +28,6 @@ const MyCoverCropComparisonTable = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
-  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
@@ -45,7 +44,7 @@ const MyCoverCropComparisonTable = () => {
   // TODO: Update SelectedCropsRedux
   useEffect(() => {
     setSelectedCrops(cropDataRedux.filter((crop) => selectedCropIdsRedux.includes(crop.id)));
-  }, [cropDataRedux, activeCropIdsRedux, selectedCropIdsRedux]);
+  }, [cropDataRedux, selectedCropIdsRedux]);
 
   const handleModalOpen = (crop) => {
     // put data inside modal
@@ -199,6 +198,7 @@ const MyCoverCropComparisonTable = () => {
       );
     });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <buildTable changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     buildTable().then(() => {
       setRows(tempRows);
@@ -209,7 +209,7 @@ const MyCoverCropComparisonTable = () => {
     if (tableRef.current) {
       dispatchRedux(setTableWidth(tableRef.current.scrollWidth));
     }
-  }, [rows, dispatchRedux, tableRef]);
+  }, [dispatchRedux]);
   return (
     // <TableContainer style={{ overflowX: 'initial' }}>
     <TableContainer component="div" sx={{ overflowX: 'initial' }}>

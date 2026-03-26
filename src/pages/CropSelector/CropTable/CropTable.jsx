@@ -105,11 +105,12 @@ const CropTable = ({ listView, setListView, showGrowthWindow }) => {
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <sortByAverageGoals changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     if (cropDataRedux.length !== 0) {
       sortByAverageGoals();
     }
-  }, []);
+  }, [cropDataRedux.length]);
 
   const tableRef = useRef(null);
   const dispatchRedux = useDispatch();
@@ -120,7 +121,7 @@ const CropTable = ({ listView, setListView, showGrowthWindow }) => {
       // tableWidth += 1000;
       dispatchRedux(setTableWidth(tableWidth));
     }
-  }, [dispatchRedux, tableRef]);
+  }, [dispatchRedux]);
   return cropDataRedux.length !== 0 ? (
     <>
       <Box

@@ -47,7 +47,7 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
         setModalOpen(false);
       }
     }
-  }, []);
+  }, [setModalOpen]);
 
   const handleModal = (choice) => {
     const consentObject = {

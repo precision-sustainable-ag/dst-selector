@@ -84,7 +84,7 @@ const Landing = () => {
         setAllStates(states);
       },
     );
-  }, []);
+  }, [apiBaseUrlRedux, isDevEnvironment]);
 
   // set initial map state based on stateIdRedux
   // user history api/user click next and come back
@@ -107,7 +107,7 @@ const Landing = () => {
         setSelectedState(st[0]);
       }
     }
-  }, [mapState]);
+  }, [mapState, allStates]);
 
   // update state and regions redux based on state change(from dropdown or map)
   useEffect(() => {
@@ -192,7 +192,7 @@ const Landing = () => {
           });
       }
     }
-  }, [selectedState]);
+  }, [selectedState, apiBaseUrlRedux, stateIdRedux, historyStateRedux, allStates, dispatchRedux]);
 
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Landing' } });

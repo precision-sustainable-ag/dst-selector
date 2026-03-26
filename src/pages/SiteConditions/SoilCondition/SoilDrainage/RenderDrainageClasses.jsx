@@ -42,6 +42,7 @@ const RenderDrainageClasses = ({
     dispatchRedux(updateDrainageClassRedux(dispatchPackage !== '' ? [dispatchPackage] : []));
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <updateDrainageAction changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     let drainages = soilDataRedux.drainageClass
       ? drainageArray.indexOf(soilDataRedux.drainageClass[0])

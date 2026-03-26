@@ -20,7 +20,7 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
         setModalOpen(false);
       }
     }
-  }, []);
+  }, [setModalOpen]);
 
   const style = {
     position: 'absolute',

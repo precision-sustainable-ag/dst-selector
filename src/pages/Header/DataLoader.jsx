@@ -36,7 +36,15 @@ const DataLoader = () => {
         }
       });
     }
-  }, [progressRedux, stateIdRedux, queryStringRedux]);
+  }, [
+    progressRedux,
+    stateIdRedux,
+    queryStringRedux,
+    apiBaseUrlRedux,
+    councilShorthandRedux,
+    dispatch,
+    enqueueSnackbar,
+  ]);
 
   return null;
 };

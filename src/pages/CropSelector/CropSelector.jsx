@@ -113,7 +113,7 @@ const CropSelector = (props) => {
       const sidebarWidth = sidebarRef.current.offsetWidth;
       dispatchRedux(setSidebarWidth(sidebarWidth));
     }
-  }, [dispatchRedux, sidebarRef]);
+  }, [dispatchRedux]);
   return (
     <Grid container spacing={3}>
       <Grid item xl={3} lg={4} md={4} sm={12} xs={12} ref={sidebarRef}>

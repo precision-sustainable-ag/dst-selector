@@ -6,11 +6,11 @@
 import { Grid, Typography } from '@mui/material';
 
 const DictionaryContent = ({ dictData = [{}], from = '' }) => {
-  const getGridItem = (att, index2) => {
+  const getGridItem = (att) => {
     if (att.description?.length > 0) {
       return (
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <Typography variant="body1" key={index2}>
+          <Typography variant="body1" key={att.id}>
             <b>{att.label}:</b> {att.description}
           </Typography>
         </Grid>
@@ -34,7 +34,7 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
         >
           {catData.label}
         </Typography>
-        {catData.attributes.map((att, index2) => getGridItem(att, index2))}
+        {catData.attributes.map((att) => getGridItem(att))}
       </Grid>
     ));
 

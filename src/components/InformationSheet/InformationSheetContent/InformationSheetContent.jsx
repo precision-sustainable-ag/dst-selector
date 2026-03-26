@@ -118,7 +118,7 @@ const InformationSheetContent = ({ crop }) => {
           setDataDone(true);
         });
     }
-  }, [crop]);
+  }, [crop, queryStringRedux, apiBaseUrlRedux, stateIdRedux]);
 
   return dataDone ? (
     <>

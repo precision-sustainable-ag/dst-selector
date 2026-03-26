@@ -54,7 +54,7 @@ const Feedback = () => {
         setAllStates(states);
       },
     );
-  }, []);
+  }, [apiBaseUrlRedux]);
 
   useEffect(() => {
     const code = getStateCodeFromLabel(stateLabelRedux, allStates);

@@ -18,7 +18,7 @@ const InformationSheetReferences = ({ cropId }) => {
     ).then((data) => {
       setCurrentSources(data.data);
     });
-  }, []);
+  }, [apiBaseUrlRedux, cropId, queryStringRedux]);
 
   return (
     currentSources.length > 0 && (
@@ -30,8 +30,8 @@ const InformationSheetReferences = ({ cropId }) => {
           detailsContent={
             <Typography>
               {currentSources.length > 0 &&
-                currentSources.map((source, index) => (
-                  <Fragment key={index}>
+                currentSources.map((source) => (
+                  <Fragment key={source.url}>
                     <a
                       style={{ textDecoration: 'underline', fontWeight: '500' }}
                       href={source.url}

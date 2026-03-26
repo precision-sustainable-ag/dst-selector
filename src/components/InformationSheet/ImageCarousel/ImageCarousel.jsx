@@ -37,7 +37,7 @@ const ImageCarousel = ({ images }) => {
     } else {
       makeImages(images.length);
     }
-  }, [printing]);
+  }, [printing, images]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);

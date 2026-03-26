@@ -19,7 +19,7 @@ const MyCoverCropListWrapper = () => {
     if (sidebarRef.current) {
       dispatchRedux(setSidebarWidth(sidebarRef.current.offsetWidth));
     }
-  }, [dispatchRedux, sidebarRef]);
+  }, [dispatchRedux]);
   return (
     <Grid container spacing={5}>
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12} ref={sidebarRef}>

@@ -74,7 +74,7 @@ const Help = () => {
       case 1:
         return <FAQ />;
       case 2:
-        return <InformationSheetDictionary zone={6} from="help" />;
+        return <InformationSheetDictionary from="help" />;
       case 3:
         return <InfoSheets />;
       default:

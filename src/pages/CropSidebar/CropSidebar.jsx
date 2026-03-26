@@ -282,7 +282,20 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       if (match) activeCropIds.push(crop.id);
     });
     dispatchRedux(updateActiveCropIds(activeCropIds));
-  }, [cropDataRedux, filterStateRedux.filters, selectedCropIdsRedux]);
+  }, [
+    cropDataRedux,
+    filterStateRedux.filters,
+    selectedCropIdsRedux,
+    soilDrainageFilterRedux,
+    floodingFrequencyRedux,
+    selectedSeasonRedux,
+    cropGroupFilterRedux,
+    councilShorthandRedux,
+    drainageClassRedux,
+    selectedGoalsRedux,
+    stateIdRedux,
+    dispatchRedux,
+  ]);
 
   const filtersSelected =
     Object.keys(filterStateRedux.filters)?.filter((key) => filterStateRedux.filters[key])?.length >
@@ -330,6 +343,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
     return sidebars;
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <generateSidebarObject changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     generateSidebarObject()
       .then((data) => setSidebarFilters(data))
@@ -373,7 +387,15 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       dispatchRedux(updateCropData(data.data));
       dispatchRedux(setAjaxInProgress(false));
     });
-  }, [cashCropDataRedux, queryStringRedux]);
+  }, [
+    cashCropDataRedux,
+    queryStringRedux,
+    stateIdRedux,
+    apiBaseUrlRedux,
+    councilShorthandRedux,
+    dispatchRedux,
+    hasAdditionalSoilDrainage,
+  ]);
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
@@ -386,7 +408,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       }
       setGrowthWindow(true);
     }
-  }, [cashCropDataRedux.dateRange, setGrowthWindow]);
+  }, [cashCropDataRedux.dateRange, setGrowthWindow, from]);
 
   const getFilters = () =>
     sidebarFilters.map((filter, index) => {
@@ -571,6 +593,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
     </List>
   ); // filterList
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <filtersList changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     // FIXME: this function returns a compoennt in useEffect, not sure why doing that
     filtersList();

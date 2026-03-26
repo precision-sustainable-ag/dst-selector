@@ -89,7 +89,7 @@ const Location = () => {
 
   useEffect(() => {
     if (stateLabel && stateLabel !== stateLabelRedux) setIsOpen(true);
-  }, [stateLabel, latLon[0], latLon[1]]);
+  }, [stateLabel, stateLabelRedux]);
 
   useEffect(() => {
     // analytics
@@ -158,6 +158,7 @@ const Location = () => {
   };
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <updateRegionRedux changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     if (Object.keys(selectedToEditSite).length > 0) {
       const {
@@ -238,6 +239,7 @@ const Location = () => {
   }, [selectedToEditSite]);
 
   // call cover crop api based on marker change
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <getSSURGOData changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     const getDetails = async () => {
       const weatherApiURL = 'https://weather.covercrop-data.org';

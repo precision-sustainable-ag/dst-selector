@@ -86,7 +86,7 @@ const GoalsSelector = () => {
       const uniqueTags = [...new Set(selectedTags)];
       dispatch(updateTags(uniqueTags));
     }
-  }, [selectedGoalsRedux]);
+  }, [selectedGoalsRedux, allGoalsRedux, councilShorthandRedux, dispatch]);
 
   return (
     <Grid container spacing={4}>

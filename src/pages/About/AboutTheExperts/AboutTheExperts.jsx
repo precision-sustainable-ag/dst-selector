@@ -56,7 +56,7 @@ const AboutTheExperts = () => {
           ? getExpertsData(value)
               .sort((a, b) => a.lastName.localeCompare(b.lastName))
               .map((expert) => (
-                <p key={expert.id}>
+                <p key={`${expert.firstName}-${expert.lastName}`}>
                   <strong>{`${expert.lastName}, ${expert.firstName}; `}</strong>
                   <span>{expert.Affiliation}</span>
                 </p>

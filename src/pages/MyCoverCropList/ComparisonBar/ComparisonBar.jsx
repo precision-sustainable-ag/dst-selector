@@ -44,7 +44,7 @@ const ComparisonBar = ({ filterData, goals, comparisonKeys, comparisonView, clas
     setFiltersTotal(totalFilters);
     setFilterValues(filteredVals);
     setAllGoals(filteredGoals);
-  }, [filterData]);
+  }, [filterData, goals]);
 
   const toggleSidebarFilterItems = (index) => {
     const newSidebarFilterVals = filterValues.map((obj, index2) => {

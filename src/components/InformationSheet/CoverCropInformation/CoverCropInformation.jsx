@@ -18,7 +18,7 @@ const CoverCropInformation = ({ crop, className }) => {
       setAllThumbs(data.data);
       setDataDone(true);
     });
-  }, []);
+  }, [apiBaseUrlRedux, crop?.id, queryStringRedux]);
 
   return (
     dataDone && (

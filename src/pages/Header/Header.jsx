@@ -348,6 +348,7 @@ const Demo = () => {
     infosheet();
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <>
   useEffect(() => {
     const keydown = async (e) => {
       if (e.key === 'd' && e.ctrlKey && e.altKey) {
@@ -429,7 +430,7 @@ const Header = () => {
     };
     if (isAuthenticated) fetchUserData();
     // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
-  }, [isAuthenticated, getAccessTokenSilently, councilShorthandRedux]);
+  }, [isAuthenticated, getAccessTokenSilently, dispatchRedux, enqueueSnackbar]);
 
   const navContent = [
     {

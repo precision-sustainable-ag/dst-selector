@@ -64,7 +64,7 @@ const SoilCondition = () => {
         // eslint-disable-next-line no-console
         console.log(err.message);
       });
-  }, []);
+  }, [apiBaseUrlRedux, queryStringRedux, councilShorthandRedux, query1, query2]);
 
   // retrieving drainage class and flooding frequency
   useEffect(() => {
@@ -187,7 +187,14 @@ const SoilCondition = () => {
     };
 
     getSSURGOData();
-  }, [floodingOptions]);
+  }, [
+    floodingOptions,
+    markersRedux,
+    soilDataOriginalRedux.latLong,
+    historyStateRedux,
+    stateLabelRedux,
+    dispatchRedux,
+  ]);
 
   return (
     <Grid item container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
