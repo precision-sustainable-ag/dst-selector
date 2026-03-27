@@ -10,11 +10,11 @@ const Attribution = () => {
   const [expandedAccordions, setExpandedAccordions] = useState([]);
   const [attributions, setAttributions] = useState({});
   const councils = [
-    'General',
-    'Midwest Cover Crops Council',
-    'Northeast Cover Crops Council',
-    'Southern Cover Crops Council',
-    'Western Cover Crops Council',
+    { key: 'General', label: 'General' },
+    { key: 'MCCC', label: 'Midwest Cover Crops Council' },
+    { key: 'NECCC', label: 'Northeast Cover Crops Council' },
+    { key: 'SCCC', label: 'Southern Cover Crops Council' },
+    { key: 'WCCC', label: 'Western Cover Crops Council' },
   ];
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const Attribution = () => {
   }, []);
 
   useEffect(() => {
-    if (councilShorthandRedux && councils.includes(councilShorthandRedux)) {
+    if (councilShorthandRedux && councils.some((c) => c.key === councilShorthandRedux)) {
       setExpandedAccordions([councilShorthandRedux]);
     } else {
       setExpandedAccordions(['General']);
@@ -54,7 +54,7 @@ const Attribution = () => {
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5} padding={2}>
       {councils.map((council) => (
         <PSAAccordion
-          key={council}
+          key={council.key}
           sx={{
             mb: 2,
             border: '1px solid #e3e1e1',
@@ -67,8 +67,8 @@ const Attribution = () => {
               padding: { xs: '0', md: '8px' },
             },
           }}
-          expanded={expandedAccordions.includes(council)}
-          onChange={() => handleAccordion(council)}
+          expanded={expandedAccordions.includes(council.key)}
+          onChange={() => handleAccordion(council.key)}
           summaryContent={(
             <PSATooltip
               placement="bottom"
@@ -79,11 +79,11 @@ const Attribution = () => {
                   zIndex: 10000000,
                 },
               }}
-              title={council}
+              title={council.label}
               tooltipContent={(
                 <Box tabIndex="0">
                   <Typography className={`infosheetAccordionButton${1}`} variant="h4" style={{ color: 'grey' }}>
-                    {council}
+                    {council.label}
                   </Typography>
                 </Box>
               )}
@@ -91,7 +91,7 @@ const Attribution = () => {
           )}
           detailsContent={(
             <Typography variant="body1" align="left">
-              {attributions[council] || 'No attribution available'}
+              {attributions[council.key] || 'No attribution available'}
             </Typography>
           )}
         />
