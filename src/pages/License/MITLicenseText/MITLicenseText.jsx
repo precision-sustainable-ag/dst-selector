@@ -4,7 +4,6 @@
 */
 
 import { Grid, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 
 const MITLicenseText = ({ styles = true, aboutPage = false }) => {
   const currentYear = new Date().getFullYear();
@@ -40,17 +39,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
           </>
         )}
       </Grid>
-      {aboutPage ? (
-        <Grid item xs={12}>
-          <Typography variant="body1">
-            The cover crop data is part of NECCC Cover Crop Decision Support Tools project
-            (https://covercrop-selector.org). The data files and their contents licensed under the
-            terms of MIT License. You may use, copy, modify and redistribute all files included in
-            this distribution, individually or in aggregate, subject to the terms and conditions of
-            the MIT license. See <Link to="/license">License</Link> for details.
-          </Typography>
-        </Grid>
-      ) : (
+      {!aboutPage && (
         <Grid item xs={styles ? 6 : 12}>
           <Grid container spacing={2}>
             <Grid item>
