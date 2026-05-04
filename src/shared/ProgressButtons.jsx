@@ -58,7 +58,7 @@ const ProgressButtons = () => {
   if (progressRedux < 0) return '';
 
   return (
-    <Grid item>
+    <Grid>
       <ProgressButtonsInner
         toolTip={toolTip}
         isDisabledBack={isDisabledBack}

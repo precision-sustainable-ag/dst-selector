@@ -155,14 +155,14 @@ const MyCoverCropComparisonTable = () => {
             }}
           >
             <Grid container direction="row" spacing={1}>
-              <Grid item>
+              <Grid>
                 <DataTooltip
                   data={row?.crop0?.description ? row?.crop0?.description : 'No Data'}
                   disableInteractive
                   placement="top-start"
                 />
               </Grid>
-              <Grid item>
+              <Grid>
                 <Typography variant="body1" sx={{ fontStyle: 'bold' }}>
                   {row.comparisonKey}
                 </Typography>

@@ -10,7 +10,7 @@ const AgInformaticsLicenseText = ({ styles = true, aboutPage = false, footerPage
   const currentYear = new Date().getFullYear();
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         {footerPage ? (
           <Typography variant="body2">
             Copyright © {currentYear}{' '}
@@ -33,7 +33,7 @@ const AgInformaticsLicenseText = ({ styles = true, aboutPage = false, footerPage
       </Grid>
       {!footerPage &&
         (aboutPage ? (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography variant="body1">
               This is free software; all of the software, documentation, and data files and their
               contents, is licensed under the terms of MIT License, with the exception of the
@@ -44,9 +44,9 @@ const AgInformaticsLicenseText = ({ styles = true, aboutPage = false, footerPage
             </Typography>
           </Grid>
         ) : (
-          <Grid item xs={styles ? 6 : 12}>
+          <Grid size={styles ? 6 : 12}>
             <Grid container spacing={2}>
-              <Grid item>
+              <Grid>
                 <Typography variant="body1">
                   Permission is hereby granted, free of charge, to any person obtaining a copy of
                   this software and associated documentation files (the “Software”), to deal in the
@@ -58,7 +58,7 @@ const AgInformaticsLicenseText = ({ styles = true, aboutPage = false, footerPage
                   Software.
                 </Typography>
               </Grid>
-              <Grid item>
+              <Grid>
                 <Typography variant="body1">
                   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
                   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS

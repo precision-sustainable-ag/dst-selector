@@ -169,7 +169,7 @@ export const UnderConstructionText = () => (
     justifyContent="center"
     style={{ minHeight: '100vh' }}
   >
-    <Grid item xs={3}>
+    <Grid size={3}>
       <Typography variant="h3">Under Construction</Typography>
     </Grid>
   </Grid>

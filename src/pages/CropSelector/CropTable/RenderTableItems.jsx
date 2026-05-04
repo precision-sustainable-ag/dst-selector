@@ -69,12 +69,18 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
               <Grid
                 container
                 direction="column"
-                alignItems="center"
-                justifyContent="center"
-                height="100%"
+                sx={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '100%',
+                }}
                 spacing={0}
               >
-                <Grid item xs={12}>
+                <Grid
+                  sx={{
+                    justifyContent: 'center',
+                  }}
+                >
                   <PSAButton
                     buttonType=""
                     onClick={() => handleModalOpen(crop)}
@@ -91,7 +97,11 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     }
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid
+                  sx={{
+                    justifyContent: 'center',
+                  }}
+                >
                   <PSAButton
                     buttonType=""
                     variant="text"
@@ -108,7 +118,12 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     title={flipCoverCropName(crop.label)}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid
+                  size={{ xs: 12 }}
+                  sx={{
+                    justifyItems: 'center',
+                  }}
+                >
                   <Typography sx={{ fontSize: '0.9rem' }}>
                     {crop.scientificName && trimString(crop.scientificName, 20)}
                   </Typography>

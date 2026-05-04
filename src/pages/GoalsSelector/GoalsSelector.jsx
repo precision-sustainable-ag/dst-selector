@@ -91,11 +91,15 @@ const GoalsSelector = () => {
   return (
     <Grid container spacing={4}>
       {/* Left Container */}
-      <Grid item container lg={6} justifyContent={isLargeScreen ? 'flex-end' : 'center'}>
+      <Grid
+        container
+        sx={{ justifyContent: isLargeScreen ? 'flex-end' : 'center' }}
+        size={{
+          lg: 6,
+        }}
+      >
         <Grid
-          item
           container
-          lg={10}
           sx={{
             boxSizing: 'border-box',
             borderRadius: '15px',
@@ -104,15 +108,18 @@ const GoalsSelector = () => {
             margin: !isLargeScreen ? '1rem' : '0',
           }}
           data-test="goals-card"
+          size={{
+            lg: 10,
+          }}
         >
           {/* title */}
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography variant="h4" align="center" data-test="title-goals">
               Cover Crop Goals
             </Typography>
           </Grid>
           {/* sub-title */}
-          <Grid item xs={12} mb={2}>
+          <Grid sx={{ mb: 0.5 }} size={12}>
             <Typography variant={isMobile ? 'subtitle2' : 'subtitle1'} align="center" gutterBottom>
               Select up to 3 goals in order of importance.
               {councilShorthandRedux === 'WCCC' &&
@@ -125,9 +132,9 @@ const GoalsSelector = () => {
             </Typography>
           </Grid>
           {/* chips */}
-          <Grid item container spacing={1} justifyContent="center" alignItems="center">
+          <Grid container spacing={1} sx={{ justifyContent: 'center', alignItems: 'center' }}>
             {allGoalsRedux?.length > 0 ? (
-              <Grid item container spacing={1} justifyContent="center" alignItems="center">
+              <Grid container spacing={1} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 {allGoalsRedux
                   .slice()
                   // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
@@ -141,7 +148,7 @@ const GoalsSelector = () => {
                         : selectedGoalsRedux.indexOf(b.label)),
                   )
                   .map((goal, key) => (
-                    <Grid item key={goal.label}>
+                    <Grid key={goal.label}>
                       <GoalTag
                         key={goal.label}
                         id={key}
@@ -164,21 +171,27 @@ const GoalsSelector = () => {
             <>
               {/* Planting Season */}
               {plantingSeasonsRedux.length > 0 && (
-                <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
-                  <Grid item xs={12}>
+                <Grid
+                  container
+                  sx={{ mt: '1rem' }}
+                  size={{
+                    xs: 12,
+                    lg: 6,
+                  }}
+                >
+                  <Grid size={12}>
                     <Typography variant="h5" align="center">
                       Planting Season
                     </Typography>
                   </Grid>
                   <Grid
-                    item
-                    xs={12}
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       flexWrap: 'wrap',
                     }}
+                    size={12}
                   >
                     {seasons.map((season, i) => {
                       if (plantingSeasonsRedux.includes(season)) {
@@ -206,20 +219,26 @@ const GoalsSelector = () => {
                 </Grid>
               )}
               {/* Will you irrigate */}
-              <Grid container item xs={12} lg={6} sx={{ mt: '1rem' }}>
-                <Grid item xs={12}>
+              <Grid
+                container
+                sx={{ mt: '1rem' }}
+                size={{
+                  xs: 12,
+                  lg: 6,
+                }}
+              >
+                <Grid size={12}>
                   <Typography variant="h5" align="center" data-test="title-goals">
                     Will you Irrigate?
                   </Typography>
                 </Grid>
                 <Grid
-                  item
-                  xs={12}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
+                  size={12}
                 >
                   {irrigationType.map((irrigation, i) => (
                     <Chip
@@ -244,39 +263,44 @@ const GoalsSelector = () => {
         </Grid>
       </Grid>
       {/* Right Container */}
-      <Grid item container lg={6}>
+      <Grid
+        container
+        size={{
+          lg: 6,
+        }}
+      >
         <Grid
-          item
           container
-          lg={10}
           sx={{
             boxSizing: 'border-box',
             borderRadius: '15px',
             border: '2px solid #598445',
             p: '1rem',
             margin: !isLargeScreen ? '0 1rem' : '0',
+            justifyContent: 'center',
           }}
-          justifyContent="center"
           data-test="cashcrop-window"
+          size={{
+            lg: 10,
+          }}
         >
           <PreviousCashCrop />
           {councilShorthandRedux === 'WCCC' && (
             <>
               {/* Cropping system */}
               <Grid container sx={{ m: '1rem', display: 'flex', alignItems: 'flex-end' }}>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Typography variant="h5" align="center" data-test="title-goals">
                     Cropping System
                   </Typography>
                 </Grid>
                 <Grid
-                  item
-                  xs={12}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
+                  size={12}
                 >
                   {durationTypes.map((durationType, i) => (
                     <Chip

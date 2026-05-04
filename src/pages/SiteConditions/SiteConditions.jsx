@@ -19,8 +19,8 @@ const SiteConditions = () => {
 
   return (
     <Box>
-      <Grid container spacing={4}>
-        <Grid item sx={{ flexGrow: 1, textAlign: 'center' }}>
+      <Grid container spacing={4} sx={{ p: isLargeScreen ? '1rem' : '0.5rem' }}>
+        <Grid sx={{ flexGrow: 1, textAlign: 'center' }}>
           {/* <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
             Site Conditions
           </Typography> */}
@@ -32,18 +32,27 @@ const SiteConditions = () => {
               'be filtered to the bottom and grayed out when your results are displayed. Update only as needed.'}
           </Typography>
         </Grid>
-        <Grid item container spacing={3}>
+        <Grid container spacing={3}>
           <Grid
-            item
             container
-            lg={6}
             spacing={3}
-            alignContent="flex-start"
-            justifyContent={isLargeScreen ? 'flex-end' : 'center'}
+            sx={{
+              alignContent: 'flex-start',
+              justifyContent: isLargeScreen ? 'flex-end' : 'center',
+            }}
+            size={{
+              lg: 6,
+            }}
           >
             <WeatherConditions />
           </Grid>
-          <Grid item container lg={6} spacing={3}>
+          <Grid
+            container
+            spacing={3}
+            size={{
+              lg: 6,
+            }}
+          >
             <SoilCondition />
           </Grid>
         </Grid>

@@ -1,4 +1,4 @@
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlineOutlined';
 import { Chip, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSATooltip } from 'shared-react-components/src';
@@ -84,7 +84,7 @@ const Chips = ({ filter }) => {
     return filter.values.map((val) => {
       const selected = filterStateRedux.filters[`${filter.name}: ${val.value}`];
       return (
-        <Grid key={filter.name + val.value + val.id} item>
+        <Grid key={filter.name + val.value + val.id}>
           <Chip
             key={filter.name + val.value + val.id}
             data-test={`${filter.name}-${val.value}`}
@@ -101,7 +101,7 @@ const Chips = ({ filter }) => {
   return filter.values.map((val) => {
     const selected = filterStateRedux.filters[`${filter.name}: ${val.value}`];
     return (
-      <Grid key={filter.name + val.value + val.id} item>
+      <Grid key={filter.name + val.value + val.id}>
         <Chip
           key={filter.name + val.value + val.id}
           onClick={() => chipChange(filter.name, val.value)}
@@ -150,11 +150,11 @@ const Filters = ({ filters }) => (
     {filters.values.map((filter) => {
       if (filter.dataType === 'string') {
         return (
-          <Grid container item spacing={1} key={filter.name}>
-            <Grid item key={filter.name} xs={12}>
+          <Grid container spacing={1} key={filter.name}>
+            <Grid key={filter.name} size={12}>
               <Tip filter={filter} />
             </Grid>
-            <Grid item container xs={12} spacing={0.3}>
+            <Grid container spacing={0.3} size={12}>
               <Chips key={filter.name} filter={filter} />
             </Grid>
           </Grid>
@@ -162,22 +162,22 @@ const Filters = ({ filters }) => (
       }
       if (filter.dataType === 'boolean') {
         return (
-          <Grid container item spacing={1} key={filter.name}>
-            <Grid item key={filter.name} xs={12}>
+          <Grid container spacing={1} key={filter.name}>
+            <Grid key={filter.name} size={12}>
               <Tip filter={filter} />
             </Grid>
-            <Grid item container xs={12} spacing={0.3}>
+            <Grid container spacing={0.3} size={12}>
               <Chips key={filter.name} filter={filter} />
             </Grid>
           </Grid>
         );
       }
       return (
-        <Grid container item spacing={1} key={filter.name}>
-          <Grid item xs={12}>
+        <Grid container spacing={1} key={filter.name}>
+          <Grid size={12}>
             <Tip filter={filter} />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <DollarsAndRatings filter={filter} />
           </Grid>
         </Grid>

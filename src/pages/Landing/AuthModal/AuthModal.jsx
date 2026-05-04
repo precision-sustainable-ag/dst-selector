@@ -81,13 +81,13 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
               data is safe with us!
             </Typography>
             <Grid container spacing={2} justifyContent="center">
-              <Grid item>
+              <Grid>
                 <AuthButton variant="contained" type="Login" />
               </Grid>
-              <Grid item>
+              <Grid>
                 <AuthButton variant="outlined" type="Signup" />
               </Grid>
-              <Grid item>
+              <Grid>
                 <AuthButton variant="outlined" type="Not now" onClickCallback={handleModal} />
               </Grid>
             </Grid>

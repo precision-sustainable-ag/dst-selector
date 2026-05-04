@@ -359,11 +359,8 @@ const CropTable = ({ listView, setListView, showGrowthWindow }) => {
     </>
   ) : (
     <Grid
-      item
       container
       spacing={1}
-      justifyContent="center"
-      alignItems="center"
       sx={{
         display: 'flex',
         justifyContent: 'center',

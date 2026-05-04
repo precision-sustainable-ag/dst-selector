@@ -225,11 +225,20 @@ const HistorySelect = () => {
         modalContent={
           <Box sx={modalStyles}>
             <Grid container spacing={6}>
-              <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
+              <Grid
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                size={12}
+              >
                 <Typography>Select your history</Typography>
               </Grid>
 
-              <Grid item xs={12} md={7} display="flex" justifyContent="center" alignItems="center">
+              <Grid
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                size={{
+                  xs: 12,
+                  md: 7,
+                }}
+              >
                 <PSADropdown
                   formSx={{ minWidth: '80%' }}
                   inputSx={inputLabelStyles}
@@ -249,13 +258,11 @@ const HistorySelect = () => {
               </Grid>
 
               <Grid
-                item
-                xs={12}
-                md={5}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                gap={3}
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 3 }}
+                size={{
+                  xs: 12,
+                  md: 5,
+                }}
               >
                 <PSAButton
                   onClick={handleLoadHistory}
@@ -277,7 +284,10 @@ const HistorySelect = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
+              <Grid
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                size={12}
+              >
                 <PSAButton
                   onClick={() => setOpen(false)}
                   variant="contained"
@@ -289,7 +299,6 @@ const HistorySelect = () => {
           </Box>
         }
       />
-
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
         <PSAButton
           variant="contained"

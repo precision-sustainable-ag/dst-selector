@@ -16,11 +16,8 @@ const ExplorerCardView = ({ activeCropData }) => {
 
   return ajaxInProgressRedux ? (
     <Grid
-      item
       container
       spacing={1}
-      justifyContent="center"
-      alignItems="center"
       sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -31,16 +28,16 @@ const ExplorerCardView = ({ activeCropData }) => {
       <PSALoadingSpinner />
     </Grid>
   ) : (
-    <Grid container spacing={2} justifyContent="center">
+    <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
       {/* eslint-disable-next-line no-nested-ternary */}
       {activeCropData?.length > 0 ? (
         activeCropData.map((crop) => (
-          <Grid item key={crop.id}>
+          <Grid key={crop.id}>
             <CropCard crop={crop} dispatchRedux={dispatchRedux} />
           </Grid>
         ))
       ) : cropDataRedux?.length > 0 ? (
-        <Grid item>
+        <Grid>
           <Typography variant="body1" align="center">
             No cover crops match your selected Cover Crop Property filters.
           </Typography>

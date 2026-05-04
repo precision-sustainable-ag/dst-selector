@@ -9,7 +9,15 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   const getGridItem = (att) => {
     if (att.description?.length > 0) {
       return (
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 12,
+            md: 6,
+            lg: 6,
+            xl: 6,
+          }}
+        >
           <Typography variant="body1" key={att.id}>
             <b>{att.label}:</b> {att.description}
           </Typography>
@@ -21,7 +29,17 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
 
   const RenderCats = () =>
     dictData.map((catData) => (
-      <Grid container key={catData.id} xs={12} sm={12} md={12} lg={12} xl={12}>
+      <Grid
+        container
+        key={catData.id}
+        size={{
+          xs: 12,
+          sm: 12,
+          md: 12,
+          lg: 12,
+          xl: 12,
+        }}
+      >
         <Typography
           variant="h6"
           style={

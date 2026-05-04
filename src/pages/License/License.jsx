@@ -24,7 +24,7 @@ const License = ({ licenseType = 'MIT' }) => {
   }, [licenseType]);
   return (
     <Grid container>
-      <Grid item>
+      <Grid>
         {licenseType === 'AgInformatics' ? <AgInformaticsLicenseText /> : <MITLicenseText />}
       </Grid>
     </Grid>

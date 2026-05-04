@@ -1,5 +1,5 @@
+import { devToolsEnhancer } from '@redux-devtools/extension';
 import { combineReducers, legacy_createStore as createStore } from 'redux';
-import { devToolsEnhancer } from 'redux-devtools-extension';
 import addressReducer from './addressSlice';
 import cropDataReducer from './cropSlice';
 import filterReducer from './filterSlice';

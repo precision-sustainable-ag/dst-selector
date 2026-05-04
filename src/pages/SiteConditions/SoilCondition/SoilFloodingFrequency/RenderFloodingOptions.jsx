@@ -47,14 +47,15 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
   };
   return (
     <Grid
-      item
-      display="flex"
-      flexDirection="row"
-      flexWrap="wrap"
-      justifyContent="center"
-      alignItems={isMobile ? 'center' : 'flex-start'}
       style={{ marginRight: '1rem' }}
-      flexBasis="0"
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: isMobile ? 'center' : 'flex-start',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        flexBasis: '0',
+      }}
     >
       {floodingOptions.map((f, index) => (
         <Box key={f.label} sx={{ width: 'auto' }}>

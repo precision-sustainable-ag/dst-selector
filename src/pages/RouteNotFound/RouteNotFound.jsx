@@ -3,7 +3,7 @@ import { Container, Grid, Link, Typography } from '@mui/material';
 const RouteNotFound = () => (
   <Container maxWidth="sm">
     <Grid container justifyContent="center">
-      <Grid item xs={12} style={{ textAlign: 'center' }}>
+      <Grid style={{ textAlign: 'center' }} size={12}>
         <Typography
           variant="h1"
           component="h1"

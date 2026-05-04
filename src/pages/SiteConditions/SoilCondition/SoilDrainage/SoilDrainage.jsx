@@ -90,7 +90,7 @@ const SoilDrainage = ({ drainageOptions }) => {
   const drainageClass = () => {
     const drainageString = ` ${soilDataRedux.drainageClass[0]}`;
     return (
-      <Grid align="center" item xs={12} mb={2}>
+      <Grid align="center" mb={2} size={12}>
         <Typography display="inline" variant="subtitle2" gutterBottom>
           Your improved drainage class is
           <span style={{ fontWeight: 'bold' }}>{drainageString}</span>
@@ -111,19 +111,18 @@ const SoilDrainage = ({ drainageOptions }) => {
     >
       <Grid container>
         <Grid
-          item
           container
           sx={{
             p: '1rem',
             mb: '1rem',
             alignItems: 'center',
           }}
-          xs={12}
+          size={12}
         >
-          <Grid item sx={{ mr: '1rem' }}>
+          <Grid sx={{ mr: '1rem' }}>
             <LocalDrinkOutlined />
           </Grid>
-          <Grid item flexGrow={1}>
+          <Grid flexGrow={1}>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold' }}>Drainage Class</span>
               &nbsp;{' '}
@@ -157,7 +156,7 @@ const SoilDrainage = ({ drainageOptions }) => {
             </Typography>
           </Grid>
           {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
-            <Grid item>
+            <Grid sx={{ pl: '0.5rem' }}>
               <PSAButton
                 buttonType="ValuesChanged"
                 onClick={() => {
@@ -185,14 +184,11 @@ const SoilDrainage = ({ drainageOptions }) => {
           )}
         </Grid>
         <Grid
-          item
           container
           spacing={1}
-          sx={{ mb: '1rem' }}
-          alignItems="center"
-          justifyContent="center"
+          sx={{ mb: '1rem', alignItems: 'center', justifyContent: 'center' }}
         >
-          <Grid item xs={12} alignSelf="center" justifySelf="center">
+          <Grid sx={{ alignSelf: 'center', justifySelf: 'center' }} size={12}>
             {drainageInitialLoad && (
               <RenderDrainageClasses
                 setNewDrainage={setNewDrainage}
@@ -204,8 +200,8 @@ const SoilDrainage = ({ drainageOptions }) => {
           </Grid>
           <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
           {showTiling && (
-            <Grid container justifyContent="center" alignItems="center">
-              <Grid item>
+            <Grid container sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+              <Grid>
                 <Box
                   sx={{
                     bgcolor: 'rgba(176, 236, 130, 0.8)',
@@ -217,8 +213,15 @@ const SoilDrainage = ({ drainageOptions }) => {
                   <InvertColors />
                 </Box>
               </Grid>
-              <Grid item container direction="column" xs={6} lg={3}>
-                <Grid item>
+              <Grid
+                container
+                direction="column"
+                size={{
+                  xs: 6,
+                  lg: 3,
+                }}
+              >
+                <Grid>
                   <Typography variant="body1">
                     <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Tile Drainage</span>
                     &nbsp;{' '}
@@ -228,7 +231,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                     />
                   </Typography>
                 </Grid>
-                <Grid item>
+                <Grid container>
                   <Typography variant="body1" display="inline">
                     No
                   </Typography>

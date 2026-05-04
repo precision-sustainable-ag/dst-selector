@@ -93,12 +93,12 @@ export const InfoSheetTitle = ({ crop }) => {
 
   return (
     <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-      <Grid item>
+      <Grid>
         <Typography color="white" sx={{ marginLeft: '2em' }}>
           Cover Crop Information Sheet
         </Typography>
       </Grid>
-      <Grid item>
+      <Grid>
         <PSAButton
           startIcon={<OpenInNewIcon />}
           buttonType="ModalLink"

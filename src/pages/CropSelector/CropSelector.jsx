@@ -116,7 +116,16 @@ const CropSelector = (props) => {
   }, [dispatchRedux]);
   return (
     <Grid container spacing={3}>
-      <Grid item xl={3} lg={4} md={4} sm={12} xs={12} ref={sidebarRef}>
+      <Grid
+        ref={sidebarRef}
+        size={{
+          xl: 3,
+          lg: 4,
+          md: 4,
+          sm: 12,
+          xs: 12,
+        }}
+      >
         <SkipContent
           href="#crop-form"
           text="Skip to form"
@@ -149,7 +158,6 @@ const CropSelector = (props) => {
           />
         )}
       </Grid>
-
       <SkipContent
         href="#page-footer"
         text="Skip to bottom"
@@ -162,15 +170,15 @@ const CropSelector = (props) => {
           },
         }}
       />
-
       <Grid
-        item
-        xl={showSidebar ? 9 : 12}
-        lg={showSidebar ? 8 : 12}
-        md={showSidebar ? 8 : 12}
-        sm={12}
-        xs={12}
         id="crop-form"
+        size={{
+          xl: showSidebar ? 9 : 12,
+          lg: showSidebar ? 8 : 12,
+          md: showSidebar ? 8 : 12,
+          sm: 12,
+          xs: 12,
+        }}
       >
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {speciesSelectorActivationFlagRedux ? (

@@ -39,19 +39,18 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
     >
       <Grid container>
         <Grid
-          item
           container
           sx={{
             p: '1rem',
             mb: '1rem',
+            alignItems: 'center',
           }}
-          alignItems="center"
-          xs={12}
+          size={12}
         >
-          <Grid item sx={{ mr: '1rem' }}>
+          <Grid sx={{ mr: '1rem' }}>
             <WavesOutlined />
           </Grid>
-          <Grid item flexGrow={1}>
+          <Grid flexGrow={1}>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold' }}>Flooding Frequency</span>
               &nbsp;{' '}
@@ -90,7 +89,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
             soilDataRedux?.floodingFrequency,
             soilDataOriginalRedux?.floodingFrequency,
           ) && (
-            <Grid item>
+            <Grid sx={{ pl: '0.5rem' }}>
               <PSAButton
                 buttonType="ValuesChanged"
                 data-test="values-changed-button"
@@ -117,8 +116,8 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
             </Grid>
           )}
         </Grid>
-        <Grid item container spacing={1} sx={{ mb: '1rem' }}>
-          <Grid item xs={12}>
+        <Grid container spacing={1} sx={{ mb: '1rem', width: '100%' }}>
+          <Grid size={12}>
             <RenderFloodingOptions
               floodingOptions={floodingOptions}
               flooding={soilDataRedux?.floodingFrequency}

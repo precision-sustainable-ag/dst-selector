@@ -1,4 +1,4 @@
-import { AcUnit, AddCircleOutline, CheckRounded, DeleteForever } from '@mui/icons-material';
+import { AcUnit, AddCircleOutlineOutlined, CheckRounded, DeleteForever } from '@mui/icons-material';
 import { Box, Grid, TableCell, TableRow } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux';
@@ -82,8 +82,13 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               backgroundColor: isMobile ? 'white' : 'transparent',
             }}
           >
-            <Grid container direction="row" alignItems="center" flexWrap="nowrap">
-              <Grid item md={4} xs={4}>
+            <Grid container sx={{ direction: 'row', alignItems: 'center', flexWrap: 'nowrap' }}>
+              <Grid
+                size={{
+                  md: 4,
+                  xs: 4,
+                }}
+              >
                 {crop ? (
                   <PSAButton
                     className={`crop${index}`}
@@ -131,8 +136,15 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   />
                 )}
               </Grid>
-              <Grid container item md={8} xs={8} alignItems="center">
-                <Grid item>
+              <Grid
+                container
+                sx={{ alignItems: 'center' }}
+                size={{
+                  md: 8,
+                  xs: 8,
+                }}
+              >
+                <Grid>
                   <PSAButton
                     buttonType=""
                     size="small"
@@ -155,7 +167,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 </Grid>
                 {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label ===
                   'Yes' && (
-                  <Grid item>
+                  <Grid>
                     <PSATooltip
                       placement="top-end"
                       enterTouchDelay={0}
@@ -217,8 +229,12 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           <TableCell sx={{ padding: 0 }} colSpan="12">
             <CropSelectorCalendarView from="calendar" data={crop} />
           </TableCell>
-
-          <TableCell sx={{ padding: 0 }}>
+          <TableCell
+            sx={{ padding: 0 }}
+            style={{
+              textAlign: 'center',
+            }}
+          >
             {' '}
             <PSAButton
               buttonType=""
@@ -245,7 +261,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 isSelected ? (
                   <DeleteForever data-test={`delete-forever-icon-${index}`} />
                 ) : (
-                  <AddCircleOutline data-test={`add-circle-outline-icon-${index}`} />
+                  <AddCircleOutlineOutlined data-test={`add-circle-outline-icon-${index}`} />
                 )
               }
             />

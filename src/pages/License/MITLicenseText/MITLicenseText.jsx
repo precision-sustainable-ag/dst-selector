@@ -10,7 +10,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
   const currentYear = new Date().getFullYear();
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography variant="body1" gutterBottom>
           Copyright © {currentYear} Northeast Cover Crops Council,&nbsp;
           <a href="http://northeastcovercrops.com/" target="_blank" rel="noopener noreferrer">
@@ -41,7 +41,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
         )}
       </Grid>
       {aboutPage ? (
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="body1">
             The cover crop data is part of NECCC Cover Crop Decision Support Tools project
             (https://covercrop-selector.org). The data files and their contents licensed under the
@@ -51,9 +51,9 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
           </Typography>
         </Grid>
       ) : (
-        <Grid item xs={styles ? 6 : 12}>
+        <Grid size={styles ? 6 : 12}>
           <Grid container spacing={2}>
-            <Grid item>
+            <Grid>
               <Typography variant="body1">
                 Permission is hereby granted, free of charge, to any person obtaining a copy of this
                 software and associated documentation files (the “Software”), to deal in the
@@ -64,7 +64,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
                 included in all copies or substantial portions of the Software.
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid>
               <Typography variant="body1">
                 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
                 INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A

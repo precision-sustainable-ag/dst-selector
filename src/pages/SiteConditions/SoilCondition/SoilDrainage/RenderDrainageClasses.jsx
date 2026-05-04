@@ -95,14 +95,15 @@ const RenderDrainageClasses = ({
 
   return (
     <Grid
-      item
-      display="flex"
-      flexDirection="row"
-      flexWrap="wrap"
-      justifyContent="center"
-      alignItems={isMobile ? 'center' : 'flex-start'}
       style={{ marginRight: '1rem' }}
-      flexBasis="0"
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: isMobile ? 'center' : 'flex-start',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        flexBasis: '0',
+      }}
       data-test="drainage-class-chip-box"
     >
       {drainageArray.map((d, index) => (

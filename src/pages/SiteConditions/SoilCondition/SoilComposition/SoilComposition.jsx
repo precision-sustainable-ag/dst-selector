@@ -16,10 +16,10 @@ const SoilComposition = () => {
       }}
       data-test="soil-composition-card"
     >
-      <Grid container justifyContent="space-between">
-        <Grid item container xs={10}>
-          <Grid item container direction="column">
-            <Grid item>
+      <Grid container sx={{ justifyContent: 'space-between' }}>
+        <Grid container size={10}>
+          <Grid container direction="column">
+            <Grid>
               <Typography variant="body1">
                 <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Soil Composition</span>
                 &nbsp;{' '}
@@ -46,7 +46,7 @@ const SoilComposition = () => {
                 />
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid>
               <Typography
                 variant="body1"
                 style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#51783F' }}
@@ -57,7 +57,7 @@ const SoilComposition = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid>
           <Box>
             <Terrain />
           </Box>
