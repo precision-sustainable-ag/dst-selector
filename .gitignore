@@ -29,3 +29,4 @@ README_LITE.TXT
 
 /cypress/snapshots
 /cypress/screenshots
+/cypress/videos
