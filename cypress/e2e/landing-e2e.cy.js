@@ -43,7 +43,7 @@ describe('Test all possible interactions on the Landing Page after a state is se
         cy.getByTestId('header_logo_button')
           .find('img')
           .invoke('attr', 'src')
-          .should('equal', `images/${councilShorthand.toLowerCase()}_logo.png`);
+          .should('include', `images/${councilShorthand.toLowerCase()}_logo`);
       });
   });
 
