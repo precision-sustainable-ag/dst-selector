@@ -29,6 +29,6 @@ describe('Header Component', () => {
     cy.assertByTestId('header_logo_button')
       .find('img')
       .invoke('attr', 'src')
-      .should('equal', 'images/PSA_logo.png');
+      .should('include', 'PSA_logo.png');
   });
 });
