@@ -12,7 +12,7 @@ describe('Header Component', () => {
   });
 
   it('should have a BROWSE COVER CROPS button', () => {
-    cy.assertByTestId('browse-cover-crops-btn').should('exist').should('have.text', 'Browse Cover Crops');
+    cy.assertByTestId('browse-cover-crops-btn').should('have.text', 'Browse Cover Crops');
   });
 
   it('should have correct navigation tabs and links', () => {
