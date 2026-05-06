@@ -4,17 +4,16 @@
   Styles are created using CustomStyles from ../../../shared/constants and ../../../styles/greenBar.scss
 */
 
-import { Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
 import { LocationOn } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
-import React from 'react';
+import { Grid } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import ProgressButtons from '../../../shared/ProgressButtons';
+import useIsMobile from '../../../hooks/useIsMobile';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
 import NavigationButtons from '../../../shared/NavigationButtons';
-import useIsMobile from '../../../hooks/useIsMobile';
+import ProgressButtons from '../../../shared/ProgressButtons';
 
 const speciesSelectorToolName = '/';
 
@@ -97,11 +96,14 @@ const InformationBar = ({ pathname }) => {
           borderRadius: '200px',
           color: 'black',
           width: '100%',
-
         }}
-        transparent={!((type === 'location' && progressRedux > 0)
-        || (type === 'site' && progressRedux > 1)
-        || (type === 'goals' && progressRedux > 2))}
+        transparent={
+          !(
+            (type === 'location' && progressRedux > 0) ||
+            (type === 'site' && progressRedux > 1) ||
+            (type === 'goals' && progressRedux > 2)
+          )
+        }
         title={getIconInfo(type)}
       />
     );
@@ -138,11 +140,12 @@ const InformationBar = ({ pathname }) => {
         lg={progressRedux > 0 && !isMobile ? 4 : 12}
         marginRight={isMobile ? 0 : 2}
       >
-        {pathname === speciesSelectorToolName
-          ? <ProgressButtons />
-          : <NavigationButtons pathname={pathname} />}
+        {pathname === speciesSelectorToolName ? (
+          <ProgressButtons />
+        ) : (
+          <NavigationButtons pathname={pathname} />
+        )}
       </Grid>
-
     </Grid>
   );
 };

@@ -1,7 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PSAForm } from 'shared-react-components/src';
 import { callCoverCropApi } from '../../shared/constants';
@@ -30,9 +27,7 @@ const menuProps = {
 const getStateCodeFromLabel = (stateLabel, allStates) => {
   if (!stateLabel) return '';
 
-  const match = allStates.find(
-    (s) => s.label.toLowerCase() === stateLabel.toLowerCase(),
-  );
+  const match = allStates.find((s) => s.label.toLowerCase() === stateLabel.toLowerCase());
 
   return match?.shorthand || '';
 };
@@ -50,12 +45,16 @@ const Feedback = () => {
   const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
 
   useEffect(() => {
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
-      const productionCouncils = ['NECCC', 'SCCC', 'MCCC', 'WCCC'];
-      const states = stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
-      setAllStates(states);
-    });
-  }, []);
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then(
+      (stateData) => {
+        const productionCouncils = ['NECCC', 'SCCC', 'MCCC', 'WCCC'];
+        const states = stateData.data.filter((state) =>
+          productionCouncils.includes(state.council.shorthand),
+        );
+        setAllStates(states);
+      },
+    );
+  }, [apiBaseUrlRedux]);
 
   useEffect(() => {
     const code = getStateCodeFromLabel(stateLabelRedux, allStates);
@@ -64,31 +63,40 @@ const Feedback = () => {
 
   useEffect(() => {
     if (selectedState) {
-      callCoverCropApi(`https://polygons.vegspec.org/counties?state=${selectedState}`).then((countyData) => {
-        setCounties(countyData);
-      });
+      callCoverCropApi(`https://polygons.vegspec.org/counties?state=${selectedState}`).then(
+        (countyData) => {
+          setCounties(countyData);
+        },
+      );
     }
   }, [selectedState]);
 
   useEffect(() => {
     if (allStates.length > 0 && addressDataRedux?.markers?.length > 0) {
-      callCoverCropApi(`https://polygons.vegspec.org/county?lat=${addressDataRedux.markers[0][0]}&lon=${addressDataRedux.markers[0][1]}`)
-        .then((addressData) => {
-          setStateCode(addressData.state_code);
-        });
+      callCoverCropApi(
+        `https://polygons.vegspec.org/county?lat=${addressDataRedux.markers[0][0]}&lon=${addressDataRedux.markers[0][1]}`,
+      ).then((addressData) => {
+        setStateCode(addressData.state_code);
+      });
     }
   }, [allStates, addressDataRedux]);
 
   useEffect(() => {
     if (stateCode) {
-      callCoverCropApi(`https://polygons.vegspec.org/counties?state=${stateCode}`).then((countyData) => {
-        setCounties(countyData);
-      });
+      callCoverCropApi(`https://polygons.vegspec.org/counties?state=${stateCode}`).then(
+        (countyData) => {
+          setCounties(countyData);
+        },
+      );
     }
   }, [stateCode]);
 
   useEffect(() => {
-    if (counties.length > 0 && addressDataRedux?.county && counties.includes(addressDataRedux.county.replace(' County', ''))) {
+    if (
+      counties.length > 0 &&
+      addressDataRedux?.county &&
+      counties.includes(addressDataRedux.county.replace(' County', ''))
+    ) {
       setSelectedCounty(addressDataRedux?.county.replace(' County', ''));
     }
   }, [counties, addressDataRedux]);
@@ -124,7 +132,8 @@ const Feedback = () => {
         {
           type: 'text',
           label: 'Message',
-          description: 'Explain your feedback as thoroughly as you can. Your feedback will help us improve the experience.',
+          description:
+            'Explain your feedback as thoroughly as you can. Your feedback will help us improve the experience.',
           props: {
             placeholder: 'Enter Your Feedback',
             multiline: true,

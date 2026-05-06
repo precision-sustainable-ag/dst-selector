@@ -2,6 +2,7 @@
   Handles rendering the goals and updating them when selected
 */
 
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   Collapse,
   FormControlLabel,
@@ -12,18 +13,11 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { PSACheckbox } from 'shared-react-components/src';
 import { updateComparisonKeys } from '../../../../reduxStore/sharedSlice';
 
-const RenderGoals = ({
-  goals,
-  goalsOpen,
-  setGoalsOpen,
-  comparisonKeys,
-}) => {
+const RenderGoals = ({ goals, goalsOpen, setGoalsOpen, comparisonKeys }) => {
   const dispatchRedux = useDispatch();
   return (
     <>
@@ -40,10 +34,10 @@ const RenderGoals = ({
         <List component="div" disablePadding>
           <ListItem component="div">
             <Grid container spacing={1}>
-              {goals.map((goal, index) => (
-                <Grid item xs={12} key={`goals-inner-${index}`}>
+              {goals.map((goal) => (
+                <Grid item xs={12} key={`goals-inner-${goal.name}`}>
                   <FormControlLabel
-                    control={(
+                    control={
                       <PSACheckbox
                         checked={comparisonKeys.includes(goal.name)}
                         name={goal.name}
@@ -59,7 +53,7 @@ const RenderGoals = ({
                           dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
                         }}
                       />
-                    )}
+                    }
                     label={<small>{goal.name}</small>}
                   />
                 </Grid>

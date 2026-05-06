@@ -1,8 +1,7 @@
-import React from 'react';
-import { Provider } from 'react-redux';
 import { mount } from 'cypress/react18';
-import SoilDrainage from './SoilDrainage';
+import { Provider } from 'react-redux';
 import configureStore from '../../../../reduxStore/store';
+import SoilDrainage from './SoilDrainage';
 
 /* eslint-disable no-undef */
 

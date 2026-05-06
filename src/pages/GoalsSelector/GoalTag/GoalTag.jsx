@@ -4,7 +4,6 @@
 */
 
 import { Avatar, Chip } from '@mui/material';
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSATooltip } from 'shared-react-components/src';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
@@ -12,9 +11,7 @@ import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
 
 // TODO: Whats up with goalt?? we need to look into fixing this.
-const GoalTag = ({
-  goaltTitle, goalDescription, id, selectedGoalIndex,
-}) => {
+const GoalTag = ({ goaltTitle, goalDescription, id, selectedGoalIndex }) => {
   const dispatchRedux = useDispatch();
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
@@ -24,7 +21,8 @@ const GoalTag = ({
 
   const updateSelectedGoals = () => {
     // update history state here
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
     const goals = [...selectedGoalsRedux];
 
     if (goals.indexOf(goaltTitle) === -1) {
@@ -50,10 +48,12 @@ const GoalTag = ({
       arrow
       title={goalDescription}
       key={`tooltip${key}`}
-      tooltipContent={(
+      tooltipContent={
         <span>
           <Chip
-            disabled={selectedGoalsRedux.length >= 3 ? !selectedGoalsRedux.includes(goalTitle) : false}
+            disabled={
+              selectedGoalsRedux.length >= 3 ? !selectedGoalsRedux.includes(goalTitle) : false
+            }
             color={selectedGoalsRedux.includes(goalTitle) ? 'primary' : 'secondary'}
             avatar={
               selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
@@ -80,7 +80,7 @@ const GoalTag = ({
             }}
           />
         </span>
-      )}
+      }
     />
   );
 };

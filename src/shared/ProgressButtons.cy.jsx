@@ -1,11 +1,10 @@
-import React from 'react';
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
-import ProgressButtons from './ProgressButtons';
-import configureStore from '../reduxStore/store';
+import { updateAllGoals } from '../reduxStore/goalSlice';
 import { setMapRedux, updateRegion, updateStateInfo } from '../reduxStore/mapSlice';
 import { gotoProgress } from '../reduxStore/sharedSlice';
-import { updateAllGoals } from '../reduxStore/goalSlice';
+import configureStore from '../reduxStore/store';
+import ProgressButtons from './ProgressButtons';
 
 /* eslint-disable no-undef */
 
@@ -95,21 +94,29 @@ describe('<ProgressButtonsInner />', () => {
   });
 
   it('renders correct state of Progress buttons when progress is 1', () => {
-    reduxStore.dispatch(updateStateInfo({
-      stateId: 36,
-      stateLabel: 'New York',
-      councilShorthand: 'NECCC',
-      councilLabel: 'Northeast Cover Crops Council',
-    }));
-    reduxStore.dispatch(updateRegion({
-      regionId: 1,
-      regionShorthand: '4',
-    }));
-    reduxStore.dispatch(updateAllGoals([{
-      label: 'Forage Harvest Value',
-      description: '',
-      tags: [],
-    }]));
+    reduxStore.dispatch(
+      updateStateInfo({
+        stateId: 36,
+        stateLabel: 'New York',
+        councilShorthand: 'NECCC',
+        councilLabel: 'Northeast Cover Crops Council',
+      }),
+    );
+    reduxStore.dispatch(
+      updateRegion({
+        regionId: 1,
+        regionShorthand: '4',
+      }),
+    );
+    reduxStore.dispatch(
+      updateAllGoals([
+        {
+          label: 'Forage Harvest Value',
+          description: '',
+          tags: [],
+        },
+      ]),
+    );
 
     reduxStore.dispatch(gotoProgress(1));
     cy.assertByTestId('back-btn').should('not.be.disabled');
@@ -130,7 +137,9 @@ describe('<ProgressButtonsInner />', () => {
   it('renders correct state of Progress buttons when progress is 4', () => {
     reduxStore.dispatch(gotoProgress(4));
     cy.assertByTestId('back-btn').should('not.be.disabled');
-    cy.assertByTestId('"my selected crops-btn"').should('have.text', 'MY SELECTED CROPS').should('be.disabled');
+    cy.assertByTestId('"my selected crops-btn"')
+      .should('have.text', 'MY SELECTED CROPS')
+      .should('be.disabled');
     cy.assertByTestId('restart-btn').should('not.be.disabled');
   });
 });

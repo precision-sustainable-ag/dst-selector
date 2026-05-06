@@ -21,7 +21,12 @@ const initialState = {
 
 /* eslint-disable */
 export const updateSoilData = ({
-  mapUnitName, drainageClass, floodingFrequency, latLong, drainageOptions, floodingOptions,
+  mapUnitName,
+  drainageClass,
+  floodingFrequency,
+  latLong,
+  drainageOptions,
+  floodingOptions,
 }) => ({
   type: 'UPDATE_SOIL_DATA',
   payload: {
@@ -35,7 +40,12 @@ export const updateSoilData = ({
 });
 
 export const updateSoilDataOriginal = ({
-  mapUnitName, drainageClass, floodingFrequency, latLong, drainageOptions, floodingOptions,
+  mapUnitName,
+  drainageClass,
+  floodingFrequency,
+  latLong,
+  drainageOptions,
+  floodingOptions,
 }) => ({
   type: 'UPDATE_SOIL_DATA_ORIGINAL',
   payload: {

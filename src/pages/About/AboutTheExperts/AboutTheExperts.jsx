@@ -7,10 +7,8 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import {
-  Box, Typography, Grid,
-} from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Grid, Typography } from '@mui/material';
+import { useState } from 'react';
 import { PSAButton } from 'shared-react-components/src';
 import { getExpertsData } from '../../../shared/constants';
 
@@ -34,7 +32,7 @@ const AboutTheExperts = () => {
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
       <Grid container>
         {expertGroups.map((group) => (
-          <Grid item xs={6} sm={4} md={2}>
+          <Grid key={group.id} item xs={6} sm={4} md={2}>
             <PSAButton
               buttonType=""
               key={group.id}
@@ -42,9 +40,9 @@ const AboutTheExperts = () => {
               sx={{
                 width: '100%',
                 height: '100%',
-                backgroundColor: (group.id === value) ? '#598444' : 'white',
-                color: (group.id === value) ? 'white' : '#8abc62',
-                '&:hover': { backgroundColor: (group.id === value) ? '#598444' : 'white' },
+                backgroundColor: group.id === value ? '#598444' : 'white',
+                color: group.id === value ? 'white' : '#8abc62',
+                '&:hover': { backgroundColor: group.id === value ? '#598444' : 'white' },
               }}
               onClick={() => handleChange(group.id)}
               variant="contained"
@@ -56,13 +54,13 @@ const AboutTheExperts = () => {
       <Typography style={{ paddingTop: '15px' }} variant="body1" align="left">
         {expertGroups[value].dataType === 'array'
           ? getExpertsData(value)
-            .sort((a, b) => (a.lastName.localeCompare(b.lastName)))
-            .map((expert) => (
-              <p>
-                <strong>{`${expert.lastName}, ${expert.firstName}; `}</strong>
-                <span>{expert.Affiliation}</span>
-              </p>
-            ))
+              .sort((a, b) => a.lastName.localeCompare(b.lastName))
+              .map((expert) => (
+                <p key={`${expert.firstName}-${expert.lastName}`}>
+                  <strong>{`${expert.lastName}, ${expert.firstName}; `}</strong>
+                  <span>{expert.Affiliation}</span>
+                </p>
+              ))
           : getExpertsData(value)}
       </Typography>
     </Box>

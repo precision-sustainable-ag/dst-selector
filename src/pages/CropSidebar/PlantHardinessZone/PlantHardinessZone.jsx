@@ -1,14 +1,11 @@
 /* eslint-disable max-len */
-import {
-  Collapse, List, ListItem, Typography,
-} from '@mui/material';
-import React from 'react';
+import { Collapse, List, ListItem, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSADropdown } from 'shared-react-components/src';
 import { updateRegion } from '../../../reduxStore/mapSlice';
+import { setQueryString } from '../../../reduxStore/sharedSlice';
 import { historyState, setHistoryDialogState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
-import { setQueryString } from '../../../reduxStore/sharedSlice';
 
 const PlantHardinessZone = ({ from }) => {
   const dispatchRedux = useDispatch();
@@ -30,10 +27,12 @@ const PlantHardinessZone = ({ from }) => {
       return;
     }
     localStorage.setItem('regionId', selectedRegion.id);
-    dispatchRedux(updateRegion({
-      regionId: selectedRegion.id,
-      regionShorthand: selectedRegion.shorthand,
-    }));
+    dispatchRedux(
+      updateRegion({
+        regionId: selectedRegion.id,
+        regionShorthand: selectedRegion.shorthand,
+      }),
+    );
     dispatchRedux(setQueryString(`regions=${selectedRegion.id}`));
     pirschAnalytics(from, { meta: { dropdownUpdate: true } });
   };
@@ -71,9 +70,10 @@ const PlantHardinessZone = ({ from }) => {
       }}
       items={regionsRedux.map((region) => ({
         value: region.shorthand,
-        label: councilLabelRedux !== 'Midwest Cover Crops Council'
-          ? `Zone ${region.shorthand?.toUpperCase()}`
-          : `${region.shorthand?.toUpperCase()}`,
+        label:
+          councilLabelRedux !== 'Midwest Cover Crops Council'
+            ? `Zone ${region.shorthand?.toUpperCase()}`
+            : `${region.shorthand?.toUpperCase()}`,
       }))}
       formSx={{ width: '100%' }}
       SelectProps={{
@@ -108,12 +108,11 @@ const PlantHardinessZone = ({ from }) => {
       <List component="div">
         <ListItem component="div">
           {plantHardinessZone()}
-          {!regionShorthandRedux
-            && (
-              <Typography variant="body2" align="center" color="error" gutterBottom>
-                {`Please Select a ${councilLabelRedux === 'Midwest Cover Crops Council' ? 'County' : 'Zone'}`}
-              </Typography>
-            )}
+          {!regionShorthandRedux && (
+            <Typography variant="body2" align="center" color="error" gutterBottom>
+              {`Please Select a ${councilLabelRedux === 'Midwest Cover Crops Council' ? 'County' : 'Zone'}`}
+            </Typography>
+          )}
         </ListItem>
       </List>
     </Collapse>

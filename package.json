@@ -13,6 +13,7 @@
     "@mui/material": "^5.16.7",
     "@mui/utils": "^6.1.5",
     "@mui/x-date-pickers": "^6.1.0",
+    "@redux-devtools/extension": "^4.0.0",
     "@vitejs/plugin-react": "^4.3.1",
     "cypress": "^13.13.0",
     "dayjs": "^1.11.8",
@@ -21,12 +22,10 @@
     "notistack": "^3.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.1.1",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^5.1.2",
     "react-swipeable-views-react-18-fix": "^0.14.1",
-    "react-swipeable-views-utils": "^0.14.0",
-    "redux": "^4.2.1",
-    "redux-devtools-extension": "^2.13.9",
+    "redux": "^5.0.1",
     "sass-mediaqueries": "^1.6.1",
     "shared-react-components": "github:precision-sustainable-ag/shared-react-components",
     "styled-components": "^5.3.6",
@@ -46,10 +45,8 @@
     "start": "vite --port 3000",
     "build": "vite build",
     "serve": "vite preview",
-    "format": "prettier --write ."
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "format": "biome format . --write",
+    "lint": "biome check ."
   },
   "browserslist": {
     "production": [
@@ -66,17 +63,12 @@
   "devDependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.18.10",
     "@babel/plugin-transform-runtime": "^7.25.4",
+    "@biomejs/biome": "2.4.7",
     "@cypress/code-coverage": "^3.12.45",
     "@types/react-leaflet": "^2.8.2",
     "@vitejs/plugin-react": "^4.3.1",
     "cypress-vite": "^1.5.0",
     "dotenv": "^16.4.5",
-    "eslint": "^8.23.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.6.1",
-    "eslint-plugin-react": "^7.31.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
     "vite": "^5.4.4",

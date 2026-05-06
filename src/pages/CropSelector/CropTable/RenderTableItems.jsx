@@ -1,26 +1,25 @@
-import React from 'react';
+import { Grid, TableCell, TableRow, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
-import {
-  TableCell, Typography, TableRow, Grid,
-} from '@mui/material';
 import { PSAButton } from 'shared-react-components/src';
 import {
   CropImage,
   flipCoverCropName,
-  trimString,
   hasGoalRatingTwoOrLess,
+  trimString,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
-import CropTableCard from './CropTableCard';
 import useIsMobile from '../../../hooks/useIsMobile';
+import CropTableCard from './CropTableCard';
 
 const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   // redux vars
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
-  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector(
+    (stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter,
+  );
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
 
   const isMobile = useIsMobile('md');
@@ -30,7 +29,9 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   return [...cropDataRedux]
     .sort((a, b) => isCropInactive(a) - isCropInactive(b))
     .map((crop, index) => {
-      const hasAdditionalDrainage = crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
+      const hasAdditionalDrainage =
+        crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !==
+        undefined;
       const shouldHighlightRed = hasAdditionalDrainage && additionalSoilDrainageFilterRedux;
       const buttonStyle = { outlineOffset: '-8px' };
 
@@ -48,7 +49,8 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
             key={`${crop.id} index`}
             id={crop.id}
             style={{
-              opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop, activeCropIdsRedux) && '0.55',
+              opacity:
+                hasGoalRatingTwoOrLess(selectedGoalsRedux, crop, activeCropIdsRedux) && '0.55',
               outline: '2px solid #598344',
               backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
             }}
@@ -77,14 +79,16 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     buttonType=""
                     onClick={() => handleModalOpen(crop)}
                     style={buttonStyle}
-                    title={(
+                    title={
                       <CropImage
                         view="table"
                         present
-                        src={crop.thumbnailSmall ? crop.thumbnailSmall : 'https://placehold.co/50x50'}
+                        src={
+                          crop.thumbnailSmall ? crop.thumbnailSmall : 'https://placehold.co/50x50'
+                        }
                         alt={crop.label}
                       />
-                    )}
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -114,13 +118,12 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                 </Grid>
               </Grid>
             </TableCell>
-            {cropDataRedux[0].keyTraits.length > 0
-              && (
+            {cropDataRedux[0].keyTraits.length > 0 && (
               <TableCell size="small" style={{ textAlign: 'left', verticalAlign: 'middle' }}>
                 <table>
                   <tbody>
                     {crop.keyTraits.map((trait) => (
-                      <tr>
+                      <tr key={`${trait.label}`}>
                         <td>
                           {' '}
                           <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
@@ -128,19 +131,21 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                           </Typography>
                         </td>
                         <td>
-                          <Typography variant="body1" component="b" style={{ fontSize: 'small', paddingLeft: '2px' }}>
-                            {trait.values.map((val) => (val.value))}
-                            {' '}
+                          <Typography
+                            variant="body1"
+                            component="b"
+                            style={{ fontSize: 'small', paddingLeft: '2px' }}
+                          >
+                            {trait.values.map((val) => val.value)}{' '}
                             <span className="units">{trait.units}</span>
                           </Typography>
                         </td>
                       </tr>
                     ))}
-
                   </tbody>
                 </table>
               </TableCell>
-              )}
+            )}
             <CropTableCard
               crop={crop}
               indexKey={index}

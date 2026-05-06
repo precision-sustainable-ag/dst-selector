@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
 import {
-  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@mui/material';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSATextField, PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSATextField } from 'shared-react-components/src';
+import { reset } from '../../reduxStore/store';
 import {
-  historyState, setHistoryDialogState, setHistoryState, setSelectedHistory,
+  historyState,
+  setHistoryDialogState,
+  setHistoryState,
+  setSelectedHistory,
   updateField,
 } from '../../reduxStore/userSlice';
-import { reset } from '../../reduxStore/store';
 
 export const historyDialogDefaultState = {
   open: false,
@@ -23,7 +30,9 @@ const HistoryDialog = () => {
   const dispatch = useDispatch();
 
   const userHistoryListRedux = useSelector((stateRedux) => stateRedux.userData.userHistoryList);
-  const historyDialogStateRedux = useSelector((stateRedux) => stateRedux.userData.historyDialogState);
+  const historyDialogStateRedux = useSelector(
+    (stateRedux) => stateRedux.userData.historyDialogState,
+  );
   const { open, type } = historyDialogStateRedux;
 
   // eslint-disable-next-line no-shadow
@@ -84,45 +93,54 @@ const HistoryDialog = () => {
   return (
     <Dialog open={open}>
       <DialogTitle>
-        { type === 'add' && 'Are you creating a new record?'}
-        { type === 'update' && 'Are you updating your record?'}
+        {type === 'add' && 'Are you creating a new record?'}
+        {type === 'update' && 'Are you updating your record?'}
       </DialogTitle>
       <DialogContent>
-        {type === 'add'
-          && (
-            <>
-              <DialogContentText sx={{ paddingBottom: '1rem' }}>
-                Please input the name for your record below.
-              </DialogContentText>
-              <PSATextField
-                variant="outlined"
-                autoFocus
-                fullWidth
-                error={error}
-                helperText={helperText}
-                label="Input your field name"
-                value={fieldName}
-                onChange={handleFieldNameChange}
-                data-test="input-field-name"
-              />
-            </>
-          )}
-        {type === 'update'
-          && (
+        {type === 'add' && (
+          <>
+            <DialogContentText sx={{ paddingBottom: '1rem' }}>
+              Please input the name for your record below.
+            </DialogContentText>
+            <PSATextField
+              variant="outlined"
+              autoFocus
+              fullWidth
+              error={error}
+              helperText={helperText}
+              label="Input your field name"
+              value={fieldName}
+              onChange={handleFieldNameChange}
+              data-test="input-field-name"
+            />
+          </>
+        )}
+        {type === 'update' && (
           <DialogContentText data-test="history-dialog-warning">
             <span style={{ color: 'red' }}>Warning: </span>
-            Making changes may affect the results of subsequent steps
-            that you have saved. Please create a new record instead.
+            Making changes may affect the results of subsequent steps that you have saved. Please
+            create a new record instead.
           </DialogContentText>
-          )}
-
+        )}
       </DialogContent>
       <DialogActions>
-        {type === 'add'
-          && <PSAButton onClick={handleAdd} data-test="history-dialog-create" title="Create" buttonType="" />}
-        {type === 'update'
-          && <PSAButton onClick={handleUpdate} title="Create a new record" buttonType="" />}
-        <PSAButton onClick={handleCancel} data-test="history-dialog-cancel" title="Cancel" buttonType="" />
+        {type === 'add' && (
+          <PSAButton
+            onClick={handleAdd}
+            data-test="history-dialog-create"
+            title="Create"
+            buttonType=""
+          />
+        )}
+        {type === 'update' && (
+          <PSAButton onClick={handleUpdate} title="Create a new record" buttonType="" />
+        )}
+        <PSAButton
+          onClick={handleCancel}
+          data-test="history-dialog-cancel"
+          title="Cancel"
+          buttonType=""
+        />
       </DialogActions>
     </Dialog>
   );

@@ -2,20 +2,17 @@
   Handles the popup on hovering over one of the goal rankings in the crop selector
 */
 
-import {
-  Grid, Typography,
-} from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import CircularProgress from '@mui/material/CircularProgress';
 import { Print } from '@mui/icons-material';
-import React from 'react';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Grid, Typography } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSAInfoSheet } from 'shared-react-components/src';
-import { useSnackbar } from 'notistack';
-import InformationSheetContent from './InformationSheetContent/InformationSheetContent';
-import pirschAnalytics from '../../shared/analytics';
-import { updatePrinting } from '../../reduxStore/sharedSlice';
 import useIsMobile from '../../hooks/useIsMobile';
+import { updatePrinting } from '../../reduxStore/sharedSlice';
+import pirschAnalytics from '../../shared/analytics';
+import InformationSheetContent from './InformationSheetContent/InformationSheetContent';
 
 export const InfoSheetTitle = ({ crop }) => {
   const dispatch = useDispatch();
@@ -47,7 +44,7 @@ export const InfoSheetTitle = ({ crop }) => {
             styles += rule.cssText;
           });
         } catch (e) {
-          throw new Error('Error in extracting CSS');
+          throw new Error(`Error in extracting CSS: ${e.message}`);
         }
       });
 
@@ -56,7 +53,9 @@ export const InfoSheetTitle = ({ crop }) => {
 
     try {
       dispatch(updatePrinting(true));
-      await new Promise((resolve) => { setTimeout(resolve, 2000); });
+      await new Promise((resolve) => {
+        setTimeout(resolve, 2000);
+      });
 
       const cropDetailModal = document.querySelector('[id^=cropDetailModal]');
       const clonedModal = cropDetailModal.cloneNode(true);
@@ -100,7 +99,6 @@ export const InfoSheetTitle = ({ crop }) => {
         </Typography>
       </Grid>
       <Grid item>
-
         <PSAButton
           startIcon={<OpenInNewIcon />}
           buttonType="ModalLink"
@@ -109,34 +107,26 @@ export const InfoSheetTitle = ({ crop }) => {
           }}
           title="Terminology Definitions"
         />
-        {
-        printing
-          ? (
-            <PSAButton
-              buttonType="ModalLink"
-              startIcon={<CircularProgress size={20} sx={{ color: 'white' }} />}
-            />
-          )
-          : (
-            <PSAButton
-              startIcon={<Print />}
-              buttonType="ModalLink"
-              onClick={print}
-              title="Print"
-              className="infosheetPrint"
-            />
-          )
-      }
+        {printing ? (
+          <PSAButton
+            buttonType="ModalLink"
+            startIcon={<CircularProgress size={20} sx={{ color: 'white' }} />}
+          />
+        ) : (
+          <PSAButton
+            startIcon={<Print />}
+            buttonType="ModalLink"
+            onClick={print}
+            title="Print"
+            className="infosheetPrint"
+          />
+        )}
       </Grid>
     </Grid>
   );
 };
 
-const InformationSheet = ({
-  crop,
-  setModalOpen,
-  modalOpen,
-}) => {
+const InformationSheet = ({ crop, setModalOpen, modalOpen }) => {
   const isMobile = useIsMobile('sm');
 
   return (

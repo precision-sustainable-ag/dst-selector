@@ -1,15 +1,19 @@
-import {
-  Chip, Grid, Box,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Box, Chip, Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
+import useIsMobile from '../../../../hooks/useIsMobile';
+import {
+  setTileDrainage,
+  updateDrainageClass as updateDrainageClassRedux,
+} from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../../shared/analytics';
-import useIsMobile from '../../../../hooks/useIsMobile';
 
 const RenderDrainageClasses = ({
-  setNewDrainage, setShowTiling, drainageOptions, drainage = '',
+  setNewDrainage,
+  setShowTiling,
+  drainageOptions,
+  drainage = '',
 }) => {
   const dispatchRedux = useDispatch();
   const isMobile = useIsMobile('sm');
@@ -23,7 +27,9 @@ const RenderDrainageClasses = ({
   const [previousDrainage, setPreviousDrainage] = useState(-1);
   const [updateTilingCheck, setUpdateTilingCheck] = useState(false);
   const drainageArray = drainageOptions.map((option) => option.value);
-  const drainageVal = [drainageArray.map((val) => val.toLowerCase()).indexOf(drainage.toLowerCase())];
+  const drainageVal = [
+    drainageArray.map((val) => val.toLowerCase()).indexOf(drainage.toLowerCase()),
+  ];
 
   // functions
   const updateDrainageAction = (drainages) => {
@@ -36,6 +42,7 @@ const RenderDrainageClasses = ({
     dispatchRedux(updateDrainageClassRedux(dispatchPackage !== '' ? [dispatchPackage] : []));
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <updateDrainageAction changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     let drainages = soilDataRedux.drainageClass
       ? drainageArray.indexOf(soilDataRedux.drainageClass[0])
@@ -51,7 +58,10 @@ const RenderDrainageClasses = ({
       } else if (drainages === 1) {
         drainages -= 1;
       } else if (drainages >= 2) {
-        drainages = councilShorthandRedux === 'MCCC' && previousDrainage !== 2 ? drainages - 2 : drainages - 1;
+        drainages =
+          councilShorthandRedux === 'MCCC' && previousDrainage !== 2
+            ? drainages - 2
+            : drainages - 1;
       }
     }
     updateDrainageAction([drainages]);
@@ -60,7 +70,8 @@ const RenderDrainageClasses = ({
 
   const updateDrainageClass = (index = '') => {
     // update history state here
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
 
     if (tileDrainageRedux) {
       dispatchRedux(setTileDrainage(false));
@@ -95,7 +106,7 @@ const RenderDrainageClasses = ({
       data-test="drainage-class-chip-box"
     >
       {drainageArray.map((d, index) => (
-        <Box key={index} sx={{ width: 'auto' }}>
+        <Box key={d} sx={{ width: 'auto' }}>
           <Chip
             label={d}
             data-test={`drainage-class-chip-${index}`}

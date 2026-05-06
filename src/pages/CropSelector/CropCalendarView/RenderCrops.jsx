@@ -1,32 +1,27 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  TableCell, TableRow, Grid,
-  Box,
-} from '@mui/material';
-import {
-  AcUnit, AddCircleOutline, CheckRounded, DeleteForever,
-} from '@mui/icons-material';
-import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import { AcUnit, AddCircleOutline, CheckRounded, DeleteForever } from '@mui/icons-material';
+import { Box, Grid, TableCell, TableRow } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { useDispatch, useSelector } from 'react-redux';
+import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import {
+  addCropToBasket,
   CropImage,
   flipCoverCropName,
   getRating,
-  addCropToBasket,
   hasGoalRatingTwoOrLess,
 } from '../../../shared/constants';
-import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
 import useIsMobile from '../../../hooks/useIsMobile';
 
 const CheckBoxIcon = ({ style }) => (
   <Box sx={style}>
-    <CheckRounded style={{
-      color: '#FFFFFF',
-      width: '15',
-      height: '15',
-    }}
+    <CheckRounded
+      style={{
+        color: '#FFFFFF',
+        width: '15',
+        height: '15',
+      }}
     />
   </Box>
 );
@@ -37,7 +32,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const additionalSoilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter);
+  const additionalSoilDrainageFilterRedux = useSelector(
+    (stateRedux) => stateRedux.filterData.filters.additionalSoilDrainageFilter,
+  );
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
 
@@ -50,7 +47,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   return [...cropDataRedux]
     .sort((a, b) => isCropInactive(a) - isCropInactive(b))
     .map((crop, index) => {
-      const hasAdditionalDrainage = crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !== undefined;
+      const hasAdditionalDrainage =
+        crop.attributes.find((a) => a.label === 'Additional Soil Drainage if Irrigated') !==
+        undefined;
       const shouldHighlightRed = hasAdditionalDrainage && additionalSoilDrainageFilterRedux;
       const isSelected = selectedCropIdsRedux.includes(crop.id);
 
@@ -67,7 +66,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
 
       return (
         <TableRow
-          key={`cropRow${index}`}
+          key={crop.id}
           style={{
             opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop, activeCropIdsRedux) && '0.55',
             backgroundColor: isSelected ? '#EAEAEA' : 'white',
@@ -95,7 +94,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       setModalOpen(!modalOpen);
                     }}
                     style={buttonStyle}
-                    title={(
+                    title={
                       <>
                         {isSelected && (
                           <CheckBoxIcon
@@ -112,11 +111,13 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                         <CropImage
                           view="calendar"
                           present
-                          src={crop.thumbnailSmall ? crop.thumbnailSmall : 'https://placehold.co/50x50'}
+                          src={
+                            crop.thumbnailSmall ? crop.thumbnailSmall : 'https://placehold.co/50x50'
+                          }
                           alt={crop.label}
                         />
                       </>
-                    )}
+                    }
                   />
                 ) : (
                   <PSAButton
@@ -126,9 +127,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       setModalData(crop);
                       setModalOpen(!modalOpen);
                     }}
-                    title={
-                      <CropImage view="calendar" present={false} />
-                    }
+                    title={<CropImage view="calendar" present={false} />}
                   />
                 )}
               </Grid>
@@ -149,38 +148,50 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       setModalOpen(!modalOpen);
                     }}
                     data-test="crop-calendar-crop-name"
-                    title={councilShorthandRedux === 'WCCC' ? crop.label : flipCoverCropName(crop.label)}
+                    title={
+                      councilShorthandRedux === 'WCCC' ? crop.label : flipCoverCropName(crop.label)
+                    }
                   />
                 </Grid>
-                {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
+                {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label ===
+                  'Yes' && (
                   <Grid item>
                     <PSATooltip
                       placement="top-end"
                       enterTouchDelay={0}
                       title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
                       arrow
-                      tooltipContent={(
-                        <span role="button" aria-label={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}>
+                      tooltipContent={
+                        <button
+                          type="button"
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            padding: 0,
+                            cursor: 'pointer',
+                          }}
+                          aria-label={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
+                        >
                           <AcUnit
                             sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
                             tabIndex="0"
                           />
-                        </span>
-                      )}
+                        </button>
+                      }
                     />
                   </Grid>
                 )}
               </Grid>
             </Grid>
           </TableCell>
-          {selectedGoalsRedux.length > 0
-            && selectedGoalsRedux.map((goal, i) => (
+          {selectedGoalsRedux.length > 0 &&
+            selectedGoalsRedux.map((goal, i) => (
               <TableCell
                 size="small"
                 style={{
                   textAlign: 'center',
                 }}
-                key={i}
+                key={goal}
                 className="goalCells"
               >
                 <div>
@@ -188,15 +199,16 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     arrow
                     placement="bottom"
                     enterTouchDelay={0}
-                    title={(
+                    title={
                       <p>
                         {`Goal ${i + 1}`}
                         {': '}
                         {goal}
                       </p>
-                    )}
-                    tooltipContent={(
-                      getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
+                    }
+                    tooltipContent={getRating(
+                      crop.goals.filter((a) => a.label === goal)[0].values[0].value,
+                      councilShorthandRedux,
                     )}
                   />
                 </div>
@@ -229,9 +241,13 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               }}
               aria-label={isSelected ? 'Delete' : 'Add to List'}
               data-test={`cart-btn-${index}`}
-              title={isSelected
-                ? <DeleteForever data-test={`delete-forever-icon-${index}`} />
-                : <AddCircleOutline data-test={`add-circle-outline-icon-${index}`} />}
+              title={
+                isSelected ? (
+                  <DeleteForever data-test={`delete-forever-icon-${index}`} />
+                ) : (
+                  <AddCircleOutline data-test={`add-circle-outline-icon-${index}`} />
+                )
+              }
             />
           </TableCell>
         </TableRow>

@@ -9,30 +9,25 @@
 */
 
 import {
-  Typography,
+  Grid,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  Grid,
-  TableContainer,
+  Typography,
 } from '@mui/material';
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  DataTooltip,
-  extractData,
-  trimString,
-} from '../../../shared/constants';
-import { setTableWidth } from '../../../reduxStore/pageSlice';
 import InformationSheet from '../../../components/InformationSheet/InformationSheet';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
+import { DataTooltip, extractData, trimString } from '../../../shared/constants';
 
 const MyCoverCropComparisonTable = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
-  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
@@ -49,7 +44,7 @@ const MyCoverCropComparisonTable = () => {
   // TODO: Update SelectedCropsRedux
   useEffect(() => {
     setSelectedCrops(cropDataRedux.filter((crop) => selectedCropIdsRedux.includes(crop.id)));
-  }, [cropDataRedux, activeCropIdsRedux, selectedCropIdsRedux]);
+  }, [cropDataRedux, selectedCropIdsRedux]);
 
   const handleModalOpen = (crop) => {
     // put data inside modal
@@ -72,13 +67,16 @@ const MyCoverCropComparisonTable = () => {
       // push crop group
       groupRow[`crop${index}`].values.push({ value: crop.group });
       // push crop scientific name
-      sciNameRow[`crop${index}`].values.push({ value: crop?.scientificName ? trimString(crop?.scientificName, 25) : 'No Data' });
+      sciNameRow[`crop${index}`].values.push({
+        value: crop?.scientificName ? trimString(crop?.scientificName, 25) : 'No Data',
+      });
       // if selected goals > 1 calculate average goal rating
       if (selectedGoalsRedux.length > 0) {
         let goalRating = 0;
         selectedGoalsRedux.forEach((goal) => {
           if (crop.goals.filter((a) => a.label === goal)?.length > 0) {
-            goalRating = +crop.goals.filter((a) => a.label === goal)[0].values[0].value + goalRating;
+            goalRating =
+              +crop.goals.filter((a) => a.label === goal)[0].values[0].value + goalRating;
           }
         });
 
@@ -115,8 +113,8 @@ const MyCoverCropComparisonTable = () => {
   const buildTableHeaders = () => (
     <>
       <TableCell sx={{ position: 'sticky', left: 0, background: 'white' }} />
-      {selectedCrops.map((crop, index) => (
-        <TableCell key={index} align="center" sx={{ backgroundColor: 'white' }}>
+      {selectedCrops.map((crop) => (
+        <TableCell key={crop.id} align="center" sx={{ backgroundColor: 'white' }}>
           <Typography
             variant="subtitle1"
             sx={{
@@ -140,92 +138,91 @@ const MyCoverCropComparisonTable = () => {
     </>
   );
 
-  const buildTableRows = (row) => Object.keys(row).map((key, index) => {
-    const attribute = row[`crop${index - 1}`];
-    // handles the key name
-    if (key === 'comparisonKey') {
+  const buildTableRows = (row) =>
+    Object.keys(row).map((key, index) => {
+      const attribute = row[`crop${index - 1}`];
+      // handles the key name
+      if (key === 'comparisonKey') {
+        return (
+          <TableCell
+            key={key}
+            component="th"
+            scope="row"
+            sx={{
+              position: 'sticky',
+              left: 0,
+              background: 'white',
+            }}
+          >
+            <Grid container direction="row" spacing={1}>
+              <Grid item>
+                <DataTooltip
+                  data={row?.crop0?.description ? row?.crop0?.description : 'No Data'}
+                  disableInteractive
+                  placement="top-start"
+                />
+              </Grid>
+              <Grid item>
+                <Typography variant="body1" sx={{ fontStyle: 'bold' }}>
+                  {row.comparisonKey}
+                </Typography>
+              </Grid>
+            </Grid>
+          </TableCell>
+        );
+      }
+
+      const getAttributeData = () => {
+        // handles no attribute
+        if (!attribute) {
+          return <Typography variant="body2">No Data</Typography>;
+        }
+        const attributeValues = [];
+        for (let i = 0; i < attribute?.values.length; i++) {
+          if (attribute?.values[i].value) {
+            attributeValues.push(
+              `${attribute?.values[i].value}${attribute?.units ? ` ${attribute?.units}` : ''}`,
+            );
+          } else {
+            attributeValues.push(attribute?.values[i]);
+          }
+        }
+        const dataType = attribute?.dataType;
+        return extractData(attributeValues, dataType, attribute, councilShorthandRedux);
+      };
+
       return (
-        <TableCell
-          key={index}
-          component="th"
-          scope="row"
-          sx={{
-            position: 'sticky', left: 0, background: 'white',
-          }}
-        >
-          <Grid container direction="row" spacing={1}>
-            <Grid item>
-              <DataTooltip
-                data={row?.crop0?.description ? row?.crop0?.description : 'No Data'}
-                disableInteractive
-                placement="top-start"
-              />
-            </Grid>
-            <Grid item>
-              <Typography variant="body1" sx={{ fontStyle: 'bold' }}>
-                {row.comparisonKey}
-              </Typography>
-            </Grid>
-          </Grid>
+        <TableCell align="center" key={key}>
+          {getAttributeData()}
         </TableCell>
       );
-    }
+    });
 
-    const getAttributeData = () => {
-      // handles no attribute
-      if (!attribute) {
-        return <Typography variant="body2">No Data</Typography>;
-      }
-      const attributeValues = [];
-      for (let i = 0; i < attribute?.values.length; i++) {
-        if (attribute?.values[i].value) {
-          attributeValues.push(`${attribute?.values[i].value}${attribute?.units ? ` ${attribute?.units}` : ''}`);
-        } else {
-          attributeValues.push(attribute?.values[i]);
-        }
-      }
-      const dataType = attribute?.dataType;
-      return extractData(attributeValues, dataType, attribute, councilShorthandRedux);
-    };
-
-    return (
-      <TableCell align="center" key={index}>
-        {getAttributeData()}
-      </TableCell>
-    );
-  });
-
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <buildTable changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
-    buildTable().then(() => { setRows(tempRows); });
+    buildTable().then(() => {
+      setRows(tempRows);
+    });
   }, [comparisonKeysRedux, selectedCrops]);
 
   useEffect(() => {
     if (tableRef.current) {
       dispatchRedux(setTableWidth(tableRef.current.scrollWidth));
     }
-  }, [rows, dispatchRedux, tableRef]);
+  }, [dispatchRedux]);
   return (
     // <TableContainer style={{ overflowX: 'initial' }}>
     <TableContainer component="div" sx={{ overflowX: 'initial' }}>
       <Table stickyHeader aria-label="sticky table" ref={tableRef}>
         <TableHead>
           {modalOpen && (
-            <InformationSheet
-              modalOpen={modalOpen}
-              setModalOpen={setModalOpen}
-              crop={modalData}
-            />
+            <InformationSheet modalOpen={modalOpen} setModalOpen={setModalOpen} crop={modalData} />
           )}
-          <TableRow>
-            {buildTableHeaders()}
-          </TableRow>
+          <TableRow>{buildTableHeaders()}</TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
-            <TableRow
-              key={`${row.comparisonKey} ${index}`}
-              data-test={`${row.comparisonKey}-row`}
-            >
+          {rows.map((row) => (
+            <TableRow key={`${row.comparisonKey}`} data-test={`${row.comparisonKey}-row`}>
               {buildTableRows(row)}
             </TableRow>
           ))}

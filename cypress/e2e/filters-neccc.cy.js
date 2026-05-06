@@ -1,8 +1,5 @@
-/* eslint-disable */
 import { flipCoverCropName } from '../../src/shared/constants';
 import { testFiltersByType } from '../support/e2e';
-
-/* eslint-disable no-undef */
 
 describe('Test all possible interactions on the NECCC Crop Calendar Page', () => {
   // before each test
@@ -17,14 +14,22 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
     cy.getByTestId('get-a-recommendation-btn').first().click();
     cy.assertByTestId('field-location-title');
 
-    cy.window().its('store').invoke('dispatch', {
-      type: 'UPDATE_LOCATION',
-      payload: { address: '170 State Street', markers: [[42.652843, -73.757874]], county: 'Albany County' },
-    });
-    cy.window().its('store').invoke('dispatch', {
-      type: 'UPDATE_REGION',
-      payload: { regionId: 3, regionShorthand: '6' },
-    });
+    cy.window()
+      .its('store')
+      .invoke('dispatch', {
+        type: 'UPDATE_LOCATION',
+        payload: {
+          address: '170 State Street',
+          markers: [[42.652843, -73.757874]],
+          county: 'Albany County',
+        },
+      });
+    cy.window()
+      .its('store')
+      .invoke('dispatch', {
+        type: 'UPDATE_REGION',
+        payload: { regionId: 3, regionShorthand: '6' },
+      });
 
     cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('site-conditions-title');
@@ -32,23 +37,29 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
     cy.assertByTestId('title-goals');
     cy.intercept('GET', '**/v1/states/36/crops?minimal=true&*').as('getCropsData');
     cy.intercept('GET', '**/v1/states/36/filters?*').as('getFilters');
-    cy.get("[data-test='next-btn']").first().click().then(() => {
-      cy.wait('@getCropsData').then((interception) => {
-        const { data } = interception.response.body;
-        Cypress.env('cropData', data);
+    cy.get("[data-test='next-btn']")
+      .first()
+      .click()
+      .then(() => {
+        cy.wait('@getCropsData').then((interception) => {
+          const { data } = interception.response.body;
+          Cypress.env('cropData', data);
+        });
+        cy.wait('@getFilters').then((interception) => {
+          const { data } = interception.response.body;
+          // 'Goals' are for goals not filters, remove the data from it
+          const filterTypes = data
+            .map((filter) => filter.label)
+            .filter((label) => label !== 'Goals');
+          const allFilters = data.reduce((res, filter) => {
+            if (filter.label === 'Goals') return res;
+            res.push(...filter.attributes);
+            return res;
+          }, []);
+          Cypress.env('filterTypes', filterTypes);
+          Cypress.env('allFilters', allFilters);
+        });
       });
-      cy.wait('@getFilters').then((interception) => {
-        const { data } = interception.response.body;
-        // 'Goals' are for goals not filters, remove the data from it
-        const filterTypes = data.map((filter) => filter.label).filter((label) => label !== 'Goals');
-        const allFilters = data.reduce((res, filter) => {
-          if (filter.label === 'Goals') return res;
-          return [...res, ...filter.attributes];
-        }, []);
-        Cypress.env('filterTypes', filterTypes);
-        Cypress.env('allFilters', allFilters);
-      });
-    });
   });
 
   it('should work on all types of filters', () => {
@@ -109,20 +120,24 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
       .first()
       .click()
       .then(() => {
-        cy.getByTestId('crop-comparison-table-header').each(($label) => {
-          // Ensure the label is visible
-          cy.wrap($label).should('be.visible')
-            .invoke('text')
-            .then((labelText) => {
-              myCropLabels.push(flipCoverCropName(labelText));
-              cy.log(`Crop Card Label: ${labelText}`);
-            });
-        })
+        cy.getByTestId('crop-comparison-table-header')
+          .each(($label) => {
+            // Ensure the label is visible
+            cy.wrap($label)
+              .should('be.visible')
+              .invoke('text')
+              .then((labelText) => {
+                myCropLabels.push(flipCoverCropName(labelText));
+                cy.log(`Crop Card Label: ${labelText}`);
+              });
+          })
           .then(() => {
             cy.log('=== CARD LABELS===', myCropLabels);
             expect(cropLabels.length).to.equal(myCropLabels.length);
             btnIdx.forEach((idx) => {
-              expect(cropLabels[idx].trim().toLowerCase()).to.equal(myCropLabels[idx].trim().toLowerCase());
+              expect(cropLabels[idx].trim().toLowerCase()).to.equal(
+                myCropLabels[idx].trim().toLowerCase(),
+              );
             });
           });
       });
@@ -135,9 +150,7 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
       btnIdx.forEach((idx) => {
         cy.getByTestId(`cart-btn-${idx}`).click();
       });
-      cy.get("[data-test='my selected crops-btn']")
-        .first()
-        .click({ force: true })
+      cy.get("[data-test='my selected crops-btn']").first().click({ force: true });
 
       const filterTypes = Cypress.env('filterTypes');
       for (let i = 0; i < filterTypes.length; i++) {

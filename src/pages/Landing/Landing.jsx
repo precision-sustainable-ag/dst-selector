@@ -1,37 +1,27 @@
-// /* eslint-disable */
-/* eslint-disable no-alert */
 /*
   This file contains the Landing component, helper functions, and styles
   The Landing page is a static pages that has information about the project and prompts the user to select their location and goals
   styled using ../../styles/landing.scss
 */
 
-import {
-  Grid, Typography, Box, Button,
-} from '@mui/material';
-// import SelectUSState from 'react-select-us-states';
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Box, Button, Grid, Typography } from '@mui/material';
+// import SelectUSState from 'react-select-us-states';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSADropdown, PSARegionSelectorMap } from 'shared-react-components/src';
-import { callCoverCropApi } from '../../shared/constants';
-import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
-import { updateLocation } from '../../reduxStore/addressSlice';
-import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
+import useIsMobile from '../../hooks/useIsMobile';
+import { updateLocation } from '../../reduxStore/addressSlice';
+import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
+import { setQueryString } from '../../reduxStore/sharedSlice';
+import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
+import { callCoverCropApi } from '../../shared/constants';
 import { mapboxToken, testAuth0Env } from '../../shared/keys';
 import statesLatLongDict from '../../shared/stateslatlongdict';
-import { setQueryString } from '../../reduxStore/sharedSlice';
-import useIsMobile from '../../hooks/useIsMobile';
 
-const StateImageButton = ({
-  sx, onClick, src, alt,
-}) => (
+const StateImageButton = ({ sx, onClick, src, alt }) => (
   <Button
     variant="contained"
     sx={{
@@ -45,12 +35,7 @@ const StateImageButton = ({
     aria-label={alt}
     role="button"
   >
-    <img
-      src={src}
-      alt={alt}
-      width="100px"
-      height="100px"
-    />
+    <img src={src} alt={alt} width="100px" height="100px" />
   </Button>
 );
 
@@ -90,14 +75,16 @@ const Landing = () => {
 
   // Load map data based on current enviorment
   useEffect(() => {
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
-      const productionCouncils = ['NECCC', 'SCCC', 'MCCC', 'WCCC'];
-      const states = isDevEnvironment
-        ? stateData.data
-        : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
-      setAllStates(states);
-    });
-  }, []);
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then(
+      (stateData) => {
+        const productionCouncils = ['NECCC', 'SCCC', 'MCCC', 'WCCC'];
+        const states = isDevEnvironment
+          ? stateData.data
+          : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
+        setAllStates(states);
+      },
+    );
+  }, [apiBaseUrlRedux, isDevEnvironment]);
 
   // set initial map state based on stateIdRedux
   // user history api/user click next and come back
@@ -120,7 +107,7 @@ const Landing = () => {
         setSelectedState(st[0]);
       }
     }
-  }, [mapState]);
+  }, [mapState, allStates]);
 
   // update state and regions redux based on state change(from dropdown or map)
   useEffect(() => {
@@ -138,12 +125,14 @@ const Landing = () => {
       // update state
       localStorage.setItem('stateId', selectedState.id);
       if (stateIdRedux !== selectedState.id) {
-        dispatchRedux(updateStateInfo({
-          stateLabel: selectedState.label,
-          stateId: selectedState.id,
-          councilShorthand: selectedState.council.shorthand,
-          councilLabel: selectedState.council.label,
-        }));
+        dispatchRedux(
+          updateStateInfo({
+            stateLabel: selectedState.label,
+            stateId: selectedState.id,
+            councilShorthand: selectedState.council.shorthand,
+            councilLabel: selectedState.council.label,
+          }),
+        );
         dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
         dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
         dispatchRedux(updateField(null));
@@ -156,8 +145,13 @@ const Landing = () => {
       // set querystring for WCCC
       if (selectedState.council.shorthand === 'WCCC') {
         const [lat, lon] = statesLatLongDict[selectedState.label];
-        callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`).then((data) => {
-          const query = data.data.filter((i) => i?.id !== null && i?.id !== undefined).map((i) => `regions=${i.id}`).join('&');
+        callCoverCropApi(
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`,
+        ).then((data) => {
+          const query = data.data
+            .filter((i) => i?.id !== null && i?.id !== undefined)
+            .map((i) => `regions=${i.id}`)
+            .join('&');
           dispatchRedux(setQueryString(query));
         });
       }
@@ -179,23 +173,26 @@ const Landing = () => {
             // , skip set default since there already exist region selection
             if (stateIdRedux !== selectedState.id) {
               // set default region for Selector and Explorer
-              if (!fetchedRegions[0]?.id || !fetchedRegions[0]?.shorthand) throw new Error('Unavailable region.');
+              if (!fetchedRegions[0]?.id || !fetchedRegions[0]?.shorthand)
+                throw new Error('Unavailable region.');
               localStorage.setItem('regionId', fetchedRegions[0].id);
-              dispatchRedux(updateRegion({
-                regionId: fetchedRegions[0].id,
-                regionShorthand: fetchedRegions[0].shorthand,
-              }));
+              dispatchRedux(
+                updateRegion({
+                  regionId: fetchedRegions[0].id,
+                  regionShorthand: fetchedRegions[0].shorthand,
+                }),
+              );
             }
             // set querystring for non WCCC states
             dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id}`));
           })
           .catch((err) => {
-          // eslint-disable-next-line no-console
+            // eslint-disable-next-line no-console
             console.log(err.message);
           });
       }
     }
-  }, [selectedState]);
+  }, [selectedState, apiBaseUrlRedux, stateIdRedux, historyStateRedux, allStates, dispatchRedux]);
 
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Landing' } });
@@ -213,9 +210,7 @@ const Landing = () => {
         .getElementsByTagName('header')[0]
         .getBoundingClientRect().height;
 
-      const navHeight = document
-        .getElementsByTagName('nav')[0]
-        .getBoundingClientRect().height;
+      const navHeight = document.getElementsByTagName('nav')[0].getBoundingClientRect().height;
 
       const footerHeight = document
         .getElementsByClassName('primaryFooter')[0]
@@ -281,11 +276,7 @@ const Landing = () => {
       id="landingWrapper"
       margin={-1}
     >
-      <Grid
-        style={backgroundSyles.frostedGlassEffect}
-        mt={1}
-        sx={{ maxWidth: '800px' }}
-      >
+      <Grid style={backgroundSyles.frostedGlassEffect} mt={1} sx={{ maxWidth: '800px' }}>
         <Box mr={1} ml={1} mb={1} mt={1}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
@@ -295,13 +286,17 @@ const Landing = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body1" align="center">
-                Choose your state from the dropdown or the map. You can zoom by scrolling or pinching on mobile.
+                Choose your state from the dropdown or the map. You can zoom by scrolling or
+                pinching on mobile.
               </Typography>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="center">
               <PSADropdown
                 label="STATE"
-                items={allStates.map((state) => ({ value: state.shorthand, label: state.label?.toUpperCase() }))}
+                items={allStates.map((state) => ({
+                  value: state.shorthand,
+                  label: state.label?.toUpperCase(),
+                }))}
                 formSx={{ minWidth: 120 }}
                 inputSx={{
                   color: '#598445',
@@ -343,12 +338,11 @@ const Landing = () => {
                   : 'Log in to try out our new user history feature!'}
               </Typography>
             </Grid>
-            {isAuthenticated
-              && (
-                <Grid item xs={12}>
-                  <HistorySelect />
-                </Grid>
-              )}
+            {isAuthenticated && (
+              <Grid item xs={12}>
+                <HistorySelect />
+              </Grid>
+            )}
           </Grid>
         </Box>
       </Grid>
@@ -377,36 +371,46 @@ const Landing = () => {
             mapboxToken={mapboxToken}
             key="1"
           />
-          <>
-            <StateImageButton
-              sx={{
-                position: 'absolute',
-                bottom: isMobile ? '-110px' : '140px',
-                left: '10px',
-                ...(selectedState.label === 'Alaska' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
-              }}
-              onClick={() => {
-                const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
-                setSelectedState(alaska);
-              }}
-              src={selectedState.label === 'Alaska' ? '/images/alaska-selected.jpg' : '/images/alaska.jpg'}
-              alt="select Alaska"
-            />
-            <StateImageButton
-              sx={{
-                position: 'absolute',
-                bottom: isMobile ? '-110px' : '30px',
-                left: isMobile ? '120px' : '10px',
-                ...(selectedState.label === 'Hawaii' ? { border: '2px solid', borderColor: 'primary.main' } : {}),
-              }}
-              onClick={() => {
-                const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
-                setSelectedState(hawaii);
-              }}
-              src={selectedState.label === 'Hawaii' ? '/images/hawaii-selected.jpg' : '/images/hawaii.jpg'}
-              alt="select Hawaii"
-            />
-          </>
+          <StateImageButton
+            sx={{
+              position: 'absolute',
+              bottom: isMobile ? '-110px' : '140px',
+              left: '10px',
+              ...(selectedState.label === 'Alaska'
+                ? { border: '2px solid', borderColor: 'primary.main' }
+                : {}),
+            }}
+            onClick={() => {
+              const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
+              setSelectedState(alaska);
+            }}
+            src={
+              selectedState.label === 'Alaska'
+                ? '/images/alaska-selected.jpg'
+                : '/images/alaska.jpg'
+            }
+            alt="select Alaska"
+          />
+          <StateImageButton
+            sx={{
+              position: 'absolute',
+              bottom: isMobile ? '-110px' : '30px',
+              left: isMobile ? '120px' : '10px',
+              ...(selectedState.label === 'Hawaii'
+                ? { border: '2px solid', borderColor: 'primary.main' }
+                : {}),
+            }}
+            onClick={() => {
+              const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
+              setSelectedState(hawaii);
+            }}
+            src={
+              selectedState.label === 'Hawaii'
+                ? '/images/hawaii-selected.jpg'
+                : '/images/hawaii.jpg'
+            }
+            alt="select Hawaii"
+          />
         </Box>
       </Grid>
     </Box>

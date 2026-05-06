@@ -24,8 +24,6 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-/* eslint-disable no-undef */
-
 Cypress.Commands.add('getByTestId', (testId, ...args) => {
   cy.get(`[data-test="${testId}"]`, ...args);
 });
@@ -35,7 +33,7 @@ Cypress.Commands.add('loginToAuth0', () => {
   const log = Cypress.log({
     displayName: 'AUTH0 LOGIN',
     message: [`🔐 Authenticating | ${args.username}`],
-    // @ts-ignore
+    // @ts-expect-error
     autoEnd: false,
   });
   log.snapshot('before');

@@ -1,13 +1,12 @@
-import React from 'react';
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
-import SiteConditions from './SiteConditions';
 import { setAddressRedux } from '../../reduxStore/addressSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
 import { setSharedRedux } from '../../reduxStore/sharedSlice';
-import configureStore from '../../reduxStore/store';
 import { setSoilRedux } from '../../reduxStore/soilSlice';
+import configureStore from '../../reduxStore/store';
 import { setWeatherReduxForTest } from '../../reduxStore/weatherSlice';
+import SiteConditions from './SiteConditions';
 
 /* eslint-disable no-undef */
 
@@ -203,12 +202,7 @@ describe('<SiteConditions />', () => {
   it('should render all site condition cards', () => {
     const addressData = {
       address: '209 West Capitol Avenue',
-      markers: [
-        [
-          38.579201,
-          -92.172935,
-        ],
-      ],
+      markers: [[38.579201, -92.172935]],
       county: 'Cole County',
     };
 
@@ -225,7 +219,6 @@ describe('<SiteConditions />', () => {
           updatedAt: '2023-02-27T20:56:26.049Z',
           deletedAt: null,
         },
-
       ],
       regionId: 676,
       regionShorthand: 'Cole',

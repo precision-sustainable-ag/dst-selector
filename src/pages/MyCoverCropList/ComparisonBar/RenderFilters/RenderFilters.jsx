@@ -2,6 +2,7 @@
   Handles rendering the goals and updating them when selected
 */
 
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   Collapse,
   FormControlLabel,
@@ -12,10 +13,9 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
-import { PSATooltip, PSACheckbox } from 'shared-react-components/src';
+import { PSACheckbox, PSATooltip } from 'shared-react-components/src';
 import { updateComparisonKeys } from '../../../../reduxStore/sharedSlice';
 
 const RenderFilters = ({
@@ -39,33 +39,33 @@ const RenderFilters = ({
 
   return filterValues.map((filter, index) => {
     if (
-      filter.name === 'Soil Conditions'
-      || filter.name === 'Disease & Non Weed Pests'
-      || filter.name === 'Beneficials'
+      filter.name === 'Soil Conditions' ||
+      filter.name === 'Disease & Non Weed Pests' ||
+      filter.name === 'Beneficials'
     ) {
       return null;
     }
     return (
-      <Fragment key={`filters-outer-${index}`}>
+      <Fragment key={`filters-outer-${filter.name}`}>
         {filter.description !== null ? (
           <PSATooltip
             arrow
             placement="right-start"
             enterTouchDelay={0}
             title={filter.description}
-            key={`tooltip-outer-${index}`}
-            tooltipContent={(
+            key={`tooltip-outer-${filter.name}`}
+            tooltipContent={
               <ListItemButton
                 sx={{ backgroundColor: filterValues[index].open ? '#add08f' : 'white' }}
                 component="div"
                 onClick={() => toggleSidebarFilterItems(index)}
               >
                 <ListItemText
-                  primary={(
+                  primary={
                     <Typography variant="body2" data-test={`${filter.name.toUpperCase()}`}>
                       {filter.name.toUpperCase()}
                     </Typography>
-                  )}
+                  }
                 />
                 {filterValues[index].open ? (
                   <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
@@ -73,7 +73,7 @@ const RenderFilters = ({
                   <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
                 )}
               </ListItemButton>
-            )}
+            }
           />
         ) : (
           <ListItemButton
@@ -82,11 +82,11 @@ const RenderFilters = ({
             onClick={() => toggleSidebarFilterItems(index)}
           >
             <ListItemText
-              primary={(
+              primary={
                 <Typography variant="body2" data-test={`${filter.name.toUpperCase()}`}>
                   {filter.name.toUpperCase()}
                 </Typography>
-              )}
+              }
             />
             {filterValues[index].open ? (
               <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
@@ -102,7 +102,7 @@ const RenderFilters = ({
               <Grid container spacing={1}>
                 {filter.name === 'Cover Crop Type' ? (
                   <FormControlLabel
-                    control={(
+                    control={
                       <PSACheckbox
                         checked={comparisonKeys.includes('Cover Crop Group')}
                         name={filter.name}
@@ -119,41 +119,43 @@ const RenderFilters = ({
                           dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
                         }}
                       />
-                    )}
+                    }
                     label={<small>{filter.name}</small>}
                   />
                 ) : (
-                  filter.values.map((val, index2) => (val.name !== 'Roller Crimp at Flowering' ? (
-                    <Grid item xs={12} key={`filter-inner-${index2}`}>
-                      <PSATooltip
-                        arrow
-                        placement="right"
-                        enterTouchDelay={0}
-                        title={val.description}
-                        key={`tooltip${index}`}
-                        tooltipContent={(
-                          <FormControlLabel
-                            control={(
-                              <PSACheckbox
-                                checked={comparisonKeys.includes(val.alternateName || val.name)}
-                                name={val.name}
-                                data-test={`${val.name}-checkbox`}
-                                color="primary"
-                                onChange={() => {
-                                  updateCheckboxStatus(
-                                    val.alternateName ? val.alternateName : val.name,
-                                  );
-                                }}
-                              />
-                              )}
-                            label={<small>{val.name}</small>}
-                          />
-                          )}
-                      />
-                    </Grid>
-                  ) : (
-                    ''
-                  )))
+                  filter.values.map((val) =>
+                    val.name !== 'Roller Crimp at Flowering' ? (
+                      <Grid item xs={12} key={`filter-inner-${val.name}`}>
+                        <PSATooltip
+                          arrow
+                          placement="right"
+                          enterTouchDelay={0}
+                          title={val.description}
+                          key={`tooltip${val.name}`}
+                          tooltipContent={
+                            <FormControlLabel
+                              control={
+                                <PSACheckbox
+                                  checked={comparisonKeys.includes(val.alternateName || val.name)}
+                                  name={val.name}
+                                  data-test={`${val.name}-checkbox`}
+                                  color="primary"
+                                  onChange={() => {
+                                    updateCheckboxStatus(
+                                      val.alternateName ? val.alternateName : val.name,
+                                    );
+                                  }}
+                                />
+                              }
+                              label={<small>{val.name}</small>}
+                            />
+                          }
+                        />
+                      </Grid>
+                    ) : (
+                      ''
+                    ),
+                  )
                 )}
               </Grid>
             </ListItem>

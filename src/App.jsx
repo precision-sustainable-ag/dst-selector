@@ -5,44 +5,43 @@
 */
 
 import {
+  adaptV4Theme,
   Box,
   Container,
-  ThemeProvider,
-  StyledEngineProvider,
-  responsiveFontSizes,
-  adaptV4Theme,
-  Grow,
   CssBaseline,
+  Grow,
+  responsiveFontSizes,
+  StyledEngineProvider,
+  ThemeProvider,
 } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import React, { Suspense } from 'react';
-import { useSelector, Provider } from 'react-redux';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { PSAProfile, PSATheme } from 'shared-react-components/src';
 import { deepmerge } from '@mui/utils';
 import { SnackbarProvider } from 'notistack';
-import configureStore from './reduxStore/store';
-import { CustomStyles } from './shared/constants';
-
+import { Suspense } from 'react';
+import { Provider, useSelector } from 'react-redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { PSAProfile, PSATheme } from 'shared-react-components/src';
+import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
+import About from './pages/About/About';
+import CoverCropExplorer from './pages/CoverCropExplorer/CoverCropExplorer';
 import CropSelector from './pages/CropSelector/CropSelector';
+import Feedback from './pages/Feedback/Feedback';
+import Footer from './pages/Footer/Footer';
 import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
 import Header from './pages/Header/Header';
+import Help from './pages/Help/Help';
+import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/InformationSheetDictionary';
 import Landing from './pages/Landing/Landing';
+import License from './pages/License/License';
 import Location from './pages/Location/Location';
+import MixMaker from './pages/MixMaker/MixMaker';
+import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 // import LocationConfirmation from './pages/Location/LocationConfirmation/SiteConditions';
 import RouteNotFound from './pages/RouteNotFound/RouteNotFound';
-import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
-import Footer from './pages/Footer/Footer';
-import About from './pages/About/About';
 import SeedingRateCalculator from './pages/SeedingRateCalculator/SeedingRateCalculator';
-import MixMaker from './pages/MixMaker/MixMaker';
-import CoverCropExplorer from './pages/CoverCropExplorer/CoverCropExplorer';
-import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/InformationSheetDictionary';
-import License from './pages/License/License';
-import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
-import Help from './pages/Help/Help';
-import Feedback from './pages/Feedback/Feedback';
 import Wizard from './pages/Wizard/wizard';
+import configureStore from './reduxStore/store';
+import { CustomStyles } from './shared/constants';
 
 import './styles/App.scss';
 // bootstrap import
@@ -153,13 +152,21 @@ const App = () => (
                         <Route path="/feedback" component={Feedback} exact />
                         <Route path="/wizard" render={Wizard} exact />
                         <Route path="/profile" render={() => <PSAProfile />} exact />
-                        <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                        <Route
+                          path="/my-cover-crop-list"
+                          component={MyCoverCropListWrapper}
+                          exact
+                        />
                         <Route
                           path="/seeding-rate-calculator"
                           component={SeedingRateCalculator}
                           exact
                         />
-                        <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                        <Route
+                          path="/data-dictionary"
+                          component={InformationSheetDictionary}
+                          exact
+                        />
                         <Route path="/license" render={() => <License licenseType="MIT" />} exact />
                         <Route
                           path="/ag-informatics-license"
@@ -216,73 +223,70 @@ const LoadRelevantRoute = () => {
   }
 };
 
-window.addEventListener('error', (err) => {
-  if (!/^https:/.test(window.location.href)) return;
+window.addEventListener(
+  'error',
+  (err) => {
+    if (!/^https:/.test(window.location.href)) return;
 
-  const reduxState = store.getState();
-  const {
-    cropData,
-    userData,
-    goalsData,
-    addressData,
-    soilData,
-    ...rest
-  } = reduxState;
+    const reduxState = store.getState();
+    const { cropData, userData, goalsData, addressData, soilData, ...rest } = reduxState;
 
-  // Filter out the latLong from soilData to avoid sending sensitive information
-  const filteredSoilData = soilData
-    ? {
-      ...soilData,
-      soilData: soilData.soilData
-        ? { ...soilData.soilData, latLong: undefined }
+    // Filter out the latLong from soilData to avoid sending sensitive information
+    const filteredSoilData = soilData
+      ? {
+          ...soilData,
+          soilData: soilData.soilData ? { ...soilData.soilData, latLong: undefined } : undefined,
+          soilDataOriginal: soilData.soilDataOriginal
+            ? { ...soilData.soilDataOriginal, latLong: undefined }
+            : undefined,
+        }
+      : undefined;
+
+    // Exclude sensitive information like latLong from soilData and include only necessary fields from cropData and goalsData
+    const filteredReduxState = {
+      ...rest,
+      cropData: cropData
+        ? { selectedCropIds: cropData.selectedCropIds, cashCropData: cropData.cashCropData }
         : undefined,
-      soilDataOriginal: soilData.soilDataOriginal
-        ? { ...soilData.soilDataOriginal, latLong: undefined }
-        : undefined,
-    }
-    : undefined;
+      goalsData: goalsData ? { selectedGoals: goalsData.selectedGoals } : undefined,
+      soilData: filteredSoilData,
+    };
+    const reduxStateJson = JSON.stringify(filteredReduxState).replace(/"/g, "'");
 
-  // Exclude sensitive information like latLong from soilData and include only necessary fields from cropData and goalsData
-  const filteredReduxState = {
-    ...rest,
-    cropData: cropData ? { selectedCropIds: cropData.selectedCropIds, cashCropData: cropData.cashCropData } : undefined,
-    goalsData: goalsData ? { selectedGoals: goalsData.selectedGoals } : undefined,
-    soilData: filteredSoilData,
-  };
-  const reduxStateJson = JSON.stringify(filteredReduxState).replace(/"/g, "'");
+    const requestPayload = {
+      repository: 'dst-feedback',
+      title: 'CRASH',
+      name: 'error',
+      email: 'error@error.com',
+      comments: `Error: ${err?.error.stack} | File: ${err?.filename} | Redux State: ${reduxStateJson}`,
+      labels: ['crash', 'dst-selector'],
+    };
 
-  const requestPayload = {
-    repository: 'dst-feedback',
-    title: 'CRASH',
-    name: 'error',
-    email: 'error@error.com',
-    comments: `Error: ${err?.error.stack} | File: ${err?.filename} | Redux State: ${reduxStateJson}`,
-    labels: ['crash', 'dst-selector'],
-  };
-
-  /* eslint-disable no-alert */
-  fetch('https://feedback.covercrop-data.org/v1/issues', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(requestPayload),
-  })
-    .then((response) => response.json())
-    .then((body) => {
-      if (body?.data?.status === 'success') {
-        alert(`
+    /* eslint-disable no-alert */
+    fetch('https://feedback.covercrop-data.org/v1/issues', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestPayload),
+    })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body?.data?.status === 'success') {
+          alert(`
           An error occurred.
           We have been notified and will investigate the problem.
         `);
-      } else {
-        alert('An error occurred');
-      }
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.log(error);
-      alert('Failed to send Feedback to Github.');
-    });
-}, { once: true });
+        } else {
+          alert('An error occurred');
+        }
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        alert('Failed to send Feedback to Github.');
+      });
+  },
+  { once: true },
+);
 /* eslint-enable no-alert */

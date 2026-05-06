@@ -4,11 +4,11 @@
   styles are made in ../../styles/footer.scss
 */
 
-import React, { useState, useEffect } from 'react';
 import { Box, Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import ProgressButtons from '../../shared/ProgressButtons';
 import NavigationButtons from '../../shared/NavigationButtons';
+import ProgressButtons from '../../shared/ProgressButtons';
 
 const Footer = () => {
   const history = useHistory();

@@ -1,9 +1,8 @@
-import React from 'react';
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
-import WeatherFrostDates from './WeatherFrostDates';
 import configureStore from '../../../reduxStore/store';
 import { setWeatherReduxForTest } from '../../../reduxStore/weatherSlice';
+import WeatherFrostDates from './WeatherFrostDates';
 
 /* eslint-disable no-undef */
 
@@ -48,17 +47,21 @@ describe('<WeatherFrostDates />', () => {
     mountComponentWithProvider();
 
     // Assert that the first frost date is displayed correctly
-    cy.assertByTestId('frost-dates-card')
-      .should(
-        'contain.text',
-        `${weatherData.averageFrost.firstFrostDate.month} ${weatherData.averageFrost.firstFrostDate.day}`,
-      );
+    cy.assertByTestId('frost-dates-card').should(
+      'contain.text',
+      `${weatherData.averageFrost.firstFrostDate.month} ${weatherData.averageFrost.firstFrostDate.day}`,
+    );
 
     // Assert that the last frost date is displayed correctly
-    cy.assertByTestId('frost-dates-card')
-      .should('contain.text', `${weatherData.averageFrost.lastFrostDate.month} ${weatherData.averageFrost.lastFrostDate.day}`);
+    cy.assertByTestId('frost-dates-card').should(
+      'contain.text',
+      `${weatherData.averageFrost.lastFrostDate.month} ${weatherData.averageFrost.lastFrostDate.day}`,
+    );
 
     // Assert that the frost free days are displayed correctly
-    cy.assertByTestId('frost-dates-card').should('contain.text', weatherData.frostFreeDays.toString());
+    cy.assertByTestId('frost-dates-card').should(
+      'contain.text',
+      weatherData.frostFreeDays.toString(),
+    );
   });
 });

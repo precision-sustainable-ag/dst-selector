@@ -4,50 +4,53 @@
   styled from from CustomStyles in ../../../shared/constants
 */
 
-import {
-  Grid,
-} from '@mui/material';
+import { Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
-import CropSidebar from '../CropSidebar/CropSidebar';
+import SkipContent from '../../components/SkipContent/SkipContent';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 import pirschAnalytics from '../../shared/analytics';
-import SkipContent from '../../components/SkipContent/SkipContent';
+import CropSidebar from '../CropSidebar/CropSidebar';
+import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 
 const CoverCropExplorer = () => {
   const history = useHistory();
   const dispatchRedux = useDispatch();
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   // open crop if url exists
   // eslint-disable-next-line
-  const urlCrop = window.location.search.match(/crop=([^\^]+)/);
+  const urlCrop = window.location.search.match(/crop=([^^]+)/);
   // eslint-disable-next-line
-  const urlParamStateId = window.location.search.match(/state=([^\^]+)/); // for automating Information Sheet PDFs
+  const urlParamStateId = window.location.search.match(/state=([^^]+)/); // for automating Information Sheet PDFs
   // eslint-disable-next-line
-  const urlRegionId = window.location.search.match(/region=([^\^]+)/); // for automating Information Sheet PDFs
+  const urlRegionId = window.location.search.match(/region=([^^]+)/); // for automating Information Sheet PDFs
 
   useEffect(() => {
-    const filteredActiveCropData = cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id));
+    const filteredActiveCropData = cropDataRedux.filter((crop) =>
+      activeCropIdsRedux.includes(crop.id),
+    );
     setUpdatedActiveCropData(filteredActiveCropData);
     if (urlCrop && urlParamStateId && urlRegionId) {
       localStorage.setItem('stateId', urlParamStateId[1]);
-      dispatchRedux(updateStateInfo({
-        stateLabel: null,
-        stateId: urlParamStateId[1],
-        councilShorthand: null,
-        councilLabel: null,
-      }));
+      dispatchRedux(
+        updateStateInfo({
+          stateLabel: null,
+          stateId: urlParamStateId[1],
+          councilShorthand: null,
+          councilLabel: null,
+        }),
+      );
       localStorage.setItem('regionId', urlRegionId[1]);
-      dispatchRedux(updateRegion({
-        regionId: urlRegionId[1],
-      }));
+      dispatchRedux(
+        updateRegion({
+          regionId: urlRegionId[1],
+        }),
+      );
 
       // eslint-disable-next-line
       for (const o of [...document.querySelectorAll('.MuiCardContent-root')]) {
@@ -57,22 +60,21 @@ const CoverCropExplorer = () => {
         }
       }
     }
-  }, [activeCropIdsRedux]);
+  }, [activeCropIdsRedux, cropDataRedux, dispatchRedux, urlCrop, urlParamStateId, urlRegionId]);
 
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Browse Cover Crops' } });
-  }, [consentRedux]);
+  }, []);
 
   useEffect(() => {
-    if ((stateIdRedux === null) && !urlParamStateId) {
+    if (stateIdRedux === null && !urlParamStateId) {
       history.replace('/');
     }
-  }, [stateIdRedux]);
+  }, [stateIdRedux, urlParamStateId, history]);
 
   return (
     <Grid container spacing={3}>
       <Grid item xl={3} lg={4} md={4} sm={12} xs={12}>
-
         <SkipContent
           href="#crop-list"
           text="Skip to crop list"
@@ -86,7 +88,11 @@ const CoverCropExplorer = () => {
 
         <CropSidebar
           from="explorer"
-          activeCropData={activeCropIdsRedux?.length > 0 ? cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)) : cropDataRedux}
+          activeCropData={
+            activeCropIdsRedux?.length > 0
+              ? cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id))
+              : cropDataRedux
+          }
           listView
         />
       </Grid>
@@ -105,9 +111,7 @@ const CoverCropExplorer = () => {
       />
 
       <Grid item xl={9} lg={8} md={8} sm={12} xs={12} id="crop-list">
-        <ExplorerCardView
-          activeCropData={updatedActiveCropData}
-        />
+        <ExplorerCardView activeCropData={updatedActiveCropData} />
       </Grid>
     </Grid>
   );

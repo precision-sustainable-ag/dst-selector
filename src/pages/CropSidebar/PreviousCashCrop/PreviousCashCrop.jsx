@@ -1,16 +1,14 @@
-import {
-  Grid, Typography,
-} from '@mui/material';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Grid, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
+import useIsMobile from '../../../hooks/useIsMobile';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
-import useIsMobile from '../../../hooks/useIsMobile';
 
 const PreviousCashCrop = () => {
   const dispatchRedux = useDispatch();
@@ -25,7 +23,8 @@ const PreviousCashCrop = () => {
 
   const handleDispatch = (start = '', end = '') => {
     // update history state here
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
     pirschAnalytics('Previous Cash Crop', { meta: { updated: true } });
     if (dayjs(end).isBefore(dayjs(start))) {
       setIsError(true);
@@ -35,7 +34,12 @@ const PreviousCashCrop = () => {
       return;
     }
     setIsError(false);
-    dispatchRedux(updateDateRange({ startDate: start ? start.toString() : null, endDate: end ? end.toString() : null }));
+    dispatchRedux(
+      updateDateRange({
+        startDate: start ? start.toString() : null,
+        endDate: end ? end.toString() : null,
+      }),
+    );
   };
 
   return (

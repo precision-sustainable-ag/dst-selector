@@ -5,24 +5,19 @@
   RenderContent contains all the text listed in the about section
 */
 
-import {
-  Box, Grid, Stack, Typography,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Box, Grid, Stack, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { PSAButton } from 'shared-react-components/src';
+import useIsMobile from '../../hooks/useIsMobile';
+import pirschAnalytics from '../../shared/analytics';
 import { CustomStyles } from '../../shared/constants';
-import LicenseAndCopyright from './LicenseAndCopyright/LicenseAndCopyright';
-import FundingAndAcknowledgements from './FundingAndAcknowledgements/FundingAndAcknowledgements';
 import AboutTheExperts from './AboutTheExperts/AboutTheExperts';
 import Attribution from './Attribution/Attribution';
-import pirschAnalytics from '../../shared/analytics';
-import useIsMobile from '../../hooks/useIsMobile';
+import FundingAndAcknowledgements from './FundingAndAcknowledgements/FundingAndAcknowledgements';
+import LicenseAndCopyright from './LicenseAndCopyright/LicenseAndCopyright';
 
 const About = () => {
   const [value, setValue] = useState(0);
-
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
 
   const isMobile = useIsMobile('md');
 
@@ -32,7 +27,7 @@ const About = () => {
 
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'About' } });
-  }, [consentRedux]);
+  }, []);
 
   const pageSections = [
     {
@@ -60,27 +55,27 @@ const About = () => {
   const getContent = () => {
     switch (value) {
       case 0:
-        return (
-          <LicenseAndCopyright />
-        );
+        return <LicenseAndCopyright />;
       case 1:
-        return (
-          <Attribution />
-        );
+        return <Attribution />;
       case 2:
-        return (
-          <FundingAndAcknowledgements />
-        );
-      case 3: return (
-        <AboutTheExperts />
-      );
-      default: return null;
+        return <FundingAndAcknowledgements />;
+      case 3:
+        return <AboutTheExperts />;
+      default:
+        return null;
     }
   };
 
   return (
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
-      <Grid container spacing={0} justifyContent="center" mt={isMobile ? 0 : 5} mb={isMobile ? 0 : 5}>
+      <Grid
+        container
+        spacing={0}
+        justifyContent="center"
+        mt={isMobile ? 0 : 5}
+        mb={isMobile ? 0 : 5}
+      >
         <Grid item xs={12} sm={12} md={3.4} lg={3.4} xl={3.4}>
           <div
             style={{
@@ -116,7 +111,11 @@ const About = () => {
           lg={8}
           xl={8}
           mt={{
-            xs: 3, sm: 3, md: 0, lg: 0, xl: 0,
+            xs: 3,
+            sm: 3,
+            md: 0,
+            lg: 0,
+            xl: 0,
           }}
         >
           <div style={{ border: `1px solid ${CustomStyles().darkGreen}`, minHeight: '320px' }}>

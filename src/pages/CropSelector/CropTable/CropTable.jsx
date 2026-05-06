@@ -2,9 +2,13 @@
 /*
   This file contains the CropTable component
 */
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+
+import { CalendarToday } from '@mui/icons-material';
+import ListIcon from '@mui/icons-material/List';
+import StraightIcon from '@mui/icons-material/Straight';
 import {
+  Box,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -12,28 +16,19 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Grid,
-  Box,
 } from '@mui/material';
-import ListIcon from '@mui/icons-material/List';
-import { CalendarToday } from '@mui/icons-material';
-import StraightIcon from '@mui/icons-material/Straight';
-import { PSAButton, PSATooltip, PSALoadingSpinner } from 'shared-react-components/src';
-import {
-  sortCrops, sudotype,
-} from '../../../shared/constants';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { PSAButton, PSALoadingSpinner, PSATooltip } from 'shared-react-components/src';
+import { sortCrops, sudotype } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
-import RenderTableItems from './RenderTableItems';
-import { setTableWidth } from '../../../reduxStore/pageSlice';
 import InformationSheet from '../../../components/InformationSheet/InformationSheet';
 import useIsMobile from '../../../hooks/useIsMobile';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
+import RenderTableItems from './RenderTableItems';
 
-const CropTable = ({
-  listView,
-  setListView,
-  showGrowthWindow,
-}) => {
+const CropTable = ({ listView, setListView, showGrowthWindow }) => {
   // redux vars
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
@@ -110,11 +105,12 @@ const CropTable = ({
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <sortByAverageGoals changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     if (cropDataRedux.length !== 0) {
       sortByAverageGoals();
     }
-  }, []);
+  }, [cropDataRedux.length]);
 
   const tableRef = useRef(null);
   const dispatchRedux = useDispatch();
@@ -125,7 +121,7 @@ const CropTable = ({
       // tableWidth += 1000;
       dispatchRedux(setTableWidth(tableWidth));
     }
-  }, [dispatchRedux, tableRef]);
+  }, [dispatchRedux]);
   return cropDataRedux.length !== 0 ? (
     <>
       <Box
@@ -192,42 +188,43 @@ const CropTable = ({
                   arrow
                   enterTouchDelay={0}
                   title="Sort by Crop Name"
-                  tooltipContent={(
+                  tooltipContent={
                     <Box tabIndex="0">
                       <PSAButton
                         onClick={() => sortByName()}
                         buttonType=""
                         sx={{ color: 'black', textTransform: 'none' }}
                         variant="body1"
-                        title={(
+                        title={
                           <>
                             Cover Crops
-                            {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
+                            {columnSort === 'name' && (
+                              <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />
+                            )}
                           </>
-                        )}
+                        }
                       />
                     </Box>
-                  )}
+                  }
                 />
               </TableCell>
-              {cropDataRedux[0].keyTraits.length > 0
-                && (
+              {cropDataRedux[0].keyTraits.length > 0 && (
+                <TableCell
+                  sx={{ padding: 0 }}
+                  style={{
+                    backgroundColor: '#abd08f',
+                  }}
+                >
+                  <Typography variant="body1" style={sudotype}>
+                    Key Traits
+                  </Typography>
+                </TableCell>
+              )}
+              {selectedGoalsRedux.length > 0 &&
+                selectedGoalsRedux.map((goal, index) => (
                   <TableCell
                     sx={{ padding: 0 }}
-                    style={{
-                      backgroundColor: '#abd08f',
-                    }}
-                  >
-                    <Typography variant="body1" style={sudotype}>
-                      Key Traits
-                    </Typography>
-                  </TableCell>
-                )}
-              {selectedGoalsRedux.length > 0
-                && selectedGoalsRedux.map((goal, index) => (
-                  <TableCell
-                    sx={{ padding: 0 }}
-                    key={index}
+                    key={goal}
                     style={{
                       wordBreak: 'break-word',
                       backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',
@@ -239,14 +236,14 @@ const CropTable = ({
                       arrow
                       enterTouchDelay={0}
                       title={`Sort by ${goal}`}
-                      tooltipContent={(
+                      tooltipContent={
                         <Box>
                           <PSAButton
                             buttonType=""
                             onClick={() => sortByGoal(goal, index, `goal${index}`)}
                             variant="body1"
                             sx={{ textTransform: 'none' }}
-                            title={(
+                            title={
                               <>
                                 {`Goal ${index + 1}`}
                                 {columnSort === `goal${index}` && (
@@ -256,12 +253,11 @@ const CropTable = ({
                                   />
                                 )}
                               </>
-                            )}
+                            }
                           />
                         </Box>
-                      )}
+                      }
                     />
-
                   </TableCell>
                 ))}
 
@@ -278,7 +274,7 @@ const CropTable = ({
                     arrow
                     enterTouchDelay={0}
                     title="Sort by Planting Window"
-                    tooltipContent={(
+                    tooltipContent={
                       <Box tabIndex="0">
                         <PSAButton
                           buttonType=""
@@ -287,15 +283,20 @@ const CropTable = ({
                             textTransform: 'none',
                           }}
                           onClick={() => sortByPlantingWindow()}
-                          title={(
+                          title={
                             <>
                               Planting Window
-                              {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
+                              {columnSort === 'plantingWindow' && (
+                                <StraightIcon
+                                  style={{ margin: '0px' }}
+                                  className={plantingSortFlag ? '' : 'rotate180'}
+                                />
+                              )}
                             </>
-                          )}
+                          }
                         />
                       </Box>
-                    )}
+                    }
                   />
                 </TableCell>
               )}
@@ -312,29 +313,33 @@ const CropTable = ({
                   arrow
                   enterTouchDelay={0}
                   title="Sort by Selected Crops"
-                  tooltipContent={(
+                  tooltipContent={
                     <Box tabIndex="0">
                       <PSAButton
                         buttonType=""
                         variant="body1"
                         style={{ textTransform: 'none' }}
                         onClick={() => sortBySelectedCrops()}
-                        title={(
+                        title={
                           <>
                             My Crops
-                            {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
+                            {columnSort === 'myList' && (
+                              <StraightIcon
+                                style={{ margin: '0px' }}
+                                className={myListSortFlag ? '' : 'rotate180'}
+                              />
+                            )}
                           </>
-                        )}
+                        }
                       />
                     </Box>
-                  )}
+                  }
                 />
               </TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody data-test="crop-list-tbody">
-
             {activeCropIdsRedux.length > 0 ? (
               <RenderTableItems
                 showGrowthWindow={showGrowthWindow}
@@ -342,9 +347,7 @@ const CropTable = ({
               />
             ) : (
               <TableRow data-test="crop-list-tr">
-                <TableCell
-                  sx={{ padding: 0 }}
-                >
+                <TableCell sx={{ padding: 0 }}>
                   No cover crops match your selected Cover Crop Property filters.
                 </TableCell>
               </TableRow>
@@ -352,11 +355,7 @@ const CropTable = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <InformationSheet
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        crop={modalData}
-      />
+      <InformationSheet modalOpen={modalOpen} setModalOpen={setModalOpen} crop={modalData} />
     </>
   ) : (
     <Grid

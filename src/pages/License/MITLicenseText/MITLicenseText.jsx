@@ -4,7 +4,6 @@
 */
 
 import { Grid, Typography } from '@mui/material';
-import React from 'react';
 
 const MITLicenseText = ({ styles = true, aboutPage = false }) => {
   const currentYear = new Date().getFullYear();
@@ -12,11 +11,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Typography variant="body1" gutterBottom>
-          Copyright ©
-          {' '}
-          {currentYear}
-          {' '}
-          Northeast Cover Crops Council,&nbsp;
+          Copyright © {currentYear} Northeast Cover Crops Council,&nbsp;
           <a href="http://northeastcovercrops.com/" target="_blank" rel="noopener noreferrer">
             northeastcovercrops.com
           </a>
@@ -24,31 +19,19 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
         {aboutPage && (
           <>
             <Typography variant="body1" gutterBottom>
-              Copyright ©
-              {' '}
-              {currentYear}
-              {' '}
-              Midwest Cover Crops Council,&nbsp;
+              Copyright © {currentYear} Midwest Cover Crops Council,&nbsp;
               <a href="http://midwestcovercrops.org/" target="_blank" rel="noopener noreferrer">
                 midwestcovercrops.org
               </a>
             </Typography>
             <Typography variant="body1" gutterBottom>
-              Copyright ©
-              {' '}
-              {currentYear}
-              {' '}
-              Southern Cover Crops Council,&nbsp;
+              Copyright © {currentYear} Southern Cover Crops Council,&nbsp;
               <a href="http://southerncovercrops.org/" target="_blank" rel="noopener noreferrer">
                 southerncovercrops.org
               </a>
             </Typography>
             <Typography variant="body1" gutterBottom>
-              Copyright ©
-              {' '}
-              {currentYear}
-              {' '}
-              Western  Cover Crops Council,&nbsp;
+              Copyright © {currentYear} Western Cover Crops Council,&nbsp;
               <a href="http://westerncovercrops.org/" target="_blank" rel="noopener noreferrer">
                 westerncovercrops.org
               </a>

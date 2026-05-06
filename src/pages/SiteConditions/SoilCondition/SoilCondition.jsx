@@ -5,14 +5,14 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Grid, useTheme, useMediaQuery } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Grid, useMediaQuery, useTheme } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSALoadingSpinner } from 'shared-react-components/src';
-import SoilDrainage from './SoilDrainage/SoilDrainage';
-import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
 import { historyState } from '../../../reduxStore/userSlice';
+import SoilDrainage from './SoilDrainage/SoilDrainage';
+import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 
 const SoilCondition = () => {
   // theme
@@ -41,7 +41,9 @@ const SoilCondition = () => {
   // retrieving flooding frequency values(not exact value)
   useEffect(() => {
     const query = councilShorthandRedux === 'WCCC' ? `${queryStringRedux}` : `${query2}&${query1}`;
-    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query}`)
+    fetch(
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query}`,
+    )
       .then((res) => res.json())
       .then((data) => {
         setFloodingOptions(data.data.values);
@@ -51,7 +53,9 @@ const SoilCondition = () => {
         console.log(err.message);
       });
 
-    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/attribute-values?slug=soil_drainage&${queryStringRedux}`)
+    fetch(
+      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/attribute-values?slug=soil_drainage&${queryStringRedux}`,
+    )
       .then((res) => res.json())
       .then((data) => {
         setDrainageOptions(data.data);
@@ -60,7 +64,7 @@ const SoilCondition = () => {
         // eslint-disable-next-line no-console
         console.log(err.message);
       });
-  }, []);
+  }, [apiBaseUrlRedux, queryStringRedux, councilShorthandRedux, query1, query2]);
 
   // retrieving drainage class and flooding frequency
   useEffect(() => {
@@ -69,17 +73,18 @@ const SoilCondition = () => {
     const [lat, lon] = markersRedux[0];
     const { lat: latOriginal, lon: lonOriginal } = soilDataOriginalRedux.latLong;
     if (
-      floodingOptions.length === 0
-      || (lat === latOriginal && lon === lonOriginal)
-      || historyStateRedux === historyState.imported
-      || window.Cypress
-    ) return;
+      floodingOptions.length === 0 ||
+      (lat === latOriginal && lon === lonOriginal) ||
+      historyStateRedux === historyState.imported ||
+      window.Cypress
+    )
+      return;
     const getSSURGOData = () => {
       const markersCopy = markersRedux;
 
       let longLatString = '';
 
-      markersCopy.forEach((val, i) => {
+      markersCopy.forEach((_val, i) => {
         // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
         // saved as longLatString
         if (i === markersCopy.length - 1) {
@@ -168,23 +173,28 @@ const SoilCondition = () => {
           const payload = {
             mapUnitName: mapUnitString,
             drainageClass: drainageClasses,
-            floodingFrequency: floodingOptionsList.includes(floodingClasses[0]) ? selectedOption : [],
+            floodingFrequency: floodingOptionsList.includes(floodingClasses[0])
+              ? selectedOption
+              : [],
             latLong: { lat, lon },
           };
 
-          dispatchRedux(
-            updateSoilData(payload),
-          );
-          dispatchRedux(
-            updateSoilDataOriginal(payload),
-          );
+          dispatchRedux(updateSoilData(payload));
+          dispatchRedux(updateSoilDataOriginal(payload));
         })
         // eslint-disable-next-line no-console
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
     };
 
     getSSURGOData();
-  }, [floodingOptions]);
+  }, [
+    floodingOptions,
+    markersRedux,
+    soilDataOriginalRedux.latLong,
+    historyStateRedux,
+    stateLabelRedux,
+    dispatchRedux,
+  ]);
 
   return (
     <Grid item container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>

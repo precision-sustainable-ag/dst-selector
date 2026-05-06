@@ -1,15 +1,12 @@
-import path from 'path';
-import { defineConfig } from 'vite';
+import path from 'node:path';
 import react from '@vitejs/plugin-react';
-import eslint from 'vite-plugin-eslint';
+import { defineConfig } from 'vite';
 
 export default defineConfig(() => ({
   build: {
     outDir: 'build',
   },
-  plugins: [
-    react(), eslint(),
-  ],
+  plugins: [react()],
   server: {
     open: true,
     port: 3000,
@@ -20,14 +17,7 @@ export default defineConfig(() => ({
     },
   },
   optimizeDeps: {
-    include: [
-      'mapbox-gl',
-      '@mapbox/mapbox-gl-draw',
-      '@mapbox/mapbox-gl-geocoder',
-      'wellknown',
-    ],
-    exclude: [
-      '@auth0/auth0-react',
-    ],
+    include: ['mapbox-gl', '@mapbox/mapbox-gl-draw', '@mapbox/mapbox-gl-geocoder', 'wellknown'],
+    exclude: ['@auth0/auth0-react'],
   },
 }));

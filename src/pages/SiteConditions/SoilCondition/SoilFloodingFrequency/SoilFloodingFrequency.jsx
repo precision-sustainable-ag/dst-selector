@@ -1,17 +1,14 @@
-import {
-  Typography, Grid, Box,
-} from '@mui/material';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { WavesOutlined } from '@mui/icons-material';
-import React from 'react';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { Box, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
+import useIsMobile from '../../../../hooks/useIsMobile';
+import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
+import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import RenderFloodingOptions from './RenderFloodingOptions';
-import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
-import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
-import useIsMobile from '../../../../hooks/useIsMobile';
 
 const SoilFloodingFrequency = ({ floodingOptions }) => {
   const dispatchRedux = useDispatch();
@@ -24,7 +21,8 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
 
   const resetFloodingOptions = () => {
     // update history state here
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
     dispatchRedux(updateFloodingFrequency(soilDataOriginalRedux?.floodingFrequency));
   };
 
@@ -56,16 +54,14 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
           <Grid item flexGrow={1}>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold' }}>Flooding Frequency</span>
-              &nbsp;
-              {' '}
+              &nbsp;{' '}
               <ReferenceTooltip
                 type="text"
                 hasLink
-                title={(
+                title={
                   <div>
                     <Typography variant="body1">
-                      The annual probability of a flood event based on the
-                      {' '}
+                      The annual probability of a flood event based on the{' '}
                       <a
                         href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                         target="_blank"
@@ -74,20 +70,15 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                         USDA NRCS Web Soil Survey
                       </a>
                       , where “flood” refers to the temporary inundation of an area caused by
-                      overflowing streams, by runoff from adjacent slopes, or by tides.
-                      {' '}
-                      <a
-                        href="/data-dictionary"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
+                      overflowing streams, by runoff from adjacent slopes, or by tides.{' '}
+                      <a href="/data-dictionary" target="_blank" rel="noopener noreferrer">
                         {' '}
                         Definitions of values found here
                       </a>
                       .
                     </Typography>
                   </div>
-                )}
+                }
                 content="The annual probability of a flood event based on the USDA NRCS Web Soil Survey,
                  where “flood” refers to the temporary inundation of an area caused by verflowing streams,
                  by runoff from adjacent slopes, or by tides.
@@ -106,27 +97,32 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                 onClick={() => {
                   resetFloodingOptions();
                 }}
-                title={isMobile ? (
-                  <RestartAltIcon sx={{ color: '#C73200' }} />
-                ) : (
-                  <Typography
-                    sx={{
-                      color: '#C73200',
-                      fontSize: '0.8rem',
-                      textTransform: 'none',
-                    }}
-                    variant="button"
-                  >
-                    Values changed, reset?
-                  </Typography>
-                )}
+                title={
+                  isMobile ? (
+                    <RestartAltIcon sx={{ color: '#C73200' }} />
+                  ) : (
+                    <Typography
+                      sx={{
+                        color: '#C73200',
+                        fontSize: '0.8rem',
+                        textTransform: 'none',
+                      }}
+                      variant="button"
+                    >
+                      Values changed, reset?
+                    </Typography>
+                  )
+                }
               />
             </Grid>
           )}
         </Grid>
         <Grid item container spacing={1} sx={{ mb: '1rem' }}>
           <Grid item xs={12}>
-            <RenderFloodingOptions floodingOptions={floodingOptions} flooding={soilDataRedux?.floodingFrequency} />
+            <RenderFloodingOptions
+              floodingOptions={floodingOptions}
+              flooding={soilDataRedux?.floodingFrequency}
+            />
           </Grid>
         </Grid>
       </Grid>
