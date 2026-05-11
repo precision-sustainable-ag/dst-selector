@@ -481,7 +481,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                   width: '100%',
                 }}
               >
-                <Typography variant="body1" display="inline">
+                <Typography variant="body1">
                   No
                 </Typography>
                 <Switch
@@ -489,7 +489,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                   onChange={handleAdditonalSoilDrainageFilter}
                   name="soilDrainageFilter"
                 />
-                <Typography variant="body1" display="inline">
+                <Typography variant="body1">
                   Yes
                 </Typography>
               </Grid>
@@ -517,7 +517,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     width: '100%',
                   }}
                 >
-                  <Typography variant="body1" display="inline">
+                  <Typography variant="body1">
                     No
                   </Typography>
                   <Switch
@@ -525,7 +525,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     onChange={handleIrrigationFilter}
                     name="checkedC"
                   />
-                  <Typography variant="body1" display="inline">
+                  <Typography variant="body1">
                     Yes
                   </Typography>
                 </Grid>
@@ -550,7 +550,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     width: '100%',
                   }}
                 >
-                  <Typography variant="body1" display="inline">
+                  <Typography variant="body1">
                     No
                   </Typography>
                   <Switch
@@ -558,7 +558,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     onChange={handleSoilDrainageFilter}
                     name="soilDrainageFilter"
                   />
-                  <Typography variant="body1" display="inline">
+                  <Typography variant="body1">
                     Yes
                   </Typography>
                 </Grid>

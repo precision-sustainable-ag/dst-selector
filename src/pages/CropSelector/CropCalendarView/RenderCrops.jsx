@@ -82,7 +82,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               backgroundColor: isMobile ? 'white' : 'transparent',
             }}
           >
-            <Grid container sx={{ direction: 'row', alignItems: 'center', flexWrap: 'nowrap' }}>
+            <Grid container sx={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'nowrap' }}>
               <Grid
                 size={{
                   md: 4,

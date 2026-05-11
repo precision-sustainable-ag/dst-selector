@@ -74,7 +74,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                     <Grid
                       container
                       sx={{
-                        direction: 'column',
+                        flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
                         height: '100%',
