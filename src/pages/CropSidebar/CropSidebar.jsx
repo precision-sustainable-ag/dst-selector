@@ -6,7 +6,7 @@
 */
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlineOutlined';
 import {
   Box,
   Chip,
@@ -472,8 +472,16 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
               paddingLeft: '25px',
             }}
             primary={
-              <Grid item sx={{ textAlign: 'right' }}>
-                <Typography variant="body1" display="inline">
+              <Grid
+                container
+                sx={{
+                  textAlign: 'right',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                }}
+              >
+                <Typography variant="body1">
                   No
                 </Typography>
                 <Switch
@@ -481,7 +489,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                   onChange={handleAdditonalSoilDrainageFilter}
                   name="soilDrainageFilter"
                 />
-                <Typography variant="body1" display="inline">
+                <Typography variant="body1">
                   Yes
                 </Typography>
               </Grid>
@@ -500,8 +508,16 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
             <ListItemText
               display="block"
               primary={
-                <Grid item sx={{ textAlign: 'right' }}>
-                  <Typography variant="body1" display="inline">
+                <Grid
+                  container
+                  sx={{
+                    textAlign: 'right',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                  }}
+                >
+                  <Typography variant="body1">
                     No
                   </Typography>
                   <Switch
@@ -509,7 +525,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     onChange={handleIrrigationFilter}
                     name="checkedC"
                   />
-                  <Typography variant="body1" display="inline">
+                  <Typography variant="body1">
                     Yes
                   </Typography>
                 </Grid>
@@ -525,8 +541,16 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
             <ListItemText
               display="block"
               primary={
-                <Grid item sx={{ textAlign: 'right' }}>
-                  <Typography variant="body1" display="inline">
+                <Grid
+                  container
+                  sx={{
+                    textAlign: 'right',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                  }}
+                >
+                  <Typography variant="body1">
                     No
                   </Typography>
                   <Switch
@@ -534,7 +558,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     onChange={handleSoilDrainageFilter}
                     name="soilDrainageFilter"
                   />
-                  <Typography variant="body1" display="inline">
+                  <Typography variant="body1">
                     Yes
                   </Typography>
                 </Grid>
@@ -571,7 +595,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
         {coverCropGroup.map((val, i) => {
           const selected = cropGroupFilterRedux === val.label;
           return (
-            <Grid key={val.label} item>
+            <Grid key={val.label}>
               <Chip
                 key={val.label}
                 style={{
@@ -602,7 +626,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
   // eslint-disable-next-line no-nested-ternary
   return !loading && from === 'myCoverCropListStatic' ? (
     <Grid container spacing={3}>
-      <Grid item>
+      <Grid>
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}

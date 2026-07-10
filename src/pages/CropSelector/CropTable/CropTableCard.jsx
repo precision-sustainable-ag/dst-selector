@@ -1,4 +1,4 @@
-import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
+import { AddCircleOutlineOutlined, DeleteForever } from '@mui/icons-material';
 import { Box, TableCell } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux';
@@ -94,7 +94,9 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
               );
             }}
             buttonType="LightButton"
-            title={selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
+            title={
+              selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutlineOutlined />
+            }
           />
         </Box>
       </TableCell>

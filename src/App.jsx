@@ -143,7 +143,7 @@ const App = () => (
                   <SkipContent href="#main-content" text="Skip to content" />
                   <Header />
                   <Container disableGutters maxWidth={false} id="main-content">
-                    <Box mr={1} ml={1} mt={1} mb={1}>
+                    <Box sx={{ mr: 1, ml: 1, mt: 1, mb: 1 }}>
                       <Switch>
                         <Route path="/" render={() => <LoadRelevantRoute />} exact />
                         <Route path="/explorer" component={CoverCropExplorer} exact />

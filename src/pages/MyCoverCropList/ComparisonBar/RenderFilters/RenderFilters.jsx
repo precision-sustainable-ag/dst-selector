@@ -95,7 +95,6 @@ const RenderFilters = ({
             )}
           </ListItemButton>
         )}
-
         <Collapse in={filterValues[index].open} timeout="auto">
           <List component="div" disablePadding>
             <ListItem component="div" sx={{ paddingLeft: 4 }}>
@@ -125,7 +124,7 @@ const RenderFilters = ({
                 ) : (
                   filter.values.map((val) =>
                     val.name !== 'Roller Crimp at Flowering' ? (
-                      <Grid item xs={12} key={`filter-inner-${val.name}`}>
+                      <Grid key={`filter-inner-${val.name}`} size={12}>
                         <PSATooltip
                           arrow
                           placement="right"

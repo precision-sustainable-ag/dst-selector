@@ -364,30 +364,29 @@ const Location = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        m: 1,
       }}
     >
       <Grid container>
         <Grid
-          item
-          xs={12}
           sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          size={12}
         >
           <Typography variant="h4" data-test="field-location-title">
             Field Location
           </Typography>
         </Grid>
         <Grid
-          item
-          xs={12}
           sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          size={12}
         >
           <Typography variant="body1">
             Enter your address or ZIP code using the search bar on the map and hit
@@ -404,19 +403,18 @@ const Location = () => {
         </Grid>
 
         <Grid
-          item
-          xs={12}
           sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          size={12}
         >
           {councilShorthandRedux !== 'WCCC' && <PlantHardinessZone from="Location" />}
         </Grid>
 
         {stateLabelRedux !== 'Ontario' && (
-          <Grid container>
+          <Box sx={{ width: '100%' }}>
             <Container className="MapBox" maxWidth="md">
               <PSAReduxMap
                 setProperties={updateProperties}
@@ -445,7 +443,7 @@ const Location = () => {
               />
             </Container>
             <StateChangeAlertDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-          </Grid>
+          </Box>
         )}
       </Grid>
     </Box>

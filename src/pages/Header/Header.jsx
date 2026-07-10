@@ -3,8 +3,8 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlineOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
 import { AppBar, Box } from '@mui/material';
@@ -512,7 +512,7 @@ const Header = () => {
   return (
     <>
       <AppBar position="static" component="header" sx={{ backgroundColor: 'white' }}>
-        <Box className="header">
+        <Box className="header" sx={{ m: 1 }}>
           <PSAHeader
             title="Cover Crop Selector"
             council={councilShorthandRedux}

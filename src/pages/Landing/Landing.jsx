@@ -273,24 +273,24 @@ const Landing = () => {
         minHeight: containerHeight,
         // height: '100vh',
       }}
+      sx={{ margin: -1 }}
       id="landingWrapper"
-      margin={-1}
     >
-      <Grid style={backgroundSyles.frostedGlassEffect} mt={1} sx={{ maxWidth: '800px' }}>
-        <Box mr={1} ml={1} mb={1} mt={1}>
+      <Grid style={backgroundSyles.frostedGlassEffect} sx={{ maxWidth: '800px', mt: 1 }}>
+        <Box sx={{ margin: 1 }}>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography variant="h4" gutterBottom align="center">
                 Welcome to the Cover Crop Species Selector
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography variant="body1" align="center">
                 Choose your state from the dropdown or the map. You can zoom by scrolling or
                 pinching on mobile.
               </Typography>
             </Grid>
-            <Grid item xs={12} display="flex" justifyContent="center">
+            <Grid sx={{ justifyContent: 'center', display: 'flex' }} size={12}>
               <PSADropdown
                 label="STATE"
                 items={allStates.map((state) => ({
@@ -331,7 +331,7 @@ const Landing = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} display="flex" justifyContent="center">
+            <Grid sx={{ display: 'flex', justifyContent: 'center' }} size={12}>
               <Typography>
                 {isAuthenticated
                   ? 'Try out our new user history feature below:'
@@ -339,14 +339,14 @@ const Landing = () => {
               </Typography>
             </Grid>
             {isAuthenticated && (
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <HistorySelect />
               </Grid>
             )}
           </Grid>
         </Box>
       </Grid>
-      <Grid item>
+      <Grid>
         <Box
           style={{
             position: 'relative',

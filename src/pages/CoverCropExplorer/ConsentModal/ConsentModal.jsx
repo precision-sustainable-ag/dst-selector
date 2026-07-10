@@ -89,7 +89,7 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
               </p>
             </Typography>
             <Grid container spacing={1}>
-              <Grid item>
+              <Grid>
                 <PSAButton
                   variant="outlined"
                   onClick={() => handleModal(true)}
@@ -97,7 +97,7 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
                   buttonType=""
                 />
               </Grid>
-              <Grid item>
+              <Grid>
                 <PSAButton
                   variant="outlined"
                   onClick={() => handleModal(false)}

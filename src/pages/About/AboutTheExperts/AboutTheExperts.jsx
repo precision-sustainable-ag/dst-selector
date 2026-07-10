@@ -32,7 +32,14 @@ const AboutTheExperts = () => {
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
       <Grid container>
         {expertGroups.map((group) => (
-          <Grid key={group.id} item xs={6} sm={4} md={2}>
+          <Grid
+            key={group.id}
+            size={{
+              xs: 6,
+              sm: 4,
+              md: 2,
+            }}
+          >
             <PSAButton
               buttonType=""
               key={group.id}

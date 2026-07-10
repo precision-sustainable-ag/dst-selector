@@ -9,7 +9,6 @@ const WeatherFrostDates = () => {
 
   return (
     <Grid
-      item
       style={{
         backgroundColor: 'rgba(176, 236, 130, 0.3)',
         padding: '1rem',
@@ -17,8 +16,8 @@ const WeatherFrostDates = () => {
       }}
       data-test="frost-dates-card"
     >
-      <Grid item display="flex" justifyContent="space-between" sx={{ mb: '1.5rem' }}>
-        <Grid item>
+      <Grid sx={{ mb: '1.5rem', display: 'flex', justifyContent: 'space-between' }}>
+        <Grid>
           <Typography variant="body1">
             <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Frost Dates</span>
             &nbsp;{' '}
@@ -68,57 +67,64 @@ const WeatherFrostDates = () => {
             />
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid>
           <AcUnit />
         </Grid>
       </Grid>
       <Grid
-        item
-        display="flex"
-        alignItems="baseline"
-        sx={{ mb: '0.5rem' }}
-        justifyContent="space-between"
+        sx={{
+          mb: '0.5rem',
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+        }}
       >
-        <Grid item sx={{ mr: '1rem' }}>
+        <Grid sx={{ mr: '1rem' }}>
           <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             First Frost Date
           </Typography>
         </Grid>
 
-        <Grid item>
+        <Grid>
           <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             {firstFrostDate?.month ? `${firstFrostDate?.month} ${firstFrostDate?.day}` : 'No Data'}
           </Typography>
         </Grid>
       </Grid>
-
       <Grid
-        item
-        display="flex"
-        alignItems="baseline"
-        justifyContent="space-between"
-        sx={{ mb: '0.5rem' }}
+        sx={{
+          mb: '0.5rem',
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+        }}
       >
-        <Grid item sx={{ mr: '1rem' }}>
+        <Grid sx={{ mr: '1rem' }}>
           <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             Last Frost Date
           </Typography>
         </Grid>
 
-        <Grid item>
+        <Grid>
           <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             {lastFrostDate?.month ? `${lastFrostDate?.month} ${lastFrostDate?.day}` : 'No Data'}
           </Typography>
         </Grid>
       </Grid>
-      <Grid item display="flex" alignItems="baseline" justifyContent="space-between">
-        <Grid item sx={{ mr: '1rem' }}>
+      <Grid
+        sx={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Grid sx={{ mr: '1rem' }}>
           <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             Frost Free Days
           </Typography>
         </Grid>
 
-        <Grid item>
+        <Grid>
           <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             {weatherDataRedux?.frostFreeDays || 'No Data'}
           </Typography>

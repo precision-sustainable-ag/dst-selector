@@ -29,13 +29,12 @@ const RenderGoals = ({ goals, goalsOpen, setGoalsOpen, comparisonKeys }) => {
         <ListItemText primary={<Typography variant="body2">COVER CROP GOALS</Typography>} />
         {goalsOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
-
       <Collapse in={goalsOpen} timeout="auto">
         <List component="div" disablePadding>
           <ListItem component="div">
             <Grid container spacing={1}>
               {goals.map((goal) => (
-                <Grid item xs={12} key={`goals-inner-${goal.name}`}>
+                <Grid key={`goals-inner-${goal.name}`} size={12}>
                   <FormControlLabel
                     control={
                       <PSACheckbox

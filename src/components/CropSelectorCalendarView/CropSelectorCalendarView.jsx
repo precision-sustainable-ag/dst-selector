@@ -46,7 +46,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
         } ${isCashCropTime ? 'cashCropMonth' : ''}`;
         return (
           // biome-ignore lint/suspicious/noArrayIndexKey: <No unique element to use as key>
-          <Box flex={length} key={index}>
+          <Box sx={{ flex: length }} key={index}>
             <PSATooltip
               sx={{ flex: length }}
               arrow
@@ -72,12 +72,13 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                 >
                   {hessianDate && from !== 'listView' ? (
                     <Grid
-                      item
                       container
-                      direction="column"
-                      alignItems="center"
-                      justifyContent="center"
-                      height="100%"
+                      sx={{
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                      }}
                     >
                       <svg
                         width="20px"

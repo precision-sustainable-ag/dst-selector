@@ -74,7 +74,15 @@ const CoverCropExplorer = () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xl={3} lg={4} md={4} sm={12} xs={12}>
+      <Grid
+        size={{
+          xl: 3,
+          lg: 4,
+          md: 4,
+          sm: 12,
+          xs: 12,
+        }}
+      >
         <SkipContent
           href="#crop-list"
           text="Skip to crop list"
@@ -96,7 +104,6 @@ const CoverCropExplorer = () => {
           listView
         />
       </Grid>
-
       <SkipContent
         href="#page-footer"
         text="Skip to bottom"
@@ -109,8 +116,16 @@ const CoverCropExplorer = () => {
           },
         }}
       />
-
-      <Grid item xl={9} lg={8} md={8} sm={12} xs={12} id="crop-list">
+      <Grid
+        id="crop-list"
+        size={{
+          xl: 9,
+          lg: 8,
+          md: 8,
+          sm: 12,
+          xs: 12,
+        }}
+      >
         <ExplorerCardView activeCropData={updatedActiveCropData} />
       </Grid>
     </Grid>

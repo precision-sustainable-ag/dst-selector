@@ -115,30 +115,62 @@ const InformationBar = ({ pathname }) => {
       sx={{
         backgroundColor: '#598445',
         p: '8px 0',
+        justifyContent: 'right',
       }}
-      justifyContent="right"
     >
       {pathname === speciesSelectorToolName && progressRedux > 0 && !isMobile && (
-        <Grid item container xs={12} sm={12} md={12} lg={7.5} spacing={1}>
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+        <Grid
+          container
+          spacing={1}
+          size={{
+            xs: 12,
+            sm: 12,
+            md: 12,
+            lg: 7.5,
+          }}
+        >
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 6,
+              lg: 3,
+            }}
+          >
             {getData('location')}
           </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 6,
+              lg: 3,
+            }}
+          >
             {getData('site')}
           </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 6,
+              lg: 3,
+            }}
+          >
             {getData('goals')}
           </Grid>
         </Grid>
       )}
-
       <Grid
         container
-        item
-        justifyContent={isMobile ? 'center' : 'right'}
-        xs={12}
-        lg={progressRedux > 0 && !isMobile ? 4 : 12}
-        marginRight={isMobile ? 0 : 2}
+        size={{
+          xs: 12,
+          lg: progressRedux > 0 && !isMobile ? 4 : 12,
+        }}
+        sx={{
+          justifyContent: isMobile ? 'center' : 'right',
+          marginRight: isMobile ? 0 : 2,
+        }}
       >
         {pathname === speciesSelectorToolName ? (
           <ProgressButtons />

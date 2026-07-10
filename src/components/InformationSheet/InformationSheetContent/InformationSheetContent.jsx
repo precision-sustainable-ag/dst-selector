@@ -129,11 +129,10 @@ const InformationSheetContent = ({ crop }) => {
           (cat.label === 'Termination' || cat.label === 'Termination Window');
         return (
           <Grid
-            item
             key={cat.id}
-            xs={12}
             className={`avoid-break infosheetAccordion${index}`}
             sx={{ marginBottom: '16px' }}
+            size={12}
           >
             <PSAAccordion
               sx={{
@@ -186,7 +185,7 @@ const InformationSheetContent = ({ crop }) => {
                       cat.label === 'Extended Comments'
                     ) {
                       return (
-                        <Grid item key={att.id} xs={12} sx={{ padding: '6px 18px' }}>
+                        <Grid key={att.id} sx={{ padding: '6px 18px' }} size={12}>
                           <PSATooltip
                             placement="top-end"
                             enterTouchDelay={0}

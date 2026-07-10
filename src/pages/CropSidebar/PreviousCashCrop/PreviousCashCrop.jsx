@@ -43,7 +43,7 @@ const PreviousCashCrop = () => {
   };
 
   return (
-    <Grid item container xs={12} alignItems="center" justifyContent="center">
+    <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }} size={12}>
       <Typography align="center" variant="h4" data-test="title-growing-window">
         Cash Crop Growing Window
       </Typography>
@@ -51,14 +51,17 @@ const PreviousCashCrop = () => {
         Enter your cash crop growing period, or main perennial crop growing window.
       </Typography>
       <Grid
-        item
         container
-        justifyContent={isMobile ? 'center' : 'space-between'}
-        xs={12}
+        sx={{ justifyContent: isMobile ? 'center' : 'space-between' }}
         spacing={isMobile ? 2 : 3}
         display="flex"
+        size={12}
       >
-        <Grid item md={6}>
+        <Grid
+          size={{
+            md: 6,
+          }}
+        >
           <LocalizationProvider dateAdapter={AdapterDayjs} data-test="planting-date-picker">
             <DatePicker
               slotProps={{
@@ -74,7 +77,11 @@ const PreviousCashCrop = () => {
             />
           </LocalizationProvider>
         </Grid>
-        <Grid item md={6}>
+        <Grid
+          size={{
+            md: 6,
+          }}
+        >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               key={datePickerKey}

@@ -197,8 +197,14 @@ const SoilCondition = () => {
   ]);
 
   return (
-    <Grid item container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
-      <Grid item xs={12} md={10} sx={{ mb: '1rem' }}>
+    <Grid container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
+      <Grid
+        sx={{ mb: '1rem' }}
+        size={{
+          xs: 12,
+          md: 10,
+        }}
+      >
         {drainageOptions.length > 0 ? (
           <SoilDrainage drainageOptions={drainageOptions} />
         ) : (
@@ -206,7 +212,12 @@ const SoilCondition = () => {
         )}
       </Grid>
       {councilShorthandRedux !== 'WCCC' && (
-        <Grid item xs={12} md={10}>
+        <Grid
+          size={{
+            xs: 12,
+            md: 10,
+          }}
+        >
           {floodingOptions.length > 0 ? (
             <SoilFloodingFrequency floodingOptions={floodingOptions} />
           ) : (

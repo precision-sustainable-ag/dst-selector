@@ -15,14 +15,32 @@ const WeatherConditions = () => {
 
   return (
     <>
-      <Grid item xs={12} md={10} lg={10}>
+      <Grid
+        size={{
+          xs: 12,
+          md: 10,
+          lg: 10,
+        }}
+      >
         <SoilComposition />
       </Grid>
-      <Grid item xs={12} md={10} lg={10}>
+      <Grid
+        size={{
+          xs: 12,
+          md: 10,
+          lg: 10,
+        }}
+      >
         <WeatherFrostDates />
       </Grid>
       {thisMonth && annual && (
-        <Grid item xs={12} md={10} lg={10}>
+        <Grid
+          size={{
+            xs: 12,
+            md: 10,
+            lg: 10,
+          }}
+        >
           <WeatherPrecipitation />
         </Grid>
       )}

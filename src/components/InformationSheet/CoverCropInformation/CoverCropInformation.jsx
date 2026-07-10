@@ -24,15 +24,16 @@ const CoverCropInformation = ({ crop, className }) => {
     dataDone && (
       <Grid container spacing={3} className={className}>
         <Grid
-          item
-          md={6}
-          sm={12}
           sx={{
             paddingTop: { xs: '30px !important', md: '10px !important' },
             paddingLeft: { xs: '24px !important' },
           }}
+          size={{
+            md: 6,
+            sm: 12,
+          }}
         >
-          <Grid className="coverCropDescription" item>
+          <Grid className="coverCropDescription">
             <Typography variant="h5">{crop['Cover Crop Group']}</Typography>
             <Typography variant="h4">{`${crop.label}`}</Typography>
             <Typography variant="h6" style={{ fontStyle: 'italic' }}>
@@ -40,14 +41,23 @@ const CoverCropInformation = ({ crop, className }) => {
             </Typography>
             <br />
             <Typography variant="h5">Cover Crop Description</Typography>
-            <Grid item sm={12} />
-            <Grid item>
+            <Grid
+              size={{
+                sm: 12,
+              }}
+            />
+            <Grid>
               <Typography variant="body1">{crop.description ? crop.description : ''}</Typography>
             </Grid>
           </Grid>
         </Grid>
-
-        <Grid className="imageCarousel" item md={6} sm={12}>
+        <Grid
+          className="imageCarousel"
+          size={{
+            md: 6,
+            sm: 12,
+          }}
+        >
           <ImageCarousel images={allThumbs} />
         </Grid>
       </Grid>
