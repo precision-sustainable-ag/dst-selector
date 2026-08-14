@@ -16,9 +16,7 @@ const Attribution = () => {
   ];
 
   useEffect(() => {
-    const url = `https://${
-      /(localhost|dev)/i.test(window.location) ? 'developapi' : 'api'
-    }.covercrop-selector.org/v2/regions?locality=state&context=seed_calc`;
+    const url = `http://20.241.231.202/v2/regions?locality=state&context=seed_calc`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
