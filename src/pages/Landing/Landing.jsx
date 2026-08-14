@@ -157,7 +157,7 @@ const Landing = () => {
       }
       const { id } = selectedState;
       if (selectedState.council.shorthand !== 'WCCC') {
-        fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
+        fetch(`http://20.241.231.202/v1/states/${id}/regions`)
           .then((res) => res.json())
           .then((data) => {
             let fetchedRegions;

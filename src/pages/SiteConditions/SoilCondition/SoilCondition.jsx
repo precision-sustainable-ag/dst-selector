@@ -41,9 +41,7 @@ const SoilCondition = () => {
   // retrieving flooding frequency values(not exact value)
   useEffect(() => {
     const query = councilShorthandRedux === 'WCCC' ? `${queryStringRedux}` : `${query2}&${query1}`;
-    fetch(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query}`,
-    )
+    fetch(`http://20.241.231.202/v2/attribute?filtered=false&slug=flooding_frequency&${query}`)
       .then((res) => res.json())
       .then((data) => {
         setFloodingOptions(data.data.values);
@@ -53,9 +51,7 @@ const SoilCondition = () => {
         console.log(err.message);
       });
 
-    fetch(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/attribute-values?slug=soil_drainage&${queryStringRedux}`,
-    )
+    fetch(`http://20.241.231.202/v1/attribute-values?slug=soil_drainage&${queryStringRedux}`)
       .then((res) => res.json())
       .then((data) => {
         setDrainageOptions(data.data);
