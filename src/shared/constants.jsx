@@ -828,7 +828,7 @@ export const reverseGEO = async (lat, lng) => {
 };
 
 export const callCoverCropApi = async (url) => {
-  url = url.replace(/https:\/\/.+(api\.covercrop-selector\.org)/, 'http://20.241.231.202');
+  url = url.replace(/https:\/\/.+(api\.covercrop-selector\.org)/, 'http://74.151.176.96');
   console.log(url);
   return fetch(url)
     .then((res) => res.json())

@@ -16,7 +16,7 @@ const Attribution = () => {
   ];
 
   useEffect(() => {
-    const url = `http://20.241.231.202/v2/regions?locality=state&context=seed_calc`;
+    const url = `http://74.151.176.96/v2/regions?locality=state&context=seed_calc`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
