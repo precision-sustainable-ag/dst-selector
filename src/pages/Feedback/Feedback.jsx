@@ -107,6 +107,7 @@ const Feedback = () => {
       submitMessage="Feedback submitted successfully"
       headerTitle="Cover Crop Species Selector Feedback"
       repository="dst-feedback"
+      labels={['dst-selector']}
       onFormChange={(data) => {
         if (data.state !== prevState) {
           setPrevState(data.state);
