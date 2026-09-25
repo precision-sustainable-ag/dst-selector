@@ -48,7 +48,13 @@ Cypress.Commands.add('loginToAuth0', () => {
     // Login on Auth0.
     cy.origin(Cypress.env('auth0_domain'), { args }, ({ username, password }) => {
       cy.get('input#username').type(username);
-      cy.get('input#password').type(password);
+      // Auth0 identifier-first login (username and password on separate screens)
+      cy.get('body').then(($body) => {
+        if ($body.find('input#password').length === 0) {
+          cy.contains('button[value=default]', 'Continue').click();
+        }
+      });
+      cy.get('input#password').type(password, { log: false });
       cy.contains('button[value=default]', 'Continue').click();
     });
 
