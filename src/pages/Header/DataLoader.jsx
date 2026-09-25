@@ -1,8 +1,8 @@
+import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
-import { callCoverCropApi } from '../../shared/constants';
 import { updateAllGoals, updatePlantingSeasons } from '../../reduxStore/goalSlice';
+import { callCoverCropApi } from '../../shared/constants';
 
 const DataLoader = () => {
   const dispatch = useDispatch();
@@ -19,10 +19,14 @@ const DataLoader = () => {
   useEffect(() => {
     if (progressRedux === 1 && stateIdRedux && queryStringRedux) {
       callCoverCropApi(
-        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?`
-        + `${councilShorthandRedux === 'WCCC' ? 'seasons=true&' : ''}${queryStringRedux}`,
+        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?` +
+          `${councilShorthandRedux === 'WCCC' ? 'seasons=true&' : ''}${queryStringRedux}`,
       ).then((data) => {
-        const allGoals = data.data.map((goal) => ({ label: goal.label, description: goal.description, tags: goal.tags }));
+        const allGoals = data.data.map((goal) => ({
+          label: goal.label,
+          description: goal.description,
+          tags: goal.tags,
+        }));
         if (allGoals.length === 0) {
           enqueueSnackbar('No data exists for your location!', { variant: 'error' });
         }
@@ -32,7 +36,15 @@ const DataLoader = () => {
         }
       });
     }
-  }, [progressRedux, stateIdRedux, queryStringRedux]);
+  }, [
+    progressRedux,
+    stateIdRedux,
+    queryStringRedux,
+    apiBaseUrlRedux,
+    councilShorthandRedux,
+    dispatch,
+    enqueueSnackbar,
+  ]);
 
   return null;
 };

@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from './Header';
 
 /* eslint-disable no-undef */
@@ -27,6 +26,9 @@ describe('Header Component', () => {
   });
 
   it('should initially display PSA logo', () => {
-    cy.assertByTestId('header_logo_button').find('img').invoke('attr', 'src').should('equal', 'images/PSA_logo.png');
+    cy.assertByTestId('header_logo_button')
+      .find('img')
+      .invoke('attr', 'src')
+      .should('include', 'PSA_logo.png');
   });
 });

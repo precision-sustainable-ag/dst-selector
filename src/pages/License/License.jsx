@@ -4,9 +4,9 @@
 */
 
 import { Grid } from '@mui/material';
-import React, { useEffect } from 'react';
-import MITLicenseText from './MITLicenseText/MITLicenseText';
+import { useEffect } from 'react';
 import AgInformaticsLicenseText from './AgInformaticsLicenseText/AgInformaticsLicenseText';
+import MITLicenseText from './MITLicenseText/MITLicenseText';
 
 const License = ({ licenseType = 'MIT' }) => {
   useEffect(() => {
@@ -24,7 +24,7 @@ const License = ({ licenseType = 'MIT' }) => {
   }, [licenseType]);
   return (
     <Grid container>
-      <Grid item>
+      <Grid>
         {licenseType === 'AgInformatics' ? <AgInformaticsLicenseText /> : <MITLicenseText />}
       </Grid>
     </Grid>

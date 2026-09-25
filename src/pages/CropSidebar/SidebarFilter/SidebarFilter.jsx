@@ -1,12 +1,9 @@
-import {
-  Collapse, List, ListItem, ListItemButton, ListItemText, Typography,
-} from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { Fragment } from 'react';
+import { Collapse, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSATooltip } from 'shared-react-components/src';
-import Filters from '../Filters/Filters';
 import { toggleFilterValue } from '../../../reduxStore/filterSlice';
+import Filters from '../Filters/Filters';
 
 const SidebarFilter = ({
   filter,
@@ -28,21 +25,26 @@ const SidebarFilter = ({
           enterTouchDelay={0}
           title={filter.description}
           key={`tooltip${index}`}
-          tooltipContent={(
+          tooltipContent={
             <ListItemButton
               key={index}
-              sx={{ paddingLeft: 3, backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
+              sx={{
+                paddingLeft: 3,
+                backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white',
+              }}
               component="div"
               onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
             >
-              <ListItemText primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>} />
+              <ListItemText
+                primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
+              />
               {filterDataRedux[sectionFilter] ? (
                 <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
               ) : (
                 <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
               )}
             </ListItemButton>
-          )}
+          }
         />
       ) : (
         <ListItemButton
@@ -52,11 +54,11 @@ const SidebarFilter = ({
           onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
         >
           <ListItemText
-            primary={(
+            primary={
               <Typography variant="body2" data-test={filter.name.toUpperCase()}>
                 {filter.name.toUpperCase()}
               </Typography>
-            )}
+            }
           />
           {filterDataRedux[sectionFilter] ? (
             <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />

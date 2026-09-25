@@ -7,26 +7,26 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import {
-  Box, Grid, Stack, Typography,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Box, Grid, Stack, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import { CustomStyles } from '../../shared/constants';
-import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
-import HowTo from './HowTo/HowTo';
-import FAQ from './FAQ/FAQ';
-import InfoSheets from './InfoSheets/InfoSheets';
-import pirschAnalytics from '../../shared/analytics';
 import useIsMobile from '../../hooks/useIsMobile';
+import pirschAnalytics from '../../shared/analytics';
+import { CustomStyles } from '../../shared/constants';
+import FAQ from './FAQ/FAQ';
+import HowTo from './HowTo/HowTo';
+import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
+import InfoSheets from './InfoSheets/InfoSheets';
 
 const Help = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // only used till new videos are made for How to Use section
   const newVideos = false;
-  const howToText = newVideos ? `How to use the ${councilShorthandRedux} Species Selector Tool` : ' How To: Video tutorial coming soon…';
+  const howToText = newVideos
+    ? `How to use the ${councilShorthandRedux} Species Selector Tool`
+    : ' How To: Video tutorial coming soon…';
 
   const isMobile = useIsMobile('md');
 
@@ -69,26 +69,39 @@ const Help = () => {
 
   const getContent = () => {
     switch (value) {
-      case 0: return (
-        <HowTo />
-      );
-      case 1: return (
-        <FAQ />
-      );
-      case 2: return (
-        <InformationSheetDictionary zone={6} from="help" />
-      );
-      case 3: return (
-        <InfoSheets />
-      );
-      default: return null;
+      case 0:
+        return <HowTo />;
+      case 1:
+        return <FAQ />;
+      case 2:
+        return <InformationSheetDictionary from="help" />;
+      case 3:
+        return <InfoSheets />;
+      default:
+        return null;
     }
   };
 
   return (
-    <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
-      <Grid container spacing={0} justifyContent="center" mt={isMobile ? 0 : 5} mb={isMobile ? 0 : 5}>
-        <Grid item xs={12} sm={12} md={3.4} lg={3.4} xl={3.4}>
+    <Box sx={{ border: 0.5, borderColor: 'grey.300', ml: 2, mr: 2, mt: 5 }}>
+      <Grid
+        container
+        spacing={0}
+        sx={{
+          justifyContent: 'center',
+          mt: isMobile ? 0 : 5,
+          mb: isMobile ? 0 : 5,
+        }}
+      >
+        <Grid
+          size={{
+            xs: 12,
+            sm: 12,
+            md: 3.4,
+            lg: 3.4,
+            xl: 3.4,
+          }}
+        >
           <div
             style={{
               border: `1px solid ${CustomStyles().darkGreen}`,
@@ -115,18 +128,25 @@ const Help = () => {
         </Grid>
 
         <Grid
-          item
-          xs={12}
-          sm={12}
-          md={8}
-          lg={8}
-          xl={8}
-          mt={{
-            xs: 3, sm: 3, md: 0, lg: 0, xl: 0,
+          sx={{
+            mt: {
+              xs: 3,
+              sm: 3,
+              md: 0,
+              lg: 0,
+              xl: 0,
+            },
+          }}
+          size={{
+            xs: 12,
+            sm: 12,
+            md: 8,
+            lg: 8,
+            xl: 8,
           }}
         >
           <div style={{ border: `1px solid ${CustomStyles().darkGreen}`, minHeight: '320px' }}>
-            <Stack pl={isMobile ? 0 : 3} pr={isMobile ? 0 : 3} pb={4}>
+            <Stack sx={{ pl: isMobile ? 0 : 3, pr: isMobile ? 0 : 3, pb: 4 }}>
               <center>
                 <Typography variant="h4" gutterBottom>
                   {pageSections.filter((section) => section.id === value)[0].title}

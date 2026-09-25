@@ -4,19 +4,14 @@
 */
 
 import { Grid, Typography } from '@mui/material';
-import React from 'react';
 
 const MITLicenseText = ({ styles = true, aboutPage = false }) => {
   const currentYear = new Date().getFullYear();
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography variant="body1" gutterBottom>
-          Copyright ©
-          {' '}
-          {currentYear}
-          {' '}
-          Northeast Cover Crops Council,&nbsp;
+          Copyright © {currentYear} Northeast Cover Crops Council,&nbsp;
           <a href="http://northeastcovercrops.com/" target="_blank" rel="noopener noreferrer">
             northeastcovercrops.com
           </a>
@@ -24,31 +19,19 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
         {aboutPage && (
           <>
             <Typography variant="body1" gutterBottom>
-              Copyright ©
-              {' '}
-              {currentYear}
-              {' '}
-              Midwest Cover Crops Council,&nbsp;
+              Copyright © {currentYear} Midwest Cover Crops Council,&nbsp;
               <a href="http://midwestcovercrops.org/" target="_blank" rel="noopener noreferrer">
                 midwestcovercrops.org
               </a>
             </Typography>
             <Typography variant="body1" gutterBottom>
-              Copyright ©
-              {' '}
-              {currentYear}
-              {' '}
-              Southern Cover Crops Council,&nbsp;
+              Copyright © {currentYear} Southern Cover Crops Council,&nbsp;
               <a href="http://southerncovercrops.org/" target="_blank" rel="noopener noreferrer">
                 southerncovercrops.org
               </a>
             </Typography>
             <Typography variant="body1" gutterBottom>
-              Copyright ©
-              {' '}
-              {currentYear}
-              {' '}
-              Western  Cover Crops Council,&nbsp;
+              Copyright © {currentYear} Western Cover Crops Council,&nbsp;
               <a href="http://westerncovercrops.org/" target="_blank" rel="noopener noreferrer">
                 westerncovercrops.org
               </a>
@@ -59,7 +42,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
       {!aboutPage && (
         <Grid item xs={styles ? 6 : 12}>
           <Grid container spacing={2}>
-            <Grid item>
+            <Grid>
               <Typography variant="body1">
                 Permission is hereby granted, free of charge, to any person obtaining a copy of this
                 software and associated documentation files (the “Software”), to deal in the
@@ -70,7 +53,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
                 included in all copies or substantial portions of the Software.
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid>
               <Typography variant="body1">
                 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
                 INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A

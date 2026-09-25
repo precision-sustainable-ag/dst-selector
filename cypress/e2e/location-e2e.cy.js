@@ -9,14 +9,15 @@ describe('Testing interactions on location screen', () => {
   });
 
   it('checks if plant-hardiness-dropdown has items equal to mapData.regions array', () => {
-    cy.window().its('Storage').invoke('getState').its('mapData')
+    cy.window()
+      .its('Storage')
+      .invoke('getState')
+      .its('mapData')
       .its('regions')
       .then((regions) => {
         const numberOfRegions = regions.length;
         cy.assertByTestId('plant-hardiness-zone-dropdown').click();
-        cy.get('[role="listbox"]')
-          .children()
-          .should('have.length', numberOfRegions);
+        cy.get('[role="listbox"]').children().should('have.length', numberOfRegions);
       });
   });
 });

@@ -4,17 +4,16 @@
   Styles are created using CustomStyles from ../../../shared/constants and ../../../styles/greenBar.scss
 */
 
-import { Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
 import { LocationOn } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
-import React from 'react';
+import { Grid } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import ProgressButtons from '../../../shared/ProgressButtons';
+import useIsMobile from '../../../hooks/useIsMobile';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
 import NavigationButtons from '../../../shared/NavigationButtons';
-import useIsMobile from '../../../hooks/useIsMobile';
+import ProgressButtons from '../../../shared/ProgressButtons';
 
 const speciesSelectorToolName = '/';
 
@@ -97,11 +96,14 @@ const InformationBar = ({ pathname }) => {
           borderRadius: '200px',
           color: 'black',
           width: '100%',
-
         }}
-        transparent={!((type === 'location' && progressRedux > 0)
-        || (type === 'site' && progressRedux > 1)
-        || (type === 'goals' && progressRedux > 2))}
+        transparent={
+          !(
+            (type === 'location' && progressRedux > 0) ||
+            (type === 'site' && progressRedux > 1) ||
+            (type === 'goals' && progressRedux > 2)
+          )
+        }
         title={getIconInfo(type)}
       />
     );
@@ -113,36 +115,69 @@ const InformationBar = ({ pathname }) => {
       sx={{
         backgroundColor: '#598445',
         p: '8px 0',
+        justifyContent: 'right',
       }}
-      justifyContent="right"
     >
       {pathname === speciesSelectorToolName && progressRedux > 0 && !isMobile && (
-        <Grid item container xs={12} sm={12} md={12} lg={7.5} spacing={1}>
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+        <Grid
+          container
+          spacing={1}
+          size={{
+            xs: 12,
+            sm: 12,
+            md: 12,
+            lg: 7.5,
+          }}
+        >
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 6,
+              lg: 3,
+            }}
+          >
             {getData('location')}
           </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 6,
+              lg: 3,
+            }}
+          >
             {getData('site')}
           </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 6,
+              lg: 3,
+            }}
+          >
             {getData('goals')}
           </Grid>
         </Grid>
       )}
-
       <Grid
         container
-        item
-        justifyContent={isMobile ? 'center' : 'right'}
-        xs={12}
-        lg={progressRedux > 0 && !isMobile ? 4 : 12}
-        marginRight={isMobile ? 0 : 2}
+        size={{
+          xs: 12,
+          lg: progressRedux > 0 && !isMobile ? 4 : 12,
+        }}
+        sx={{
+          justifyContent: isMobile ? 'center' : 'right',
+          marginRight: isMobile ? 0 : 2,
+        }}
       >
-        {pathname === speciesSelectorToolName
-          ? <ProgressButtons />
-          : <NavigationButtons pathname={pathname} />}
+        {pathname === speciesSelectorToolName ? (
+          <ProgressButtons />
+        ) : (
+          <NavigationButtons pathname={pathname} />
+        )}
       </Grid>
-
     </Grid>
   );
 };

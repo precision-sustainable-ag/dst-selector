@@ -9,9 +9,7 @@ const initialState = {
   comparisonKeys: [],
   myCoverCropListLocation: '',
   regionToggle: true,
-  apiBaseUrl: testAuth0Env || /(localhost|dev)/i.test(window.location)
-    ? 'developapi'
-    : 'api',
+  apiBaseUrl: testAuth0Env || /(localhost|dev)/i.test(window.location) ? 'developapi' : 'api',
   queryString: null,
   openMyCoverCropReset: {
     open: false,
@@ -61,7 +59,10 @@ export const updateComparisonKeys = (value) => ({
   },
 });
 
-export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
+export const activateMyCoverCropListTile = ({
+  myCoverCropActivationFlag,
+  speciesSelectorActivationFlag,
+}) => ({
   type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
   payload: {
     myCoverCropActivationFlag,
@@ -69,7 +70,10 @@ export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, species
   },
 });
 
-export const activateSpeicesSelectorTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
+export const activateSpeicesSelectorTile = ({
+  myCoverCropActivationFlag,
+  speciesSelectorActivationFlag,
+}) => ({
   type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
   payload: {
     myCoverCropActivationFlag,

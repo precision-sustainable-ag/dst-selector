@@ -6,19 +6,15 @@
   resetAllFilters resets all selected items in the sidebar
   showAllVariables selects all filters
 */
-import {
-  List, ListItem, ListItemText,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { List, ListItem, ListItemText } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
+import { updateComparisonKeys } from '../../../reduxStore/sharedSlice';
 import RenderFilters from './RenderFilters/RenderFilters';
 import RenderGoals from './RenderGoals/RenderGoals';
-import { updateComparisonKeys } from '../../../reduxStore/sharedSlice';
 
-const ComparisonBar = ({
-  filterData, goals, comparisonKeys, comparisonView, classes,
-}) => {
+const ComparisonBar = ({ filterData, goals, comparisonKeys, comparisonView, classes }) => {
   const dispatchRedux = useDispatch();
   const [filtersTotal, setFiltersTotal] = useState();
   const [filterValues, setFilterValues] = useState([]);
@@ -86,17 +82,19 @@ const ComparisonBar = ({
 
     const filterKeysAppend = filteredVals.map((val) => {
       if (
-        val.name !== 'Soil Conditions'
-        && val.name !== 'Disease & Non Weed Pests'
-        && val.name !== 'Beneficials'
-        && val.name !== 'Disease & Non Weed Pests'
+        val.name !== 'Soil Conditions' &&
+        val.name !== 'Disease & Non Weed Pests' &&
+        val.name !== 'Beneficials' &&
+        val.name !== 'Disease & Non Weed Pests'
       ) {
         return val.values.map((v) => {
           if (v.name !== 'Roller Crimp at Flowering') {
             return v.alternateName ? v.alternateName : v.name;
-          } return [];
+          }
+          return [];
         });
-      } return [];
+      }
+      return [];
     });
 
     const filterGoalsAppend = filteredGoals.map((v) => v.name);
@@ -121,7 +119,7 @@ const ComparisonBar = ({
       {comparisonKeys.length > 0 && (
         <ListItem onClick={() => {}}>
           <ListItemText
-            primary={(
+            primary={
               <PSAButton
                 buttonType=""
                 size="small"
@@ -130,14 +128,14 @@ const ComparisonBar = ({
                 data-test="my-selected-crops-clear-variables"
                 title="Clear Variables"
               />
-            )}
+            }
           />
         </ListItem>
       )}
-      {((comparisonKeys.length - allGoals.length) + 1) !== filtersTotal && (
+      {comparisonKeys.length - allGoals.length + 1 !== filtersTotal && (
         <ListItem>
           <ListItemText
-            primary={(
+            primary={
               <PSAButton
                 buttonType=""
                 size="small"
@@ -146,7 +144,7 @@ const ComparisonBar = ({
                 title="Show All"
                 className="showAllButton"
               />
-            )}
+            }
           />
         </ListItem>
       )}

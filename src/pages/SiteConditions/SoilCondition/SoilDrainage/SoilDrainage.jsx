@@ -1,20 +1,21 @@
 /* eslint-disable max-len */
 
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  Typography, Switch, Grid, Box,
-} from '@mui/material';
-import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
+import { InvertColors, LocalDrinkOutlined } from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { Box, Grid, Switch, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
+import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
+import useIsMobile from '../../../../hooks/useIsMobile';
+import {
+  setTileDrainage,
+  updateDrainageClass as updateDrainageClassRedux,
+} from '../../../../reduxStore/soilSlice';
+import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import RenderDrainageClasses from './RenderDrainageClasses';
-import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
-import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
-import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
-import useIsMobile from '../../../../hooks/useIsMobile';
 
 const SoilDrainage = ({ drainageOptions }) => {
   const dispatchRedux = useDispatch();
@@ -42,6 +43,7 @@ const SoilDrainage = ({ drainageOptions }) => {
     }
   }, [selectedCropIdsRedux, myCoverCropListLocationRedux]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <Its an initial load>
   useEffect(() => {
     // set new drainage value
     if (tileDrainageRedux) {
@@ -53,23 +55,26 @@ const SoilDrainage = ({ drainageOptions }) => {
   }, [soilDataOriginalRedux]);
 
   useEffect(() => {
-    if (soilDataRedux?.drainageClass[0] !== undefined
-      && drainageOptions.map((option) => option.value).indexOf(soilDataRedux?.drainageClass[0]) < 3) {
+    if (
+      soilDataRedux?.drainageClass[0] !== undefined &&
+      drainageOptions.map((option) => option.value).indexOf(soilDataRedux?.drainageClass[0]) < 3
+    ) {
       setShowTiling(true);
     } else if (
-      soilDataRedux?.drainageClass.includes(drainageOptions[3].value)
-      && tileDrainageRedux === true
+      soilDataRedux?.drainageClass.includes(drainageOptions[3].value) &&
+      tileDrainageRedux === true
     ) {
       setShowTiling(true);
     } else {
       setShowTiling(false);
     }
     window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.drainageClass));
-  }, [soilDataRedux?.drainageClass]);
+  }, [soilDataRedux?.drainageClass, tileDrainageRedux, drainageOptions]);
 
   const resetDrainageClasses = () => {
     // update history state here
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
     dispatchRedux(updateDrainageClassRedux(soilDataOriginalRedux?.drainageClass));
     setNewDrainage(soilDataOriginalRedux.drainageClass[0]);
     window.localStorage.setItem('drainage', JSON.stringify(soilDataOriginalRedux?.drainageClass));
@@ -77,19 +82,18 @@ const SoilDrainage = ({ drainageOptions }) => {
   };
 
   const handleTileDrainage = () => {
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
     dispatchRedux(setTileDrainage(!tileDrainageRedux));
   };
 
   const drainageClass = () => {
     const drainageString = ` ${soilDataRedux.drainageClass[0]}`;
     return (
-      <Grid align="center" item xs={12} mb={2}>
+      <Grid align="center" mb={2} size={12}>
         <Typography display="inline" variant="subtitle2" gutterBottom>
           Your improved drainage class is
-          <span style={{ fontWeight: 'bold' }}>
-            {drainageString}
-          </span>
+          <span style={{ fontWeight: 'bold' }}>{drainageString}</span>
         </Typography>
       </Grid>
     );
@@ -107,108 +111,97 @@ const SoilDrainage = ({ drainageOptions }) => {
     >
       <Grid container>
         <Grid
-          item
           container
           sx={{
             p: '1rem',
             mb: '1rem',
             alignItems: 'center',
           }}
-          xs={12}
+          size={12}
         >
-          <Grid item sx={{ mr: '1rem' }}>
+          <Grid sx={{ mr: '1rem' }}>
             <LocalDrinkOutlined />
           </Grid>
-          <Grid item flexGrow={1}>
+          <Grid flexGrow={1}>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold' }}>Drainage Class</span>
-              &nbsp;
-              {' '}
+              &nbsp;{' '}
               <ReferenceTooltip
                 type="text"
                 hasLink
-                title={(
+                title={
                   <div>
                     <Typography variant="body1">
                       {' '}
-                      Indicates your soil drainage based on the
-                      {' '}
+                      Indicates your soil drainage based on the{' '}
                       <a
                         href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         USDA NRCS Web Soil Survey
-                      </a>
-                      {' '}
-                      drainage classes.
-                      {' '}
-                      <a
-                        href="/data-dictionary"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
+                      </a>{' '}
+                      drainage classes.{' '}
+                      <a href="/data-dictionary" target="_blank" rel="noopener noreferrer">
                         {' '}
                         Definitions of values found here
                       </a>
                       .
                     </Typography>
                   </div>
-                )}
+                }
                 content="Indicates your soil drainage based on the USDA NRCS Web Soil Survey drainage classes.
                 Definitions of values can be found in the data dictionary."
               />
             </Typography>
           </Grid>
           {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
-            <Grid item>
+            <Grid sx={{ pl: '0.5rem' }}>
               <PSAButton
                 buttonType="ValuesChanged"
                 onClick={() => {
                   resetDrainageClasses();
                 }}
                 data-test="drainage-reset-button"
-                title={isMobile ? (
-                  <RestartAltIcon sx={{ color: '#C73200' }} />
-                ) : (
-                  <Typography
-                    sx={{
-                      color: '#C73200',
-                      fontSize: '0.8rem',
-                      textTransform: 'none',
-                    }}
-                    variant="button"
-                  >
-                    Values changed, reset?
-                  </Typography>
-                )}
+                title={
+                  isMobile ? (
+                    <RestartAltIcon sx={{ color: '#C73200' }} />
+                  ) : (
+                    <Typography
+                      sx={{
+                        color: '#C73200',
+                        fontSize: '0.8rem',
+                        textTransform: 'none',
+                      }}
+                      variant="button"
+                    >
+                      Values changed, reset?
+                    </Typography>
+                  )
+                }
               />
             </Grid>
           )}
         </Grid>
         <Grid
-          item
           container
           spacing={1}
-          sx={{ mb: '1rem' }}
-          alignItems="center"
-          justifyContent="center"
+          sx={{ mb: '1rem', alignItems: 'center', justifyContent: 'center' }}
         >
-          <Grid item xs={12} alignSelf="center" justifySelf="center">
-            {drainageInitialLoad
-              && (
-                <RenderDrainageClasses
-                  setNewDrainage={setNewDrainage}
-                  setShowTiling={setShowTiling}
-                  drainage={newDrainage}
-                  drainageOptions={drainageOptions}
-                />
-              )}
+          <Grid sx={{ alignSelf: 'center', justifySelf: 'center' }} size={12}>
+            {drainageInitialLoad && (
+              <RenderDrainageClasses
+                setNewDrainage={setNewDrainage}
+                setShowTiling={setShowTiling}
+                drainage={newDrainage}
+                drainageOptions={drainageOptions}
+              />
+            )}
           </Grid>
           <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
           {showTiling && (
-            <Grid container justifyContent="center" alignItems="center">
-              <Grid item>
+            <Grid container sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+              <Grid>
                 <Box
                   sx={{
                     bgcolor: 'rgba(176, 236, 130, 0.8)',
@@ -220,19 +213,25 @@ const SoilDrainage = ({ drainageOptions }) => {
                   <InvertColors />
                 </Box>
               </Grid>
-              <Grid item container direction="column" xs={6} lg={3}>
-                <Grid item>
+              <Grid
+                container
+                direction="column"
+                size={{
+                  xs: 6,
+                  lg: 3,
+                }}
+              >
+                <Grid>
                   <Typography variant="body1">
                     <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Tile Drainage</span>
-                    &nbsp;
-                    {' '}
+                    &nbsp;{' '}
                     <ReferenceTooltip
                       type="text"
                       content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
                     />
                   </Typography>
                 </Grid>
-                <Grid item>
+                <Grid container>
                   <Typography variant="body1" display="inline">
                     No
                   </Typography>

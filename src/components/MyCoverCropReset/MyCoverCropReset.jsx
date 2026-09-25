@@ -1,15 +1,9 @@
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Typography,
-} from '@mui/material';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { BinaryButton } from '../../shared/constants';
-import { reset } from '../../reduxStore/store';
+import { useHistory } from 'react-router-dom';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
+import { reset } from '../../reduxStore/store';
+import { BinaryButton } from '../../shared/constants';
 
 const MyCoverCropReset = () => {
   const dispatchRedux = useDispatch();
@@ -32,15 +26,12 @@ const MyCoverCropReset = () => {
     <Dialog disableEscapeKeyDown open={open}>
       <DialogContent dividers>
         <Typography variant="body1">
-          In order to continue you will need to reset the My Cover Crop List. Would you like to continue?
+          In order to continue you will need to reset the My Cover Crop List. Would you like to
+          continue?
         </Typography>
       </DialogContent>
-      <DialogActions
-        className="resetBox"
-      >
-        <BinaryButton
-          action={setOpen}
-        />
+      <DialogActions className="resetBox">
+        <BinaryButton action={setOpen} />
       </DialogActions>
     </Dialog>
   );

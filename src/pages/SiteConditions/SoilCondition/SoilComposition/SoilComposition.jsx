@@ -1,6 +1,5 @@
-import React from 'react';
-import { Typography, Grid, Box } from '@mui/material';
 import { Terrain } from '@mui/icons-material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { ReferenceTooltip } from '../../../../shared/constants';
 
@@ -17,23 +16,21 @@ const SoilComposition = () => {
       }}
       data-test="soil-composition-card"
     >
-      <Grid container justifyContent="space-between">
-        <Grid item container xs={10}>
-          <Grid item container direction="column">
-            <Grid item>
+      <Grid container sx={{ justifyContent: 'space-between' }}>
+        <Grid container size={10}>
+          <Grid container direction="column">
+            <Grid>
               <Typography variant="body1">
                 <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Soil Composition</span>
-                &nbsp;
-                {' '}
+                &nbsp;{' '}
                 <ReferenceTooltip
                   type="text"
                   hasLink
-                  title={(
+                  title={
                     <div>
                       <Typography variant="body1">
                         {' '}
-                        The tool auto-completes your soil composition based on location and the
-                        {' '}
+                        The tool auto-completes your soil composition based on location and the{' '}
                         <a
                           href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                           target="_blank"
@@ -44,12 +41,12 @@ const SoilComposition = () => {
                         .
                       </Typography>
                     </div>
-                  )}
+                  }
                   content="The tool auto-completes your soil composition based on location and the USDA NRCS Web Soil Survey."
                 />
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid>
               <Typography
                 variant="body1"
                 style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#51783F' }}
@@ -60,7 +57,7 @@ const SoilComposition = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid>
           <Box>
             <Terrain />
           </Box>

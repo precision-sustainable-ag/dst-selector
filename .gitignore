@@ -7,7 +7,6 @@
 
 # testing
 /coverage
-.vscode/*
 
 # production
 build/
@@ -30,3 +29,4 @@ README_LITE.TXT
 
 /cypress/snapshots
 /cypress/screenshots
+/cypress/videos

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import './commands';
 import { flipCoverCropName } from '../../src/shared/constants';
 
@@ -11,21 +10,32 @@ export const testFiltersByType = () => {
 
   const allFilterDataTypes = allFilters.reduce((res, filter) => {
     const dataType = filter.dataType.label;
-    if (res.includes(dataType)) return res;
-    return [...res, dataType];
+    if (!res.includes(dataType)) {
+      res.push(dataType);
+    }
+    return res;
   }, []);
 
   const testFilters = allFilterDataTypes.reduce((res, dataType) => {
     // TODO: for each filter type, find first available filter
     const filterName = allFilters.find((filter) => filter.dataType.label === dataType)?.label;
-    if (!filterName) return res;
-    return [...res, filterName];
+    if (filterName) {
+      res.push(filterName);
+    }
+    return res;
   }, []);
 
   const testFilterValues = allFilterDataTypes.reduce((res, dataType) => {
     const filter = allFilters.find((filter) => filter.dataType.label === dataType);
     if (!filter) return res;
-    return [...res, filter.values.map((v) => (v.dataType === 'number' && filter.dataType.label !== 'currency' ? parseInt(v.value) : v.value))];
+    res.push(
+      filter.values.map((v) =>
+        v.dataType === 'number' && filter.dataType.label !== 'currency'
+          ? parseInt(v.value, 10)
+          : v.value,
+      ),
+    );
+    return res;
   }, []);
 
   const filterResults = {};
@@ -63,7 +73,8 @@ const checkRows = (filterType, filterIndex, filterResult) => {
 
   filterIndex.forEach((filterIdx, index) => {
     cy.getByTestId(`${filterType}-${filterIdx}`)
-      .click({ force: true }).then(() => {
+      .click({ force: true })
+      .then(() => {
         let option;
         if (filterValType === 'string' && index - 1 >= 0) {
           option = index - 1;
@@ -82,7 +93,9 @@ const checkRows = (filterType, filterIndex, filterResult) => {
             if (allRows.length === 1) {
               // eslint-disable-next-line no-console
               cy.log('One row found.');
-              cy.contains(/No cover crops match your selected Cover Crop Property filters./i).should('exist');
+              cy.contains(
+                /No cover crops match your selected Cover Crop Property filters./i,
+              ).should('exist');
             } else {
               const visibleRows = Cypress.$(allRows).not(`[style*="opacity: ${rowOpacity}"]`);
               // eslint-disable-next-line no-console

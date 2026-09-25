@@ -40,7 +40,7 @@ const statesLatLongDict = {
   Ohio: [39.961346, -82.999069],
   Oklahoma: [35.492207, -97.503342],
   // Canada
-  Ontario: [43.651070, -79.347015],
+  Ontario: [43.65107, -79.347015],
   Oregon: [44.938461, -123.030403],
   Pennsylvania: [40.264378, -76.883598],
   'Rhode Island': [41.830914, -71.414963],

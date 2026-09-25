@@ -137,14 +137,14 @@ export const removeHistory = async (token, historyId) => {
 };
 
 /**
-* This function saves history by user history api.
-* If no param, create a new history record.
-* If `id` is specified, update relevant history object.
-* @param {string} token - The auth token, default to `null`.
-* @param {number} id - The id of history to update, default to `null`.
-* @param {string} name - The name of history to update, default to `null`.
-* @param {object} data - The data of history to save, default to `null`.
-*/
+ * This function saves history by user history api.
+ * If no param, create a new history record.
+ * If `id` is specified, update relevant history object.
+ * @param {string} token - The auth token, default to `null`.
+ * @param {number} id - The id of history to update, default to `null`.
+ * @param {string} name - The name of history to update, default to `null`.
+ * @param {object} data - The data of history to save, default to `null`.
+ */
 export const saveHistory = async (name, data, token = null, id = null) => {
   try {
     if (!token) throw new Error('Access token not available!');

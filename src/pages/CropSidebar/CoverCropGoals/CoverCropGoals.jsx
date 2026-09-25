@@ -1,15 +1,16 @@
 // eslint-disable react/jsx-one-expression-per-line
+
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   Box,
   Collapse,
   List,
-  ListItemButton,
   ListItem,
+  ListItemButton,
   ListItemText,
   Typography,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
 import { updateProgress } from '../../../reduxStore/sharedSlice';
@@ -30,7 +31,11 @@ const CoverCropGoals = () => {
   return (
     <Box
       sx={{
-        border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+        border: 0.5,
+        borderRadius: 2,
+        borderColor: 'black',
+        mb: 2,
+        overflow: 'hidden',
       }}
     >
       {' '}
@@ -53,12 +58,12 @@ const CoverCropGoals = () => {
             <List component="div" disablePadding>
               <ListItem sx={{ paddingLeft: 3 }}>
                 <ListItemText
-                  primary={(
+                  primary={
                     <>
                       <Typography variant="body1"> Goal Priority Order</Typography>
                       {selectedGoalsRedux?.map((goal, index) => (
                         <Typography
-                          key={index}
+                          key={goal}
                           variant="body1"
                           sx={{ fontWeight: 'normal', fontSize: '10pt', color: '#367F81' }}
                         >
@@ -69,7 +74,7 @@ const CoverCropGoals = () => {
                         </Typography>
                       ))}
                     </>
-                  )}
+                  }
                 />
               </ListItem>
             </List>

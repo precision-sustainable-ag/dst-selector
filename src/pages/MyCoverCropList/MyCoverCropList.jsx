@@ -6,16 +6,14 @@
   TopBar contains the blue bar for adding crops
 */
 
-import {
-  Typography, Grid, Box,
-} from '@mui/material';
-import React, { useEffect } from 'react';
+import { Box, Grid, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton } from 'shared-react-components/src';
-import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropComparisonTable';
 import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
+import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropComparisonTable';
 
 const MyCoverCropList = ({ from }) => {
   const dispatchRedux = useDispatch();
@@ -27,11 +25,16 @@ const MyCoverCropList = ({ from }) => {
     if (stateLabelRedux === null) {
       history.push('/');
     }
-  }, [stateLabelRedux]);
+  }, [stateLabelRedux, history]);
 
   const redirectToSpeciesSelector = () => {
     history.replace('/');
-    dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
+    dispatchRedux(
+      activateSpeicesSelectorTile({
+        speciesSelectorActivationFlag: true,
+        myCoverCropActivationFlag: false,
+      }),
+    );
   };
 
   const redirectToExplorer = () => {
@@ -45,26 +48,24 @@ const MyCoverCropList = ({ from }) => {
   return (
     <>
       {/* eslint-disable-next-line no-nested-ternary */}
-      {selectedCropIdsRedux.length > 0
-       && selectedCropIdsRedux.length === 0 ? (
-         <Typography variant="body1">
-           Your list is empty.
-           {' '}
-           <PSAButton
-             buttonType=""
-             onClick={
+      {selectedCropIdsRedux.length > 0 && selectedCropIdsRedux.length === 0 ? (
+        <Typography variant="body1">
+          Your list is empty.{' '}
+          <PSAButton
+            buttonType=""
+            onClick={
               from === 'myCoverCropListStatic' ? redirectToExplorer : redirectToSpeciesSelector
             }
-             title="Add Crops"
-           />
-         </Typography>
-        ) : (
-          <Box flexDirection="column" display="flex" height="100%" mt={2}>
-            <Grid container spacing={2}>
-              <MyCoverCropComparisonTable />
-            </Grid>
-          </Box>
-        )}
+            title="Add Crops"
+          />
+        </Typography>
+      ) : (
+        <Box flexDirection="column" display="flex" height="100%" mt={2}>
+          <Grid container spacing={2}>
+            <MyCoverCropComparisonTable />
+          </Grid>
+        </Box>
+      )}
     </>
   );
 };

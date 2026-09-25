@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
-import dotenv from 'dotenv';
 import vitePreprocessor from 'cypress-vite';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -9,7 +9,7 @@ export default defineConfig({
     baseUrl: 'http://localhost/',
     experimentalRunAllSpecs: true,
     trashAssetsBeforeRuns: true,
-    setupNodeEvents(on, config) {
+    setupNodeEvents(on) {
       on('file:preprocessor', vitePreprocessor());
     },
   },
@@ -27,7 +27,7 @@ export default defineConfig({
     specPattern: 'src/**/*.cy.{js,jsx,ts,tsx}', // Specify the path to your component tests
     numTestsKeptInMemory: 1,
     experimentalMemoryManagement: true,
-    setupNodeEvents(on, config) {
+    setupNodeEvents(config) {
       return config;
     },
   },

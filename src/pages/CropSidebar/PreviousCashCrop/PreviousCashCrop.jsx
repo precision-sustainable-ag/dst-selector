@@ -1,16 +1,14 @@
-import {
-  Grid, Typography,
-} from '@mui/material';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Grid, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
+import useIsMobile from '../../../hooks/useIsMobile';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
-import useIsMobile from '../../../hooks/useIsMobile';
 
 const PreviousCashCrop = () => {
   const dispatchRedux = useDispatch();
@@ -25,7 +23,8 @@ const PreviousCashCrop = () => {
 
   const handleDispatch = (start = '', end = '') => {
     // update history state here
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
     pirschAnalytics('Previous Cash Crop', { meta: { updated: true } });
     if (dayjs(end).isBefore(dayjs(start))) {
       setIsError(true);
@@ -35,11 +34,16 @@ const PreviousCashCrop = () => {
       return;
     }
     setIsError(false);
-    dispatchRedux(updateDateRange({ startDate: start ? start.toString() : null, endDate: end ? end.toString() : null }));
+    dispatchRedux(
+      updateDateRange({
+        startDate: start ? start.toString() : null,
+        endDate: end ? end.toString() : null,
+      }),
+    );
   };
 
   return (
-    <Grid item container xs={12} alignItems="center" justifyContent="center">
+    <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }} size={12}>
       <Typography align="center" variant="h4" data-test="title-growing-window">
         Cash Crop Growing Window
       </Typography>
@@ -47,14 +51,17 @@ const PreviousCashCrop = () => {
         Enter your cash crop growing period, or main perennial crop growing window.
       </Typography>
       <Grid
-        item
         container
-        justifyContent={isMobile ? 'center' : 'space-between'}
-        xs={12}
+        sx={{ justifyContent: isMobile ? 'center' : 'space-between' }}
         spacing={isMobile ? 2 : 3}
         display="flex"
+        size={12}
       >
-        <Grid item md={6}>
+        <Grid
+          size={{
+            md: 6,
+          }}
+        >
           <LocalizationProvider dateAdapter={AdapterDayjs} data-test="planting-date-picker">
             <DatePicker
               slotProps={{
@@ -70,7 +77,11 @@ const PreviousCashCrop = () => {
             />
           </LocalizationProvider>
         </Grid>
-        <Grid item md={6}>
+        <Grid
+          size={{
+            md: 6,
+          }}
+        >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               key={datePickerKey}

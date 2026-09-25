@@ -1,7 +1,5 @@
-import {
-  Box, Typography,
-} from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import { Box, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PSAAccordion, PSATooltip } from 'shared-react-components/src';
 
@@ -34,6 +32,7 @@ const Attribution = () => {
       });
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <councils changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
     if (councilShorthandRedux && councils.some((c) => c.key === councilShorthandRedux)) {
       setExpandedAccordions([councilShorthandRedux]);
@@ -69,7 +68,7 @@ const Attribution = () => {
           }}
           expanded={expandedAccordions.includes(council.key)}
           onChange={() => handleAccordion(council.key)}
-          summaryContent={(
+          summaryContent={
             <PSATooltip
               placement="bottom"
               arrow
@@ -80,20 +79,24 @@ const Attribution = () => {
                 },
               }}
               title={council.label}
-              tooltipContent={(
+              tooltipContent={
                 <Box tabIndex="0">
-                  <Typography className={`infosheetAccordionButton${1}`} variant="h4" style={{ color: 'grey' }}>
+                  <Typography
+                    className={`infosheetAccordionButton${1}`}
+                    variant="h4"
+                    style={{ color: 'grey' }}
+                  >
                     {council.label}
                   </Typography>
                 </Box>
-              )}
+              }
             />
-          )}
-          detailsContent={(
+          }
+          detailsContent={
             <Typography variant="body1" align="left">
               {attributions[council.key] || 'No attribution available'}
             </Typography>
-          )}
+          }
         />
       ))}
     </Box>

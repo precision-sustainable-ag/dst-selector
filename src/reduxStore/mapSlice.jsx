@@ -23,9 +23,7 @@ export const updateRegion = ({ regionId, regionShorthand }) => ({
   },
 });
 
-export const updateStateInfo = ({
-  stateLabel, stateId, councilShorthand, councilLabel,
-}) => ({
+export const updateStateInfo = ({ stateLabel, stateId, councilShorthand, councilLabel }) => ({
   type: 'UPDATE_STATE_INFO',
   payload: {
     stateLabel,

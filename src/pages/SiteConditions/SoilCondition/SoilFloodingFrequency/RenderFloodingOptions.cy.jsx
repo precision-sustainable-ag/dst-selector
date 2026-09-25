@@ -1,8 +1,7 @@
-import React from 'react';
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
-import RenderFloodingOptions from './RenderFloodingOptions';
 import configureStore from '../../../../reduxStore/store';
+import RenderFloodingOptions from './RenderFloodingOptions';
 
 /* eslint-disable no-undef */
 

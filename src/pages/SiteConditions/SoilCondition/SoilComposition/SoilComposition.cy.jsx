@@ -1,10 +1,9 @@
-import React from 'react';
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
-import SoilComposition from './SoilComposition';
-import configureStore from '../../../../reduxStore/store';
-import { setSoilRedux } from '../../../../reduxStore/soilSlice';
 import { setMapRedux } from '../../../../reduxStore/mapSlice';
+import { setSoilRedux } from '../../../../reduxStore/soilSlice';
+import configureStore from '../../../../reduxStore/store';
+import SoilComposition from './SoilComposition';
 
 /* eslint-disable no-undef */
 

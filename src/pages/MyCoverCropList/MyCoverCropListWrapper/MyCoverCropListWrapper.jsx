@@ -4,11 +4,11 @@
 */
 
 import { Grid } from '@mui/material';
-import React, { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { setSidebarWidth } from '../../../reduxStore/pageSlice';
 import CropSidebar from '../../CropSidebar/CropSidebar';
 import MyCoverCropList from '../MyCoverCropList';
-import { setSidebarWidth } from '../../../reduxStore/pageSlice';
 
 const MyCoverCropListWrapper = () => {
   const [comparisonView, setComparisonView] = useState(true);
@@ -19,17 +19,34 @@ const MyCoverCropListWrapper = () => {
     if (sidebarRef.current) {
       dispatchRedux(setSidebarWidth(sidebarRef.current.offsetWidth));
     }
-  }, [dispatchRedux, sidebarRef]);
+  }, [dispatchRedux]);
   return (
     <Grid container spacing={5}>
-      <Grid item xl={3} lg={3} md={3} sm={12} xs={12} ref={sidebarRef}>
+      <Grid
+        ref={sidebarRef}
+        size={{
+          xl: 3,
+          lg: 3,
+          md: 3,
+          sm: 12,
+          xs: 12,
+        }}
+      >
         <CropSidebar
           comparisonView={comparisonView}
           setComparisonView={setComparisonView}
           from="myCoverCropListStatic"
         />
       </Grid>
-      <Grid item xl={9} lg={9} md={9} sm={12} xs={12}>
+      <Grid
+        size={{
+          xl: 9,
+          lg: 9,
+          md: 9,
+          sm: 12,
+          xs: 12,
+        }}
+      >
         <MyCoverCropList from="myCoverCropListStatic" comparisonView={comparisonView} />
       </Grid>
     </Grid>

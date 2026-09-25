@@ -4,11 +4,11 @@
   styles are made in ../../styles/footer.scss
 */
 
-import React, { useState, useEffect } from 'react';
 import { Box, Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import ProgressButtons from '../../shared/ProgressButtons';
 import NavigationButtons from '../../shared/NavigationButtons';
+import ProgressButtons from '../../shared/ProgressButtons';
 
 const Footer = () => {
   const history = useHistory();
@@ -35,9 +35,11 @@ const Footer = () => {
       <Grid
         container
         direction="column"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ p: '8px 0' }}
+        sx={{
+          p: '8px 0',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
         {pathname === '/' ? <ProgressButtons /> : <NavigationButtons />}
       </Grid>
