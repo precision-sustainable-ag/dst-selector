@@ -13,7 +13,6 @@ pr:
       - main
 
 variables:
-
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '31298b14-4136-4840-a46a-aa0c90ffe768'
   imageRepository: 'dstselector'
@@ -29,162 +28,167 @@ variables:
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
 
 stages:
-- stage: Build
-  displayName: Build stage
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - script: |
-        echo VITE_API_AUTH0_DOMAIN="$(VITE_API_AUTH0_DOMAIN)" >> /home/vsts/work/1/s/.env
-        echo VITE_API_AUTH0_CLIENT_ID="$(VITE_API_AUTH0_CLIENT_ID)" >> /home/vsts/work/1/s/.env
-        echo VITE_API_AUTH0_AUDIENCE="$(VITE_API_AUTH0_AUDIENCE)" >> /home/vsts/work/1/s/.env
-        echo VITE_API_USER_HISTORY_API_URL="$(VITE_API_USER_HISTORY_API_URL)" >> /home/vsts/work/1/s/.env
-        echo VITE_API_USER_HISTORY_SCHEMA="$(VITE_API_USER_HISTORY_SCHEMA)" >> /home/vsts/work/1/s/.env
-        echo VITE_API_RELEASE_NOTES="$(VITE_API_RELEASE_NOTES)" >> /home/vsts/work/1/s/.env
-        echo VITE_API_MAPBOX_TOKEN="$(VITE_API_MAPBOX_TOKEN)" >> /home/vsts/work/1/s/.env
-        echo VITE_AUTH0_USERNAME="$(VITE_AUTH0_USERNAME)" >> /home/vsts/work/1/s/.env
-        echo VITE_AUTH0_PASSWORD="$(VITE_AUTH0_PASSWORD)" >> /home/vsts/work/1/s/.env
-      displayName: "Create .env"
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-
-    - script: |
-        docker pull $(containerRegistry)/$(imageRepository):$(tag)
-        docker run -d --name test-app --network="host" $(containerRegistry)/$(imageRepository):$(tag)
-        docker build -f Dockerfile.tester -t cypress-tester .
-
-        docker run --network="host" --name cypress-runner -e NODE_OPTIONS="--max-old-space-size=4096" cypress-tester || TEST_EXIT_CODE=$?
-        
-        docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/screenshots || true
-        docker cp cypress-runner:/e2e/cypress/videos ./cypress/videos || true
-
-        docker rm cypress-runner
-        exit $TEST_EXIT_CODE
-      displayName: "Run Cypress Tests"
-
-    - script: |
-        rm -rf cypress/screenshots
-        rm -rf cypress/videos
-        echo "Cleaned up old artifacts."
-      displayName: "Clean Up Artifacts"
-
-    # Publish Cypress screenshots as artifacts
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: 'cypress/screenshots/'
-        artifact: 'cypress-screenshots'
-      condition: failed()
-    
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: 'cypress/videos'
-        artifact: 'cypress-videos'
-      condition: failed()
-
-    - upload: manifests
-      artifact: manifests
-
-- stage: Deploy
-  displayName: Deploy stage
-  dependsOn: Build
-
-  jobs:
-  - deployment: Deploy
-    condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
-    displayName: Deploy
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'precisionsustainableagdstselector-2117.production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
-            inputs:
-              action: createSecret
-              secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-
-          - task: KubernetesManifest@0
-            displayName: Deploy to Kubernetes cluster
-            inputs:
-              action: deploy
-              manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
-
-  - deployment: DeployPullRequest
-    displayName: Deploy Pull request
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
-    pool:
-      vmImage: $(vmImageName)
-
-    environment: 'precisionsustainableagdstselector-2117.$(k8sNamespaceForPR)'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - reviewApp: production
-
-          - task: Kubernetes@1
-            displayName: 'Create a new namespace for the pull request'
-            inputs:
-              command: apply
-              useConfigurationFile: true
-              inline: '{ "kind": "Namespace", "apiVersion": "v1", "metadata": { "name": "$(k8sNamespaceForPR)" }}'
-
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
-            inputs:
-              action: createSecret
-              secretName: $(imagePullSecret)
-              namespace: $(k8sNamespaceForPR)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-
-          - task: KubernetesManifest@0
-            displayName: Deploy to the new namespace in the Kubernetes cluster
-            inputs:
-              action: deploy
-              namespace: $(k8sNamespaceForPR)
-              manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
-
-          - task: Kubernetes@1
-            name: get
-            displayName: 'Get services in the new namespace'
-            continueOnError: true
-            inputs:
-              command: get
-              namespace: $(k8sNamespaceForPR)
-              arguments: svc
-              outputFormat: jsonpath='http://{.items[0].status.loadBalancer.ingress[0].ip}:{.items[0].spec.ports[0].port}'
-
-          # Getting the IP of the deployed service and writing it to a variable for posing comment
+  - stage: Build
+    displayName: Build stage
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
+        steps:
           - script: |
-              url="$(get.KubectlOutput)"
-              message="Your review app has been deployed"
-              if [ ! -z "$url" -a "$url" != "http://:" ]
-              then
-                message="${message} and is available at $url.<br><br>[Learn More](https://aka.ms/testwithreviewapps) about how to test and provide feedback for the app."
+              echo VITE_API_AUTH0_DOMAIN="$(VITE_API_AUTH0_DOMAIN)" >> /home/vsts/work/1/s/.env
+              echo VITE_API_AUTH0_CLIENT_ID="$(VITE_API_AUTH0_CLIENT_ID)" >> /home/vsts/work/1/s/.env
+              echo VITE_API_AUTH0_AUDIENCE="$(VITE_API_AUTH0_AUDIENCE)" >> /home/vsts/work/1/s/.env
+              echo VITE_API_USER_HISTORY_API_URL="$(VITE_API_USER_HISTORY_API_URL)" >> /home/vsts/work/1/s/.env
+              echo VITE_API_USER_HISTORY_SCHEMA="$(VITE_API_USER_HISTORY_SCHEMA)" >> /home/vsts/work/1/s/.env
+              echo VITE_API_RELEASE_NOTES="$(VITE_API_RELEASE_NOTES)" >> /home/vsts/work/1/s/.env
+              echo VITE_API_MAPBOX_TOKEN="$(VITE_API_MAPBOX_TOKEN)" >> /home/vsts/work/1/s/.env
+              echo VITE_AUTH0_USERNAME="$(VITE_AUTH0_USERNAME)" >> /home/vsts/work/1/s/.env
+              echo VITE_AUTH0_PASSWORD="$(VITE_AUTH0_PASSWORD)" >> /home/vsts/work/1/s/.env
+              IS_PR="false"
+              if [[ $(Build.SourceBranch) == refs/pull/* ]]; then
+                IS_PR="true"
               fi
-              echo "##vso[task.setvariable variable=GITHUB_COMMENT]$message"
+              echo VITE_TEST_AUTH0_ENV="$IS_PR" >> /home/vsts/work/1/s/.env
+            displayName: 'Create .env'
+          - task: Docker@2
+            displayName: Build and push an image to container registry
+            inputs:
+              command: buildAndPush
+              repository: $(imageRepository)
+              dockerfile: $(dockerfilePath)
+              containerRegistry: $(dockerRegistryServiceConnection)
+              tags: |
+                $(tag)
+
+          - script: |
+              docker pull $(containerRegistry)/$(imageRepository):$(tag)
+              docker run -d --name test-app --network="host" $(containerRegistry)/$(imageRepository):$(tag)
+              docker build -f Dockerfile.tester -t cypress-tester .
+
+              docker run --network="host" --name cypress-runner -e NODE_OPTIONS="--max-old-space-size=4096" cypress-tester || TEST_EXIT_CODE=$?
+
+              docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/screenshots || true
+              docker cp cypress-runner:/e2e/cypress/videos ./cypress/videos || true
+
+              docker rm cypress-runner
+              exit $TEST_EXIT_CODE
+            displayName: 'Run Cypress Tests'
+
+          - script: |
+              rm -rf cypress/screenshots
+              rm -rf cypress/videos
+              echo "Cleaned up old artifacts."
+            displayName: 'Clean Up Artifacts'
+
+          # Publish Cypress screenshots as artifacts
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: 'cypress/screenshots/'
+              artifact: 'cypress-screenshots'
+            condition: failed()
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: 'cypress/videos'
+              artifact: 'cypress-videos'
+            condition: failed()
+
+          - upload: manifests
+            artifact: manifests
+
+  - stage: Deploy
+    displayName: Deploy stage
+    dependsOn: Build
+
+    jobs:
+      - deployment: Deploy
+        condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
+        displayName: Deploy
+        pool:
+          vmImage: $(vmImageName)
+        environment: 'precisionsustainableagdstselector-2117.production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: KubernetesManifest@0
+                  displayName: Create imagePullSecret
+                  inputs:
+                    action: createSecret
+                    secretName: $(imagePullSecret)
+                    dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+                - task: KubernetesManifest@0
+                  displayName: Deploy to Kubernetes cluster
+                  inputs:
+                    action: deploy
+                    manifests: |
+                      $(Pipeline.Workspace)/manifests/deployment.yml
+                      $(Pipeline.Workspace)/manifests/service.yml
+                    imagePullSecrets: |
+                      $(imagePullSecret)
+                    containers: |
+                      $(containerRegistry)/$(imageRepository):$(tag)
+
+      - deployment: DeployPullRequest
+        displayName: Deploy Pull request
+        condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
+        pool:
+          vmImage: $(vmImageName)
+
+        environment: 'precisionsustainableagdstselector-2117.$(k8sNamespaceForPR)'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - reviewApp: production
+
+                - task: Kubernetes@1
+                  displayName: 'Create a new namespace for the pull request'
+                  inputs:
+                    command: apply
+                    useConfigurationFile: true
+                    inline: '{ "kind": "Namespace", "apiVersion": "v1", "metadata": { "name": "$(k8sNamespaceForPR)" }}'
+
+                - task: KubernetesManifest@0
+                  displayName: Create imagePullSecret
+                  inputs:
+                    action: createSecret
+                    secretName: $(imagePullSecret)
+                    namespace: $(k8sNamespaceForPR)
+                    dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+                - task: KubernetesManifest@0
+                  displayName: Deploy to the new namespace in the Kubernetes cluster
+                  inputs:
+                    action: deploy
+                    namespace: $(k8sNamespaceForPR)
+                    manifests: |
+                      $(Pipeline.Workspace)/manifests/deployment.yml
+                      $(Pipeline.Workspace)/manifests/service.yml
+                    imagePullSecrets: |
+                      $(imagePullSecret)
+                    containers: |
+                      $(containerRegistry)/$(imageRepository):$(tag)
+
+                - task: Kubernetes@1
+                  name: get
+                  displayName: 'Get services in the new namespace'
+                  continueOnError: true
+                  inputs:
+                    command: get
+                    namespace: $(k8sNamespaceForPR)
+                    arguments: svc
+                    outputFormat: jsonpath='http://{.items[0].status.loadBalancer.ingress[0].ip}:{.items[0].spec.ports[0].port}'
+
+                # Getting the IP of the deployed service and writing it to a variable for posing comment
+                - script: |
+                    url="$(get.KubectlOutput)"
+                    message="Your review app has been deployed"
+                    if [ ! -z "$url" -a "$url" != "http://:" ]
+                    then
+                      message="${message} and is available at $url.<br><br>[Learn More](https://aka.ms/testwithreviewapps) about how to test and provide feedback for the app."
+                    fi
+                    echo "##vso[task.setvariable variable=GITHUB_COMMENT]$message"
