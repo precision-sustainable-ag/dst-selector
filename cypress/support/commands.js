@@ -39,6 +39,8 @@ Cypress.Commands.add('loginToAuth0', () => {
   log.snapshot('before');
 
   cy.session(`auth0-${args.username}`, () => {
+    // Use a desktop viewport so the header nav isn't collapsed.
+    cy.viewport(1920, 1080);
     // App landing page redirects to Auth0.
     cy.visit('/');
     cy.contains(/not now/i).click({ multiple: true, force: true });
@@ -51,11 +53,11 @@ Cypress.Commands.add('loginToAuth0', () => {
       // Auth0 identifier-first login (username and password on separate screens)
       cy.get('body').then(($body) => {
         if ($body.find('input#password').length === 0) {
-          cy.contains('button[value=default]', 'Continue').click();
+          cy.contains('button[value=default]:not([aria-hidden="true"])', 'Continue').click();
         }
       });
       cy.get('input#password').type(password, { log: false });
-      cy.contains('button[value=default]', 'Continue').click();
+      cy.contains('button[value=default]:not([aria-hidden="true"])', 'Continue').click();
     });
 
     // Ensure Auth0 has redirected us back to the RWA.
