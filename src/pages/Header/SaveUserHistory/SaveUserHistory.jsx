@@ -77,7 +77,7 @@ const SaveUserHistory = ({ pathname }) => {
     ) {
       handleSave();
     }
-  }, [progressRedux, pathname, historyStateRedux]);
+  }, [progressRedux, pathname]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <handleSave changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
