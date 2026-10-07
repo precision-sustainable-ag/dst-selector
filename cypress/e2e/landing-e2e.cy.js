@@ -53,4 +53,12 @@ describe('Test all possible interactions on the Landing Page after a state is se
     cy.assertByTestId('browse-cover-crops-btn').first().click();
     cy.url().should('include', 'explorer');
   });
+
+  it('should navigate to explorer location page when a WCCC state is selected and browse cover crops button is clicked', () => {
+    cy.assertByTestId('state-selector-dropdown').first().click();
+    cy.assertByTestId('state-selector-dropdown-WASHINGTON').click();
+    cy.assertByTestId('browse-cover-crops-btn').first().click();
+    cy.url().should('include', '/explorer/location');
+  });
 });
+
