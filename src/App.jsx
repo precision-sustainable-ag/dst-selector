@@ -146,6 +146,7 @@ const App = () => (
                     <Box sx={{ mr: 1, ml: 1, mt: 1, mb: 1 }}>
                       <Switch>
                         <Route path="/" render={() => <LoadRelevantRoute />} exact />
+                        <Route path="/explorer/location" component={Location} exact />
                         <Route path="/explorer" component={CoverCropExplorer} exact />
                         <Route path="/about" component={About} exact />
                         <Route path="/help" component={Help} exact />
