@@ -481,23 +481,19 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                   width: '100%',
                 }}
               >
-                <Typography variant="body1">
-                  No
-                </Typography>
+                <Typography variant="body1">No</Typography>
                 <Switch
                   checked={additionalSoilDrainageFilterRedux}
                   onChange={handleAdditonalSoilDrainageFilter}
                   name="soilDrainageFilter"
                 />
-                <Typography variant="body1">
-                  Yes
-                </Typography>
+                <Typography variant="body1">Yes</Typography>
               </Grid>
             }
           />
         </ListItem>
       )}
-      {councilShorthandRedux === 'WCCC' && (
+      {councilShorthandRedux === 'WCCC' && from !== 'explorer' && (
         <>
           <ListItem
             style={{
@@ -517,17 +513,13 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     width: '100%',
                   }}
                 >
-                  <Typography variant="body1">
-                    No
-                  </Typography>
+                  <Typography variant="body1">No</Typography>
                   <Switch
                     checked={irrigationFilterRedux}
                     onChange={handleIrrigationFilter}
                     name="checkedC"
                   />
-                  <Typography variant="body1">
-                    Yes
-                  </Typography>
+                  <Typography variant="body1">Yes</Typography>
                 </Grid>
               }
             />
@@ -550,17 +542,13 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     width: '100%',
                   }}
                 >
-                  <Typography variant="body1">
-                    No
-                  </Typography>
+                  <Typography variant="body1">No</Typography>
                   <Switch
                     checked={soilDrainageFilterRedux}
                     onChange={handleSoilDrainageFilter}
                     name="soilDrainageFilter"
                   />
-                  <Typography variant="body1">
-                    Yes
-                  </Typography>
+                  <Typography variant="body1">Yes</Typography>
                 </Grid>
               }
             />
