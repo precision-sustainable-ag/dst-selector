@@ -142,19 +142,6 @@ const Landing = () => {
         const [lat, lon] = statesLatLongDict[selectedState.label];
         dispatchRedux(updateLocation({ address: '', markers: [[lat, lon]], county: null }));
       }
-      // set querystring for WCCC
-      if (selectedState.council.shorthand === 'WCCC') {
-        const [lat, lon] = statesLatLongDict[selectedState.label];
-        callCoverCropApi(
-          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`,
-        ).then((data) => {
-          const query = data.data
-            .filter((i) => i?.id !== null && i?.id !== undefined)
-            .map((i) => `regions=${i.id}`)
-            .join('&');
-          dispatchRedux(setQueryString(query));
-        });
-      }
       const { id } = selectedState;
       if (selectedState.council.shorthand !== 'WCCC') {
         fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)

@@ -22,6 +22,7 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
   const history = useHistory();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const isMobile = useIsMobile('sm');
   const myCoverCropListLocationRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
@@ -52,7 +53,11 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
         myCoverCropActivationFlag: false,
       }),
     );
-    history.push('/explorer');
+    if (councilShorthandRedux === 'WCCC') {
+      history.push('/explorer/location');
+    } else {
+      history.push('/explorer');
+    }
   };
 
   const setMyCoverCropActivationFlag = () => {
