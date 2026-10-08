@@ -68,6 +68,15 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
     setSpeciesSelectorActivationFlag();
   };
 
+  const handleRecommendation = () => {
+    // if selected crop exists from explorer, show reset dialog
+    if (selectedCropIdsRedux.length > 0 && myCoverCropListLocationRedux !== 'selector') {
+      dispatchRedux(setMyCoverCropReset(true, false));
+    } else {
+      changeProgress('increment');
+    }
+  };
+
   const renderNextButton = () => {
     if (toolTip && isDisabledNext) {
       return (
@@ -139,7 +148,7 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
                   height: isMobile ? '35px' : 'auto',
                   padding: isMobile ? '5px 10px' : 'auto',
                 }}
-                onClick={() => changeProgress('increment')}
+                onClick={handleRecommendation}
                 disabled={isDisabledNext || stateLabelRedux === 'Hawaii'}
                 buttonType="PillButton"
                 data-test="get-a-recommendation-btn"

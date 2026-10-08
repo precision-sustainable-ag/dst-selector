@@ -9,6 +9,7 @@ import {
   setMyCoverCropReset,
 } from '../../../reduxStore/sharedSlice';
 
+// FIXME: this is not being used now
 const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();
   const history = useHistory();
