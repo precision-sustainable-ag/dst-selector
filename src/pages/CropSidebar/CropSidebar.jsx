@@ -19,9 +19,11 @@ import {
   Switch,
   // ListSubheader,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import Legend from '../../components/Legend/Legend';
@@ -93,6 +95,15 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
+  const [scrollMaxHeight, setScrollMaxHeight] = useState();
+  const [stickyTop, setStickyTop] = useState(0);
+
+  // when the sidebar sits beside the main content (md and up), it sticks below the navbar
+  // and scrolls independently of the page
+  const theme = useTheme();
+  const isSideBySide = useMediaQuery(theme.breakpoints.up('md'));
+  const scrollContainerRef = useRef(null);
+  const scrollMarkerRef = useRef(null);
 
   const coverCropGroup = [
     { label: 'Brassica' },
@@ -481,17 +492,13 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                   width: '100%',
                 }}
               >
-                <Typography variant="body1">
-                  No
-                </Typography>
+                <Typography variant="body1">No</Typography>
                 <Switch
                   checked={additionalSoilDrainageFilterRedux}
                   onChange={handleAdditonalSoilDrainageFilter}
                   name="soilDrainageFilter"
                 />
-                <Typography variant="body1">
-                  Yes
-                </Typography>
+                <Typography variant="body1">Yes</Typography>
               </Grid>
             }
           />
@@ -517,17 +524,13 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     width: '100%',
                   }}
                 >
-                  <Typography variant="body1">
-                    No
-                  </Typography>
+                  <Typography variant="body1">No</Typography>
                   <Switch
                     checked={irrigationFilterRedux}
                     onChange={handleIrrigationFilter}
                     name="checkedC"
                   />
-                  <Typography variant="body1">
-                    Yes
-                  </Typography>
+                  <Typography variant="body1">Yes</Typography>
                 </Grid>
               }
             />
@@ -550,17 +553,13 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                     width: '100%',
                   }}
                 >
-                  <Typography variant="body1">
-                    No
-                  </Typography>
+                  <Typography variant="body1">No</Typography>
                   <Switch
                     checked={soilDrainageFilterRedux}
                     onChange={handleSoilDrainageFilter}
                     name="soilDrainageFilter"
                   />
-                  <Typography variant="body1">
-                    Yes
-                  </Typography>
+                  <Typography variant="body1">Yes</Typography>
                 </Grid>
               }
             />
@@ -623,67 +622,110 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
     filtersList();
   }, [sidebarFilters]);
 
-  // eslint-disable-next-line no-nested-ternary
-  return !loading && from === 'myCoverCropListStatic' ? (
-    <Grid container spacing={3}>
-      <Grid>
-        <ComparisonBar
-          filterData={sidebarFilters}
-          goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-          comparisonKeys={comparisonKeysRedux}
-          comparisonView={comparisonView}
-        />
-      </Grid>
-    </Grid>
-  ) : speciesSelectorActivationFlagRedux || from === 'explorer' ? (
-    <Box id="Filters">
-      <List component="nav" aria-labelledby="nested-list-subheader">
-        {from === 'table' && (
-          <>
-            {showFilters && speciesSelectorActivationFlagRedux && !listView && <CoverCropSearch />}
+  // size the scroll container so the sidebar scrolls on its own instead of the page
+  useEffect(() => {
+    if (!isSideBySide) {
+      setScrollMaxHeight(undefined);
+      return undefined;
+    }
 
-            {!listView && <CoverCropGoals style={style} />}
-          </>
-        )}
-        {showFilters && (
-          <>
-            {from === 'explorer' && (
-              <>
-                {councilShorthandRedux !== 'WCCC' && (
-                  <List component="div" disablePadding>
-                    <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
-                      <ListItemText
-                        primary={<Typography variant="body2">PLANT HARDINESS ZONE</Typography>}
-                      />
-                      {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <PlantHardinessZone from="Location" />
-                  </List>
-                )}
+    const isInFlow = (el) => !['absolute', 'fixed'].includes(getComputedStyle(el).position);
+
+    let frame = null;
+    const updateScrollSize = () => {
+      frame = null;
+      if (!scrollContainerRef.current || !scrollMarkerRef.current) return;
+      const navbar = document.querySelector('header ~ nav');
+      const navbarHeight =
+        navbar && getComputedStyle(navbar).position === 'sticky' ? navbar.offsetHeight : 0;
+      const column = scrollContainerRef.current.parentElement;
+      const row = column.parentElement;
+      const markerTop = scrollMarkerRef.current.getBoundingClientRect().top;
+
+      let siblingBottom = markerTop;
+      [...row.children]
+        .filter((sibling) => sibling !== column && isInFlow(sibling))
+        .forEach((sibling) => {
+          [...sibling.children].filter(isInFlow).forEach((child) => {
+            siblingBottom = Math.max(siblingBottom, child.getBoundingClientRect().bottom);
+          });
+        });
+
+      const mainContent = document.getElementById('main-content');
+      const footer = document.getElementById('page-footer');
+      const belowRow =
+        (mainContent
+          ? mainContent.getBoundingClientRect().bottom - row.getBoundingClientRect().bottom
+          : 0) + (footer ? footer.offsetHeight : 0);
+      const fitHeight = window.innerHeight - belowRow - (markerTop + window.scrollY);
+
+      const stickyHeight =
+        Math.min(window.innerHeight, siblingBottom) - Math.max(markerTop, navbarHeight);
+
+      setStickyTop(navbarHeight);
+      setScrollMaxHeight(Math.max(fitHeight, stickyHeight, 0));
+    };
+    const scheduleUpdate = () => {
+      if (frame === null) frame = requestAnimationFrame(updateScrollSize);
+    };
+
+    updateScrollSize();
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    const resizeObserver = new ResizeObserver(scheduleUpdate);
+    resizeObserver.observe(document.body);
+
+    return () => {
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+      resizeObserver.disconnect();
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
+  }, [isSideBySide]);
+
+  // eslint-disable-next-line no-nested-ternary
+  const sidebarContent =
+    !loading && from === 'myCoverCropListStatic' ? (
+      <Grid container spacing={3}>
+        <Grid>
+          <ComparisonBar
+            filterData={sidebarFilters}
+            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+            comparisonKeys={comparisonKeysRedux}
+            comparisonView={comparisonView}
+          />
+        </Grid>
+      </Grid>
+    ) : speciesSelectorActivationFlagRedux || from === 'explorer' ? (
+      <Box id="Filters">
+        <List component="nav" aria-labelledby="nested-list-subheader">
+          {from === 'table' && (
+            <>
+              {showFilters && speciesSelectorActivationFlagRedux && !listView && (
                 <CoverCropSearch />
-              </>
-            )}
-            <Box
-              sx={{
-                border: 0.5,
-                borderRadius: 2,
-                borderColor: 'black',
-                mb: 2,
-                overflow: 'hidden',
-              }}
-            >
-              <ListItemButton
-                className="sidebarFilters"
-                onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
-              >
-                <ListItemText primary="FILTERS" />
-                {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse in={cropFiltersOpen} timeout="auto">
-                {filtersList()}
-              </Collapse>
-            </Box>
-            {from !== 'explorer' && (
+              )}
+
+              {!listView && <CoverCropGoals style={style} />}
+            </>
+          )}
+          {showFilters && (
+            <>
+              {from === 'explorer' && (
+                <>
+                  {councilShorthandRedux !== 'WCCC' && (
+                    <List component="div" disablePadding>
+                      <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
+                        <ListItemText
+                          primary={<Typography variant="body2">PLANT HARDINESS ZONE</Typography>}
+                        />
+                        {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                      </ListItemButton>
+                      <PlantHardinessZone from="Location" />
+                    </List>
+                  )}
+                  <CoverCropSearch />
+                </>
+              )}
               <Box
                 sx={{
                   border: 0.5,
@@ -693,20 +735,62 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                   overflow: 'hidden',
                 }}
               >
-                <Legend legendData={legendData} modal />
+                <ListItemButton
+                  className="sidebarFilters"
+                  onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
+                >
+                  <ListItemText primary="FILTERS" />
+                  {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={cropFiltersOpen} timeout="auto">
+                  {filtersList()}
+                </Collapse>
               </Box>
-            )}
-          </>
-        )}
-      </List>
-    </Box>
-  ) : (
-    <ComparisonBar
-      filterData={sidebarFilters}
-      goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-      comparisonKeys={comparisonKeysRedux}
-      comparisonView={comparisonView}
-    />
+              {from !== 'explorer' && (
+                <Box
+                  sx={{
+                    border: 0.5,
+                    borderRadius: 2,
+                    borderColor: 'black',
+                    mb: 2,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Legend legendData={legendData} modal />
+                </Box>
+              )}
+            </>
+          )}
+        </List>
+      </Box>
+    ) : (
+      <ComparisonBar
+        filterData={sidebarFilters}
+        goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+        comparisonKeys={comparisonKeysRedux}
+        comparisonView={comparisonView}
+      />
+    );
+
+  return (
+    <>
+      <Box ref={scrollMarkerRef} aria-hidden="true" />
+      <Box
+        ref={scrollContainerRef}
+        sx={{
+          position: { md: 'sticky' },
+          top: { md: stickyTop },
+          maxHeight: { md: scrollMaxHeight },
+          overflowY: { md: 'auto' },
+          overscrollBehavior: { md: 'contain' },
+          pt: { md: 1 },
+          pb: { md: 1 },
+          pr: { md: 0.5 },
+        }}
+      >
+        {sidebarContent}
+      </Box>
+    </>
   );
 };
 
