@@ -14,7 +14,7 @@ import HistorySelect from '../../components/HistorySelect/HistorySelect';
 import useIsMobile from '../../hooks/useIsMobile';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
-import { setQueryString } from '../../reduxStore/sharedSlice';
+import { setMyCoverCropReset, setQueryString } from '../../reduxStore/sharedSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
 import { callCoverCropApi } from '../../shared/constants';
@@ -48,6 +48,7 @@ const Landing = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   // useState vars
   // const [containerHeight, setContainerHeight] = useState(height);
@@ -68,6 +69,8 @@ const Landing = () => {
     const selState = allStates.filter((s) => s.shorthand === e.target.value);
     if (historyStateRedux === historyState.imported && stateIdRedux !== selState[0].id) {
       dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+    } else if (selectedCropIdsRedux.length > 0 && stateIdRedux && stateIdRedux !== selState[0].id) {
+      dispatchRedux(setMyCoverCropReset(true, false));
     } else {
       setSelectedState(selState[0]);
     }
@@ -120,6 +123,14 @@ const Landing = () => {
         if (state.length > 0) setSelectedState(state[0]);
         else setSelectedState({});
         // if historyState is imported, return and not set new history
+        return;
+      }
+      if (selectedCropIdsRedux.length > 0 && stateIdRedux && stateIdRedux !== selectedState.id) {
+        dispatchRedux(setMyCoverCropReset(true, false));
+        // reset state to previous state in redux
+        const state = allStates.filter((s) => s.id === stateIdRedux);
+        if (state.length > 0) setSelectedState(state[0]);
+        else setSelectedState({});
         return;
       }
       // update state
@@ -179,7 +190,15 @@ const Landing = () => {
           });
       }
     }
-  }, [selectedState, apiBaseUrlRedux, stateIdRedux, historyStateRedux, allStates, dispatchRedux]);
+  }, [
+    selectedState,
+    apiBaseUrlRedux,
+    stateIdRedux,
+    historyStateRedux,
+    allStates,
+    dispatchRedux,
+    selectedCropIdsRedux,
+  ]);
 
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Landing' } });
