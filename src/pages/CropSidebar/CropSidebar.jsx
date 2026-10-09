@@ -6,7 +6,6 @@
 */
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutlineOutlined';
 import {
   Box,
   Chip,
@@ -23,7 +22,8 @@ import {
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSAButton, PSATooltip } from 'shared-react-components/src';
+import { PSAButton } from 'shared-react-components/src';
+import HelpTooltip from '../../components/HelpTooltip/HelpTooltip';
 import Legend from '../../components/Legend/Legend';
 import { updateActiveCropIds, updateCropData } from '../../reduxStore/cropSlice';
 import {
@@ -569,26 +569,9 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       )}
 
       <ListItem component="div">
-        <PSATooltip
-          enterTouchDelay={0}
-          title="Use the Cover Crop Group Filter to select specific cover crop groups to filter by."
-          tooltipContent={
-            <button
-              type="button"
-              style={{
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                cursor: 'pointer',
-              }}
-            >
-              Cover Crop Group Filter
-              <HelpOutlineIcon
-                style={{ cursor: 'pointer', transform: 'scale(0.7)' }}
-                tabIndex="0"
-              />
-            </button>
-          }
+        <HelpTooltip
+          label="Cover Crop Group Filter"
+          description="Use the Cover Crop Group Filter to select specific cover crop groups to filter by."
         />
       </ListItem>
       <ListItem>
