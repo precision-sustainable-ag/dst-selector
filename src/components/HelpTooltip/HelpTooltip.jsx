@@ -19,6 +19,7 @@ const HelpTooltip = ({ label, description, details }) => {
           disableHoverListener
           disableFocusListener
           disableTouchListener
+          placement="right-end"
           title={
             <>
               {description}
