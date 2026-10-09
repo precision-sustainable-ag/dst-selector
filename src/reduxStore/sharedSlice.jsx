@@ -14,6 +14,8 @@ const initialState = {
   openMyCoverCropReset: {
     open: false,
     goBack: true,
+    resetCrops: false,
+    status: null,
   },
 };
 
@@ -95,11 +97,13 @@ export const regionToggleHandler = (value) => ({
   },
 });
 
-export const setMyCoverCropReset = (open, goBack = true) => ({
+export const setMyCoverCropReset = (open, goBack = true, resetCrops = false, status = null) => ({
   type: 'SET_MY_COVER_CROP_RESET',
   payload: {
     open,
     goBack,
+    resetCrops,
+    status,
   },
 });
 
@@ -180,6 +184,8 @@ const sharedReducer = (state = initialState, action = null) => {
         openMyCoverCropReset: {
           open: action.payload.open,
           goBack: action.payload.goBack,
+          resetCrops: action.payload.resetCrops ?? false,
+          status: action.payload.status ?? null,
         },
       };
 
