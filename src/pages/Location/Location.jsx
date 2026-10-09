@@ -17,7 +17,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { PSAReduxMap } from 'shared-react-components/src';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
-import { setQueryString } from '../../reduxStore/sharedSlice';
+import { setMyCoverCropReset, setQueryString } from '../../reduxStore/sharedSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import {
   updateAvgFrostDates,
@@ -41,13 +41,16 @@ const Location = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
@@ -180,19 +183,6 @@ const Location = () => {
         county,
       } = selectedToEditSite;
 
-      if (councilShorthandRedux === 'WCCC') {
-        callCoverCropApi(
-          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${latitude}&lon=${longitude}`,
-        ).then((data) => {
-          const query = data.data
-            .filter((i) => i?.id !== null && i?.id !== undefined)
-            .map((i) => `regions=${i.id}`)
-            .join('&');
-          dispatchRedux(setQueryString(query));
-          enqueueSnackbar('Your location has been saved.');
-        });
-      }
-
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1])
         return;
 
@@ -203,49 +193,93 @@ const Location = () => {
         return;
       }
 
-      dispatchRedux(
-        updateLocation({
-          address,
-          markers: [[latitude, longitude]],
-          county,
-        }),
-      );
+      if (councilShorthandRedux === 'WCCC') {
+        callCoverCropApi(
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${latitude}&lon=${longitude}`,
+        ).then((data) => {
+          const query = data.data
+            .filter((i) => i?.id !== null && i?.id !== undefined)
+            .map((i) => `regions=${i.id}`)
+            .join('&');
+          // if selected crops exist and query string changed, show reset dialog
+          if (selectedCropIdsRedux.length > 0 && queryStringRedux && query !== queryStringRedux) {
+            dispatchRedux(setMyCoverCropReset(true, false));
+            if (markersRedux) setLatLon(markersRedux[0]);
+            return;
+          }
+          dispatchRedux(
+            updateLocation({
+              address,
+              markers: [[latitude, longitude]],
+              county,
+            }),
+          );
+          dispatchRedux(setQueryString(query));
+          enqueueSnackbar('Your location has been saved.');
+        });
+        return;
+      }
 
-      // no need to set region in WCCC(will work with queryStringRedux)
-      if (councilShorthandRedux === 'WCCC') return;
       if (councilShorthandRedux === 'MCCC') {
+        dispatchRedux(
+          updateLocation({
+            address,
+            markers: [[latitude, longitude]],
+            county,
+          }),
+        );
         // if council is MCCC, change selectedRegion based on county
         if (county?.includes(' County')) {
           updateRegionRedux(county.replace(' County', ''));
         }
-      } else {
-        callCoverCropApi(
-          `https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}&email=selector@psa.org`,
-        )
-          .then((response) => {
-            let { zone } = response;
-
-            zone = zone.slice(0, -1);
-
-            if (councilShorthandRedux !== 'MCCC') {
-              updateRegionRedux(zone);
-            }
-            enqueueSnackbar('Your location has been saved.');
-          })
-          .catch((err) => {
-            enqueueSnackbar('No data available for your location, Please try again.');
-            localStorage.setItem('regionId', '');
-            dispatchRedux(
-              updateRegion({
-                regionId: '',
-                regionShorthand: '',
-              }),
-            );
-            // eslint-disable-next-line no-console
-            console.log(err);
-            // for places where api didn't work, set region to default.
-          });
+        enqueueSnackbar('Your location has been saved.');
+        return;
       }
+
+      // NECCC & SCCC
+      callCoverCropApi(
+        `https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}&email=selector@psa.org`,
+      )
+        .then((response) => {
+          let { zone } = response;
+
+          zone = zone.slice(0, -1);
+          const selectedRegion = regionsRedux.filter((region) => region.shorthand === zone)[0];
+          // if selected crops exist and PHZ changed, show reset dialog
+          if (
+            selectedCropIdsRedux.length > 0 &&
+            regionIdRedux &&
+            selectedRegion?.id &&
+            selectedRegion.id !== regionIdRedux
+          ) {
+            dispatchRedux(setMyCoverCropReset(true, false));
+            if (markersRedux) setLatLon(markersRedux[0]);
+            return;
+          }
+
+          dispatchRedux(
+            updateLocation({
+              address,
+              markers: [[latitude, longitude]],
+              county,
+            }),
+          );
+          updateRegionRedux(zone);
+          enqueueSnackbar('Your location has been saved.');
+        })
+        .catch((err) => {
+          enqueueSnackbar('No data available for your location, Please try again.');
+          localStorage.setItem('regionId', '');
+          dispatchRedux(
+            updateRegion({
+              regionId: '',
+              regionShorthand: '',
+            }),
+          );
+          // eslint-disable-next-line no-console
+          console.log(err);
+          // for places where api didn't work, set region to default.
+        });
     }
   }, [selectedToEditSite]);
 
