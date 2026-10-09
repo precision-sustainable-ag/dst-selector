@@ -51,9 +51,13 @@ const Location = () => {
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const resetStatusRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
+  );
 
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
+  const [pendingLocation, setPendingLocation] = useState(null);
   const [mapFeatures, setMapFeatures] = useState(userFieldRedux);
   // eslint-disable-next-line no-nested-ternary
   const [latLon, setLatLon] = useState(
@@ -127,6 +131,36 @@ const Location = () => {
     pirschAnalytics('Location', { meta: { mapUpdate: true } });
   };
 
+  const applyLocation = (loc) => {
+    dispatchRedux(
+      updateLocation({
+        address: loc.address,
+        markers: [[loc.latitude, loc.longitude]],
+        county: loc.county,
+      }),
+    );
+    enqueueSnackbar('Your location has been saved.');
+  };
+
+  // handle reset crop dialog
+  useEffect(() => {
+    if (!pendingLocation || resetStatusRedux === null) return;
+
+    if (resetStatusRedux === true) {
+      applyLocation(pendingLocation);
+      if (pendingLocation.query) {
+        dispatchRedux(setQueryString(pendingLocation.query));
+      }
+      if (pendingLocation.zone) {
+        updateRegionRedux(pendingLocation.zone);
+      }
+    } else if (resetStatusRedux === false) {
+      if (markersRedux) setLatLon(markersRedux[0]);
+    }
+    setPendingLocation(null);
+    dispatchRedux(setMyCoverCropReset(false, false, false, null));
+  }, [resetStatusRedux, pendingLocation]);
+
   // Fetches ssurgo data and checks if the soil composition is farmable
   const getSSURGOData = (lat, lon) => {
     // eslint-disable-next-line max-len
@@ -196,43 +230,35 @@ const Location = () => {
       if (councilShorthandRedux === 'WCCC') {
         callCoverCropApi(
           `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${latitude}&lon=${longitude}`,
-        ).then((data) => {
-          const query = data.data
-            .filter((i) => i?.id !== null && i?.id !== undefined)
-            .map((i) => `regions=${i.id}`)
-            .join('&');
-          // if selected crops exist and query string changed, show reset dialog
-          if (selectedCropIdsRedux.length > 0 && queryStringRedux && query !== queryStringRedux) {
-            dispatchRedux(setMyCoverCropReset(true, false));
+        )
+          .then((data) => {
+            const query = data.data
+              .filter((i) => i?.id !== null && i?.id !== undefined)
+              .map((i) => `regions=${i.id}`)
+              .join('&');
+            // if selected crops exist and query string changed, show reset dialog
+            if (selectedCropIdsRedux.length > 0 && queryStringRedux && query !== queryStringRedux) {
+              setPendingLocation({ address, latitude, longitude, county, query });
+              dispatchRedux(setMyCoverCropReset(true, false, true));
+              return;
+            }
+            applyLocation({ address, latitude, longitude, county });
+            dispatchRedux(setQueryString(query));
+          })
+          .catch((err) => {
+            enqueueSnackbar('No data available for your location, Please try again.');
             if (markersRedux) setLatLon(markersRedux[0]);
-            return;
-          }
-          dispatchRedux(
-            updateLocation({
-              address,
-              markers: [[latitude, longitude]],
-              county,
-            }),
-          );
-          dispatchRedux(setQueryString(query));
-          enqueueSnackbar('Your location has been saved.');
-        });
+            console.error(err);
+          });
         return;
       }
 
       if (councilShorthandRedux === 'MCCC') {
-        dispatchRedux(
-          updateLocation({
-            address,
-            markers: [[latitude, longitude]],
-            county,
-          }),
-        );
+        applyLocation({ address, latitude, longitude, county });
         // if council is MCCC, change selectedRegion based on county
         if (county?.includes(' County')) {
           updateRegionRedux(county.replace(' County', ''));
         }
-        enqueueSnackbar('Your location has been saved.');
         return;
       }
 
@@ -252,20 +278,13 @@ const Location = () => {
             selectedRegion?.id &&
             selectedRegion.id !== regionIdRedux
           ) {
-            dispatchRedux(setMyCoverCropReset(true, false));
-            if (markersRedux) setLatLon(markersRedux[0]);
+            setPendingLocation({ address, latitude, longitude, county, zone });
+            dispatchRedux(setMyCoverCropReset(true, false, true));
             return;
           }
 
-          dispatchRedux(
-            updateLocation({
-              address,
-              markers: [[latitude, longitude]],
-              county,
-            }),
-          );
+          applyLocation({ address, latitude, longitude, county });
           updateRegionRedux(zone);
-          enqueueSnackbar('Your location has been saved.');
         })
         .catch((err) => {
           enqueueSnackbar('No data available for your location, Please try again.');

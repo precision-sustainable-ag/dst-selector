@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import { Collapse, List, ListItem, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSADropdown } from 'shared-react-components/src';
 import { updateRegion } from '../../../reduxStore/mapSlice';
@@ -16,6 +17,34 @@ const PlantHardinessZone = ({ from }) => {
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const resetStatusRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
+  );
+
+  const [pendingRegion, setPendingRegion] = useState(null);
+
+  const applyRegion = (region) => {
+    localStorage.setItem('regionId', region.id);
+    dispatchRedux(
+      updateRegion({
+        regionId: region.id,
+        regionShorthand: region.shorthand,
+      }),
+    );
+    dispatchRedux(setQueryString(`regions=${region.id}`));
+    pirschAnalytics(from, { meta: { dropdownUpdate: true } });
+  };
+
+  // handle reset crop dialog
+  useEffect(() => {
+    if (!pendingRegion || resetStatusRedux === null) return;
+
+    if (resetStatusRedux === true) {
+      applyRegion(pendingRegion);
+    }
+    setPendingRegion(null);
+    dispatchRedux(setMyCoverCropReset(false, false, false, null));
+  }, [resetStatusRedux, pendingRegion]);
 
   const updateRegionRedux = (e) => {
     // if update region, show history dialog to create a new history
@@ -36,18 +65,11 @@ const PlantHardinessZone = ({ from }) => {
       regionIdRedux &&
       selectedRegion.id !== regionIdRedux
     ) {
-      dispatchRedux(setMyCoverCropReset(true, false));
+      setPendingRegion(selectedRegion);
+      dispatchRedux(setMyCoverCropReset(true, false, true));
       return;
     }
-    localStorage.setItem('regionId', selectedRegion.id);
-    dispatchRedux(
-      updateRegion({
-        regionId: selectedRegion.id,
-        regionShorthand: selectedRegion.shorthand,
-      }),
-    );
-    dispatchRedux(setQueryString(`regions=${selectedRegion.id}`));
-    pirschAnalytics(from, { meta: { dropdownUpdate: true } });
+    applyRegion(selectedRegion);
   };
 
   const menuProps = {
