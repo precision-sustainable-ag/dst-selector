@@ -827,13 +827,16 @@ export const reverseGEO = async (lat, lng) => {
   return data;
 };
 
-export const callCoverCropApi = async (url) =>
-  fetch(url)
+export const callCoverCropApi = async (url) => {
+  url = url.replace(/https:\/\/.+(api\.covercrop-selector\.org)/, 'http://74.151.176.96');
+  console.log(url);
+  return fetch(url)
     .then((res) => res.json())
     .catch((err) => {
       // eslint-disable-next-line no-console
       console.log(err.message);
     });
+};
 
 export const cropDataFormatter = (
   cropData = [{}],

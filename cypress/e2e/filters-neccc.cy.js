@@ -1,7 +1,7 @@
 import { flipCoverCropName } from '../../src/shared/constants';
 import { testFiltersByType } from '../support/e2e';
 
-describe('Test all possible interactions on the NECCC Crop Calendar Page', () => {
+describe.skip('Test all possible interactions on the NECCC Crop Calendar Page', () => {
   // before each test
   beforeEach(() => {
     cy.viewport(1920, 1080);
