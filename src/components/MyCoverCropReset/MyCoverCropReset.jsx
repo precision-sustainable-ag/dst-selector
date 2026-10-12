@@ -2,6 +2,7 @@ import { Dialog, DialogActions, DialogContent, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
+import { clearFilters } from '../../reduxStore/filterSlice';
 import { updateSelectedGoal } from '../../reduxStore/goalSlice';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
@@ -17,9 +18,10 @@ const MyCoverCropReset = () => {
   const setOpen = (option) => {
     if (resetCrops) {
       if (option === true) {
-        // if resetCrops is true, only reset the selected crops and goals
+        // if resetCrops is true, only reset the selected crops, goals and filters
         dispatchRedux(updateSelectedCropIds([]));
         dispatchRedux(updateSelectedGoal([]));
+        dispatchRedux(clearFilters());
       }
       dispatchRedux(setMyCoverCropReset(false, false, false, option));
       return;
