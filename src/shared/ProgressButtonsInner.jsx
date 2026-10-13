@@ -5,6 +5,7 @@
 
 import { Refresh } from '@mui/icons-material';
 import { Badge, Box, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton, PSATooltip } from 'shared-react-components/src';
@@ -27,6 +28,10 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
   const myCoverCropListLocationRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
   );
+  const resetStatusRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
+  );
+  const [pendingAction, setPendingAction] = useState(null);
 
   const changeProgress = (type) => {
     // setCrement(type);
@@ -39,14 +44,7 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
     }
   };
 
-  const openMyCoverCropReset = (to) => {
-    if (selectedCropIdsRedux.length > 0 && myCoverCropListLocationRedux !== to) {
-      dispatchRedux(setMyCoverCropReset(true));
-    }
-  };
-
-  const setSpeciesSelectorActivationFlag = () => {
-    openMyCoverCropReset('explorer');
+  const goToExplorer = () => {
     dispatchRedux(
       activateSpeicesSelectorTile({
         speciesSelectorActivationFlag: true,
@@ -60,6 +58,29 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
     }
   };
 
+  useEffect(() => {
+    if (!pendingAction || resetStatusRedux === null) return;
+
+    if (resetStatusRedux === true) {
+      if (pendingAction === 'explorer') {
+        goToExplorer();
+      } else if (pendingAction === 'recommendation') {
+        changeProgress('increment');
+      }
+    }
+    setPendingAction(null);
+    dispatchRedux(setMyCoverCropReset(false, false, null));
+  }, [resetStatusRedux, pendingAction]);
+
+  const setSpeciesSelectorActivationFlag = () => {
+    if (selectedCropIdsRedux.length > 0 && myCoverCropListLocationRedux !== 'explorer') {
+      setPendingAction('explorer');
+      dispatchRedux(setMyCoverCropReset(true));
+      return;
+    }
+    goToExplorer();
+  };
+
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
   };
@@ -71,10 +92,11 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
   const handleRecommendation = () => {
     // if selected crop exists from explorer, show reset dialog
     if (selectedCropIdsRedux.length > 0 && myCoverCropListLocationRedux !== 'selector') {
-      dispatchRedux(setMyCoverCropReset(true, false));
-    } else {
-      changeProgress('increment');
+      setPendingAction('recommendation');
+      dispatchRedux(setMyCoverCropReset(true));
+      return;
     }
+    changeProgress('increment');
   };
 
   const renderNextButton = () => {
@@ -200,7 +222,7 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
         }}
         onClick={() => {
           if (selectedCropIdsRedux.length > 0) {
-            dispatchRedux(setMyCoverCropReset(true, false));
+            dispatchRedux(setMyCoverCropReset(true));
           } else {
             dispatchRedux(reset());
           }

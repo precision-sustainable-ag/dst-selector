@@ -43,7 +43,7 @@ const PlantHardinessZone = ({ from }) => {
       applyRegion(pendingRegion);
     }
     setPendingRegion(null);
-    dispatchRedux(setMyCoverCropReset(false, false, false, null));
+    dispatchRedux(setMyCoverCropReset(false, false, null));
   }, [resetStatusRedux, pendingRegion]);
 
   const updateRegionRedux = (e) => {
@@ -66,7 +66,7 @@ const PlantHardinessZone = ({ from }) => {
       selectedRegion.id !== regionIdRedux
     ) {
       setPendingRegion(selectedRegion);
-      dispatchRedux(setMyCoverCropReset(true, false, true));
+      dispatchRedux(setMyCoverCropReset(true, true));
       return;
     }
     applyRegion(selectedRegion);

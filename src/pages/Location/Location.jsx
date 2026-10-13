@@ -158,7 +158,7 @@ const Location = () => {
       if (markersRedux) setLatLon(markersRedux[0]);
     }
     setPendingLocation(null);
-    dispatchRedux(setMyCoverCropReset(false, false, false, null));
+    dispatchRedux(setMyCoverCropReset(false, false, null));
   }, [resetStatusRedux, pendingLocation]);
 
   // Fetches ssurgo data and checks if the soil composition is farmable
@@ -239,7 +239,7 @@ const Location = () => {
             // if selected crops exist and query string changed, show reset dialog
             if (selectedCropIdsRedux.length > 0 && queryStringRedux && query !== queryStringRedux) {
               setPendingLocation({ address, latitude, longitude, county, query });
-              dispatchRedux(setMyCoverCropReset(true, false, true));
+              dispatchRedux(setMyCoverCropReset(true, true));
               return;
             }
             applyLocation({ address, latitude, longitude, county });
@@ -279,7 +279,7 @@ const Location = () => {
             selectedRegion.id !== regionIdRedux
           ) {
             setPendingLocation({ address, latitude, longitude, county, zone });
-            dispatchRedux(setMyCoverCropReset(true, false, true));
+            dispatchRedux(setMyCoverCropReset(true, true));
             return;
           }
 

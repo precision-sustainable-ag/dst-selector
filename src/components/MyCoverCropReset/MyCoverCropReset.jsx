@@ -1,6 +1,5 @@
 import { Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { updateSelectedGoal } from '../../reduxStore/goalSlice';
@@ -10,8 +9,7 @@ import { BinaryButton } from '../../shared/constants';
 
 const MyCoverCropReset = () => {
   const dispatchRedux = useDispatch();
-  const history = useHistory();
-  const { open, goBack, resetCrops } = useSelector(
+  const { open, resetCrops } = useSelector(
     (stateRedux) => stateRedux.sharedData.openMyCoverCropReset,
   );
 
@@ -23,19 +21,14 @@ const MyCoverCropReset = () => {
         dispatchRedux(updateSelectedGoal([]));
         dispatchRedux(clearFilters());
       }
-      dispatchRedux(setMyCoverCropReset(false, false, false, option));
+      dispatchRedux(setMyCoverCropReset(false, false, option));
       return;
     }
 
     if (option === true) {
       dispatchRedux(reset());
-    } else if (goBack === true) {
-      history.goBack();
-      if (window.location.pathname !== '/') {
-        history.push('/');
-      }
     }
-    dispatchRedux(setMyCoverCropReset(false));
+    dispatchRedux(setMyCoverCropReset(false, false, option));
   };
 
   return (

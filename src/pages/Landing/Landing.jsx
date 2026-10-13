@@ -70,7 +70,7 @@ const Landing = () => {
     if (historyStateRedux === historyState.imported && stateIdRedux !== selState[0].id) {
       dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
     } else if (selectedCropIdsRedux.length > 0 && stateIdRedux && stateIdRedux !== selState[0].id) {
-      dispatchRedux(setMyCoverCropReset(true, false));
+      dispatchRedux(setMyCoverCropReset(true));
     } else {
       setSelectedState(selState[0]);
     }
@@ -126,7 +126,7 @@ const Landing = () => {
         return;
       }
       if (selectedCropIdsRedux.length > 0 && stateIdRedux && stateIdRedux !== selectedState.id) {
-        dispatchRedux(setMyCoverCropReset(true, false));
+        dispatchRedux(setMyCoverCropReset(true));
         // reset state to previous state in redux
         const state = allStates.filter((s) => s.id === stateIdRedux);
         if (state.length > 0) setSelectedState(state[0]);
