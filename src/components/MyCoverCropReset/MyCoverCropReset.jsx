@@ -14,19 +14,15 @@ const MyCoverCropReset = () => {
   );
 
   const setOpen = (option) => {
-    if (resetCrops) {
-      if (option === true) {
+    if (option === true) {
+      if (resetCrops) {
         // if resetCrops is true, only reset the selected crops, goals and filters
         dispatchRedux(updateSelectedCropIds([]));
         dispatchRedux(updateSelectedGoal([]));
         dispatchRedux(clearFilters());
+      } else {
+        dispatchRedux(reset());
       }
-      dispatchRedux(setMyCoverCropReset(false, false, option));
-      return;
-    }
-
-    if (option === true) {
-      dispatchRedux(reset());
     }
     dispatchRedux(setMyCoverCropReset(false, false, option));
   };

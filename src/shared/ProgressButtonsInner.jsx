@@ -44,7 +44,7 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
     }
   };
 
-  const goToExplorer = () => {
+  const openExplorer = () => {
     dispatchRedux(
       activateSpeicesSelectorTile({
         speciesSelectorActivationFlag: true,
@@ -63,7 +63,7 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
 
     if (resetStatusRedux === true) {
       if (pendingAction === 'explorer') {
-        goToExplorer();
+        openExplorer();
       } else if (pendingAction === 'recommendation') {
         changeProgress('increment');
       }
@@ -72,21 +72,17 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
     dispatchRedux(setMyCoverCropReset(false, false, null));
   }, [resetStatusRedux, pendingAction]);
 
-  const setSpeciesSelectorActivationFlag = () => {
-    if (selectedCropIdsRedux.length > 0 && myCoverCropListLocationRedux !== 'explorer') {
-      setPendingAction('explorer');
-      dispatchRedux(setMyCoverCropReset(true));
-      return;
-    }
-    goToExplorer();
-  };
-
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
   };
 
   const browseCoverCrops = () => {
-    setSpeciesSelectorActivationFlag();
+    if (selectedCropIdsRedux.length > 0 && myCoverCropListLocationRedux !== 'explorer') {
+      setPendingAction('explorer');
+      dispatchRedux(setMyCoverCropReset(true));
+      return;
+    }
+    openExplorer();
   };
 
   const handleRecommendation = () => {
