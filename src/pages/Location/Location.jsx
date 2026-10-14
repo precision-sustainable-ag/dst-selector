@@ -58,6 +58,7 @@ const Location = () => {
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [pendingLocation, setPendingLocation] = useState(null);
+  const [pendingFeatures, setPendingFeatures] = useState(null);
   const [mapFeatures, setMapFeatures] = useState(userFieldRedux);
   // eslint-disable-next-line no-nested-ternary
   const [latLon, setLatLon] = useState(
@@ -88,7 +89,12 @@ const Location = () => {
 
     // update redux state variable with new features
     setMapFeatures(newFeatures);
-    dispatchRedux(updateField(newFeatures));
+
+    if (selectedCropIdsRedux.length > 0) {
+      setPendingFeatures(newFeatures);
+    } else {
+      dispatchRedux(updateField(newFeatures));
+    }
   };
 
   // call back function that is passed to shared map to update local state variables
@@ -99,6 +105,7 @@ const Location = () => {
       setIsOpen(true);
       setLatLon(markersRedux ? markersRedux[0] : statesLatLongDict[stateLabelRedux]);
       setMapFeatures(userFieldRedux || []);
+      setPendingFeatures(null);
       setMapKey((prev) => prev + 1);
       return;
     }
@@ -158,12 +165,18 @@ const Location = () => {
       if (pendingLocation.zone) {
         updateRegionRedux(pendingLocation.zone);
       }
+      if (pendingFeatures) {
+        dispatchRedux(updateField(pendingFeatures));
+      }
     } else if (resetStatusRedux === false) {
       if (markersRedux) setLatLon(markersRedux[0]);
+      setMapFeatures(userFieldRedux || []);
+      setMapKey((prev) => prev + 1);
     }
     setPendingLocation(null);
+    setPendingFeatures(null);
     dispatchRedux(setMyCoverCropReset(false, false, null));
-  }, [resetStatusRedux, pendingLocation]);
+  }, [resetStatusRedux, pendingLocation, pendingFeatures]);
 
   // Fetches ssurgo data and checks if the soil composition is farmable
   const getSSURGOData = (lat, lon) => {
