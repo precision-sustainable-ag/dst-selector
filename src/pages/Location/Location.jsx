@@ -67,8 +67,8 @@ const Location = () => {
         ? statesLatLongDict[stateLabelRedux]
         : [47, -122],
   );
-  const [stateLabel, setStateLabel] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [mapKey, setMapKey] = useState(1);
   const [isFarmable, setIsFarmable] = useState(true);
 
   const NOT_FARMABLE_HTML =
@@ -93,15 +93,19 @@ const Location = () => {
 
   // call back function that is passed to shared map to update local state variables
   const updateProperties = (properties) => {
+    // reset location if selected location is out of state
+    const newStateName = properties?.state?.STATE_NAME;
+    if (newStateName && newStateName !== stateLabelRedux) {
+      setIsOpen(true);
+      setLatLon(markersRedux ? markersRedux[0] : statesLatLongDict[stateLabelRedux]);
+      setMapFeatures(userFieldRedux || []);
+      setMapKey((prev) => prev + 1);
+      return;
+    }
     setSelectedToEditSite(properties?.address);
     setLatLon([properties?.lat, properties?.lon]);
     updateMapFeatures(properties?.features);
-    setStateLabel(properties?.state?.STATE_NAME);
   };
-
-  useEffect(() => {
-    if (stateLabel && stateLabel !== stateLabelRedux) setIsOpen(true);
-  }, [stateLabel, stateLabelRedux]);
 
   useEffect(() => {
     // analytics
@@ -484,6 +488,7 @@ const Location = () => {
           <Box sx={{ width: '100%' }}>
             <Container className="MapBox" maxWidth="md">
               <PSAReduxMap
+                key={mapKey}
                 setProperties={updateProperties}
                 initWidth="100%"
                 initHeight="450px"
