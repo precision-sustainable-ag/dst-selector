@@ -112,7 +112,7 @@ const PlantHardinessZone = ({ from }) => {
       }))}
       formSx={{ width: '100%' }}
       SelectProps={{
-        value: regionShorthandRedux || '',
+        value: pendingRegion?.shorthand || regionShorthandRedux || '',
         onChange: updateRegionRedux,
         style: { textAlign: 'left' },
         sx: {
