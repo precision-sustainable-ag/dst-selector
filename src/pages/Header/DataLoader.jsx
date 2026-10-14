@@ -1,6 +1,7 @@
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useCropLoader from '../../hooks/useCropLoader';
 import { updateAllGoals, updatePlantingSeasons } from '../../reduxStore/goalSlice';
 import { callCoverCropApi } from '../../shared/constants';
 
@@ -14,6 +15,9 @@ const DataLoader = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const { enqueueSnackbar } = useSnackbar();
+
+  // crop loading specific hook
+  useCropLoader();
 
   // fetch goals data
   useEffect(() => {
