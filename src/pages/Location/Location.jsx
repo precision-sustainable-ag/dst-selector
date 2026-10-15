@@ -77,7 +77,23 @@ const Location = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const updateMapFeatures = (newFeatures) => {
+  // call back function that is passed to shared map to update local state variables
+  const updateProperties = (properties) => {
+    const newStateName = properties?.state?.STATE_NAME;
+    if (newStateName && newStateName !== stateLabelRedux) {
+      // reset location if selected location is out of state
+      setIsOpen(true);
+      setLatLon(markersRedux ? markersRedux[0] : statesLatLongDict[stateLabelRedux]);
+      setMapFeatures(userFieldRedux || []);
+      setPendingFeatures(null);
+      setMapKey((prev) => prev + 1);
+      return;
+    }
+
+    setSelectedToEditSite(properties?.address);
+    setLatLon([properties?.lat, properties?.lon]);
+
+    const newFeatures = properties?.features;
     if (JSON.stringify(mapFeatures) === JSON.stringify(newFeatures)) return;
 
     // if user imported a history, this will prevent the user from changing the polygons
@@ -97,28 +113,12 @@ const Location = () => {
     }
   };
 
-  // call back function that is passed to shared map to update local state variables
-  const updateProperties = (properties) => {
-    // reset location if selected location is out of state
-    const newStateName = properties?.state?.STATE_NAME;
-    if (newStateName && newStateName !== stateLabelRedux) {
-      setIsOpen(true);
-      setLatLon(markersRedux ? markersRedux[0] : statesLatLongDict[stateLabelRedux]);
-      setMapFeatures(userFieldRedux || []);
-      setPendingFeatures(null);
-      setMapKey((prev) => prev + 1);
-      return;
-    }
-    setSelectedToEditSite(properties?.address);
-    setLatLon([properties?.lat, properties?.lon]);
-    updateMapFeatures(properties?.features);
-  };
-
+  // analytics
   useEffect(() => {
-    // analytics
     pirschAnalytics('Visited Page', { meta: { visited: 'Location' } });
   }, []);
 
+  // if in explorer mode without state id, return to landing
   useEffect(() => {
     if (isExplorer && stateIdRedux === null) {
       history.replace('/');
@@ -150,6 +150,10 @@ const Location = () => {
         county: loc.county,
       }),
     );
+    if (pendingFeatures) {
+      dispatchRedux(updateField(pendingFeatures));
+      setPendingFeatures(null);
+    }
     enqueueSnackbar('Your location has been saved.');
   };
 
@@ -164,9 +168,6 @@ const Location = () => {
       }
       if (pendingLocation.zone) {
         updateRegionRedux(pendingLocation.zone);
-      }
-      if (pendingFeatures) {
-        dispatchRedux(updateField(pendingFeatures));
       }
     } else if (resetStatusRedux === false) {
       if (markersRedux) setLatLon(markersRedux[0]);
