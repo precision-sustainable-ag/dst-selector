@@ -1,19 +1,50 @@
 /* eslint-disable max-len */
 import { Collapse, List, ListItem, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSADropdown } from 'shared-react-components/src';
 import { updateRegion } from '../../../reduxStore/mapSlice';
-import { setQueryString } from '../../../reduxStore/sharedSlice';
+import { setMyCoverCropReset, setQueryString } from '../../../reduxStore/sharedSlice';
 import { historyState, setHistoryDialogState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
 
 const PlantHardinessZone = ({ from }) => {
   const dispatchRedux = useDispatch();
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const resetStatusRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
+  );
+
+  const [pendingRegion, setPendingRegion] = useState(null);
+
+  const applyRegion = (region) => {
+    localStorage.setItem('regionId', region.id);
+    dispatchRedux(
+      updateRegion({
+        regionId: region.id,
+        regionShorthand: region.shorthand,
+      }),
+    );
+    dispatchRedux(setQueryString(`regions=${region.id}`));
+    pirschAnalytics(from, { meta: { dropdownUpdate: true } });
+  };
+
+  // handle reset crop dialog
+  useEffect(() => {
+    if (!pendingRegion || resetStatusRedux === null) return;
+
+    if (resetStatusRedux === true) {
+      applyRegion(pendingRegion);
+    }
+    setPendingRegion(null);
+    dispatchRedux(setMyCoverCropReset(false, false, null));
+  }, [resetStatusRedux, pendingRegion]);
 
   const updateRegionRedux = (e) => {
     // if update region, show history dialog to create a new history
@@ -26,15 +57,19 @@ const PlantHardinessZone = ({ from }) => {
       console.error('Unavailable region.');
       return;
     }
-    localStorage.setItem('regionId', selectedRegion.id);
-    dispatchRedux(
-      updateRegion({
-        regionId: selectedRegion.id,
-        regionShorthand: selectedRegion.shorthand,
-      }),
-    );
-    dispatchRedux(setQueryString(`regions=${selectedRegion.id}`));
-    pirschAnalytics(from, { meta: { dropdownUpdate: true } });
+    // If user is changing region with selected crops in SCCC/NECCC, prompt reset dialog
+    // In MCCC the county change does not affect the crop list, no need to prompt
+    if (
+      councilLabelRedux !== 'Midwest Cover Crops Council' &&
+      selectedCropIdsRedux.length > 0 &&
+      regionIdRedux &&
+      selectedRegion.id !== regionIdRedux
+    ) {
+      setPendingRegion(selectedRegion);
+      dispatchRedux(setMyCoverCropReset(true, true));
+      return;
+    }
+    applyRegion(selectedRegion);
   };
 
   const menuProps = {
@@ -77,7 +112,7 @@ const PlantHardinessZone = ({ from }) => {
       }))}
       formSx={{ width: '100%' }}
       SelectProps={{
-        value: regionShorthandRedux || '',
+        value: pendingRegion?.shorthand || regionShorthandRedux || '',
         onChange: updateRegionRedux,
         style: { textAlign: 'left' },
         sx: {
