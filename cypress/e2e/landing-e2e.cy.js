@@ -61,4 +61,3 @@ describe('Test all possible interactions on the Landing Page after a state is se
     cy.url().should('include', '/explorer/location');
   });
 });
-

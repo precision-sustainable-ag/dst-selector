@@ -5,6 +5,7 @@
 
 import { Refresh } from '@mui/icons-material';
 import { Badge, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PSAButton } from 'shared-react-components/src';
@@ -17,8 +18,22 @@ const NavigationButtons = ({ pathname }) => {
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const resetStatusRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
+  );
   const history = useHistory();
   const isMobile = useIsMobile('sm');
+  const [pendingRestart, setPendingRestart] = useState(false);
+
+  useEffect(() => {
+    if (!pendingRestart || resetStatusRedux === null) return;
+
+    if (resetStatusRedux === true) {
+      history.push('/');
+    }
+    setPendingRestart(false);
+    dispatchRedux(setMyCoverCropReset(false, false, null));
+  }, [resetStatusRedux, pendingRestart]);
 
   const handleBack = () => {
     if (pathname === '/explorer' && councilShorthandRedux === 'WCCC') {
@@ -26,6 +41,16 @@ const NavigationButtons = ({ pathname }) => {
     } else {
       history.push('/');
     }
+  };
+
+  const handleRestart = () => {
+    if (selectedCropIdsRedux.length > 0) {
+      setPendingRestart(true);
+      dispatchRedux(setMyCoverCropReset(true));
+      return;
+    }
+    dispatchRedux(reset());
+    history.push('/');
   };
 
   return (
@@ -80,14 +105,7 @@ const NavigationButtons = ({ pathname }) => {
           minWidth: '70px',
           height: isMobile ? '35px' : 'auto',
         }}
-        onClick={() => {
-          if (selectedCropIdsRedux.length > 0) {
-            dispatchRedux(setMyCoverCropReset(true, false));
-          } else {
-            dispatchRedux(reset());
-          }
-          history.push('/');
-        }}
+        onClick={handleRestart}
         startIcon={<Refresh />}
         buttonType="PillButton"
         data-test="restart-btn"
