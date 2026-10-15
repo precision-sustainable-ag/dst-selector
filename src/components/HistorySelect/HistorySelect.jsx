@@ -114,6 +114,7 @@ const HistorySelect = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const normalizeField = (field) => {
+    if (field === null) return [];
     // Normalize if old format
     if (!Array.isArray(field)) {
       if (field.type === 'Feature' && field.geometry?.type === 'GeometryCollection') {
