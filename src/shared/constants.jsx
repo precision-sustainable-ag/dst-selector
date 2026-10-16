@@ -542,21 +542,13 @@ export const BinaryButton = ({ action }) => (
       className="yesButton"
     />
     <PSAButton
+      autoFocus
       buttonType=""
       onClick={() => {
         action(false);
       }}
       color="primary"
       title="No"
-    />
-    <PSAButton
-      autoFocus
-      buttonType=""
-      onClick={() => {
-        action(null);
-      }}
-      color="primary"
-      title="Cancel"
     />
   </>
 );

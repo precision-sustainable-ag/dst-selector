@@ -241,7 +241,6 @@ describe('<SiteConditions />', () => {
       apiBaseUrl: 'developapi',
       openMyCoverCropReset: {
         open: false,
-        goBack: true,
       },
       queryString: 'regions=650',
     };

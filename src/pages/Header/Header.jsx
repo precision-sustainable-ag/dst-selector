@@ -404,7 +404,7 @@ const Header = () => {
       dispatchRedux(reset());
       history.replace('/');
     } else {
-      dispatchRedux(setMyCoverCropReset(true, false));
+      dispatchRedux(setMyCoverCropReset(true));
     }
   };
 
