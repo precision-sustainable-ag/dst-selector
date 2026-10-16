@@ -21,13 +21,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
 import HelpTooltip from '../../components/HelpTooltip/HelpTooltip';
 import Legend from '../../components/Legend/Legend';
-import { updateActiveCropIds, updateCropData } from '../../reduxStore/cropSlice';
+import { updateActiveCropIds } from '../../reduxStore/cropSlice';
 import {
   clearFilters,
   setAdditionalSoilDrainageFilter,
@@ -35,13 +34,9 @@ import {
   setIrrigationFilter,
   setSoilDrainageFilter,
 } from '../../reduxStore/filterSlice';
-import { regionToggleHandler, setAjaxInProgress } from '../../reduxStore/sharedSlice';
+import { regionToggleHandler } from '../../reduxStore/sharedSlice';
 import { updateSelectedIrrigation } from '../../reduxStore/terminationSlice';
-import {
-  callCoverCropApi,
-  cropDataFormatter,
-  getLegendDataBasedOnCouncil,
-} from '../../shared/constants';
+import { callCoverCropApi, getLegendDataBasedOnCouncil } from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -369,7 +364,6 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
 
   useEffect(() => {
     if (queryStringRedux === null) return;
-    dispatchRedux(setAjaxInProgress(true));
     setLoading(true);
     callCoverCropApi(
       `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`,
@@ -387,26 +381,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       setSidebarFiltersData(allFilters);
       setSidebarCategoriesData(categories);
     });
-    callCoverCropApi(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}` +
-        `${hasAdditionalSoilDrainage ? '&additional_soil_drainage=true' : ''}`,
-    ).then((data) => {
-      const { startDate, endDate } = cashCropDataRedux.dateRange;
-      const start = startDate ? moment(startDate).format('MM/DD') : '';
-      const end = endDate ? moment(endDate).format('MM/DD') : '';
-      cropDataFormatter(data.data, start, end);
-      dispatchRedux(updateCropData(data.data));
-      dispatchRedux(setAjaxInProgress(false));
-    });
-  }, [
-    cashCropDataRedux,
-    queryStringRedux,
-    stateIdRedux,
-    apiBaseUrlRedux,
-    councilShorthandRedux,
-    dispatchRedux,
-    hasAdditionalSoilDrainage,
-  ]);
+  }, [queryStringRedux, stateIdRedux, apiBaseUrlRedux, councilShorthandRedux]);
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
