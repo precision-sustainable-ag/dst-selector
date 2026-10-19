@@ -49,6 +49,7 @@ const Landing = () => {
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const resetStatusRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
   );
@@ -71,6 +72,46 @@ const Landing = () => {
 
   const isDevEnvironment = testAuth0Env || /(localhost|dev)/i.test(window.location);
 
+  const fetchRegions = (state) => {
+    const { id } = state;
+    if (state.council.shorthand !== 'WCCC') {
+      fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
+        .then((res) => res.json())
+        .then((data) => {
+          let fetchedRegions;
+          if (data.data.Counties) {
+            fetchedRegions = data.data.Counties;
+          } else {
+            fetchedRegions = data.data.Zones;
+          }
+
+          dispatchRedux(updateRegions(fetchedRegions));
+
+          if (historyStateRedux !== historyState.imported) {
+            // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
+            // , skip set default since there already exist region selection
+            if (stateIdRedux !== state.id) {
+              // set default region for Selector and Explorer
+              if (!fetchedRegions[0]?.id || !fetchedRegions[0]?.shorthand)
+                throw new Error('Unavailable region.');
+              localStorage.setItem('regionId', fetchedRegions[0].id);
+              dispatchRedux(
+                updateRegion({
+                  regionId: fetchedRegions[0].id,
+                  regionShorthand: fetchedRegions[0].shorthand,
+                }),
+              );
+            }
+            // set querystring for non WCCC states
+            dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id}`));
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  };
+
   const applyState = (state) => {
     setSelectedState(state);
     localStorage.setItem('stateId', state.id);
@@ -92,42 +133,7 @@ const Landing = () => {
       const [lat, lon] = statesLatLongDict[state.label];
       dispatchRedux(updateLocation({ address: '', markers: [[lat, lon]], county: null }));
     }
-    const { id } = state;
-    if (state.council.shorthand !== 'WCCC') {
-      fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
-        .then((res) => res.json())
-        .then((data) => {
-          let fetchedRegions;
-          if (data.data.Counties) {
-            fetchedRegions = data.data.Counties;
-          } else {
-            fetchedRegions = data.data.Zones;
-          }
-
-          dispatchRedux(updateRegions(fetchedRegions));
-
-          // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
-          // , skip set default since there already exist region selection
-          if (stateIdRedux !== state.id) {
-            // set default region for Selector and Explorer
-            if (!fetchedRegions[0]?.id || !fetchedRegions[0]?.shorthand)
-              throw new Error('Unavailable region.');
-            localStorage.setItem('regionId', fetchedRegions[0].id);
-            dispatchRedux(
-              updateRegion({
-                regionId: fetchedRegions[0].id,
-                regionShorthand: fetchedRegions[0].shorthand,
-              }),
-            );
-          }
-          // set querystring for non WCCC states
-          dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id}`));
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
+    fetchRegions(state);
   };
 
   // when a state change is requested, check validity, history and crop list
@@ -185,11 +191,25 @@ const Landing = () => {
       if (state) {
         setSelectedState(state);
         pirschAnalytics('Landing', { meta: { state: state.label } });
+
+        // load regions for a history imported state
+        if (historyStateRedux === historyState.imported && regionsRedux.length === 0) {
+          fetchRegions(state);
+        }
       } else if (resetStatusRedux === null && !pendingState) {
         setSelectedState({});
       }
     }
-  }, [stateIdRedux, allStates, resetStatusRedux, pendingState]);
+  }, [
+    stateIdRedux,
+    allStates,
+    resetStatusRedux,
+    pendingState,
+    historyStateRedux,
+    regionsRedux.length,
+    apiBaseUrlRedux,
+    dispatchRedux,
+  ]);
 
   // handle reset dialog
   useEffect(() => {
