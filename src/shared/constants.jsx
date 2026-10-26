@@ -489,6 +489,7 @@ export const ucFirst = (text = '') =>
     .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
     .join(' ');
 
+// FIXME: this will be not used anymore, to be removed
 export const flipCoverCropName = (cropName = '') => {
   if (cropName.toLowerCase() === 'Sorghum-sudangrass'.toLowerCase()) {
     return 'Sudex';
