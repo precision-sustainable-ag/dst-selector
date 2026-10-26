@@ -218,34 +218,6 @@ const Landing = () => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Landing' } });
   }, []);
 
-  const [containerHeight, setContainerHeight] = useState();
-
-  useEffect(() => {
-    function updateSize() {
-      const documentHeight = document
-        .getElementsByTagName('html')[0]
-        .getBoundingClientRect().height;
-
-      const headerHeight = document
-        .getElementsByTagName('header')[0]
-        .getBoundingClientRect().height;
-
-      const navHeight = document.getElementsByTagName('nav')[0].getBoundingClientRect().height;
-
-      const footerHeight = document
-        .getElementsByClassName('primaryFooter')[0]
-        .getBoundingClientRect().height;
-
-      const contHeight = documentHeight - (headerHeight + footerHeight + navHeight);
-      document.getElementById('landingWrapper').style.minHeight = `${contHeight}px`;
-      setContainerHeight(contHeight);
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize();
-
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
-
   const backgroundSyles = {
     frostedGlassEffect: {
       backdropFilter: 'blur(5px)',
@@ -290,8 +262,7 @@ const Landing = () => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        minHeight: containerHeight,
-        // height: '100vh',
+        flexGrow: 1,
       }}
       sx={{ margin: -1 }}
       id="landingWrapper"

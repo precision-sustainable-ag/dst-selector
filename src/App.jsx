@@ -139,45 +139,48 @@ const App = () => (
             >
               <CssBaseline />
               <Suspense fallback={<div>Loading..</div>}>
-                <Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                   <SkipContent href="#main-content" text="Skip to content" />
                   <Header />
-                  <Container disableGutters maxWidth={false} id="main-content">
-                    <Box sx={{ mr: 1, ml: 1, mt: 1, mb: 1 }}>
-                      <Switch>
-                        <Route path="/" render={() => <LoadRelevantRoute />} exact />
-                        <Route path="/explorer/location" component={Location} exact />
-                        <Route path="/explorer" component={CoverCropExplorer} exact />
-                        <Route path="/about" component={About} exact />
-                        <Route path="/help" component={Help} exact />
-                        <Route path="/feedback" component={Feedback} exact />
-                        <Route path="/wizard" render={Wizard} exact />
-                        <Route path="/profile" render={() => <PSAProfile />} exact />
-                        <Route
-                          path="/my-cover-crop-list"
-                          component={MyCoverCropListWrapper}
-                          exact
-                        />
-                        <Route
-                          path="/seeding-rate-calculator"
-                          component={SeedingRateCalculator}
-                          exact
-                        />
-                        <Route
-                          path="/data-dictionary"
-                          component={InformationSheetDictionary}
-                          exact
-                        />
-                        <Route path="/license" render={() => <License licenseType="MIT" />} exact />
-                        <Route
-                          path="/ag-informatics-license"
-                          render={() => <License licenseType="AgInformatics" />}
-                          exact
-                        />
-                        <Route path="/mix-maker" component={MixMaker} exact />
-                        <Route component={RouteNotFound} />
-                      </Switch>
-                    </Box>
+                  <Container
+                    disableGutters
+                    maxWidth={false}
+                    id="main-content"
+                    sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, p: 1 }}
+                  >
+                    <Switch>
+                      <Route path="/" render={() => <LoadRelevantRoute />} exact />
+                      <Route path="/explorer/location" component={Location} exact />
+                      <Route path="/explorer" component={CoverCropExplorer} exact />
+                      <Route path="/about" component={About} exact />
+                      <Route path="/help" component={Help} exact />
+                      <Route path="/feedback" component={Feedback} exact />
+                      <Route path="/wizard" render={Wizard} exact />
+                      <Route path="/profile" render={() => <PSAProfile />} exact />
+                      <Route
+                        path="/my-cover-crop-list"
+                        component={MyCoverCropListWrapper}
+                        exact
+                      />
+                      <Route
+                        path="/seeding-rate-calculator"
+                        component={SeedingRateCalculator}
+                        exact
+                      />
+                      <Route
+                        path="/data-dictionary"
+                        component={InformationSheetDictionary}
+                        exact
+                      />
+                      <Route path="/license" render={() => <License licenseType="MIT" />} exact />
+                      <Route
+                        path="/ag-informatics-license"
+                        render={() => <License licenseType="AgInformatics" />}
+                        exact
+                      />
+                      <Route path="/mix-maker" component={MixMaker} exact />
+                      <Route component={RouteNotFound} />
+                    </Switch>
                   </Container>
                 </Box>
                 <SkipContent
