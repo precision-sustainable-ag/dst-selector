@@ -30,6 +30,7 @@ const SoilDrainage = ({ drainageOptions }) => {
   );
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const tileDrainageRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.tileDrainage);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   // useState vars
   const [showTiling, setShowTiling] = useState(false);
@@ -68,8 +69,12 @@ const SoilDrainage = ({ drainageOptions }) => {
     } else {
       setShowTiling(false);
     }
+    // tile drainage is disabled in Ontario
+    if (stateLabelRedux === 'Ontario') {
+      setShowTiling(false);
+    }
     window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.drainageClass));
-  }, [soilDataRedux?.drainageClass, tileDrainageRedux, drainageOptions]);
+  }, [soilDataRedux?.drainageClass, tileDrainageRedux, drainageOptions, stateLabelRedux]);
 
   const resetDrainageClasses = () => {
     // update history state here
