@@ -7,7 +7,6 @@ import CropSelectorCalendarView from '../../../components/CropSelectorCalendarVi
 import {
   addCropToBasket,
   CropImage,
-  flipCoverCropName,
   getRating,
   hasGoalRatingTwoOrLess,
 } from '../../../shared/constants';
@@ -154,15 +153,14 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       textDecoration: 'underline',
                       color: 'black',
                       textAlign: 'left',
+                      textTransform: 'none',
                     }}
                     onClick={() => {
                       setModalData(crop);
                       setModalOpen(!modalOpen);
                     }}
                     data-test="crop-calendar-crop-name"
-                    title={
-                      councilShorthandRedux === 'WCCC' ? crop.label : flipCoverCropName(crop.label)
-                    }
+                    title={crop.label}
                   />
                 </Grid>
                 {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label ===
@@ -171,7 +169,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     <PSATooltip
                       placement="top-end"
                       enterTouchDelay={0}
-                      title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
+                      title={`${crop.label} is suitable for frost seeding.`}
                       arrow
                       tooltipContent={
                         <button
@@ -182,7 +180,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                             padding: 0,
                             cursor: 'pointer',
                           }}
-                          aria-label={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
+                          aria-label={`${crop.label} is suitable for frost seeding.`}
                         >
                           <AcUnit
                             sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}

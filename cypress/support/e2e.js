@@ -1,5 +1,4 @@
 import './commands';
-import { flipCoverCropName } from '../../src/shared/constants';
 
 const rowOpacity = 0.55;
 
@@ -49,7 +48,7 @@ export const testFiltersByType = () => {
       if (attr) {
         attr.values.forEach((val) => {
           const { value } = val;
-          result[value] = [...result[value], flipCoverCropName(crop.label)];
+          result[value] = [...result[value], crop.label];
         });
       }
     });
