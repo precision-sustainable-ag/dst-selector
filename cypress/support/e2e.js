@@ -16,9 +16,21 @@ export const testFiltersByType = () => {
         return hasValues;
       });
 
-      const testFilters = validFilters.map((filter) => filter.label);
+      const allFilterDataTypes = validFilters.reduce((res, filter) => {
+        const dataType = filter.dataType?.label;
+        if (dataType && !res.includes(dataType)) {
+          res.push(dataType);
+        }
+        return res;
+      }, []);
 
-      const testFilterValues = validFilters.map((filter) => {
+      const sampleFilters = allFilterDataTypes
+        .map((dataType) => validFilters.find((filter) => filter.dataType?.label === dataType))
+        .filter(Boolean);
+
+      const testFilters = sampleFilters.map((filter) => filter.label);
+
+      const testFilterValues = sampleFilters.map((filter) => {
         let vals = filter.values
           .filter((v) => v.value !== null && v.value !== undefined)
           .map((v) =>
