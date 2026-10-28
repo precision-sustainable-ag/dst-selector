@@ -489,6 +489,7 @@ export const ucFirst = (text = '') =>
     .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
     .join(' ');
 
+// FIXME: this will be not used anymore, to be removed
 export const flipCoverCropName = (cropName = '') => {
   if (cropName.toLowerCase() === 'Sorghum-sudangrass'.toLowerCase()) {
     return 'Sudex';
@@ -603,8 +604,8 @@ export const sortByGoal = (crops, { goal, sortFlag }) => {
 };
 
 const cropNameSorting = (a, b, sortFlag) => {
-  const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(/\s+/g, '');
-  const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(/\s+/g, '');
+  const firstCropName = (a.label || '').toLowerCase().trim();
+  const secondCropName = (b.label || '').toLowerCase().trim();
   return sortFlag
     ? secondCropName.localeCompare(firstCropName)
     : firstCropName.localeCompare(secondCropName);

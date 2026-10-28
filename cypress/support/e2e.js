@@ -1,71 +1,96 @@
 import './commands';
-import { flipCoverCropName } from '../../src/shared/constants';
 
 const rowOpacity = 0.55;
 
 export const testFiltersByType = () => {
-  const cropData = Cypress.env('cropData');
-  const filterTypes = Cypress.env('filterTypes');
-  const allFilters = Cypress.env('allFilters');
+  cy.window()
+    .its('store')
+    .then((store) => {
+      const council = store.getState().mapData.councilShorthand;
+      const cropData = Cypress.env('cropData');
+      const filterTypes = Cypress.env('filterTypes');
+      const allFilters = Cypress.env('allFilters');
 
-  const allFilterDataTypes = allFilters.reduce((res, filter) => {
-    const dataType = filter.dataType.label;
-    if (!res.includes(dataType)) {
-      res.push(dataType);
-    }
-    return res;
-  }, []);
+      const validFilters = allFilters.filter((filter) => {
+        const hasValues = filter.values?.some((v) => v.value !== null && v.value !== undefined);
+        return hasValues;
+      });
 
-  const testFilters = allFilterDataTypes.reduce((res, dataType) => {
-    // TODO: for each filter type, find first available filter
-    const filterName = allFilters.find((filter) => filter.dataType.label === dataType)?.label;
-    if (filterName) {
-      res.push(filterName);
-    }
-    return res;
-  }, []);
+      const allFilterDataTypes = validFilters.reduce((res, filter) => {
+        const dataType = filter.dataType?.label;
+        if (dataType && !res.includes(dataType)) {
+          res.push(dataType);
+        }
+        return res;
+      }, []);
 
-  const testFilterValues = allFilterDataTypes.reduce((res, dataType) => {
-    const filter = allFilters.find((filter) => filter.dataType.label === dataType);
-    if (!filter) return res;
-    res.push(
-      filter.values.map((v) =>
-        v.dataType === 'number' && filter.dataType.label !== 'currency'
-          ? parseInt(v.value, 10)
-          : v.value,
-      ),
-    );
-    return res;
-  }, []);
+      const sampleFilters = allFilterDataTypes
+        .map((dataType) => validFilters.find((filter) => filter.dataType?.label === dataType))
+        .filter(Boolean);
 
-  const filterResults = {};
-  testFilters.forEach((filter, i) => {
-    const result = {};
-    testFilterValues[i].forEach((value) => {
-      result[value] = [];
-    });
-    cropData.forEach((crop) => {
-      const attr = crop.attributes.find((attr) => attr.label === filter);
-      if (attr) {
-        attr.values.forEach((val) => {
-          const { value } = val;
-          result[value] = [...result[value], flipCoverCropName(crop.label)];
+      const testFilters = sampleFilters.map((filter) => filter.label);
+
+      const testFilterValues = sampleFilters.map((filter) => {
+        let vals = filter.values
+          .filter((v) => v.value !== null && v.value !== undefined)
+          .map((v) =>
+            v.dataType === 'number' && filter.dataType.label !== 'currency'
+              ? parseInt(v.value, 10)
+              : v.value,
+          );
+        if (typeof vals[0] === 'number') {
+          if (council === 'MCCC') {
+            vals = vals.filter((v) => v <= 4);
+          }
+          return vals.reverse();
+        }
+        return vals;
+      });
+
+      const filterResults = {};
+      testFilters.forEach((filter, i) => {
+        const result = {};
+        const isNumericFilter = typeof testFilterValues[i][0] === 'number';
+        const maxValidRating = isNumericFilter ? Math.max(...testFilterValues[i]) : null;
+        testFilterValues[i].forEach((targetVal) => {
+          result[targetVal] = [];
         });
-      }
+
+        cropData.forEach((crop) => {
+          const attr = crop.attributes.find((a) => a.label === filter);
+          if (attr) {
+            const displayName = council === 'WCCC' ? crop.label.trim() : crop.label.trim();
+
+            testFilterValues[i].forEach((targetVal) => {
+              const matches = attr.values.some((val) => {
+                if (val.value === null || val.value === undefined) return false;
+                if (isNumericFilter) {
+                  const num = Number(val.value);
+                  return num <= maxValidRating && num >= targetVal;
+                }
+                return val.value === targetVal;
+              });
+
+              if (matches && !result[targetVal].includes(displayName)) {
+                result[targetVal].push(displayName);
+              }
+            });
+          }
+        });
+        filterResults[filter] = result;
+      });
+
+      cy.log(filterTypes, testFilters, testFilterValues, filterResults);
+
+      filterTypes.forEach((filterType) => {
+        cy.getByTestId(`${filterType.toUpperCase()}-expandmore-icon`).click();
+      });
+
+      testFilters.forEach((filter, i) => {
+        checkRows(filter, testFilterValues[i], filterResults[filter]);
+        cy.getByTestId('crop-side-bar-clear-filters').click();
+      });
     });
-    filterResults[filter] = result;
-  });
-
-  cy.log(filterTypes, allFilterDataTypes, testFilters, testFilterValues, filterResults);
-
-  filterTypes.forEach((filterType) => {
-    cy.getByTestId(`${filterType.toUpperCase()}-expandmore-icon`).click();
-  });
-
-  testFilters.forEach((filter, i) => {
-    checkRows(filter, testFilterValues[i], filterResults[filter]);
-    cy.getByTestId('crop-side-bar-clear-filters').click();
-  });
 };
 
 const checkRows = (filterType, filterIndex, filterResult) => {
@@ -75,17 +100,9 @@ const checkRows = (filterType, filterIndex, filterResult) => {
     cy.getByTestId(`${filterType}-${filterIdx}`)
       .click({ force: true })
       .then(() => {
-        let option;
-        if (filterValType === 'string' && index - 1 >= 0) {
-          option = index - 1;
-          cy.getByTestId(`${filterType}-${filterIndex[option]}`).click({ force: true });
-        } else if (filterValType === 'number') {
-          option = filterIdx + 1;
-          // click on rest of the chips to unselect them
-          while (option <= filterIndex.length && option <= filterIndex.at(-1)) {
-            cy.getByTestId(`${filterType}-${option}`).click({ force: true });
-            option += 1;
-          }
+        if ((filterValType === 'string' || filterValType === 'boolean') && index - 1 >= 0) {
+          const prevOption = filterIndex[index - 1];
+          cy.getByTestId(`${filterType}-${prevOption}`).click({ force: true });
         }
         cy.get('[data-test="crop-list-tbody"]').within(() => {
           cy.get('[data-test^="crop-list-tr"]').then((allRows) => {
@@ -109,13 +126,11 @@ const checkRows = (filterType, filterIndex, filterResult) => {
                 return;
               }
               expect(filterResult[filterIdx].length).to.equal(visibleRows.length);
-              cy.wrap(visibleRows).each((row) => {
-                cy.wrap(row)
-                  .find('[data-test="crop-calendar-crop-name"]')
-                  .then((label) => {
-                    expect(filterResult[filterIdx]).to.include(label.text());
-                  });
-              });
+              const actualCropNames = visibleRows
+                .find('[data-test="crop-calendar-crop-name"]')
+                .map((_, el) => Cypress.$(el).text().trim())
+                .get();
+              expect(actualCropNames.sort()).to.deep.equal([...filterResult[filterIdx]].sort());
             }
           });
         });
