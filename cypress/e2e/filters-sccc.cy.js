@@ -1,6 +1,4 @@
 /* eslint-disable */
-import { flipCoverCropName } from '../../src/shared/constants';
-
 /* eslint-disable no-undef */
 
 describe('Test all possible interactions on the SCCC Crop Calendar Page', () => {
@@ -130,7 +128,7 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
               .should('be.visible')
               .invoke('text')
               .then((labelText) => {
-                myCropLabels.push(flipCoverCropName(labelText));
+                myCropLabels.push(labelText);
                 cy.log(`Crop Card Label: ${labelText}`);
               });
           })

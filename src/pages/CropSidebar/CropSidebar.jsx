@@ -232,7 +232,8 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       }
 
       // soil drainage & flooding frequency
-      if (match) {
+      // disabled on Browse view
+      if (match && from !== 'explorer') {
         const filteringBySoilDrainage =
           councilShorthandRedux === 'WCCC' ? soilDrainageFilterRedux : true;
         let matchesDrainageClass = true;
@@ -253,10 +254,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
             ? true
             : floodingFrequencyRedux <= floodingFrequencyValue;
 
-        if (stateIdRedux === 7) {
-          // TODO: Arizona is in WCCC and does not have flooding frequency
-          if (!cropFloodingValueIsHigher) match = false;
-        } else if (!matchesDrainageClass || !cropFloodingValueIsHigher) match = false;
+        if (!matchesDrainageClass || !cropFloodingValueIsHigher) match = false;
       }
 
       // crop group filter
@@ -265,7 +263,8 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       }
 
       // WCCC additional filters for planting season, first goal rating, planting dates
-      if (councilShorthandRedux === 'WCCC' && match) {
+      // disabled on Browse view
+      if (councilShorthandRedux === 'WCCC' && match && from !== 'explorer') {
         match = false;
         const seasonMatch =
           selectedSeasonRedux.length === 0 ||
@@ -301,6 +300,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
     selectedGoalsRedux,
     stateIdRedux,
     dispatchRedux,
+    from,
   ]);
 
   const filtersSelected =
