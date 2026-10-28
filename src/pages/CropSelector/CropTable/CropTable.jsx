@@ -33,7 +33,6 @@ const CropTable = ({ listView, setListView, showGrowthWindow }) => {
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   // useState vars
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -340,17 +339,11 @@ const CropTable = ({ listView, setListView, showGrowthWindow }) => {
           </TableHead>
 
           <TableBody data-test="crop-list-tbody">
-            {activeCropIdsRedux.length > 0 ? (
+            {cropDataRedux.length > 0 && (
               <RenderTableItems
                 showGrowthWindow={showGrowthWindow}
                 handleModalOpen={handleModalOpen}
               />
-            ) : (
-              <TableRow data-test="crop-list-tr">
-                <TableCell sx={{ padding: 0 }}>
-                  No cover crops match your selected Cover Crop Property filters.
-                </TableCell>
-              </TableRow>
             )}
           </TableBody>
         </Table>
