@@ -1,4 +1,3 @@
-import { flipCoverCropName } from '../../src/shared/constants';
 import { testFiltersByType } from '../support/e2e';
 
 describe('Test all possible interactions on the NECCC Crop Calendar Page', () => {
@@ -127,7 +126,7 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
               .should('be.visible')
               .invoke('text')
               .then((labelText) => {
-                myCropLabels.push(flipCoverCropName(labelText));
+                myCropLabels.push(labelText);
                 cy.log(`Crop Card Label: ${labelText}`);
               });
           })
