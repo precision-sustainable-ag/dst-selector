@@ -155,7 +155,9 @@ const SoilDrainage = ({ drainageOptions }) => {
               />
             </Typography>
           </Grid>
-          {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
+          {(!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) ||
+            tileDrainageRedux ||
+            (newDrainage && newDrainage !== soilDataOriginalRedux?.drainageClass[0])) && (
             <Grid sx={{ pl: '0.5rem' }}>
               <PSAButton
                 buttonType="ValuesChanged"
