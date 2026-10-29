@@ -15,7 +15,7 @@ describe('<SiteConditions />', () => {
   beforeEach(() => {
     reduxStore = configureStore({});
 
-    cy.intercept('GET', '**/v2/attribute?filtered=false&slug=flooding_frequency*', {
+    cy.intercept('GET', /.*\/v2\/attribute\?filtered=false&slug=(flooding_frequency|ponding).*/, {
       statusCode: 200,
       body: {
         type: 'object',
