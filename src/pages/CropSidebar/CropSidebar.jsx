@@ -245,7 +245,12 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                 ?.includes(drainageClassRedux.toLowerCase());
         }
 
-        const floodLabel = councilShorthandRedux === 'NECCC' ? 'Flood' : 'Flood Tolerance';
+        const councilFloodLabel = {
+          NECCC: 'Flood',
+          MCCC: 'Flooding Duration',
+          SCCC: 'Flood Tolerance',
+        };
+        const floodLabel = councilFloodLabel[councilShorthandRedux];
         const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]
           ?.values[0].value;
         // WCCC don't filter crops by flooding frequency
