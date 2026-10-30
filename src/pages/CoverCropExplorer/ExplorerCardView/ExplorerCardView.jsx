@@ -44,7 +44,7 @@ const ExplorerCardView = ({ activeCropData }) => {
         </Grid>
       ) : (
         <div style={{ padding: '50px 0 0 50px' }}>
-          <b>Please select a zone</b>
+          <b>No cover crops available now.</b>
         </div>
       )}
     </Grid>
