@@ -16,8 +16,6 @@ import { reset } from '../reduxStore/store';
 const NavigationButtons = ({ pathname }) => {
   const dispatchRedux = useDispatch();
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const resetStatusRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
   );
@@ -36,11 +34,7 @@ const NavigationButtons = ({ pathname }) => {
   }, [resetStatusRedux, pendingRestart]);
 
   const handleBack = () => {
-    if (pathname === '/explorer' && councilShorthandRedux === 'WCCC') {
-      history.push('/explorer/location');
-    } else {
-      history.push('/');
-    }
+    history.push('/');
   };
 
   const handleRestart = () => {
@@ -66,22 +60,6 @@ const NavigationButtons = ({ pathname }) => {
         data-test="back-btn"
         title="Back"
       />
-      {pathname === '/explorer/location' && (
-        <PSAButton
-          style={{
-            maxWidth: '90px',
-            minWidth: '70px',
-            height: isMobile ? '35px' : 'auto',
-          }}
-          onClick={() => {
-            history.push('/explorer');
-          }}
-          disabled={!queryStringRedux}
-          buttonType="PillButton"
-          data-test="next-btn"
-          title="NEXT"
-        />
-      )}
       {pathname === '/explorer' && (
         <Badge badgeContent={selectedCropIdsRedux.length} color="error">
           <PSAButton
