@@ -94,16 +94,34 @@ const Landing = () => {
     }
     const { id } = state;
     if (state.council.shorthand === 'WCCC') {
-      const [lat, lon] = statesLatLongDict[state.label];
-      callCoverCropApi(
-        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`,
-      ).then((data) => {
-        const query = data.data
-          .filter((i) => i?.id !== null && i?.id !== undefined)
-          .map((i) => `regions=${i.id}`)
-          .join('&');
-        dispatchRedux(setQueryString(query));
-      });
+      callCoverCropApi(`https://polygons.vegspec.org/ecoregionsbystate?state=${state.shorthand}`)
+        .then((data) => {
+          if (!Array.isArray(data) || data.length === 0) return;
+          dispatchRedux(updateRegions(data));
+
+          if (stateIdRedux !== state.id) {
+            dispatchRedux(
+              updateRegion({
+                regionId: data[0].ecoregion_code,
+                regionShorthand: data[0].ecoregion,
+              }),
+            );
+          }
+
+          callCoverCropApi(
+            `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${data[0].valid_lat}&lon=${data[0].valid_lon}`,
+          ).then((regionData) => {
+            const query = regionData.data
+              .filter((i) => i?.id !== null && i?.id !== undefined)
+              .map((i) => `regions=${i.id}`)
+              .join('&');
+            dispatchRedux(setQueryString(query));
+          });
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
     }
     if (state.council.shorthand !== 'WCCC') {
       fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
