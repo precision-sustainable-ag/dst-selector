@@ -97,19 +97,28 @@ const Landing = () => {
       callCoverCropApi(`https://polygons.vegspec.org/ecoregionsbystate?state=${state.shorthand}`)
         .then((data) => {
           if (!Array.isArray(data) || data.length === 0) return;
-          dispatchRedux(updateRegions(data));
+
+          // format regions into similar format like other councils with id and shorthand
+          const formattedRegions = data.map((ecoRegion) => ({
+            id: ecoRegion.ecoregion_code,
+            shorthand: ecoRegion.ecoregion,
+            valid_lat: ecoRegion.valid_lat,
+            valid_lon: ecoRegion.valid_lon,
+          }));
+
+          dispatchRedux(updateRegions(formattedRegions));
 
           if (stateIdRedux !== state.id) {
             dispatchRedux(
               updateRegion({
-                regionId: data[0].ecoregion_code,
-                regionShorthand: data[0].ecoregion,
+                regionId: formattedRegions[0].id,
+                regionShorthand: formattedRegions[0].shorthand,
               }),
             );
           }
 
           callCoverCropApi(
-            `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${data[0].valid_lat}&lon=${data[0].valid_lon}`,
+            `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${formattedRegions[0].valid_lat}&lon=${formattedRegions[0].valid_lon}`,
           ).then((regionData) => {
             const query = regionData.data
               .filter((i) => i?.id !== null && i?.id !== undefined)
