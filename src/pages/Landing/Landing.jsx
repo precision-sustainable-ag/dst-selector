@@ -99,13 +99,21 @@ const Landing = () => {
           if (!Array.isArray(data) || data.length === 0) return;
 
           // format regions into similar format like other councils with id and shorthand
-          const formattedRegions = data.map((ecoRegion) => ({
-            id: ecoRegion.ecoregion_code,
-            shorthand: ecoRegion.ecoregion,
-            valid_lat: ecoRegion.valid_lat,
-            valid_lon: ecoRegion.valid_lon,
+          let formattedRegions = data.map((region) => ({
+            id: region.ecoregion_code,
+            shorthand: region.ecoregion,
+            valid_lat: region.valid_lat,
+            valid_lon: region.valid_lon,
           }));
 
+          // filter out ecoregion Tundra and Taiga in Alaska
+          if (state.shorthand === 'AK') {
+            formattedRegions = formattedRegions.filter(
+              (region) => region.shorthand !== 'TUNDRA' && region.shorthand !== 'TAIGA',
+            );
+          }
+
+          console.log(formattedRegions);
           dispatchRedux(updateRegions(formattedRegions));
 
           if (stateIdRedux !== state.id) {
