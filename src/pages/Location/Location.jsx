@@ -13,7 +13,6 @@ import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
 import { PSAReduxMap } from 'shared-react-components/src';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
@@ -34,16 +33,12 @@ import StateChangeAlertDialog from './StateChangeAlertDialog/StateChangeAlertDia
 
 const Location = () => {
   const dispatchRedux = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
-  const isExplorer = location.pathname.startsWith('/explorer');
 
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
@@ -117,13 +112,6 @@ const Location = () => {
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Location' } });
   }, []);
-
-  // if in explorer mode without state id, return to landing
-  useEffect(() => {
-    if (isExplorer && stateIdRedux === null) {
-      history.replace('/');
-    }
-  }, [isExplorer, stateIdRedux, history]);
 
   const updateRegionRedux = (regionName) => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
@@ -323,9 +311,6 @@ const Location = () => {
   // call cover crop api based on marker change
   // biome-ignore lint/correctness/useExhaustiveDependencies: <getSSURGOData changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
-    // not calling apis if under explorer
-    if (isExplorer) return;
-
     const getDetails = async () => {
       const weatherApiURL = 'https://weather.covercrop-data.org';
 
@@ -441,7 +426,7 @@ const Location = () => {
     // If WCCC, check is the land is farmable
     if (councilShorthandRedux === 'WCCC' && markersRedux)
       getSSURGOData(markersRedux[0][0], markersRedux[0][1]);
-  }, [markersRedux, isExplorer]);
+  }, [markersRedux]);
 
   return (
     <Box
