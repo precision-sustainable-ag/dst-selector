@@ -23,8 +23,34 @@ const PlantHardinessZone = ({ from }) => {
     (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
   );
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
 
   const [pendingRegion, setPendingRegion] = useState(null);
+
+  // For WCCC in Browse mode, set initial query string from default ecoregion if not set
+  useEffect(() => {
+    if (councilShorthandRedux === 'WCCC' && !queryStringRedux && regionsRedux?.length > 0) {
+      const activeRegion = regionsRedux.find((r) => r.id === regionIdRedux) || regionsRedux[0];
+      if (activeRegion?.valid_lat && activeRegion?.valid_lon) {
+        callCoverCropApi(
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${activeRegion.valid_lat}&lon=${activeRegion.valid_lon}`,
+        ).then((data) => {
+          const query = data.data
+            .filter((i) => i?.id !== null && i?.id !== undefined)
+            .map((i) => `regions=${i.id}`)
+            .join('&');
+          dispatchRedux(setQueryString(query));
+        });
+      }
+    }
+  }, [
+    councilShorthandRedux,
+    queryStringRedux,
+    regionsRedux,
+    regionIdRedux,
+    apiBaseUrlRedux,
+    dispatchRedux,
+  ]);
 
   const applyRegion = (region) => {
     localStorage.setItem('regionId', region.id);
