@@ -23,32 +23,36 @@ const PlantHardinessZone = ({ from }) => {
     (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
   );
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
 
   const [pendingRegion, setPendingRegion] = useState(null);
 
-  const applyRegion = (region) => {
-    if (councilShorthandRedux === 'WCCC') {
-      const { ecoregion_code, ecoregion, valid_lat, valid_lon } = region;
-
-      dispatchRedux(
-        updateRegion({
-          regionId: ecoregion_code,
-          regionShorthand: ecoregion,
-        }),
-      );
-      callCoverCropApi(
-        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${valid_lat}&lon=${valid_lon}`,
-      ).then((data) => {
-        const query = data.data
-          .filter((i) => i?.id !== null && i?.id !== undefined)
-          .map((i) => `regions=${i.id}`)
-          .join('&');
-        dispatchRedux(setQueryString(query));
-      });
-      pirschAnalytics(from, { meta: { dropdownUpdate: true } });
-      return;
+  // For WCCC in Browse mode, set initial query string from default ecoregion if not set
+  useEffect(() => {
+    if (councilShorthandRedux === 'WCCC' && !queryStringRedux && regionsRedux?.length > 0) {
+      const activeRegion = regionsRedux.find((r) => r.id === regionIdRedux) || regionsRedux[0];
+      if (activeRegion?.valid_lat && activeRegion?.valid_lon) {
+        callCoverCropApi(
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${activeRegion.valid_lat}&lon=${activeRegion.valid_lon}`,
+        ).then((data) => {
+          const query = data.data
+            .filter((i) => i?.id !== null && i?.id !== undefined)
+            .map((i) => `regions=${i.id}`)
+            .join('&');
+          dispatchRedux(setQueryString(query));
+        });
+      }
     }
+  }, [
+    councilShorthandRedux,
+    queryStringRedux,
+    regionsRedux,
+    regionIdRedux,
+    apiBaseUrlRedux,
+    dispatchRedux,
+  ]);
 
+  const applyRegion = (region) => {
     localStorage.setItem('regionId', region.id);
     dispatchRedux(
       updateRegion({
@@ -56,7 +60,21 @@ const PlantHardinessZone = ({ from }) => {
         regionShorthand: region.shorthand,
       }),
     );
-    dispatchRedux(setQueryString(`regions=${region.id}`));
+
+    if (councilShorthandRedux === 'WCCC') {
+      callCoverCropApi(
+        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${region.valid_lat}&lon=${region.valid_lon}`,
+      ).then((data) => {
+        const query = data.data
+          .filter((i) => i?.id !== null && i?.id !== undefined)
+          .map((i) => `regions=${i.id}`)
+          .join('&');
+        dispatchRedux(setQueryString(query));
+      });
+    } else {
+      dispatchRedux(setQueryString(`regions=${region.id}`));
+    }
+
     pirschAnalytics(from, { meta: { dropdownUpdate: true } });
   };
 
@@ -78,32 +96,12 @@ const PlantHardinessZone = ({ from }) => {
       return;
     }
 
-    if (councilShorthandRedux === 'WCCC') {
-      const selectedEco = regionsRedux.find((eco) => eco.ecoregion_code === e.target.value);
-      if (!selectedEco) {
-        console.error('Unavailable ecoregion.');
-        return;
-      }
-      // If user is changing ecoregion with selected crops in WCCC, prompt reset dialog
-      if (
-        selectedCropIdsRedux.length > 0 &&
-        regionIdRedux &&
-        selectedEco.ecoregion_code !== regionIdRedux
-      ) {
-        setPendingRegion(selectedEco);
-        dispatchRedux(setMyCoverCropReset(true, true));
-        return;
-      }
-      applyRegion(selectedEco);
-      return;
-    }
-
-    const selectedRegion = regionsRedux.filter((region) => region.shorthand === e.target.value)[0];
+    const selectedRegion = regionsRedux.find((region) => region.shorthand === e.target.value);
     if (!selectedRegion?.id || !selectedRegion?.shorthand) {
       console.error('Unavailable region.');
       return;
     }
-    // If user is changing region with selected crops in SCCC/NECCC, prompt reset dialog
+    // If user is changing region with selected crops, prompt reset dialog
     // In MCCC the county change does not affect the crop list, no need to prompt
     if (
       councilLabelRedux !== 'Midwest Cover Crops Council' &&
@@ -150,26 +148,16 @@ const PlantHardinessZone = ({ from }) => {
     }
   };
 
-  const getDropdownItems = () => {
-    if (councilShorthandRedux === 'WCCC') {
-      return regionsRedux.map((eco) => ({
-        value: eco.ecoregion_code,
-        label: eco.ecoregion,
-      }));
-    }
-    return regionsRedux.map((region) => ({
+  const getDropdownItems = () =>
+    regionsRedux.map((region) => ({
       value: region.shorthand,
       label:
-        councilLabelRedux !== 'Midwest Cover Crops Council'
+        councilLabelRedux !== 'Midwest Cover Crops Council' && councilShorthandRedux !== 'WCCC'
           ? `Zone ${region.shorthand?.toUpperCase()}`
           : `${region.shorthand?.toUpperCase()}`,
     }));
-  };
 
-  const dropdownValue =
-    councilShorthandRedux === 'WCCC'
-      ? pendingRegion?.ecoregion_code || regionIdRedux || ''
-      : pendingRegion?.shorthand || regionShorthandRedux || '';
+  const dropdownValue = pendingRegion?.shorthand || regionShorthandRedux || '';
 
   const plantHardinessZone = () => (
     <PSADropdown

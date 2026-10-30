@@ -86,6 +86,7 @@ const Landing = () => {
       dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
       dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
       dispatchRedux(updateField(null));
+      dispatchRedux(setQueryString(null));
     }
     // set address for pipeline environment(when map is not available)
     if (testAuth0Env) {
@@ -96,27 +97,48 @@ const Landing = () => {
     if (state.council.shorthand === 'WCCC') {
       callCoverCropApi(`https://polygons.vegspec.org/ecoregionsbystate?state=${state.shorthand}`)
         .then((data) => {
+          // In Hawaii, ecoregions do not apply; use capitol queryString directly
+          if (state.shorthand === 'HI') {
+            const [lat, lon] = statesLatLongDict.Hawaii;
+            callCoverCropApi(
+              `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`,
+            ).then((regionData) => {
+              const query = regionData.data
+                .filter((i) => i?.id !== null && i?.id !== undefined)
+                .map((i) => `regions=${i.id}`)
+                .join('&');
+              dispatchRedux(setQueryString(query));
+            });
+            return;
+          }
+
           if (!Array.isArray(data) || data.length === 0) return;
-          dispatchRedux(updateRegions(data));
+
+          // format regions into similar format like other councils with id and shorthand
+          let formattedRegions = data.map((region) => ({
+            id: region.ecoregion_code,
+            shorthand: region.ecoregion,
+            valid_lat: region.valid_lat,
+            valid_lon: region.valid_lon,
+          }));
+
+          // In Alaska, filter out ecoregion Tundra and Taiga
+          if (state.shorthand === 'AK') {
+            formattedRegions = formattedRegions.filter(
+              (region) => region.shorthand !== 'TUNDRA' && region.shorthand !== 'TAIGA',
+            );
+          }
+
+          dispatchRedux(updateRegions(formattedRegions));
 
           if (stateIdRedux !== state.id) {
             dispatchRedux(
               updateRegion({
-                regionId: data[0].ecoregion_code,
-                regionShorthand: data[0].ecoregion,
+                regionId: formattedRegions[0].id,
+                regionShorthand: formattedRegions[0].shorthand,
               }),
             );
           }
-
-          callCoverCropApi(
-            `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${data[0].valid_lat}&lon=${data[0].valid_lon}`,
-          ).then((regionData) => {
-            const query = regionData.data
-              .filter((i) => i?.id !== null && i?.id !== undefined)
-              .map((i) => `regions=${i.id}`)
-              .join('&');
-            dispatchRedux(setQueryString(query));
-          });
         })
         .catch((err) => {
           // eslint-disable-next-line no-console

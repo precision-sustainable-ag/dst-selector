@@ -675,23 +675,26 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
             <>
               {from === 'explorer' && (
                 <>
-                  <List component="div" disablePadding sx={{ paddingBottom: '1rem' }}>
-                    <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
-                      <ListItemText
-                        primary={
-                          <Typography variant="body2">
-                            {councilShorthandRedux === 'WCCC'
-                              ? 'ECOREGION'
-                              : councilShorthandRedux === 'MCCC'
-                                ? 'COUNTY'
-                                : 'PLANT HARDINESS ZONE'}
-                          </Typography>
-                        }
-                      />
-                      {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <PlantHardinessZone from="Location" />
-                  </List>
+                  {/* Disable ecoregion dropdown for Hawaii (ID 15) */}
+                  {stateIdRedux !== 15 && (
+                    <List component="div" disablePadding sx={{ paddingBottom: '1rem' }}>
+                      <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
+                        <ListItemText
+                          primary={
+                            <Typography variant="body2">
+                              {councilShorthandRedux === 'WCCC'
+                                ? 'ECOREGION'
+                                : councilShorthandRedux === 'MCCC'
+                                  ? 'COUNTY'
+                                  : 'PLANT HARDINESS ZONE'}
+                            </Typography>
+                          }
+                        />
+                        {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                      </ListItemButton>
+                      <PlantHardinessZone from="Location" />
+                    </List>
+                  )}
                   <CoverCropSearch />
                 </>
               )}
