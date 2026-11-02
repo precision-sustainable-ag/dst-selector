@@ -89,6 +89,10 @@ export const setTileDrainage = (tileDrainage) => ({
   payload: { tileDrainage },
 });
 
+export const resetSoilData = () => ({
+  type: 'RESET_SOIL_DATA',
+});
+
 const soilReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_SOIL_DATA':
@@ -149,6 +153,11 @@ const soilReducer = (state = initialState, action = null) => {
           tileDrainage: action.payload.tileDrainage,
           prevDrainageClass: action.payload.tileDrainage ? state.soilData.drainageClass : [],
         },
+      };
+
+    case 'RESET_SOIL_DATA':
+      return {
+        ...initialState,
       };
 
     default:

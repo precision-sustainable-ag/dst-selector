@@ -17,6 +17,7 @@ import { PSAReduxMap } from 'shared-react-components/src';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { setMyCoverCropReset, setQueryString } from '../../reduxStore/sharedSlice';
+import { resetSoilData } from '../../reduxStore/soilSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import {
   updateAvgFrostDates,
@@ -138,6 +139,7 @@ const Location = () => {
         county: loc.county,
       }),
     );
+    dispatchRedux(resetSoilData());
     if (pendingFeatures) {
       dispatchRedux(updateField(pendingFeatures));
       setPendingFeatures(null);
