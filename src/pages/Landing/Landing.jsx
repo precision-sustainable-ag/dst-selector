@@ -15,6 +15,7 @@ import useIsMobile from '../../hooks/useIsMobile';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { setMyCoverCropReset, setQueryString } from '../../reduxStore/sharedSlice';
+import { resetSoilData } from '../../reduxStore/soilSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
 import { callCoverCropApi } from '../../shared/constants';
@@ -87,6 +88,7 @@ const Landing = () => {
       dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
       dispatchRedux(updateField(null));
       dispatchRedux(setQueryString(null));
+      dispatchRedux(resetSoilData());
     }
     // set address for pipeline environment(when map is not available)
     if (testAuth0Env) {
