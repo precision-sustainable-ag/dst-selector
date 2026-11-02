@@ -8,6 +8,7 @@
 import { Box, Grid, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import {
   PSAAccordion,
   PSAInfoSheetAttributeBox,
@@ -30,10 +31,23 @@ const InformationSheetContent = ({ crop }) => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const myCoverCropListLocationRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
+  );
 
   const [expandedAccordions, setExpandedAccordions] = useState([]);
   const [dataDone, setDataDone] = useState(false);
   const [modalData, setModalData] = useState(null);
+
+  const location = useLocation();
+
+  // only displays subregion info in infosheet if:
+  // - in WCCC browse page,
+  // - in WCCC my crops list && crops come from WCCC browse page
+  const displaySubregionInfo =
+    councilShorthandRedux === 'WCCC' &&
+    (location.pathname === '/explorer' ||
+      (location.pathname === '/my-cover-crop-list' && myCoverCropListLocationRedux === 'explorer'));
 
   // Termination checks
   const durationTypes = ['Annual', 'Perennial'];
@@ -116,59 +130,66 @@ const InformationSheetContent = ({ crop }) => {
     }
 
     return (
-      <table
-        style={{
-          width: '100%',
-          borderCollapse: 'collapse',
-          backgroundColor: '#fff',
-          margin: '8px 0',
-        }}
-      >
-        <tbody>
-          {Array.from(sectionsMap.entries()).map(([sectionTitle, rows], sIdx) => (
-            <Fragment key={sectionTitle || sIdx}>
-              <tr>
-                <th
-                  colSpan={2}
-                  style={{
-                    padding: '6px 8px',
-                    border: '1px solid #ccc',
-                    backgroundColor: '#f5f5f5',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {sectionTitle}
-                </th>
-              </tr>
-              {rows.map((row) => (
-                <tr key={`${row.label}-${row.value}`}>
-                  <td
-                    style={{
-                      width: '35%',
-                      padding: '6px 8px',
-                      border: '1px solid #ccc',
-                      fontWeight: 500,
-                      verticalAlign: 'top',
-                      textAlign: 'left',
-                    }}
-                  >
-                    {row.label}
-                  </td>
-                  <td
+      <>
+        {displaySubregionInfo && (
+          <Typography variant="body2">
+            {`${attribute?.subregionType}: ${attribute?.subregions?.join(', ')}`}
+          </Typography>
+        )}
+        <table
+          style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+            backgroundColor: '#fff',
+            margin: '8px 0',
+          }}
+        >
+          <tbody>
+            {Array.from(sectionsMap.entries()).map(([sectionTitle, rows], sIdx) => (
+              <Fragment key={sectionTitle || sIdx}>
+                <tr>
+                  <th
+                    colSpan={2}
                     style={{
                       padding: '6px 8px',
                       border: '1px solid #ccc',
-                      textAlign: 'left',
+                      backgroundColor: '#f5f5f5',
+                      fontWeight: 'bold',
                     }}
                   >
-                    {row.value}
-                  </td>
+                    {sectionTitle}
+                  </th>
                 </tr>
-              ))}
-            </Fragment>
-          ))}
-        </tbody>
-      </table>
+                {rows.map((row) => (
+                  <tr key={`${row.label}-${row.value}`}>
+                    <td
+                      style={{
+                        width: '35%',
+                        padding: '6px 8px',
+                        border: '1px solid #ccc',
+                        fontWeight: 500,
+                        verticalAlign: 'top',
+                        textAlign: 'left',
+                      }}
+                    >
+                      {row.label}
+                    </td>
+                    <td
+                      style={{
+                        padding: '6px 8px',
+                        border: '1px solid #ccc',
+                        textAlign: 'left',
+                      }}
+                    >
+                      {row.value}
+                    </td>
+                  </tr>
+                ))}
+              </Fragment>
+            ))}
+          </tbody>
+        </table>
+      </>
     );
   };
 
@@ -321,6 +342,13 @@ const InformationSheetContent = ({ crop }) => {
                         description={att.description}
                         label={att.label}
                         value={getAttributeData(att, cat.label)}
+                        sx={{
+                          ...(isTermination && {
+                            '& > .MuiBox-root, & > div': {
+                              alignContent: 'flex-start',
+                            },
+                          }),
+                        }}
                       />
                     );
                   })}
