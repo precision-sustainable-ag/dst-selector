@@ -193,6 +193,8 @@ const Landing = () => {
     if (!state || !state?.id || state.id === selectedState?.id) return;
 
     if (historyStateRedux === historyState.imported && stateIdRedux !== state.id) {
+      setMapState({});
+      setMapKey((prev) => prev + 1);
       dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
       return;
     }
@@ -250,6 +252,8 @@ const Landing = () => {
         }
       } else if (resetStatusRedux === null && !pendingState) {
         setSelectedState({});
+        setMapState({});
+        setMapKey((prev) => prev + 1);
       }
     }
   }, [
