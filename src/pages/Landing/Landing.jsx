@@ -15,6 +15,7 @@ import useIsMobile from '../../hooks/useIsMobile';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { setMyCoverCropReset, setQueryString } from '../../reduxStore/sharedSlice';
+import { resetSoilData } from '../../reduxStore/soilSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
 import { callCoverCropApi } from '../../shared/constants';
@@ -179,6 +180,7 @@ const Landing = () => {
       dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
       dispatchRedux(updateField(null));
       dispatchRedux(setQueryString(null));
+      dispatchRedux(resetSoilData());
     }
     // set address for pipeline environment(when map is not available)
     if (testAuth0Env) {
@@ -294,34 +296,6 @@ const Landing = () => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Landing' } });
   }, []);
 
-  const [containerHeight, setContainerHeight] = useState();
-
-  useEffect(() => {
-    function updateSize() {
-      const documentHeight = document
-        .getElementsByTagName('html')[0]
-        .getBoundingClientRect().height;
-
-      const headerHeight = document
-        .getElementsByTagName('header')[0]
-        .getBoundingClientRect().height;
-
-      const navHeight = document.getElementsByTagName('nav')[0].getBoundingClientRect().height;
-
-      const footerHeight = document
-        .getElementsByClassName('primaryFooter')[0]
-        .getBoundingClientRect().height;
-
-      const contHeight = documentHeight - (headerHeight + footerHeight + navHeight);
-      document.getElementById('landingWrapper').style.minHeight = `${contHeight}px`;
-      setContainerHeight(contHeight);
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize();
-
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
-
   const backgroundSyles = {
     frostedGlassEffect: {
       backdropFilter: 'blur(5px)',
@@ -366,8 +340,7 @@ const Landing = () => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        minHeight: containerHeight,
-        // height: '100vh',
+        flexGrow: 1,
       }}
       sx={{ margin: -1 }}
       id="landingWrapper"
