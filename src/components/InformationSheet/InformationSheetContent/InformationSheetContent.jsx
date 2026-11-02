@@ -6,7 +6,7 @@
 */
 
 import { Box, Grid, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   PSAAccordion,
@@ -69,6 +69,109 @@ const InformationSheetContent = ({ crop }) => {
     return true;
   };
 
+  const renderTerminationTable = (attribute) => {
+    const sectionsMap = new Map();
+
+    attribute?.values.forEach((value) => {
+      const valText = `${value.value}${attribute?.units ? ` ${attribute?.units}` : ''}`;
+      const colonIndex = valText.indexOf(':');
+      const prefix = colonIndex !== -1 ? valText.slice(0, colonIndex).trim() : valText;
+      const rest = colonIndex !== -1 ? valText.slice(colonIndex + 1).trim() : '';
+      const tags = value?.tags || [];
+
+      // filter based on selected tags associated with selected goals
+      const displayTags =
+        tagsRedux.length > 0 ? tags.filter((tag) => tagsRedux.includes(tag)) : tags;
+
+      let tagsToProcess = [];
+      if (displayTags.length > 0) {
+        tagsToProcess = displayTags;
+      } else if (tags.length === 0 && tagsRedux.length === 0) {
+        tagsToProcess = [null];
+      }
+
+      tagsToProcess.forEach((tag) => {
+        let sectionTitle = prefix;
+        let rowLabel = tag || prefix;
+
+        if (prefix.toLowerCase().startsWith('notes')) {
+          if (tag?.includes('-')) {
+            const dashIndex = tag.indexOf('-');
+            sectionTitle = `${prefix}: ${tag.slice(0, dashIndex).trim()}`;
+            rowLabel = tag.slice(dashIndex + 1).trim();
+          }
+        } else if (prefix.toLowerCase().includes('seed set')) {
+          sectionTitle = 'Seed Set';
+        }
+
+        if (!sectionsMap.has(sectionTitle)) {
+          sectionsMap.set(sectionTitle, []);
+        }
+        sectionsMap.get(sectionTitle).push({ label: rowLabel, value: rest });
+      });
+    });
+
+    if (sectionsMap.size === 0) {
+      return <Typography variant="body2">No Data</Typography>;
+    }
+
+    return (
+      <table
+        style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          backgroundColor: '#fff',
+          margin: '8px 0',
+        }}
+      >
+        <tbody>
+          {Array.from(sectionsMap.entries()).map(([sectionTitle, rows], sIdx) => (
+            <Fragment key={sectionTitle || sIdx}>
+              <tr>
+                <th
+                  colSpan={2}
+                  style={{
+                    padding: '6px 8px',
+                    border: '1px solid #ccc',
+                    backgroundColor: '#f5f5f5',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {sectionTitle}
+                </th>
+              </tr>
+              {rows.map((row) => (
+                <tr key={`${row.label}-${row.value}`}>
+                  <td
+                    style={{
+                      width: '35%',
+                      padding: '6px 8px',
+                      border: '1px solid #ccc',
+                      fontWeight: 500,
+                      verticalAlign: 'top',
+                      textAlign: 'left',
+                    }}
+                  >
+                    {row.label}
+                  </td>
+                  <td
+                    style={{
+                      padding: '6px 8px',
+                      border: '1px solid #ccc',
+                      textAlign: 'left',
+                    }}
+                  >
+                    {row.value}
+                  </td>
+                </tr>
+              ))}
+            </Fragment>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
   const getAttributeData = (attribute, category) => {
     // handles no attribute
     if (!attribute) {
@@ -78,19 +181,14 @@ const InformationSheetContent = ({ crop }) => {
     if (attribute?.values[0]?.label) {
       return <Typography variant="body2">{attribute?.values[0]?.label}</Typography>;
     }
+    // handles WCCC termination window
+    if (councilShorthandRedux === 'WCCC' && category === 'Termination Window') {
+      return renderTerminationTable(attribute);
+    }
+
     const attributeValues = [];
     attribute?.values.forEach((value) => {
-      if (
-        councilShorthandRedux === 'WCCC' &&
-        category === 'Termination Window' &&
-        tagsRedux.length > 0
-      ) {
-        // filter attr by tags
-        const { tags } = value;
-        if (tags.some((tag) => tagsRedux.includes(tag))) attributeValues.push(value.value);
-      } else {
-        attributeValues.push(`${value.value}${attribute?.units ? ` ${attribute?.units}` : ''}`);
-      }
+      attributeValues.push(`${value.value}${attribute?.units ? ` ${attribute?.units}` : ''}`);
     });
     const dataType = attribute?.dataType.label;
     return extractData(attributeValues, dataType, attribute, councilShorthandRedux);

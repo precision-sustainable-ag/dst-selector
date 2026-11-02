@@ -18,6 +18,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const resetFloodingOptions = () => {
     // update history state here
@@ -52,7 +53,9 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
           </Grid>
           <Grid flexGrow={1}>
             <Typography variant="body1">
-              <span style={{ fontWeight: 'bold' }}>Flooding Frequency</span>
+              <span style={{ fontWeight: 'bold' }}>
+                {councilShorthandRedux === 'MCCC' ? 'Flooding Duration' : 'Flooding Frequency'}
+              </span>
               &nbsp;{' '}
               <ReferenceTooltip
                 type="text"

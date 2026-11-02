@@ -232,7 +232,8 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       }
 
       // soil drainage & flooding frequency
-      if (match) {
+      // disabled on Browse view
+      if (match && from !== 'explorer') {
         const filteringBySoilDrainage =
           councilShorthandRedux === 'WCCC' ? soilDrainageFilterRedux : true;
         let matchesDrainageClass = true;
@@ -244,7 +245,12 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                 ?.includes(drainageClassRedux.toLowerCase());
         }
 
-        const floodLabel = councilShorthandRedux === 'NECCC' ? 'Flood' : 'Flood Tolerance';
+        const councilFloodLabel = {
+          NECCC: 'Flood',
+          MCCC: 'Flooding Duration',
+          SCCC: 'Flood Tolerance',
+        };
+        const floodLabel = councilFloodLabel[councilShorthandRedux];
         const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]
           ?.values[0].value;
         // WCCC don't filter crops by flooding frequency
@@ -253,10 +259,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
             ? true
             : floodingFrequencyRedux <= floodingFrequencyValue;
 
-        if (stateIdRedux === 7) {
-          // TODO: Arizona is in WCCC and does not have flooding frequency
-          if (!cropFloodingValueIsHigher) match = false;
-        } else if (!matchesDrainageClass || !cropFloodingValueIsHigher) match = false;
+        if (!matchesDrainageClass || !cropFloodingValueIsHigher) match = false;
       }
 
       // crop group filter
@@ -265,7 +268,8 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       }
 
       // WCCC additional filters for planting season, first goal rating, planting dates
-      if (councilShorthandRedux === 'WCCC' && match) {
+      // disabled on Browse view
+      if (councilShorthandRedux === 'WCCC' && match && from !== 'explorer') {
         match = false;
         const seasonMatch =
           selectedSeasonRedux.length === 0 ||
@@ -301,6 +305,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
     selectedGoalsRedux,
     stateIdRedux,
     dispatchRedux,
+    from,
   ]);
 
   const filtersSelected =
@@ -670,11 +675,20 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
             <>
               {from === 'explorer' && (
                 <>
-                  {councilShorthandRedux !== 'WCCC' && (
-                    <List component="div" disablePadding>
+                  {/* Disable ecoregion dropdown for Hawaii (ID 15) */}
+                  {stateIdRedux !== 15 && (
+                    <List component="div" disablePadding sx={{ paddingBottom: '1rem' }}>
                       <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
                         <ListItemText
-                          primary={<Typography variant="body2">PLANT HARDINESS ZONE</Typography>}
+                          primary={
+                            <Typography variant="body2">
+                              {councilShorthandRedux === 'WCCC'
+                                ? 'ECOREGION'
+                                : councilShorthandRedux === 'MCCC'
+                                  ? 'COUNTY'
+                                  : 'PLANT HARDINESS ZONE'}
+                            </Typography>
+                          }
                         />
                         {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>

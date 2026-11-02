@@ -24,7 +24,6 @@ const RenderDrainageClasses = ({
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const tileDrainageRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.tileDrainage);
 
-  const [previousDrainage, setPreviousDrainage] = useState(-1);
   const [updateTilingCheck, setUpdateTilingCheck] = useState(false);
   const drainageArray = drainageOptions.map((option) => option.value);
   const drainageVal = [
@@ -44,28 +43,26 @@ const RenderDrainageClasses = ({
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <updateDrainageAction changes on every re-render and should not be used as a hook dependency.>
   useEffect(() => {
-    let drainages = soilDataRedux.drainageClass
-      ? drainageArray.indexOf(soilDataRedux.drainageClass[0])
-      : -1;
-    if (updateTilingCheck) {
-      if (tileDrainageRedux) {
-        setPreviousDrainage(drainages);
-        if (drainages === 2) {
-          drainages += 1;
-        } else if (drainages <= 1) {
-          drainages = councilShorthandRedux === 'MCCC' ? drainages + 2 : drainages + 1;
-        }
-      } else if (drainages === 1) {
-        drainages -= 1;
-      } else if (drainages >= 2) {
-        drainages =
-          councilShorthandRedux === 'MCCC' && previousDrainage !== 2
-            ? drainages - 2
-            : drainages - 1;
+    if (!updateTilingCheck) {
+      setUpdateTilingCheck(true);
+      return;
+    }
+
+    const baseIndex = drainageVal[0];
+    if (baseIndex === -1) {
+      updateDrainageAction([]);
+      return;
+    }
+
+    let drainages = baseIndex;
+    if (tileDrainageRedux) {
+      if (baseIndex === 2) {
+        drainages += 1;
+      } else if (baseIndex === 0 || baseIndex === 1) {
+        drainages = councilShorthandRedux === 'MCCC' ? baseIndex + 2 : baseIndex + 1;
       }
     }
     updateDrainageAction([drainages]);
-    setUpdateTilingCheck(true);
   }, [tileDrainageRedux]);
 
   const updateDrainageClass = (index = '') => {
