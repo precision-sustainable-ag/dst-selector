@@ -592,8 +592,6 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       return undefined;
     }
 
-    const isInFlow = (el) => !['absolute', 'fixed'].includes(getComputedStyle(el).position);
-
     let frame = null;
     const updateScrollSize = () => {
       frame = null;
@@ -601,32 +599,16 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       const navbar = document.querySelector('header ~ nav');
       const navbarHeight =
         navbar && getComputedStyle(navbar).position === 'sticky' ? navbar.offsetHeight : 0;
-      const column = scrollContainerRef.current.parentElement;
-      const row = column.parentElement;
       const markerTop = scrollMarkerRef.current.getBoundingClientRect().top;
-
-      let siblingBottom = markerTop;
-      [...row.children]
-        .filter((sibling) => sibling !== column && isInFlow(sibling))
-        .forEach((sibling) => {
-          [...sibling.children].filter(isInFlow).forEach((child) => {
-            siblingBottom = Math.max(siblingBottom, child.getBoundingClientRect().bottom);
-          });
-        });
-
-      const mainContent = document.getElementById('main-content');
       const footer = document.getElementById('page-footer');
-      const belowRow =
-        (mainContent
-          ? mainContent.getBoundingClientRect().bottom - row.getBoundingClientRect().bottom
-          : 0) + (footer ? footer.offsetHeight : 0);
-      const fitHeight = window.innerHeight - belowRow - (markerTop + window.scrollY);
+      const footerTop = footer ? footer.getBoundingClientRect().top : window.innerHeight;
 
-      const stickyHeight =
-        Math.min(window.innerHeight, siblingBottom) - Math.max(markerTop, navbarHeight);
+      const topLimit = Math.max(markerTop, navbarHeight);
+      const bottomLimit = Math.min(window.innerHeight, footerTop);
+      const availableHeight = Math.max(0, bottomLimit - topLimit);
 
       setStickyTop(navbarHeight);
-      setScrollMaxHeight(Math.max(fitHeight, stickyHeight, 0));
+      setScrollMaxHeight(availableHeight);
     };
     const scheduleUpdate = () => {
       if (frame === null) frame = requestAnimationFrame(updateScrollSize);
