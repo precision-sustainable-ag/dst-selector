@@ -80,22 +80,7 @@ const ComparisonBar = ({ filterData, goals, comparisonKeys, comparisonView, clas
       };
     });
 
-    const filterKeysAppend = filteredVals.map((val) => {
-      if (
-        val.name !== 'Soil Conditions' &&
-        val.name !== 'Disease & Non Weed Pests' &&
-        val.name !== 'Beneficials' &&
-        val.name !== 'Disease & Non Weed Pests'
-      ) {
-        return val.values.map((v) => {
-          if (v.name !== 'Roller Crimp at Flowering') {
-            return v.alternateName ? v.alternateName : v.name;
-          }
-          return [];
-        });
-      }
-      return [];
-    });
+    const filterKeysAppend = filteredVals.map((val) => val.values.map((v) => v.name));
 
     const filterGoalsAppend = filteredGoals.map((v) => v.name);
 

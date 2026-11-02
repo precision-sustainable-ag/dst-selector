@@ -1,4 +1,3 @@
-import { flipCoverCropName } from '../../src/shared/constants';
 import { testFiltersByType } from '../support/e2e';
 
 describe('Test all possible interactions on the NECCC Crop Calendar Page', () => {
@@ -31,11 +30,11 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
         payload: { regionId: 3, regionShorthand: '6' },
       });
 
+    cy.intercept('GET', '**/v1/states/36/crops?minimal=true&*').as('getCropsData');
     cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('title-goals');
-    cy.intercept('GET', '**/v1/states/36/crops?minimal=true&*').as('getCropsData');
     cy.intercept('GET', '**/v1/states/36/filters?*').as('getFilters');
     cy.get("[data-test='next-btn']")
       .first()
@@ -127,7 +126,7 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
               .should('be.visible')
               .invoke('text')
               .then((labelText) => {
-                myCropLabels.push(flipCoverCropName(labelText));
+                myCropLabels.push(labelText);
                 cy.log(`Crop Card Label: ${labelText}`);
               });
           })
@@ -154,8 +153,6 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
 
       const filterTypes = Cypress.env('filterTypes');
       for (let i = 0; i < filterTypes.length; i++) {
-        // FIXME: need verification for this
-        if (filterTypes[i] === 'Soil Conditions') continue;
         cy.assertByTestId(`"${filterTypes[i].toUpperCase()}"`);
         cy.getByTestId(`${filterTypes[i].toUpperCase()}-expandmore-icon`).click();
       }
@@ -166,9 +163,6 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
       const allFilterName = allFilters.map((filter) => filter.label);
 
       for (let i = 0; i < allFilterName.length; i++) {
-        // FIXME: need verification for this
-        if (allFilterName[i] === 'Supports Mycorrhizae') continue;
-
         cy.get(`[data-test='${allFilterName[i]}-checkbox']`)
           .click()
           .then(() => {

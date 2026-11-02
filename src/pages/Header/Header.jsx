@@ -532,6 +532,7 @@ const Header = () => {
       </AppBar>
 
       <Demo />
+      {/* api loaders */}
       <DataLoader />
       <MyCoverCropReset />
       {/* saving history here */}

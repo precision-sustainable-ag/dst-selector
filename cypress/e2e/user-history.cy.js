@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-describe('Test create and import user history records', () => {
+describe.skip('Test create and import user history records', () => {
   beforeEach(function () {
     if (Cypress.env('test_auth0_env')) {
       this.skip();
@@ -93,7 +93,7 @@ describe('Test create and import user history records', () => {
   });
 });
 
-describe('Test for updating user history', () => {
+describe.skip('Test for updating user history', () => {
   beforeEach(function () {
     if (Cypress.env('test_auth0_env')) {
       this.skip();

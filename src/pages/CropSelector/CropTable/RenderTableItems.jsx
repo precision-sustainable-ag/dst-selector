@@ -1,12 +1,7 @@
 import { Grid, TableCell, TableRow, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import {
-  CropImage,
-  flipCoverCropName,
-  hasGoalRatingTwoOrLess,
-  trimString,
-} from '../../../shared/constants';
+import { CropImage, hasGoalRatingTwoOrLess, trimString } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import useIsMobile from '../../../hooks/useIsMobile';
@@ -110,12 +105,13 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                       textDecoration: 'underline',
                       color: 'black',
                       fontSize: '0.rem',
+                      textTransform: 'none',
                     }}
                     onClick={() => {
                       handleModalOpen(crop);
                     }}
                     data-test="crop-calendar-crop-name"
-                    title={flipCoverCropName(crop.label)}
+                    title={crop.label}
                   />
                 </Grid>
                 <Grid

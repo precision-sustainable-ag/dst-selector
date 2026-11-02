@@ -21,13 +21,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
 import HelpTooltip from '../../components/HelpTooltip/HelpTooltip';
 import Legend from '../../components/Legend/Legend';
-import { updateActiveCropIds, updateCropData } from '../../reduxStore/cropSlice';
+import { updateActiveCropIds } from '../../reduxStore/cropSlice';
 import {
   clearFilters,
   setAdditionalSoilDrainageFilter,
@@ -35,13 +34,9 @@ import {
   setIrrigationFilter,
   setSoilDrainageFilter,
 } from '../../reduxStore/filterSlice';
-import { regionToggleHandler, setAjaxInProgress } from '../../reduxStore/sharedSlice';
+import { regionToggleHandler } from '../../reduxStore/sharedSlice';
 import { updateSelectedIrrigation } from '../../reduxStore/terminationSlice';
-import {
-  callCoverCropApi,
-  cropDataFormatter,
-  getLegendDataBasedOnCouncil,
-} from '../../shared/constants';
+import { callCoverCropApi, getLegendDataBasedOnCouncil } from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -237,7 +232,8 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       }
 
       // soil drainage & flooding frequency
-      if (match) {
+      // disabled on Browse view
+      if (match && from !== 'explorer') {
         const filteringBySoilDrainage =
           councilShorthandRedux === 'WCCC' ? soilDrainageFilterRedux : true;
         let matchesDrainageClass = true;
@@ -249,7 +245,12 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
                 ?.includes(drainageClassRedux.toLowerCase());
         }
 
-        const floodLabel = councilShorthandRedux === 'NECCC' ? 'Flood' : 'Flood Tolerance';
+        const councilFloodLabel = {
+          NECCC: 'Flood',
+          MCCC: 'Flooding Duration',
+          SCCC: 'Flood Tolerance',
+        };
+        const floodLabel = councilFloodLabel[councilShorthandRedux];
         const floodingFrequencyValue = crop.attributes.filter((a) => a.label === floodLabel)[0]
           ?.values[0].value;
         // WCCC don't filter crops by flooding frequency
@@ -258,10 +259,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
             ? true
             : floodingFrequencyRedux <= floodingFrequencyValue;
 
-        if (stateIdRedux === 7) {
-          // TODO: Arizona is in WCCC and does not have flooding frequency
-          if (!cropFloodingValueIsHigher) match = false;
-        } else if (!matchesDrainageClass || !cropFloodingValueIsHigher) match = false;
+        if (!matchesDrainageClass || !cropFloodingValueIsHigher) match = false;
       }
 
       // crop group filter
@@ -270,7 +268,8 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       }
 
       // WCCC additional filters for planting season, first goal rating, planting dates
-      if (councilShorthandRedux === 'WCCC' && match) {
+      // disabled on Browse view
+      if (councilShorthandRedux === 'WCCC' && match && from !== 'explorer') {
         match = false;
         const seasonMatch =
           selectedSeasonRedux.length === 0 ||
@@ -306,6 +305,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
     selectedGoalsRedux,
     stateIdRedux,
     dispatchRedux,
+    from,
   ]);
 
   const filtersSelected =
@@ -369,7 +369,6 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
 
   useEffect(() => {
     if (queryStringRedux === null) return;
-    dispatchRedux(setAjaxInProgress(true));
     setLoading(true);
     callCoverCropApi(
       `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${queryStringRedux}`,
@@ -387,26 +386,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
       setSidebarFiltersData(allFilters);
       setSidebarCategoriesData(categories);
     });
-    callCoverCropApi(
-      `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}` +
-        `${hasAdditionalSoilDrainage ? '&additional_soil_drainage=true' : ''}`,
-    ).then((data) => {
-      const { startDate, endDate } = cashCropDataRedux.dateRange;
-      const start = startDate ? moment(startDate).format('MM/DD') : '';
-      const end = endDate ? moment(endDate).format('MM/DD') : '';
-      cropDataFormatter(data.data, start, end);
-      dispatchRedux(updateCropData(data.data));
-      dispatchRedux(setAjaxInProgress(false));
-    });
-  }, [
-    cashCropDataRedux,
-    queryStringRedux,
-    stateIdRedux,
-    apiBaseUrlRedux,
-    councilShorthandRedux,
-    dispatchRedux,
-    hasAdditionalSoilDrainage,
-  ]);
+  }, [queryStringRedux, stateIdRedux, apiBaseUrlRedux, councilShorthandRedux]);
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
@@ -695,11 +675,20 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
             <>
               {from === 'explorer' && (
                 <>
-                  {councilShorthandRedux !== 'WCCC' && (
-                    <List component="div" disablePadding>
+                  {/* Disable ecoregion dropdown for Hawaii (ID 15) */}
+                  {stateIdRedux !== 15 && (
+                    <List component="div" disablePadding sx={{ paddingBottom: '1rem' }}>
                       <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
                         <ListItemText
-                          primary={<Typography variant="body2">PLANT HARDINESS ZONE</Typography>}
+                          primary={
+                            <Typography variant="body2">
+                              {councilShorthandRedux === 'WCCC'
+                                ? 'ECOREGION'
+                                : councilShorthandRedux === 'MCCC'
+                                  ? 'COUNTY'
+                                  : 'PLANT HARDINESS ZONE'}
+                            </Typography>
+                          }
                         />
                         {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>

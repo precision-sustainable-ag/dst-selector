@@ -98,7 +98,7 @@ describe('<SoilDrainage />', () => {
 
   it('should render the soil drainage card', () => {
     cy.assertByTestId('soil-drainage-card');
-    cy.get('[datay-cy="drainage-reset-button"]').should('not.exist');
+    cy.get('[data-test="drainage-reset-button"]').should('not.exist');
     cy.get('[data-test="tiling-check-switch"]').should('not.exist');
   });
 
