@@ -150,28 +150,19 @@ const App = () => (
                   >
                     <Switch>
                       <Route path="/" render={() => <LoadRelevantRoute />} exact />
-                      <Route path="/explorer/location" component={Location} exact />
                       <Route path="/explorer" component={CoverCropExplorer} exact />
                       <Route path="/about" component={About} exact />
                       <Route path="/help" component={Help} exact />
                       <Route path="/feedback" component={Feedback} exact />
                       <Route path="/wizard" render={Wizard} exact />
                       <Route path="/profile" render={() => <PSAProfile />} exact />
-                      <Route
-                        path="/my-cover-crop-list"
-                        component={MyCoverCropListWrapper}
-                        exact
-                      />
+                      <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
                       <Route
                         path="/seeding-rate-calculator"
                         component={SeedingRateCalculator}
                         exact
                       />
-                      <Route
-                        path="/data-dictionary"
-                        component={InformationSheetDictionary}
-                        exact
-                      />
+                      <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
                       <Route path="/license" render={() => <License licenseType="MIT" />} exact />
                       <Route
                         path="/ag-informatics-license"

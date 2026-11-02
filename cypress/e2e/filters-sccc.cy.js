@@ -155,8 +155,6 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
 
       const filterTypes = Cypress.env('filterTypes');
       for (let i = 0; i < filterTypes.length; i++) {
-        // FIXME: need verification for this
-        if (filterTypes[i] === 'Soil Conditions') continue;
         cy.assertByTestId(`"${filterTypes[i].toUpperCase()}"`);
         cy.getByTestId(`${filterTypes[i].toUpperCase()}-expandmore-icon`).click();
       }
@@ -168,14 +166,6 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
       cy.log(allFilterName);
 
       for (let i = 0; i < allFilterName.length; i++) {
-        // FIXME: need verification for this
-        if (
-          allFilterName[i] === 'Soil Moisture Use' ||
-          allFilterName[i] === 'Success under Low Nutrient Levels' ||
-          allFilterName[i] === 'Supports Mycorrhizae'
-        )
-          continue;
-
         cy.get(`[data-test='${allFilterName[i]}-checkbox']`)
           .click()
           .then(() => {
