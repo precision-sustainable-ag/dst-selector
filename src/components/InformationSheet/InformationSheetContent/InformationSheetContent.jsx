@@ -53,7 +53,17 @@ const InformationSheetContent = ({ crop }) => {
   const durationTypes = ['Annual', 'Perennial'];
   const irrigationType = ['Rainfed', 'Irrigated'];
 
+  // filter out specific WCCC Termination Window attrs based on sidebar filter
   const checkTermination = (label) => {
+    // do not filter in these situations:
+    // - in WCCC browse page,
+    // - in WCCC my crops list && crops come from WCCC browse page
+    if (
+      location.pathname === '/explorer' ||
+      (location.pathname === '/my-cover-crop-list' && myCoverCropListLocationRedux === 'explorer')
+    )
+      return true;
+
     const labelSet = new Set(label.split(',').map((item) => item.trim()));
 
     if (selectedSeason.length > 0) {

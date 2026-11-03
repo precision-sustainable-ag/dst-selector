@@ -484,7 +484,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
           />
         </ListItem>
       )}
-      {councilShorthandRedux === 'WCCC' && (
+      {councilShorthandRedux === 'WCCC' && from !== 'explorer' && (
         <>
           <ListItem
             style={{
