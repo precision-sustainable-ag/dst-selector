@@ -229,6 +229,13 @@ const InformationSheetContent = ({ crop }) => {
         enterTouchDelay={0}
         title={att.description}
         arrow
+        slotProps={{
+          popper: {
+            style: {
+              zIndex: 10000000,
+            },
+          },
+        }}
         tooltipContent={
           <Box xs={12} tabIndex="0">
             <Typography
@@ -329,9 +336,11 @@ const InformationSheetContent = ({ crop }) => {
                   placement="bottom"
                   arrow
                   enterTouchDelay={0}
-                  PopperProps={{
-                    style: {
-                      zIndex: 10000000,
+                  slotProps={{
+                    popper: {
+                      style: {
+                        zIndex: 10000000,
+                      },
                     },
                   }}
                   title={cat.description}

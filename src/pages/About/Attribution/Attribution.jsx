@@ -73,9 +73,11 @@ const Attribution = () => {
               placement="bottom"
               arrow
               enterTouchDelay={0}
-              PopperProps={{
-                style: {
-                  zIndex: 10000000,
+              slotProps={{
+                popper: {
+                  style: {
+                    zIndex: 10000000,
+                  },
                 },
               }}
               title={council.label}
