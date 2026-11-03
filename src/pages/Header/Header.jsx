@@ -511,7 +511,17 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="static" component="header" sx={{ backgroundColor: 'white' }}>
+      <AppBar
+        position="static"
+        component="header"
+        sx={{
+          backgroundColor: 'white',
+          '& img': {
+            maxHeight: '70px',
+            width: 'auto',
+          },
+        }}
+      >
         <Box className="header" sx={{ m: 1 }}>
           <PSAHeader
             title="Cover Crop Selector"
