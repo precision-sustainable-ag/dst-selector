@@ -259,7 +259,7 @@ const InformationSheetContent = ({ crop }) => {
         return (
           <Grid
             key={cat.id}
-            className={`avoid-break infosheetAccordion${index}`}
+            className={`${councilShorthandRedux === 'WCCC' && cat.label === 'Termination Window' ? '' : 'avoid-break'} infosheetAccordion${index}`}
             sx={{ marginBottom: '16px' }}
             size={12}
           >
@@ -353,11 +353,21 @@ const InformationSheetContent = ({ crop }) => {
                         label={att.label}
                         value={getAttributeData(att, cat.label)}
                         sx={{
-                          ...(isTermination && {
-                            '& > .MuiBox-root, & > div': {
-                              alignContent: 'flex-start',
-                            },
-                          }),
+                          ...(councilShorthandRedux === 'WCCC' &&
+                            cat.label === 'Termination Window' && {
+                              '@media print': {
+                                breakInside: 'avoid',
+                                pageBreakInside: 'avoid',
+                                '&:not(:first-of-type) > .MuiBox-root, &:not(:first-of-type) > div':
+                                  {
+                                    borderTop: '2px solid #555 !important',
+                                    paddingTop: '12px !important',
+                                  },
+                              },
+                              '& > .MuiBox-root': {
+                                alignContent: 'flex-start',
+                              },
+                            }),
                         }}
                       />
                     );
