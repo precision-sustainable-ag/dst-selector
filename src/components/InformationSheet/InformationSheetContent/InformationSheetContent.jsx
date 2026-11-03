@@ -41,14 +41,6 @@ const InformationSheetContent = ({ crop }) => {
 
   const location = useLocation();
 
-  // only displays subregion info in infosheet if:
-  // - in WCCC browse page,
-  // - in WCCC my crops list && crops come from WCCC browse page
-  const displaySubregionInfo =
-    councilShorthandRedux === 'WCCC' &&
-    (location.pathname === '/explorer' ||
-      (location.pathname === '/my-cover-crop-list' && myCoverCropListLocationRedux === 'explorer'));
-
   // Termination checks
   const durationTypes = ['Annual', 'Perennial'];
   const irrigationType = ['Rainfed', 'Irrigated'];
@@ -94,6 +86,15 @@ const InformationSheetContent = ({ crop }) => {
   };
 
   const renderTerminationTable = (attribute) => {
+    // only displays subregion info in infosheet if:
+    // - in WCCC browse page,
+    // - in WCCC my crops list && crops come from WCCC browse page
+    const displaySubregionInfo =
+      councilShorthandRedux === 'WCCC' &&
+      (location.pathname === '/explorer' ||
+        (location.pathname === '/my-cover-crop-list' &&
+          myCoverCropListLocationRedux === 'explorer'));
+
     const sectionsMap = new Map();
 
     attribute?.values.forEach((value) => {
@@ -203,7 +204,7 @@ const InformationSheetContent = ({ crop }) => {
     );
   };
 
-  const getAttributeData = (attribute, category) => {
+  const getAttributeData = (attribute) => {
     // handles no attribute
     if (!attribute) {
       return <Typography variant="body2">No Data</Typography>;
@@ -211,10 +212,6 @@ const InformationSheetContent = ({ crop }) => {
     // if attribute.values.label exist, return label
     if (attribute?.values[0]?.label) {
       return <Typography variant="body2">{attribute?.values[0]?.label}</Typography>;
-    }
-    // handles WCCC termination window
-    if (councilShorthandRedux === 'WCCC' && category === 'Termination Window') {
-      return renderTerminationTable(attribute);
     }
 
     const attributeValues = [];
@@ -224,6 +221,64 @@ const InformationSheetContent = ({ crop }) => {
     const dataType = attribute?.dataType.label;
     return extractData(attributeValues, dataType, attribute, councilShorthandRedux);
   };
+
+  const renderComment = (att, cat) => (
+    <Grid key={att.id} sx={{ padding: '6px 18px' }} size={12}>
+      <PSATooltip
+        placement="top-end"
+        enterTouchDelay={0}
+        title={att.description}
+        arrow
+        slotProps={{
+          popper: {
+            style: {
+              zIndex: 10000000,
+            },
+          },
+        }}
+        tooltipContent={
+          <Box xs={12} tabIndex="0">
+            <Typography
+              display="flex"
+              justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
+              sx={{ fontWeight: 'bold' }}
+            >
+              {att.label}
+            </Typography>
+            <Typography
+              display="flex"
+              justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
+            >
+              {att.values[0]?.value}
+            </Typography>
+          </Box>
+        }
+      />
+    </Grid>
+  );
+
+  const renderTerminationWindow = (att) => (
+    <PSAInfoSheetAttributeBox
+      variant="texts"
+      key={att.id}
+      description={att.description}
+      label={att.label}
+      value={renderTerminationTable(att)}
+      sx={{
+        '@media print': {
+          breakInside: 'avoid',
+          pageBreakInside: 'avoid',
+          '&:not(:first-of-type) > .MuiBox-root, &:not(:first-of-type) > div': {
+            borderTop: '2px solid #555 !important',
+            paddingTop: '12px !important',
+          },
+        },
+        '& > .MuiBox-root': {
+          alignContent: 'flex-start',
+        },
+      }}
+    />
+  );
 
   const handleAccordion = (cat) => {
     if (expandedAccordions.includes(cat)) {
@@ -253,13 +308,15 @@ const InformationSheetContent = ({ crop }) => {
     <>
       <CoverCropInformation crop={modalData} />
       {modalData?.data.map((cat, index) => {
-        const isTermination =
-          councilShorthandRedux === 'WCCC' &&
-          (cat.label === 'Termination' || cat.label === 'Termination Window');
+        const isTerminationWindow =
+          councilShorthandRedux === 'WCCC' && cat.label === 'Termination Window';
+        const displayedAttributes = isTerminationWindow
+          ? cat.attributes.filter((att) => (att.order === 3 ? checkTermination(att.label) : true))
+          : cat.attributes;
         return (
           <Grid
             key={cat.id}
-            className={`avoid-break infosheetAccordion${index}`}
+            className={`${isTerminationWindow ? '' : 'avoid-break'} infosheetAccordion${index}`}
             sx={{ marginBottom: '16px' }}
             size={12}
           >
@@ -279,9 +336,11 @@ const InformationSheetContent = ({ crop }) => {
                   placement="bottom"
                   arrow
                   enterTouchDelay={0}
-                  PopperProps={{
-                    style: {
-                      zIndex: 10000000,
+                  slotProps={{
+                    popper: {
+                      style: {
+                        zIndex: 10000000,
+                      },
                     },
                   }}
                   title={cat.description}
@@ -300,68 +359,33 @@ const InformationSheetContent = ({ crop }) => {
               }
               detailsContent={
                 <Grid container>
-                  {cat.attributes.map((att) => {
-                    if (
-                      councilShorthandRedux === 'WCCC' &&
-                      att.order === 3 &&
-                      !checkTermination(att.label)
-                    ) {
-                      return null; // Return null to render nothing for this attribute
-                    }
-                    if (
-                      att.label.startsWith('Comments') ||
-                      att.label.startsWith('Notes:') ||
-                      cat.label === 'Extended Comments'
-                    ) {
+                  {isTerminationWindow && displayedAttributes.length === 0 ? (
+                    <Grid size={12} sx={{ padding: '16px', textAlign: 'center' }}>
+                      <Typography variant="body1">No available termination window.</Typography>
+                    </Grid>
+                  ) : (
+                    displayedAttributes.map((att) => {
+                      if (
+                        att.label.startsWith('Comments') ||
+                        att.label.startsWith('Notes:') ||
+                        cat.label === 'Extended Comments'
+                      ) {
+                        return renderComment(att, cat);
+                      }
+                      if (isTerminationWindow) {
+                        return renderTerminationWindow(att);
+                      }
                       return (
-                        <Grid key={att.id} sx={{ padding: '6px 18px' }} size={12}>
-                          <PSATooltip
-                            placement="top-end"
-                            enterTouchDelay={0}
-                            title={att.description}
-                            arrow
-                            tooltipContent={
-                              <Box xs={12} tabIndex="0">
-                                <Typography
-                                  display="flex"
-                                  justifyContent={
-                                    cat.label !== 'Extended Comments' ? 'center' : 'left'
-                                  }
-                                  sx={{ fontWeight: 'bold' }}
-                                >
-                                  {att.label}
-                                </Typography>
-                                <Typography
-                                  display="flex"
-                                  justifyContent={
-                                    cat.label !== 'Extended Comments' ? 'center' : 'left'
-                                  }
-                                >
-                                  {att.values[0]?.value}
-                                </Typography>
-                              </Box>
-                            }
-                          />
-                        </Grid>
+                        <PSAInfoSheetAttributeBox
+                          variant=""
+                          key={att.id}
+                          description={att.description}
+                          label={att.label}
+                          value={getAttributeData(att)}
+                        />
                       );
-                    }
-                    return (
-                      <PSAInfoSheetAttributeBox
-                        variant={isTermination ? 'texts' : ''}
-                        key={att.id}
-                        description={att.description}
-                        label={att.label}
-                        value={getAttributeData(att, cat.label)}
-                        sx={{
-                          ...(isTermination && {
-                            '& > .MuiBox-root, & > div': {
-                              alignContent: 'flex-start',
-                            },
-                          }),
-                        }}
-                      />
-                    );
-                  })}
+                    })
+                  )}
                 </Grid>
               }
             />
