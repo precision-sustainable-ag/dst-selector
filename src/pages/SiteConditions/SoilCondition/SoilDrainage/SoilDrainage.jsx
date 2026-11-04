@@ -127,7 +127,7 @@ const SoilDrainage = ({ drainageOptions }) => {
           <Grid sx={{ mr: '1rem' }}>
             <LocalDrinkOutlined />
           </Grid>
-          <Grid flexGrow={1}>
+          <Grid sx={{ flexGrow: 1 }}>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold' }}>Drainage Class</span>
               &nbsp;{' '}
