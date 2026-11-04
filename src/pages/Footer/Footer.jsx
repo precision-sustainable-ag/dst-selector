@@ -34,7 +34,6 @@ const Footer = () => {
     >
       <Grid
         container
-        direction="column"
         sx={{
           p: '8px 0',
           alignItems: 'center',

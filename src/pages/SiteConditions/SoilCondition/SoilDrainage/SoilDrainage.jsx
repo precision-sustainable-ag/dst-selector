@@ -222,7 +222,7 @@ const SoilDrainage = ({ drainageOptions }) => {
               </Grid>
               <Grid
                 container
-                direction="column"
+                sx={{ flexDirection: 'column' }}
                 size={{
                   xs: 6,
                   lg: 3,

@@ -12,8 +12,8 @@ const WeatherPrecipitation = () => {
   return (
     <Grid
       container
-      direction="column"
-      style={{
+      sx={{
+        flexDirection: 'column',
         backgroundColor: 'rgba(176, 236, 130, 0.3)',
         padding: '1rem',
         borderRadius: '15px',
