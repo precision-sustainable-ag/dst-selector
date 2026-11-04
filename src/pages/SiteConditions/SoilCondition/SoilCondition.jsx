@@ -199,7 +199,7 @@ const SoilCondition = () => {
   ]);
 
   return (
-    <Grid container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
+    <Grid container sx={{ justifyContent: isLargeScreen ? 'flex-start' : 'center' }}>
       <Grid
         sx={{ mb: '1rem' }}
         size={{
