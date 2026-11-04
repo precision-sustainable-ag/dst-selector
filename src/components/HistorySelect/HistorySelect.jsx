@@ -68,36 +68,17 @@ const selectStyles = {
   },
 };
 
-const modalStyles = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: {
+const modalPaperStyles = {
+  width: {
     xs: '90%',
     sm: '80%',
-    md: '80%',
-    lg: '80%',
-    xl: '80%',
+    md: '650px',
   },
-  minWidth: {
-    xs: '90%',
-    sm: 'auto',
-    md: 'auto',
-    lg: 'auto',
-    xl: 'auto',
-  },
-  marginTop: '15px',
-  marginBottom: '15px',
-  backgroundColor: 'white',
-  border: '2px solid #000',
-  boxShadow: 24,
+  maxWidth: '90%',
   p: {
     xs: 2,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 4,
+    sm: 3,
+    md: 4,
   },
 };
 
@@ -222,9 +203,11 @@ const HistorySelect = () => {
     <>
       <PSAModal
         open={open}
+        onClose={() => setOpen(false)}
+        paperProps={{ sx: modalPaperStyles }}
         modalContent={
-          <Box sx={modalStyles}>
-            <Grid container spacing={6}>
+          <Box sx={{ mt: 1 }}>
+            <Grid container spacing={3}>
               <Grid
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                 size={12}
