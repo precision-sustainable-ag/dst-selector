@@ -176,6 +176,29 @@ export const UnderConstructionText = () => (
   </Grid>
 );
 
+export const dropdownMenuProps = {
+  slotProps: {
+    paper: {
+      style: {
+        maxHeight: 224,
+        marginTop: '5px',
+      },
+      sx: {
+        '.MuiMenuItem-root': {
+          '&.Mui-selected': {
+            backgroundColor: '#598445',
+            color: 'white',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(176, 236, 130, 0.3)',
+            color: 'black',
+          },
+        },
+      },
+    },
+  },
+};
+
 // eslint-disable-next-line consistent-return
 export const abbrRegion = (input, to) => {
   const states = [

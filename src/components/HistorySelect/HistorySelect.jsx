@@ -21,27 +21,7 @@ import { setWeatherRedux } from '../../reduxStore/weatherSlice';
 import pirschAnalytics from '../../shared/analytics';
 import { loadHistory, removeHistory } from '../../shared/api';
 import { getAuthToken } from '../../shared/authToken';
-
-const menuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: 224,
-      marginTop: '5px',
-    },
-    sx: {
-      '.MuiMenuItem-root': {
-        '&.Mui-selected': {
-          backgroundColor: '#598445',
-          color: 'white',
-        },
-        '&:hover': {
-          backgroundColor: 'rgba(176, 236, 130, 0.3)',
-          color: 'black',
-        },
-      },
-    },
-  },
-};
+import { dropdownMenuProps } from '../../shared/constants';
 
 const inputLabelStyles = {
   color: '#598445',
@@ -233,7 +213,7 @@ const HistorySelect = () => {
                   SelectProps={{
                     value,
                     onChange: (e) => setValue(e.target.value),
-                    MenuProps: menuProps,
+                    MenuProps: dropdownMenuProps,
                     sx: selectStyles,
                     'data-test': 'select-history',
                   }}
