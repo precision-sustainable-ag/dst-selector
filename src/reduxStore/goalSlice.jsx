@@ -37,6 +37,10 @@ export const setGoalsRedux = (goalsData) => ({
   payload: { goalsData },
 });
 
+export const resetGoalsData = () => ({
+  type: 'RESET_GOALS_DATA',
+});
+
 const goalsReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_SELECTED_GOALS':
@@ -65,6 +69,11 @@ const goalsReducer = (state = initialState, action = null) => {
 
     case 'SET_GOALS_REDUX':
       return { ...state, ...action.payload.goalsData };
+
+    case 'RESET_GOALS_DATA':
+      return {
+        ...initialState,
+      };
 
     default:
       return { ...state };

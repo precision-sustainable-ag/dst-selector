@@ -13,6 +13,7 @@ import { PSADropdown, PSARegionSelectorMap } from 'shared-react-components/src';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
 import useIsMobile from '../../hooks/useIsMobile';
 import { updateLocation } from '../../reduxStore/addressSlice';
+import { resetGoalsData } from '../../reduxStore/goalSlice';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { setMyCoverCropReset, setQueryString } from '../../reduxStore/sharedSlice';
 import { resetSoilData } from '../../reduxStore/soilSlice';
@@ -89,6 +90,7 @@ const Landing = () => {
       dispatchRedux(updateField(null));
       dispatchRedux(setQueryString(null));
       dispatchRedux(resetSoilData());
+      dispatchRedux(resetGoalsData());
     }
     // set address for pipeline environment(when map is not available)
     if (testAuth0Env) {
