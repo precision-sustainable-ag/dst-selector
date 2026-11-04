@@ -51,6 +51,7 @@ const Landing = () => {
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const resetStatusRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
   );
@@ -249,7 +250,10 @@ const Landing = () => {
         pirschAnalytics('Landing', { meta: { state: state.label } });
 
         // load regions for a history imported state
-        if (historyStateRedux === historyState.imported && regionsRedux.length === 0) {
+        if (
+          historyStateRedux === historyState.imported &&
+          !regionsRedux.some((r) => r.id === regionIdRedux)
+        ) {
           fetchRegions(state);
         }
       } else if (resetStatusRedux === null && !pendingState) {
@@ -264,7 +268,8 @@ const Landing = () => {
     resetStatusRedux,
     pendingState,
     historyStateRedux,
-    regionsRedux.length,
+    regionsRedux,
+    regionIdRedux,
     apiBaseUrlRedux,
     dispatchRedux,
   ]);
