@@ -28,7 +28,7 @@ const MyCoverCropReset = () => {
   };
 
   return (
-    <Dialog disableEscapeKeyDown open={open}>
+    <Dialog open={open}>
       <DialogContent dividers>
         <Typography variant="body1">
           In order to continue you will need to reset the My Cover Crop List. Would you like to
