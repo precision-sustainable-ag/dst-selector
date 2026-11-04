@@ -16,6 +16,8 @@ const ProgressButtons = () => {
 
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const allGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.allGoals);
@@ -26,17 +28,15 @@ const ProgressButtons = () => {
         setIsDisabledNext(councilShorthandRedux === null);
         break;
       case 1: {
-        const locationUnavailable =
+        const hasMarker = stateLabelRedux === 'Ontario' || Boolean(markersRedux?.[0]);
+        const hasRegion =
           councilShorthandRedux === 'WCCC'
-            ? queryStringRedux === null
-            : regionShorthandRedux === '';
-        const isDisabled = locationUnavailable || allGoalsRedux.length === 0;
-        const disabledTooltip =
-          `${locationUnavailable ? 'Location not available! ' : ''}` +
-          `${allGoalsRedux.length === 0 ? 'No data exists for your location!' : ''}`;
+            ? queryStringRedux !== null
+            : Boolean(regionShorthandRedux);
+        const isDisabled = !hasMarker || !hasRegion || allGoalsRedux.length === 0;
 
         setIsDisabledNext(isDisabled);
-        setToolTip(isDisabled ? disabledTooltip : null);
+        setToolTip(isDisabled ? 'No data exists for your location!' : null);
         break;
       }
       case 2:
@@ -53,7 +53,15 @@ const ProgressButtons = () => {
         setIsDisabledRefresh(false);
         break;
     }
-  }, [progressRedux, regionShorthandRedux, allGoalsRedux, queryStringRedux, councilShorthandRedux]);
+  }, [
+    progressRedux,
+    regionShorthandRedux,
+    allGoalsRedux,
+    queryStringRedux,
+    councilShorthandRedux,
+    markersRedux,
+    stateLabelRedux,
+  ]);
 
   if (progressRedux < 0) return '';
 

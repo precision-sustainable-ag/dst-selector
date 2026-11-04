@@ -70,7 +70,7 @@ const SoilCondition = () => {
 
   // retrieving drainage class and flooding frequency
   useEffect(() => {
-    if (stateLabelRedux === 'Ontario') return;
+    if (stateLabelRedux === 'Ontario' || !markersRedux?.[0]) return;
 
     const [lat, lon] = markersRedux[0];
     const { lat: latOriginal, lon: lonOriginal } = soilDataOriginalRedux.latLong;
