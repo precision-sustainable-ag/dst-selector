@@ -50,6 +50,8 @@ const Landing = () => {
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const resetStatusRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
   );
@@ -72,29 +74,7 @@ const Landing = () => {
 
   const isDevEnvironment = testAuth0Env || /(localhost|dev)/i.test(window.location);
 
-  const applyState = (state) => {
-    setSelectedState(state);
-    localStorage.setItem('stateId', state.id);
-    if (stateIdRedux !== state.id) {
-      dispatchRedux(
-        updateStateInfo({
-          stateLabel: state.label,
-          stateId: state.id,
-          councilShorthand: state.council.shorthand,
-          councilLabel: state.council.label,
-        }),
-      );
-      dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
-      dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
-      dispatchRedux(updateField(null));
-      dispatchRedux(setQueryString(null));
-      dispatchRedux(resetSoilData());
-    }
-    // set address for pipeline environment(when map is not available)
-    if (testAuth0Env) {
-      const [lat, lon] = statesLatLongDict[state.label];
-      dispatchRedux(updateLocation({ address: '', markers: [[lat, lon]], county: null }));
-    }
+  const fetchRegions = (state) => {
     const { id } = state;
     if (state.council.shorthand === 'WCCC') {
       callCoverCropApi(`https://polygons.vegspec.org/ecoregionsbystate?state=${state.shorthand}`)
@@ -160,28 +140,55 @@ const Landing = () => {
 
           dispatchRedux(updateRegions(fetchedRegions));
 
-          // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
-          // , skip set default since there already exist region selection
-          if (stateIdRedux !== state.id) {
-            // set default region for Selector and Explorer
-            if (!fetchedRegions[0]?.id || !fetchedRegions[0]?.shorthand)
-              throw new Error('Unavailable region.');
-            localStorage.setItem('regionId', fetchedRegions[0].id);
-            dispatchRedux(
-              updateRegion({
-                regionId: fetchedRegions[0].id,
-                regionShorthand: fetchedRegions[0].shorthand,
-              }),
-            );
+          if (historyStateRedux !== historyState.imported) {
+            // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
+            // , skip set default since there already exist region selection
+            if (stateIdRedux !== state.id) {
+              // set default region for Selector and Explorer
+              if (!fetchedRegions[0]?.id || !fetchedRegions[0]?.shorthand)
+                throw new Error('Unavailable region.');
+              localStorage.setItem('regionId', fetchedRegions[0].id);
+              dispatchRedux(
+                updateRegion({
+                  regionId: fetchedRegions[0].id,
+                  regionShorthand: fetchedRegions[0].shorthand,
+                }),
+              );
+            }
+            // set querystring for non WCCC states
+            dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id}`));
           }
-          // set querystring for non WCCC states
-          dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id}`));
         })
         .catch((err) => {
-          // eslint-disable-next-line no-console
           console.log(err.message);
         });
     }
+  };
+
+  const applyState = (state) => {
+    setSelectedState(state);
+    localStorage.setItem('stateId', state.id);
+    if (stateIdRedux !== state.id) {
+      dispatchRedux(
+        updateStateInfo({
+          stateLabel: state.label,
+          stateId: state.id,
+          councilShorthand: state.council.shorthand,
+          councilLabel: state.council.label,
+        }),
+      );
+      dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
+      dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
+      dispatchRedux(updateField(null));
+      dispatchRedux(setQueryString(null));
+      dispatchRedux(resetSoilData());
+    }
+    // set address for pipeline environment(when map is not available)
+    if (testAuth0Env) {
+      const [lat, lon] = statesLatLongDict[state.label];
+      dispatchRedux(updateLocation({ address: '', markers: [[lat, lon]], county: null }));
+    }
+    fetchRegions(state);
   };
 
   // when a state change is requested, check validity, history and crop list
@@ -189,6 +196,8 @@ const Landing = () => {
     if (!state || !state?.id || state.id === selectedState?.id) return;
 
     if (historyStateRedux === historyState.imported && stateIdRedux !== state.id) {
+      setMapState({});
+      setMapKey((prev) => prev + 1);
       dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
       return;
     }
@@ -239,11 +248,31 @@ const Landing = () => {
       if (state) {
         setSelectedState(state);
         pirschAnalytics('Landing', { meta: { state: state.label } });
+
+        // load regions for a history imported state
+        if (
+          historyStateRedux === historyState.imported &&
+          !regionsRedux.some((r) => r.id === regionIdRedux)
+        ) {
+          fetchRegions(state);
+        }
       } else if (resetStatusRedux === null && !pendingState) {
         setSelectedState({});
+        setMapState({});
+        setMapKey((prev) => prev + 1);
       }
     }
-  }, [stateIdRedux, allStates, resetStatusRedux, pendingState]);
+  }, [
+    stateIdRedux,
+    allStates,
+    resetStatusRedux,
+    pendingState,
+    historyStateRedux,
+    regionsRedux,
+    regionIdRedux,
+    apiBaseUrlRedux,
+    dispatchRedux,
+  ]);
 
   // handle reset dialog
   useEffect(() => {

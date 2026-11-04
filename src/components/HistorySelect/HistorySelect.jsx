@@ -7,7 +7,7 @@ import { setAddressRedux } from '../../reduxStore/addressSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
 import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
-import { myCropListLocation } from '../../reduxStore/sharedSlice';
+import { myCropListLocation, setQueryString } from '../../reduxStore/sharedSlice';
 import { setSoilRedux } from '../../reduxStore/soilSlice';
 import { reset } from '../../reduxStore/store';
 import {
@@ -114,6 +114,7 @@ const HistorySelect = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const normalizeField = (field) => {
+    if (field === null) return [];
     // Normalize if old format
     if (!Array.isArray(field)) {
       if (field.type === 'Feature' && field.geometry?.type === 'GeometryCollection') {
@@ -152,8 +153,8 @@ const HistorySelect = () => {
             addressData,
             userData,
           } = res.json;
-          // this is used to specify where the crop from (selector/ explorer)
-          const { myCoverCropListLocation } = sharedData;
+          // this is used to specify where the crop from (selector/ explorer) and the queryString
+          const { myCoverCropListLocation, queryString } = sharedData;
 
           const normalizedField = normalizeField(userData?.field);
           const updatedUserData = {
@@ -167,6 +168,7 @@ const HistorySelect = () => {
           dispatch(setWeatherRedux(weatherData));
           dispatch(setGoalsRedux(goalsData));
           dispatch(myCropListLocation({ from: myCoverCropListLocation }));
+          dispatch(setQueryString(queryString));
           dispatch(setSoilRedux(soilData));
           dispatch(setAddressRedux(addressData));
           dispatch(setUserRedux(updatedUserData));

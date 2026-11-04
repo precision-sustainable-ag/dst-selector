@@ -19,6 +19,10 @@ const NavigationButtons = ({ pathname }) => {
   const resetStatusRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
   );
+  const myCoverCropListLocationRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
+  );
+
   const history = useHistory();
   const isMobile = useIsMobile('sm');
   const [pendingRestart, setPendingRestart] = useState(false);
@@ -34,7 +38,13 @@ const NavigationButtons = ({ pathname }) => {
   }, [resetStatusRedux, pendingRestart]);
 
   const handleBack = () => {
-    history.push('/');
+    if (
+      myCoverCropListLocationRedux === 'explorer' &&
+      pathname !== '/explorer' &&
+      history.location.pathname !== '/explorer'
+    ) {
+      history.push('/explorer');
+    } else history.push('/');
   };
 
   const handleRestart = () => {
