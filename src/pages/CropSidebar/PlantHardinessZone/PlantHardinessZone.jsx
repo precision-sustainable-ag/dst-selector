@@ -36,14 +36,16 @@ const PlantHardinessZone = ({ from }) => {
           `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${activeRegion.valid_lat}&lon=${activeRegion.valid_lon}`,
         ).then((data) => {
           const query = data.data
-            .filter(
-              (i) =>
+            .filter((i) => {
+              console.log(i);
+              return (
                 i?.id !== null &&
                 i?.id !== undefined &&
                 !i?.label.includes('Zone') &&
                 !i?.label.includes('MLRA') &&
-                !i?.label.includes('LRU'),
-            )
+                !i?.label.includes('LRU')
+              );
+            })
             .map((i) => `regions=${i.id}`)
             .join('&');
           dispatchRedux(setQueryString(query));
