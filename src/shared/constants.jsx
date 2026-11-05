@@ -514,21 +514,6 @@ export const ucFirst = (text = '') =>
     .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
     .join(' ');
 
-// FIXME: this will be not used anymore, to be removed
-export const flipCoverCropName = (cropName = '') => {
-  if (cropName.toLowerCase() === 'Sorghum-sudangrass'.toLowerCase()) {
-    return 'Sudex';
-  }
-  const cropNames = cropName.split(',');
-
-  const flipedCropName = `${cropNames[1]} ${cropNames[0]}`;
-
-  if (cropNames.length > 1) {
-    return `${flipedCropName.substring(0, 20)} ${flipedCropName.length > 20 ? '...' : ''}`;
-  }
-  return cropName;
-};
-
 export const getActiveCropMonths = (crop = {}) => {
   const activeMonths = [];
   if (crop['Active Growth Period'].values.includes('Winter')) {
