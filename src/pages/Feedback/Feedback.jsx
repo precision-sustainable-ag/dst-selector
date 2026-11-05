@@ -22,6 +22,8 @@ const Feedback = () => {
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   useEffect(() => {
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then(
@@ -271,6 +273,7 @@ const Feedback = () => {
           action: 'submit',
         },
       ]}
+      debugData={{ queryStringRedux, stateIdRedux }}
     />
   );
 };
