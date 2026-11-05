@@ -634,11 +634,11 @@ const getReliableEstablishmentDate = (plantingDates, sortFlag) => {
   const { values } = reliableEstablishmentData[0];
   if (values.length === 0) return null;
 
-  const dateString = sortFlag
-    ? values[values.length - 1].value.split(' - ')[sortFlag ? 0 : 1]
-    : values[values.length - 1].value.split(' - ')[1];
+  const dates = values[values.length - 1].value.split('-');
+  const dateString = sortFlag ? dates[0] : dates[1];
+  const dateMoment = moment(dateString?.trim(), ['MM/DD/YYYY', 'MM/DD']);
 
-  return new Date(dateString).toLocaleDateString('en-GB').split('/').reverse().join('');
+  return dateMoment.isValid() ? dateMoment.format('MMDD') : null;
 };
 
 export const sortByPlantingWindow = (crops, { sortFlag }) => {
@@ -888,13 +888,13 @@ export const cropDataFormatter = (
         let valEnd;
         // hessian fly dates are an exception to this condition because it has only one date and not a range
         if (date.label === 'Hessian Fly Free Date') {
-          valStart = moment(dateArray.value, 'MM/DD/YYYY').format('MM/DD');
+          valStart = moment(dateArray.value, ['MM/DD/YYYY', 'MM/DD']).format('MM/DD');
           valEnd = valStart;
         }
         const datesArr = dateArray.value.split('-');
         if (datesArr.length > 1 && date.label !== 'Hessian Fly Free Date') {
-          valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-          valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
+          valStart = moment(datesArr[0], ['MM/DD/YYYY', 'MM/DD']).format('MM/DD');
+          valEnd = moment(datesArr[1], ['MM/DD/YYYY', 'MM/DD']).format('MM/DD');
         }
         if (
           moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD')) &&
