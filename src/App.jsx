@@ -5,7 +5,6 @@
 */
 
 import {
-  adaptV4Theme,
   Box,
   Container,
   CssBaseline,
@@ -61,11 +60,10 @@ if (window.Cypress) {
   window.store = store;
 }
 
-// AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
-const theme = createTheme(
-  adaptV4Theme({
-    overrides: {
-      MuiTooltip: {
+const theme = createTheme({
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
         tooltip: {
           fontWeight: 'normal',
           fontSize: CustomStyles().defaultFontSize,
@@ -73,9 +71,10 @@ const theme = createTheme(
           color: 'black',
           borderRadius: CustomStyles().mildlyRoundedRadius,
         },
-        arrow: {},
       },
-      MuiChip: {
+    },
+    MuiChip: {
+      styleOverrides: {
         root: {
           '&&:hover': {
             boxShadow: '0 0 3px 0 black',
@@ -103,14 +102,9 @@ const theme = createTheme(
           fontSize: '1.2rem',
         },
       },
-      MuiDialog: {
-        root: {
-          zIndex: 1000003,
-        },
-      },
     },
-  }),
-);
+  },
+});
 
 const csTheme = responsiveFontSizes(theme, {
   breakpoints: ['xs', 'sm', 'md', 'lg', 'xl'],
