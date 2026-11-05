@@ -305,6 +305,7 @@ export const abbrRegion = (input, to) => {
 };
 
 export const CustomStyles = () => ({
+  maxWidth: '1800px',
   progressColor: '#2b7b79',
   darkGreen: '#598444',
   defaultFontSize: '1em',

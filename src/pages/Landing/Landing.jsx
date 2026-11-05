@@ -279,6 +279,8 @@ const Landing = () => {
       style={{
         background: 'url(/images/cover-crop-field.png)',
         backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
