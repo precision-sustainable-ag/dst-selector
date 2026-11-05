@@ -43,7 +43,11 @@ const configureStore = () => {
         soilData: soilReducer(undefined, action),
         filterData: filterReducer(undefined, action),
         addressData: addressReducer(undefined, action),
-        userData: userReducer(undefined, action),
+        userData: {
+          // preserve user history list through reset
+          ...userReducer(undefined, action),
+          userHistoryList: state?.userData?.userHistoryList || [],
+        },
         pageData: pageReducer(undefined, action),
         terminationData: terminationReducer(undefined, action),
       };
