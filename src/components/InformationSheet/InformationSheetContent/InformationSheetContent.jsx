@@ -240,14 +240,18 @@ const InformationSheetContent = ({ crop }) => {
           <Box xs={12} tabIndex="0">
             <Typography
               display="flex"
-              justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
-              sx={{ fontWeight: 'bold' }}
+              sx={{
+                fontWeight: 'bold',
+                justifyContent: cat.label !== 'Extended Comments' ? 'center' : 'left',
+              }}
             >
               {att.label}
             </Typography>
             <Typography
               display="flex"
-              justifyContent={cat.label !== 'Extended Comments' ? 'center' : 'left'}
+              sx={{
+                justifyContent: cat.label !== 'Extended Comments' ? 'center' : 'left',
+              }}
             >
               {att.values[0]?.value}
             </Typography>

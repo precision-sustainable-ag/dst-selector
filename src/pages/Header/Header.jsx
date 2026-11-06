@@ -22,6 +22,7 @@ import { reset } from '../../reduxStore/store';
 import { setUserHistoryList } from '../../reduxStore/userSlice';
 import { loadHistory } from '../../shared/api';
 import { setAuthToken } from '../../shared/authToken';
+import { CustomStyles } from '../../shared/constants';
 import { releaseNotesURL } from '../../shared/keys';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
@@ -522,7 +523,15 @@ const Header = () => {
           },
         }}
       >
-        <Box className="header" sx={{ m: 1 }}>
+        <Box
+          className="header"
+          sx={{
+            m: 1,
+            maxWidth: CustomStyles().maxWidth,
+            width: '100%',
+            mx: 'auto',
+          }}
+        >
           <PSAHeader
             title="Cover Crop Selector"
             council={councilShorthandRedux}

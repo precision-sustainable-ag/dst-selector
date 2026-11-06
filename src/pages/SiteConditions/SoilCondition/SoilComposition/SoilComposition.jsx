@@ -18,7 +18,7 @@ const SoilComposition = () => {
     >
       <Grid container sx={{ justifyContent: 'space-between' }}>
         <Grid container size={10}>
-          <Grid container direction="column">
+          <Grid container sx={{ flexDirection: 'column' }}>
             <Grid>
               <Typography variant="body1">
                 <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Soil Composition</span>

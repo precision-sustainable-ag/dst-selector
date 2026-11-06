@@ -1,28 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PSAForm } from 'shared-react-components/src';
-import { callCoverCropApi } from '../../shared/constants';
-
-const menuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: 224,
-      marginTop: '5px',
-    },
-    sx: {
-      '.MuiMenuItem-root': {
-        '&.Mui-selected': {
-          backgroundColor: '#598445',
-          color: 'white',
-        },
-        '&:hover': {
-          backgroundColor: 'rgba(176, 236, 130, 0.3)',
-          color: 'black',
-        },
-      },
-    },
-  },
-};
+import { callCoverCropApi, dropdownMenuProps } from '../../shared/constants';
 
 const getStateCodeFromLabel = (stateLabel, allStates) => {
   if (!stateLabel) return '';
@@ -43,6 +22,8 @@ const Feedback = () => {
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   useEffect(() => {
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then(
@@ -220,7 +201,7 @@ const Feedback = () => {
             },
             SelectProps: {
               variant: 'outlined',
-              MenuProps: menuProps,
+              MenuProps: dropdownMenuProps,
               sx: {
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: '#598445',
@@ -262,7 +243,7 @@ const Feedback = () => {
             },
             SelectProps: {
               variant: 'outlined',
-              MenuProps: menuProps,
+              MenuProps: dropdownMenuProps,
               sx: {
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: '#598445',
@@ -292,6 +273,7 @@ const Feedback = () => {
           action: 'submit',
         },
       ]}
+      debugData={{ queryStringRedux, stateIdRedux }}
     />
   );
 };

@@ -24,14 +24,16 @@ const CoverCropSearch = () => {
           }
           value={cropSearchRedux}
           onChangeCapture={(e) => dispatchRedux(cropSearch(e.target.value))}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => clearCoverCropSearch()} size="small">
-                  {cropSearchRedux?.length > 0 && <Clear fontSize="inherit" />}
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => clearCoverCropSearch()} size="small">
+                    {cropSearchRedux?.length > 0 && <Clear fontSize="inherit" />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         />
       </ListItemText>

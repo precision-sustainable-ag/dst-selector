@@ -51,7 +51,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
           <Grid sx={{ mr: '1rem' }}>
             <WavesOutlined />
           </Grid>
-          <Grid flexGrow={1}>
+          <Grid sx={{ flexGrow: 1 }}>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold' }}>
                 {councilShorthandRedux === 'MCCC' ? 'Flooding Duration' : 'Flooding Frequency'}

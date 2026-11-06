@@ -63,8 +63,8 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
             >
               <Grid
                 container
-                direction="column"
                 sx={{
+                  flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: '100%',

@@ -1,5 +1,6 @@
 import { mount } from 'cypress/react18';
 import { Provider } from 'react-redux';
+import { updateLocation } from '../reduxStore/addressSlice';
 import { updateAllGoals } from '../reduxStore/goalSlice';
 import { setMapRedux, updateRegion, updateStateInfo } from '../reduxStore/mapSlice';
 import { gotoProgress } from '../reduxStore/sharedSlice';
@@ -106,6 +107,13 @@ describe('<ProgressButtonsInner />', () => {
       updateRegion({
         regionId: 1,
         regionShorthand: '4',
+      }),
+    );
+    reduxStore.dispatch(
+      updateLocation({
+        address: 'Test Address',
+        markers: [[40.7, -74.0]],
+        county: 'Albany',
       }),
     );
     reduxStore.dispatch(

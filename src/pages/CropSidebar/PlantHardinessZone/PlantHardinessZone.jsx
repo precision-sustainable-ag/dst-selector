@@ -7,7 +7,7 @@ import { updateRegion } from '../../../reduxStore/mapSlice';
 import { setMyCoverCropReset, setQueryString } from '../../../reduxStore/sharedSlice';
 import { historyState, setHistoryDialogState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
-import { callCoverCropApi } from '../../../shared/constants';
+import { callCoverCropApi, dropdownMenuProps } from '../../../shared/constants';
 
 const PlantHardinessZone = ({ from }) => {
   const dispatchRedux = useDispatch();
@@ -130,27 +130,6 @@ const PlantHardinessZone = ({ from }) => {
     applyRegion(selectedRegion);
   };
 
-  const menuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: 224,
-        marginTop: '5px',
-      },
-      sx: {
-        '.MuiMenuItem-root': {
-          '&.Mui-selected': {
-            backgroundColor: '#598445',
-            color: 'white',
-          },
-          '&:hover': {
-            backgroundColor: 'rgba(176, 236, 130, 0.3)',
-            color: 'black',
-          },
-        },
-      },
-    },
-  };
-
   const getDropdownLabel = () => {
     switch (councilShorthandRedux) {
       case 'WCCC':
@@ -205,7 +184,7 @@ const PlantHardinessZone = ({ from }) => {
             borderWidth: '2.5px',
           },
         },
-        MenuProps: menuProps,
+        MenuProps: dropdownMenuProps,
         error: !regionShorthandRedux,
         'data-test': 'plant-hardiness-zone-dropdown',
       }}

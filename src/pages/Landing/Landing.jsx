@@ -13,12 +13,13 @@ import { PSADropdown, PSARegionSelectorMap } from 'shared-react-components/src';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
 import useIsMobile from '../../hooks/useIsMobile';
 import { updateLocation } from '../../reduxStore/addressSlice';
+import { resetGoalsData } from '../../reduxStore/goalSlice';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { setMyCoverCropReset, setQueryString } from '../../reduxStore/sharedSlice';
 import { resetSoilData } from '../../reduxStore/soilSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
-import { callCoverCropApi } from '../../shared/constants';
+import { callCoverCropApi, dropdownMenuProps } from '../../shared/constants';
 import { mapboxToken, testAuth0Env } from '../../shared/keys';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 
@@ -182,6 +183,7 @@ const Landing = () => {
       dispatchRedux(updateField(null));
       dispatchRedux(setQueryString(null));
       dispatchRedux(resetSoilData());
+      dispatchRedux(resetGoalsData());
     }
     // set address for pipeline environment(when map is not available)
     if (testAuth0Env) {
@@ -301,47 +303,13 @@ const Landing = () => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Landing' } });
   }, []);
 
-  const backgroundSyles = {
-    frostedGlassEffect: {
-      backdropFilter: 'blur(5px)',
-      backgroundColor: 'rgba(255, 255, 255, 0.4)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      borderRadius: '10px',
-      position: 'relative',
-      width: '100%',
-
-      left: '50%',
-      transform: 'translateX(-50%)',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    },
-  };
-
-  const menuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: 224,
-        marginTop: '5px',
-      },
-      sx: {
-        '.MuiMenuItem-root': {
-          '&.Mui-selected': {
-            backgroundColor: '#598445',
-            color: 'white',
-          },
-          '&:hover': {
-            backgroundColor: 'rgba(176, 236, 130, 0.3)',
-            color: 'black',
-          },
-        },
-      },
-    },
-  };
-
   return (
     <Box
       style={{
         background: 'url(/images/cover-crop-field.png)',
         backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -350,7 +318,21 @@ const Landing = () => {
       sx={{ margin: -1 }}
       id="landingWrapper"
     >
-      <Grid style={backgroundSyles.frostedGlassEffect} sx={{ maxWidth: '800px', mt: 1 }}>
+      <Grid
+        sx={{
+          backdropFilter: 'blur(5px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.4)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: '10px',
+          position: 'relative',
+          width: '100%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          maxWidth: '800px',
+          mt: 1,
+        }}
+      >
         <Box sx={{ margin: 1 }}>
           <Grid container spacing={1}>
             <Grid size={12}>
@@ -383,7 +365,7 @@ const Landing = () => {
                   value: displayState?.shorthand || '',
                   onChange: handleStateChange,
                   variant: 'outlined',
-                  MenuProps: menuProps,
+                  MenuProps: dropdownMenuProps,
                   style: { minWidth: 100 },
                   sx: {
                     '& .MuiOutlinedInput-notchedOutline': {

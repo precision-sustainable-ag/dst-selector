@@ -164,16 +164,40 @@ export const UnderConstructionText = () => (
   <Grid
     container
     spacing={0}
-    direction="column"
-    alignItems="center"
-    justifyContent="center"
-    style={{ minHeight: '100vh' }}
+    sx={{
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+    }}
   >
     <Grid size={3}>
       <Typography variant="h3">Under Construction</Typography>
     </Grid>
   </Grid>
 );
+
+export const dropdownMenuProps = {
+  slotProps: {
+    paper: {
+      style: {
+        maxHeight: 224,
+        marginTop: '5px',
+      },
+      sx: {
+        '.MuiMenuItem-root': {
+          '&.Mui-selected': {
+            backgroundColor: '#598445',
+            color: 'white',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(176, 236, 130, 0.3)',
+            color: 'black',
+          },
+        },
+      },
+    },
+  },
+};
 
 // eslint-disable-next-line consistent-return
 export const abbrRegion = (input, to) => {
@@ -281,6 +305,7 @@ export const abbrRegion = (input, to) => {
 };
 
 export const CustomStyles = () => ({
+  maxWidth: '1800px',
   progressColor: '#2b7b79',
   darkGreen: '#598444',
   defaultFontSize: '1em',
@@ -489,21 +514,6 @@ export const ucFirst = (text = '') =>
     .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
     .join(' ');
 
-// FIXME: this will be not used anymore, to be removed
-export const flipCoverCropName = (cropName = '') => {
-  if (cropName.toLowerCase() === 'Sorghum-sudangrass'.toLowerCase()) {
-    return 'Sudex';
-  }
-  const cropNames = cropName.split(',');
-
-  const flipedCropName = `${cropNames[1]} ${cropNames[0]}`;
-
-  if (cropNames.length > 1) {
-    return `${flipedCropName.substring(0, 20)} ${flipedCropName.length > 20 ? '...' : ''}`;
-  }
-  return cropName;
-};
-
 export const getActiveCropMonths = (crop = {}) => {
   const activeMonths = [];
   if (crop['Active Growth Period'].values.includes('Winter')) {
@@ -624,11 +634,11 @@ const getReliableEstablishmentDate = (plantingDates, sortFlag) => {
   const { values } = reliableEstablishmentData[0];
   if (values.length === 0) return null;
 
-  const dateString = sortFlag
-    ? values[values.length - 1].value.split(' - ')[sortFlag ? 0 : 1]
-    : values[values.length - 1].value.split(' - ')[1];
+  const dates = values[values.length - 1].value.split('-');
+  const dateString = sortFlag ? dates[0] : dates[1];
+  const dateMoment = moment(dateString?.trim(), ['MM/DD/YYYY', 'MM/DD']);
 
-  return new Date(dateString).toLocaleDateString('en-GB').split('/').reverse().join('');
+  return dateMoment.isValid() ? dateMoment.format('MMDD') : null;
 };
 
 export const sortByPlantingWindow = (crops, { sortFlag }) => {
@@ -878,13 +888,13 @@ export const cropDataFormatter = (
         let valEnd;
         // hessian fly dates are an exception to this condition because it has only one date and not a range
         if (date.label === 'Hessian Fly Free Date') {
-          valStart = moment(dateArray.value, 'MM/DD/YYYY').format('MM/DD');
+          valStart = moment(dateArray.value, ['MM/DD/YYYY', 'MM/DD']).format('MM/DD');
           valEnd = valStart;
         }
         const datesArr = dateArray.value.split('-');
         if (datesArr.length > 1 && date.label !== 'Hessian Fly Free Date') {
-          valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-          valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
+          valStart = moment(datesArr[0], ['MM/DD/YYYY', 'MM/DD']).format('MM/DD');
+          valEnd = moment(datesArr[1], ['MM/DD/YYYY', 'MM/DD']).format('MM/DD');
         }
         if (
           moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD')) &&

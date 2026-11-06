@@ -7,7 +7,7 @@ const StateChangeAlertDialog = ({ isOpen, setIsOpen }) => {
   };
 
   return (
-    <Dialog disableEscapeKeyDown open={isOpen}>
+    <Dialog open={isOpen}>
       <DialogContent dividers>
         <Typography variant="body1">
           This point is in a state other than the one you selected at the start. Move the point into

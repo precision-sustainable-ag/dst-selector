@@ -10,6 +10,22 @@ import AuthButton from '../../../components/Auth/AuthButton/AuthButton';
 
 const localStorageKey = 'notShowAuth';
 
+const modalPaperStyles = {
+  width: {
+    xs: '90%',
+    sm: '80%',
+    md: '600px',
+  },
+  maxWidth: '90%',
+  borderRadius: '12px',
+  p: {
+    xs: 3,
+    sm: 3,
+    md: 4,
+    lg: 5,
+  },
+};
+
 const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
   const { isLoading, isAuthenticated } = useAuth0();
 
@@ -21,39 +37,6 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
       }
     }
   }, [setModalOpen]);
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    maxWidth: {
-      xs: '90%',
-      sm: '80%',
-      md: '80%',
-      lg: '80%',
-      xl: '80%',
-    },
-    minWidth: {
-      xs: '90%',
-      sm: 'auto',
-      md: 'auto',
-      lg: 'auto',
-      xl: 'auto',
-    },
-    marginTop: '15px',
-    marginBottom: '15px',
-    bgcolor: 'background.paper',
-    borderRadius: '12px',
-    boxShadow: 24,
-    p: {
-      xs: 3,
-      sm: 3,
-      md: 4,
-      lg: 5,
-      xl: 5,
-    },
-  };
 
   const handleModal = () => {
     const authObject = {
@@ -71,8 +54,9 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
         open={modalOpen}
         closeAfterTransition
         onClose={handleModal}
+        paperProps={{ sx: modalPaperStyles }}
         modalContent={
-          <Box sx={style}>
+          <Box sx={{ mt: 1 }}>
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               Unlock Exclusive Features!
             </Typography>

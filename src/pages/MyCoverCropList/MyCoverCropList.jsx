@@ -60,7 +60,7 @@ const MyCoverCropList = ({ from }) => {
           />
         </Typography>
       ) : (
-        <Box flexDirection="column" display="flex" height="100%" mt={2}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', mt: 2 }}>
           <Grid container spacing={2}>
             <MyCoverCropComparisonTable />
           </Grid>
