@@ -33,9 +33,9 @@ const PlantHardinessZone = ({ from }) => {
       const activeRegion = regionsRedux.find((r) => r.id === regionIdRedux) || regionsRedux[0];
       if (activeRegion?.valid_lat && activeRegion?.valid_lon) {
         callCoverCropApi(
-          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${activeRegion.valid_lat}&lon=${activeRegion.valid_lon}`,
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${activeRegion.valid_lat}&lon=${activeRegion.valid_lon}`,
         ).then((data) => {
-          const query = data.data
+          const query = data
             .filter(
               (i) =>
                 i?.id !== null &&
@@ -70,9 +70,9 @@ const PlantHardinessZone = ({ from }) => {
 
     if (councilShorthandRedux === 'WCCC') {
       callCoverCropApi(
-        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${region.valid_lat}&lon=${region.valid_lon}`,
+        `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${region.valid_lat}&lon=${region.valid_lon}`,
       ).then((data) => {
-        const query = data.data
+        const query = data
           .filter(
             (i) =>
               i?.id !== null &&
