@@ -83,9 +83,9 @@ const Landing = () => {
           if (state.shorthand === 'HI') {
             const [lat, lon] = statesLatLongDict.Hawaii;
             callCoverCropApi(
-              `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`,
+              `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${lat}&lon=${lon}`,
             ).then((regionData) => {
-              const query = regionData.data
+              const query = regionData
                 .filter((i) => i?.id !== null && i?.id !== undefined)
                 .map((i) => `regions=${i.id}`)
                 .join('&');

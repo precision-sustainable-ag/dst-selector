@@ -237,10 +237,10 @@ const Location = () => {
 
       if (councilShorthandRedux === 'WCCC') {
         callCoverCropApi(
-          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${latitude}&lon=${longitude}`,
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${latitude}&lon=${longitude}`,
         )
           .then((data) => {
-            const query = data.data
+            const query = data
               .filter((i) => i?.id !== null && i?.id !== undefined)
               .map((i) => `regions=${i.id}`)
               .join('&');
