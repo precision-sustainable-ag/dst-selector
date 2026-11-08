@@ -1,7 +1,6 @@
-import HelpOutlineIcon from '@mui/icons-material/HelpOutlineOutlined';
 import { Chip, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSATooltip } from 'shared-react-components/src';
+import HelpTooltip from '../../../components/HelpTooltip/HelpTooltip';
 import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore/filterSlice';
 
 // this file handles setting all of the filters in the redux state
@@ -116,34 +115,6 @@ const Chips = ({ filter }) => {
   });
 }; // Chips
 
-// handles making the tooltips in sidebar
-const Tip = ({ filter }) => (
-  <PSATooltip
-    enterTouchDelay={0}
-    title={
-      <>
-        {filter.description}
-        <br />
-        {filter.details}
-      </>
-    }
-    tooltipContent={
-      <button
-        type="button"
-        style={{
-          background: 'none',
-          border: 'none',
-          padding: 0,
-          cursor: 'pointer',
-        }}
-      >
-        {filter.name}
-        <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} tabIndex="0" />
-      </button>
-    }
-  />
-); // Tip
-
 // renders sidebar
 const Filters = ({ filters }) => (
   <Grid container spacing={2}>
@@ -152,7 +123,11 @@ const Filters = ({ filters }) => (
         return (
           <Grid container spacing={1} key={filter.name}>
             <Grid key={filter.name} size={12}>
-              <Tip filter={filter} />
+              <HelpTooltip
+                label={filter.name}
+                description={filter.description}
+                details={filter.details}
+              />
             </Grid>
             <Grid container spacing={0.3} size={12}>
               <Chips key={filter.name} filter={filter} />
@@ -164,7 +139,11 @@ const Filters = ({ filters }) => (
         return (
           <Grid container spacing={1} key={filter.name}>
             <Grid key={filter.name} size={12}>
-              <Tip filter={filter} />
+              <HelpTooltip
+                label={filter.name}
+                description={filter.description}
+                details={filter.details}
+              />
             </Grid>
             <Grid container spacing={0.3} size={12}>
               <Chips key={filter.name} filter={filter} />
@@ -175,7 +154,11 @@ const Filters = ({ filters }) => (
       return (
         <Grid container spacing={1} key={filter.name}>
           <Grid size={12}>
-            <Tip filter={filter} />
+            <HelpTooltip
+              label={filter.name}
+              description={filter.description}
+              details={filter.details}
+            />
           </Grid>
           <Grid size={12}>
             <DollarsAndRatings filter={filter} />

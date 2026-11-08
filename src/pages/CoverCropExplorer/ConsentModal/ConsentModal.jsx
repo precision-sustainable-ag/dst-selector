@@ -6,39 +6,22 @@ import { updateConsent } from '../../../reduxStore/userSlice';
 
 const localStorageKey = 'consent';
 
+const modalPaperStyles = {
+  width: {
+    xs: '90%',
+    sm: '80%',
+    md: '600px',
+  },
+  maxWidth: '90%',
+  p: {
+    xs: 2,
+    sm: 3,
+    md: 4,
+  },
+};
+
 const ConsentModal = ({ modalOpen, setModalOpen }) => {
   const dispatchRedux = useDispatch();
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    maxWidth: {
-      xs: '90%',
-      sm: '80%',
-      md: '80%',
-      lg: '80%',
-      xl: '80%',
-    },
-    minWidth: {
-      xs: '90%',
-      sm: 'auto',
-      md: 'auto',
-      lg: 'auto',
-      xl: 'auto',
-    },
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: {
-      xs: 2,
-      sm: 2,
-      md: 3,
-      lg: 4,
-      xl: 4,
-    },
-  };
 
   useEffect(() => {
     if (localStorage.getItem(localStorageKey) !== null) {
@@ -65,8 +48,10 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
       <PSAModal
         open={modalOpen}
         closeAfterTransition
+        onClose={() => handleModal(false)}
+        paperProps={{ sx: modalPaperStyles }}
         modalContent={
-          <Box sx={style}>
+          <Box sx={{ mt: 1 }}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Your Privacy
             </Typography>

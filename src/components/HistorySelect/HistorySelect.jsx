@@ -7,7 +7,7 @@ import { setAddressRedux } from '../../reduxStore/addressSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
 import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
-import { myCropListLocation } from '../../reduxStore/sharedSlice';
+import { myCropListLocation, setQueryString } from '../../reduxStore/sharedSlice';
 import { setSoilRedux } from '../../reduxStore/soilSlice';
 import { reset } from '../../reduxStore/store';
 import {
@@ -21,27 +21,7 @@ import { setWeatherRedux } from '../../reduxStore/weatherSlice';
 import pirschAnalytics from '../../shared/analytics';
 import { loadHistory, removeHistory } from '../../shared/api';
 import { getAuthToken } from '../../shared/authToken';
-
-const menuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: 224,
-      marginTop: '5px',
-    },
-    sx: {
-      '.MuiMenuItem-root': {
-        '&.Mui-selected': {
-          backgroundColor: '#598445',
-          color: 'white',
-        },
-        '&:hover': {
-          backgroundColor: 'rgba(176, 236, 130, 0.3)',
-          color: 'black',
-        },
-      },
-    },
-  },
-};
+import { dropdownMenuProps } from '../../shared/constants';
 
 const inputLabelStyles = {
   color: '#598445',
@@ -68,36 +48,17 @@ const selectStyles = {
   },
 };
 
-const modalStyles = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: {
+const modalPaperStyles = {
+  width: {
     xs: '90%',
     sm: '80%',
-    md: '80%',
-    lg: '80%',
-    xl: '80%',
+    md: '650px',
   },
-  minWidth: {
-    xs: '90%',
-    sm: 'auto',
-    md: 'auto',
-    lg: 'auto',
-    xl: 'auto',
-  },
-  marginTop: '15px',
-  marginBottom: '15px',
-  backgroundColor: 'white',
-  border: '2px solid #000',
-  boxShadow: 24,
+  maxWidth: '90%',
   p: {
     xs: 2,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 4,
+    sm: 3,
+    md: 4,
   },
 };
 
@@ -114,6 +75,7 @@ const HistorySelect = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const normalizeField = (field) => {
+    if (field === null) return [];
     // Normalize if old format
     if (!Array.isArray(field)) {
       if (field.type === 'Feature' && field.geometry?.type === 'GeometryCollection') {
@@ -152,8 +114,8 @@ const HistorySelect = () => {
             addressData,
             userData,
           } = res.json;
-          // this is used to specify where the crop from (selector/ explorer)
-          const { myCoverCropListLocation } = sharedData;
+          // this is used to specify where the crop from (selector/ explorer) and the queryString
+          const { myCoverCropListLocation, queryString } = sharedData;
 
           const normalizedField = normalizeField(userData?.field);
           const updatedUserData = {
@@ -167,6 +129,7 @@ const HistorySelect = () => {
           dispatch(setWeatherRedux(weatherData));
           dispatch(setGoalsRedux(goalsData));
           dispatch(myCropListLocation({ from: myCoverCropListLocation }));
+          dispatch(setQueryString(queryString));
           dispatch(setSoilRedux(soilData));
           dispatch(setAddressRedux(addressData));
           dispatch(setUserRedux(updatedUserData));
@@ -222,9 +185,11 @@ const HistorySelect = () => {
     <>
       <PSAModal
         open={open}
+        onClose={() => setOpen(false)}
+        paperProps={{ sx: modalPaperStyles }}
         modalContent={
-          <Box sx={modalStyles}>
-            <Grid container spacing={6}>
+          <Box sx={{ mt: 1 }}>
+            <Grid container spacing={3}>
               <Grid
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                 size={12}
@@ -250,7 +215,7 @@ const HistorySelect = () => {
                   SelectProps={{
                     value,
                     onChange: (e) => setValue(e.target.value),
-                    MenuProps: menuProps,
+                    MenuProps: dropdownMenuProps,
                     sx: selectStyles,
                     'data-test': 'select-history',
                   }}

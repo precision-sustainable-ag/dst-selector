@@ -13,11 +13,13 @@ import { PSADropdown, PSARegionSelectorMap } from 'shared-react-components/src';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
 import useIsMobile from '../../hooks/useIsMobile';
 import { updateLocation } from '../../reduxStore/addressSlice';
+import { resetGoalsData } from '../../reduxStore/goalSlice';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
-import { setQueryString } from '../../reduxStore/sharedSlice';
+import { setMyCoverCropReset, setQueryString } from '../../reduxStore/sharedSlice';
+import { resetSoilData } from '../../reduxStore/soilSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
-import { callCoverCropApi } from '../../shared/constants';
+import { callCoverCropApi, dropdownMenuProps } from '../../shared/constants';
 import { mapboxToken, testAuth0Env } from '../../shared/keys';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 
@@ -48,6 +50,12 @@ const Landing = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const resetStatusRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
+  );
 
   // useState vars
   // const [containerHeight, setContainerHeight] = useState(height);
@@ -56,6 +64,10 @@ const Landing = () => {
   const [selectedState, setSelectedState] = useState({});
   // This is the obj map returns when you selected a state on map
   const [mapState, setMapState] = useState({});
+  const [pendingState, setPendingState] = useState(null);
+  const [mapKey, setMapKey] = useState(1);
+
+  const displayState = pendingState || selectedState;
 
   const { isAuthenticated } = useAuth0();
 
@@ -63,14 +75,148 @@ const Landing = () => {
 
   const isDevEnvironment = testAuth0Env || /(localhost|dev)/i.test(window.location);
 
-  // handler function for stateSelect list
-  const handleStateChange = (e) => {
-    const selState = allStates.filter((s) => s.shorthand === e.target.value);
-    if (historyStateRedux === historyState.imported && stateIdRedux !== selState[0].id) {
-      dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
-    } else {
-      setSelectedState(selState[0]);
+  const fetchRegions = (state) => {
+    const { id } = state;
+    if (state.council.shorthand === 'WCCC') {
+      callCoverCropApi(`https://polygons.vegspec.org/ecoregionsbystate?state=${state.shorthand}`)
+        .then((data) => {
+          // In Hawaii, ecoregions do not apply; use capitol queryString directly
+          if (state.shorthand === 'HI') {
+            const [lat, lon] = statesLatLongDict.Hawaii;
+            callCoverCropApi(
+              `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${lat}&lon=${lon}`,
+            ).then((regionData) => {
+              const query = regionData
+                .filter((i) => i?.id !== null && i?.id !== undefined)
+                .map((i) => `regions=${i.id}`)
+                .join('&');
+              dispatchRedux(setQueryString(query));
+            });
+            return;
+          }
+
+          if (!Array.isArray(data) || data.length === 0) return;
+
+          // format regions into similar format like other councils with id and shorthand
+          let formattedRegions = data.map((region) => ({
+            id: region.ecoregion_code,
+            shorthand: region.ecoregion,
+            valid_lat: region.valid_lat,
+            valid_lon: region.valid_lon,
+          }));
+
+          // In Alaska, filter out ecoregion Tundra and Taiga
+          if (state.shorthand === 'AK') {
+            formattedRegions = formattedRegions.filter(
+              (region) => region.shorthand !== 'TUNDRA' && region.shorthand !== 'TAIGA',
+            );
+          }
+
+          dispatchRedux(updateRegions(formattedRegions));
+
+          if (stateIdRedux !== state.id) {
+            dispatchRedux(
+              updateRegion({
+                regionId: formattedRegions[0].id,
+                regionShorthand: formattedRegions[0].shorthand,
+              }),
+            );
+          }
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
     }
+    if (state.council.shorthand !== 'WCCC') {
+      fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
+        .then((res) => res.json())
+        .then((data) => {
+          let fetchedRegions;
+          if (data.data.Counties) {
+            fetchedRegions = data.data.Counties;
+          } else {
+            fetchedRegions = data.data.Zones;
+          }
+
+          dispatchRedux(updateRegions(fetchedRegions));
+
+          if (historyStateRedux !== historyState.imported) {
+            // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
+            // , skip set default since there already exist region selection
+            if (stateIdRedux !== state.id) {
+              // set default region for Selector and Explorer
+              if (!fetchedRegions[0]?.id || !fetchedRegions[0]?.shorthand)
+                throw new Error('Unavailable region.');
+              localStorage.setItem('regionId', fetchedRegions[0].id);
+              dispatchRedux(
+                updateRegion({
+                  regionId: fetchedRegions[0].id,
+                  regionShorthand: fetchedRegions[0].shorthand,
+                }),
+              );
+            }
+            // set querystring for non WCCC states
+            dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id}`));
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  };
+
+  const applyState = (state) => {
+    setSelectedState(state);
+    localStorage.setItem('stateId', state.id);
+    if (stateIdRedux !== state.id) {
+      dispatchRedux(
+        updateStateInfo({
+          stateLabel: state.label,
+          stateId: state.id,
+          councilShorthand: state.council.shorthand,
+          councilLabel: state.council.label,
+        }),
+      );
+      dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
+      dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
+      dispatchRedux(updateField(null));
+      dispatchRedux(setQueryString(null));
+      dispatchRedux(resetSoilData());
+      dispatchRedux(resetGoalsData());
+    }
+    // set address for pipeline environment(when map is not available)
+    if (testAuth0Env) {
+      const [lat, lon] = statesLatLongDict[state.label];
+      dispatchRedux(updateLocation({ address: '', markers: [[lat, lon]], county: null }));
+    }
+    fetchRegions(state);
+  };
+
+  // when a state change is requested, check validity, history and crop list
+  const requestStateChange = (state) => {
+    if (!state || !state?.id || state.id === selectedState?.id) return;
+
+    if (historyStateRedux === historyState.imported && stateIdRedux !== state.id) {
+      setMapState({});
+      setMapKey((prev) => prev + 1);
+      dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+      return;
+    }
+
+    if (selectedCropIdsRedux.length > 0 && stateIdRedux && stateIdRedux !== state.id) {
+      setPendingState(state);
+      dispatchRedux(setMyCoverCropReset(true));
+      return;
+    }
+
+    applyState(state);
+  };
+
+  // handle state dropdown change
+  const handleStateChange = (e) => {
+    const state = allStates.find((s) => s.shorthand === e.target.value);
+    requestStateChange(state);
   };
 
   // Load map data based on current enviorment
@@ -86,197 +232,107 @@ const Landing = () => {
     );
   }, [apiBaseUrlRedux, isDevEnvironment]);
 
+  // handle map change, use mapState to filter allStates and request state change
+  useEffect(() => {
+    if (mapState && Object.keys(mapState).length !== 0) {
+      const stateName = mapState.properties?.STATE_NAME;
+      const state = allStates.find((s) => s.label === stateName);
+      requestStateChange(state);
+    }
+  }, [mapState]);
+
   // set initial map state based on stateIdRedux
   // user history api/user click next and come back
   useEffect(() => {
     if (allStates.length) {
-      const state = allStates.filter((s) => s.id === stateIdRedux);
+      const state = allStates.find((s) => s.id === stateIdRedux);
       // handle stateIdRedux is null(click headerlogo in landing page)
-      if (state.length > 0) {
-        setSelectedState(state[0]);
-        pirschAnalytics('Landing', { meta: { state: state[0].label } });
-      } else setSelectedState({});
-    }
-  }, [stateIdRedux, allStates]);
+      if (state) {
+        setSelectedState(state);
+        pirschAnalytics('Landing', { meta: { state: state.label } });
 
-  // handle map change, use mapState to filter allStates and get selectedState
+        // load regions for a history imported state
+        if (
+          historyStateRedux === historyState.imported &&
+          !regionsRedux.some((r) => r.id === regionIdRedux)
+        ) {
+          fetchRegions(state);
+        }
+      } else if (resetStatusRedux === null && !pendingState) {
+        setSelectedState({});
+        setMapState({});
+        setMapKey((prev) => prev + 1);
+      }
+    }
+  }, [
+    stateIdRedux,
+    allStates,
+    resetStatusRedux,
+    pendingState,
+    historyStateRedux,
+    regionsRedux,
+    regionIdRedux,
+    apiBaseUrlRedux,
+    dispatchRedux,
+  ]);
+
+  // handle reset dialog
   useEffect(() => {
-    if (Object.keys(mapState).length !== 0) {
-      const st = allStates.filter((s) => s.label === mapState.properties.STATE_NAME);
-      if (st.length > 0) {
-        setSelectedState(st[0]);
+    if (resetStatusRedux === null) return;
+
+    if (resetStatusRedux === true) {
+      if (pendingState) {
+        applyState(pendingState);
+        setPendingState(null);
+        setMapState({});
+        dispatchRedux(setMyCoverCropReset(false, false, null));
+      } else if (selectedState?.id && stateIdRedux === null) {
+        applyState(selectedState);
+      }
+    } else if (resetStatusRedux === false) {
+      if (pendingState) {
+        setPendingState(null);
+        setMapState({});
+        setMapKey((prev) => prev + 1);
+        dispatchRedux(setMyCoverCropReset(false, false, null));
       }
     }
-  }, [mapState, allStates]);
-
-  // update state and regions redux based on state change(from dropdown or map)
-  useEffect(() => {
-    // is there a chance selectedState is {} ?
-    if (Object.keys(selectedState).length !== 0) {
-      if (historyStateRedux === historyState.imported && stateIdRedux !== selectedState.id) {
-        dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
-        // reset state to previous state in redux
-        const state = allStates.filter((s) => s.id === stateIdRedux);
-        if (state.length > 0) setSelectedState(state[0]);
-        else setSelectedState({});
-        // if historyState is imported, return and not set new history
-        return;
-      }
-      // update state
-      localStorage.setItem('stateId', selectedState.id);
-      if (stateIdRedux !== selectedState.id) {
-        dispatchRedux(
-          updateStateInfo({
-            stateLabel: selectedState.label,
-            stateId: selectedState.id,
-            councilShorthand: selectedState.council.shorthand,
-            councilLabel: selectedState.council.label,
-          }),
-        );
-        dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
-        dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
-        dispatchRedux(updateField(null));
-      }
-      // set address for pipeline environment(when map is not available)
-      if (testAuth0Env) {
-        const [lat, lon] = statesLatLongDict[selectedState.label];
-        dispatchRedux(updateLocation({ address: '', markers: [[lat, lon]], county: null }));
-      }
-      // set querystring for WCCC
-      if (selectedState.council.shorthand === 'WCCC') {
-        const [lat, lon] = statesLatLongDict[selectedState.label];
-        callCoverCropApi(
-          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/regions?lat=${lat}&lon=${lon}`,
-        ).then((data) => {
-          const query = data.data
-            .filter((i) => i?.id !== null && i?.id !== undefined)
-            .map((i) => `regions=${i.id}`)
-            .join('&');
-          dispatchRedux(setQueryString(query));
-        });
-      }
-      const { id } = selectedState;
-      if (selectedState.council.shorthand !== 'WCCC') {
-        fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
-          .then((res) => res.json())
-          .then((data) => {
-            let fetchedRegions;
-            if (data.data.Counties) {
-              fetchedRegions = data.data.Counties;
-            } else {
-              fetchedRegions = data.data.Zones;
-            }
-
-            dispatchRedux(updateRegions(fetchedRegions));
-
-            // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
-            // , skip set default since there already exist region selection
-            if (stateIdRedux !== selectedState.id) {
-              // set default region for Selector and Explorer
-              if (!fetchedRegions[0]?.id || !fetchedRegions[0]?.shorthand)
-                throw new Error('Unavailable region.');
-              localStorage.setItem('regionId', fetchedRegions[0].id);
-              dispatchRedux(
-                updateRegion({
-                  regionId: fetchedRegions[0].id,
-                  regionShorthand: fetchedRegions[0].shorthand,
-                }),
-              );
-            }
-            // set querystring for non WCCC states
-            dispatchRedux(setQueryString(`regions=${fetchedRegions[0].id}`));
-          })
-          .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.log(err.message);
-          });
-      }
-    }
-  }, [selectedState, apiBaseUrlRedux, stateIdRedux, historyStateRedux, allStates, dispatchRedux]);
+  }, [resetStatusRedux, pendingState, selectedState, stateIdRedux]);
 
   useEffect(() => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Landing' } });
   }, []);
-
-  const [containerHeight, setContainerHeight] = useState();
-
-  useEffect(() => {
-    function updateSize() {
-      const documentHeight = document
-        .getElementsByTagName('html')[0]
-        .getBoundingClientRect().height;
-
-      const headerHeight = document
-        .getElementsByTagName('header')[0]
-        .getBoundingClientRect().height;
-
-      const navHeight = document.getElementsByTagName('nav')[0].getBoundingClientRect().height;
-
-      const footerHeight = document
-        .getElementsByClassName('primaryFooter')[0]
-        .getBoundingClientRect().height;
-
-      const contHeight = documentHeight - (headerHeight + footerHeight + navHeight);
-      document.getElementById('landingWrapper').style.minHeight = `${contHeight}px`;
-      setContainerHeight(contHeight);
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize();
-
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
-
-  const backgroundSyles = {
-    frostedGlassEffect: {
-      backdropFilter: 'blur(5px)',
-      backgroundColor: 'rgba(255, 255, 255, 0.4)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      borderRadius: '10px',
-      position: 'relative',
-      width: '100%',
-
-      left: '50%',
-      transform: 'translateX(-50%)',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    },
-  };
-
-  const menuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: 224,
-        marginTop: '5px',
-      },
-      sx: {
-        '.MuiMenuItem-root': {
-          '&.Mui-selected': {
-            backgroundColor: '#598445',
-            color: 'white',
-          },
-          '&:hover': {
-            backgroundColor: 'rgba(176, 236, 130, 0.3)',
-            color: 'black',
-          },
-        },
-      },
-    },
-  };
 
   return (
     <Box
       style={{
         background: 'url(/images/cover-crop-field.png)',
         backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        minHeight: containerHeight,
-        // height: '100vh',
+        flexGrow: 1,
       }}
       sx={{ margin: -1 }}
       id="landingWrapper"
     >
-      <Grid style={backgroundSyles.frostedGlassEffect} sx={{ maxWidth: '800px', mt: 1 }}>
+      <Grid
+        sx={{
+          backdropFilter: 'blur(5px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.4)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: '10px',
+          position: 'relative',
+          width: '100%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          maxWidth: '800px',
+          mt: 1,
+        }}
+      >
         <Box sx={{ margin: 1 }}>
           <Grid container spacing={1}>
             <Grid size={12}>
@@ -306,10 +362,10 @@ const Landing = () => {
                   },
                 }}
                 SelectProps={{
-                  value: selectedState?.shorthand || '',
+                  value: displayState?.shorthand || '',
                   onChange: handleStateChange,
                   variant: 'outlined',
-                  MenuProps: menuProps,
+                  MenuProps: dropdownMenuProps,
                   style: { minWidth: 100 },
                   sx: {
                     '& .MuiOutlinedInput-notchedOutline': {
@@ -360,7 +416,7 @@ const Landing = () => {
         >
           <PSARegionSelectorMap
             selectorFunction={setMapState}
-            selectedState={selectedState.label}
+            selectedState={displayState?.label}
             availableStates={availableStates}
             initWidth="100%"
             initHeight="350px"
@@ -369,23 +425,23 @@ const Landing = () => {
             initStartZoom={2.5}
             data-test="state-map"
             mapboxToken={mapboxToken}
-            key="1"
+            key={mapKey}
           />
           <StateImageButton
             sx={{
               position: 'absolute',
               bottom: isMobile ? '-110px' : '140px',
               left: '10px',
-              ...(selectedState.label === 'Alaska'
+              ...(displayState?.label === 'Alaska'
                 ? { border: '2px solid', borderColor: 'primary.main' }
                 : {}),
             }}
             onClick={() => {
-              const alaska = allStates.filter((s) => s.label === 'Alaska')[0];
-              setSelectedState(alaska);
+              const alaska = allStates.find((s) => s.label === 'Alaska');
+              if (alaska) requestStateChange(alaska);
             }}
             src={
-              selectedState.label === 'Alaska'
+              displayState?.label === 'Alaska'
                 ? '/images/alaska-selected.jpg'
                 : '/images/alaska.jpg'
             }
@@ -396,16 +452,16 @@ const Landing = () => {
               position: 'absolute',
               bottom: isMobile ? '-110px' : '30px',
               left: isMobile ? '120px' : '10px',
-              ...(selectedState.label === 'Hawaii'
+              ...(displayState?.label === 'Hawaii'
                 ? { border: '2px solid', borderColor: 'primary.main' }
                 : {}),
             }}
             onClick={() => {
-              const hawaii = allStates.filter((s) => s.label === 'Hawaii')[0];
-              setSelectedState(hawaii);
+              const hawaii = allStates.find((s) => s.label === 'Hawaii');
+              if (hawaii) requestStateChange(hawaii);
             }}
             src={
-              selectedState.label === 'Hawaii'
+              displayState?.label === 'Hawaii'
                 ? '/images/hawaii-selected.jpg'
                 : '/images/hawaii.jpg'
             }

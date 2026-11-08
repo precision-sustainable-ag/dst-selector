@@ -5,7 +5,6 @@
 */
 
 import {
-  adaptV4Theme,
   Box,
   Container,
   CssBaseline,
@@ -19,7 +18,7 @@ import { deepmerge } from '@mui/utils';
 import { SnackbarProvider } from 'notistack';
 import { Suspense } from 'react';
 import { Provider, useSelector } from 'react-redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, useLocation } from 'react-router-dom';
 import { PSAProfile, PSATheme } from 'shared-react-components/src';
 import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
 import About from './pages/About/About';
@@ -61,11 +60,10 @@ if (window.Cypress) {
   window.store = store;
 }
 
-// AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
-const theme = createTheme(
-  adaptV4Theme({
-    overrides: {
-      MuiTooltip: {
+const theme = createTheme({
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
         tooltip: {
           fontWeight: 'normal',
           fontSize: CustomStyles().defaultFontSize,
@@ -73,9 +71,10 @@ const theme = createTheme(
           color: 'black',
           borderRadius: CustomStyles().mildlyRoundedRadius,
         },
-        arrow: {},
       },
-      MuiChip: {
+    },
+    MuiChip: {
+      styleOverrides: {
         root: {
           '&&:hover': {
             boxShadow: '0 0 3px 0 black',
@@ -103,14 +102,9 @@ const theme = createTheme(
           fontSize: '1.2rem',
         },
       },
-      MuiDialog: {
-        root: {
-          zIndex: 1000003,
-        },
-      },
     },
-  }),
-);
+  },
+});
 
 const csTheme = responsiveFontSizes(theme, {
   breakpoints: ['xs', 'sm', 'md', 'lg', 'xl'],
@@ -139,45 +133,35 @@ const App = () => (
             >
               <CssBaseline />
               <Suspense fallback={<div>Loading..</div>}>
-                <Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                   <SkipContent href="#main-content" text="Skip to content" />
                   <Header />
-                  <Container disableGutters maxWidth={false} id="main-content">
-                    <Box sx={{ mr: 1, ml: 1, mt: 1, mb: 1 }}>
-                      <Switch>
-                        <Route path="/" render={() => <LoadRelevantRoute />} exact />
-                        <Route path="/explorer" component={CoverCropExplorer} exact />
-                        <Route path="/about" component={About} exact />
-                        <Route path="/help" component={Help} exact />
-                        <Route path="/feedback" component={Feedback} exact />
-                        <Route path="/wizard" render={Wizard} exact />
-                        <Route path="/profile" render={() => <PSAProfile />} exact />
-                        <Route
-                          path="/my-cover-crop-list"
-                          component={MyCoverCropListWrapper}
-                          exact
-                        />
-                        <Route
-                          path="/seeding-rate-calculator"
-                          component={SeedingRateCalculator}
-                          exact
-                        />
-                        <Route
-                          path="/data-dictionary"
-                          component={InformationSheetDictionary}
-                          exact
-                        />
-                        <Route path="/license" render={() => <License licenseType="MIT" />} exact />
-                        <Route
-                          path="/ag-informatics-license"
-                          render={() => <License licenseType="AgInformatics" />}
-                          exact
-                        />
-                        <Route path="/mix-maker" component={MixMaker} exact />
-                        <Route component={RouteNotFound} />
-                      </Switch>
-                    </Box>
-                  </Container>
+                  <MainContainer>
+                    <Switch>
+                      <Route path="/" render={() => <LoadRelevantRoute />} exact />
+                      <Route path="/explorer" component={CoverCropExplorer} exact />
+                      <Route path="/about" component={About} exact />
+                      <Route path="/help" component={Help} exact />
+                      <Route path="/feedback" component={Feedback} exact />
+                      <Route path="/wizard" render={Wizard} exact />
+                      <Route path="/profile" render={() => <PSAProfile />} exact />
+                      <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                      <Route
+                        path="/seeding-rate-calculator"
+                        component={SeedingRateCalculator}
+                        exact
+                      />
+                      <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                      <Route path="/license" render={() => <License licenseType="MIT" />} exact />
+                      <Route
+                        path="/ag-informatics-license"
+                        render={() => <License licenseType="AgInformatics" />}
+                        exact
+                      />
+                      <Route path="/mix-maker" component={MixMaker} exact />
+                      <Route component={RouteNotFound} />
+                    </Switch>
+                  </MainContainer>
                 </Box>
                 <SkipContent
                   href="#main-content"
@@ -202,6 +186,31 @@ const App = () => (
 );
 
 export default App;
+
+const MainContainer = ({ children }) => {
+  const location = useLocation();
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const isLanding = location.pathname === '/' && progressRedux === 0;
+
+  return (
+    <Container
+      disableGutters
+      maxWidth={false}
+      id="main-content"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        p: 1,
+        maxWidth: isLanding ? 'none' : CustomStyles().maxWidth,
+        width: '100%',
+        mx: 'auto',
+      }}
+    >
+      {children}
+    </Container>
+  );
+};
 
 const LoadRelevantRoute = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);

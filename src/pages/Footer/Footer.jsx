@@ -7,6 +7,7 @@
 import { Box, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { CustomStyles } from '../../shared/constants';
 import NavigationButtons from '../../shared/NavigationButtons';
 import ProgressButtons from '../../shared/ProgressButtons';
 
@@ -34,11 +35,13 @@ const Footer = () => {
     >
       <Grid
         container
-        direction="column"
         sx={{
           p: '8px 0',
           alignItems: 'center',
           justifyContent: 'center',
+          maxWidth: CustomStyles().maxWidth,
+          width: '100%',
+          mx: 'auto',
         }}
       >
         {pathname === '/' ? <ProgressButtons /> : <NavigationButtons />}

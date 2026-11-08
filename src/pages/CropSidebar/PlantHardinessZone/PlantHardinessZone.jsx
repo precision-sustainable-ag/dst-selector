@@ -1,19 +1,107 @@
 /* eslint-disable max-len */
 import { Collapse, List, ListItem, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSADropdown } from 'shared-react-components/src';
 import { updateRegion } from '../../../reduxStore/mapSlice';
-import { setQueryString } from '../../../reduxStore/sharedSlice';
+import { setMyCoverCropReset, setQueryString } from '../../../reduxStore/sharedSlice';
 import { historyState, setHistoryDialogState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
+import { callCoverCropApi, dropdownMenuProps } from '../../../shared/constants';
 
 const PlantHardinessZone = ({ from }) => {
   const dispatchRedux = useDispatch();
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const resetStatusRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.openMyCoverCropReset.status,
+  );
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+
+  const [pendingRegion, setPendingRegion] = useState(null);
+
+  // For WCCC in Browse mode, set initial query string from default ecoregion if not set
+  useEffect(() => {
+    if (councilShorthandRedux === 'WCCC' && !queryStringRedux && regionsRedux?.length > 0) {
+      const activeRegion = regionsRedux.find((r) => r.id === regionIdRedux) || regionsRedux[0];
+      if (activeRegion?.valid_lat && activeRegion?.valid_lon) {
+        callCoverCropApi(
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${activeRegion.valid_lat}&lon=${activeRegion.valid_lon}`,
+        ).then((data) => {
+          const query = data
+            .filter(
+              (i) =>
+                i?.id !== null &&
+                i?.id !== undefined &&
+                !i?.label.includes('Zone') &&
+                !i?.label.includes('MLRA') &&
+                !i?.label.includes('LRU'),
+            )
+            .map((i) => `regions=${i.id}`)
+            .join('&');
+          dispatchRedux(setQueryString(query));
+        });
+      }
+    }
+  }, [
+    councilShorthandRedux,
+    queryStringRedux,
+    regionsRedux,
+    regionIdRedux,
+    apiBaseUrlRedux,
+    dispatchRedux,
+  ]);
+
+  const applyRegion = (region) => {
+    localStorage.setItem('regionId', region.id);
+    dispatchRedux(
+      updateRegion({
+        regionId: region.id,
+        regionShorthand: region.shorthand,
+      }),
+    );
+
+    if (councilShorthandRedux === 'WCCC') {
+      callCoverCropApi(
+        `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${region.valid_lat}&lon=${region.valid_lon}`,
+      ).then((data) => {
+        const query = data
+          .filter(
+            (i) =>
+              i?.id !== null &&
+              i?.id !== undefined &&
+              !i?.label.includes('Zone') &&
+              !i?.label.includes('MLRA') &&
+              !i?.label.includes('LRU'),
+          )
+          .map((i) => `regions=${i.id}`)
+          .join('&');
+        dispatchRedux(setQueryString(query));
+      });
+    } else {
+      dispatchRedux(setQueryString(`regions=${region.id}`));
+    }
+
+    pirschAnalytics(from, { meta: { dropdownUpdate: true } });
+  };
+
+  // handle reset crop dialog
+  useEffect(() => {
+    if (!pendingRegion || resetStatusRedux === null) return;
+
+    if (resetStatusRedux === true) {
+      applyRegion(pendingRegion);
+    }
+    setPendingRegion(null);
+    dispatchRedux(setMyCoverCropReset(false, false, null));
+  }, [resetStatusRedux, pendingRegion]);
 
   const updateRegionRedux = (e) => {
     // if update region, show history dialog to create a new history
@@ -21,46 +109,52 @@ const PlantHardinessZone = ({ from }) => {
       dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
       return;
     }
-    const selectedRegion = regionsRedux.filter((region) => region.shorthand === e.target.value)[0];
+
+    const selectedRegion = regionsRedux.find((region) => region.shorthand === e.target.value);
     if (!selectedRegion?.id || !selectedRegion?.shorthand) {
       console.error('Unavailable region.');
       return;
     }
-    localStorage.setItem('regionId', selectedRegion.id);
-    dispatchRedux(
-      updateRegion({
-        regionId: selectedRegion.id,
-        regionShorthand: selectedRegion.shorthand,
-      }),
-    );
-    dispatchRedux(setQueryString(`regions=${selectedRegion.id}`));
-    pirschAnalytics(from, { meta: { dropdownUpdate: true } });
+    // If user is changing region with selected crops, prompt reset dialog
+    // In MCCC the county change does not affect the crop list, no need to prompt
+    if (
+      councilLabelRedux !== 'Midwest Cover Crops Council' &&
+      selectedCropIdsRedux.length > 0 &&
+      regionIdRedux &&
+      selectedRegion.id !== regionIdRedux
+    ) {
+      setPendingRegion(selectedRegion);
+      dispatchRedux(setMyCoverCropReset(true, true));
+      return;
+    }
+    applyRegion(selectedRegion);
   };
 
-  const menuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: 224,
-        marginTop: '5px',
-      },
-      sx: {
-        '.MuiMenuItem-root': {
-          '&.Mui-selected': {
-            backgroundColor: '#598445',
-            color: 'white',
-          },
-          '&:hover': {
-            backgroundColor: 'rgba(176, 236, 130, 0.3)',
-            color: 'black',
-          },
-        },
-      },
-    },
+  const getDropdownLabel = () => {
+    switch (councilShorthandRedux) {
+      case 'WCCC':
+        return 'ECOREGION';
+      case 'MCCC':
+        return 'COUNTY';
+      default:
+        return 'ZONE';
+    }
   };
+
+  const getDropdownItems = () =>
+    regionsRedux.map((region) => ({
+      value: region.shorthand,
+      label:
+        councilLabelRedux !== 'Midwest Cover Crops Council' && councilShorthandRedux !== 'WCCC'
+          ? `Zone ${region.shorthand?.toUpperCase()}`
+          : `${region.shorthand?.toUpperCase()}`,
+    }));
+
+  const dropdownValue = pendingRegion?.shorthand || regionShorthandRedux || '';
 
   const plantHardinessZone = () => (
     <PSADropdown
-      label={councilLabelRedux === 'Midwest Cover Crops Council' ? 'COUNTY' : 'ZONE'}
+      label={getDropdownLabel()}
       inputSx={{
         color: '#598445',
         '&.Mui-focused': {
@@ -68,16 +162,10 @@ const PlantHardinessZone = ({ from }) => {
           fontWeight: 'medium',
         },
       }}
-      items={regionsRedux.map((region) => ({
-        value: region.shorthand,
-        label:
-          councilLabelRedux !== 'Midwest Cover Crops Council'
-            ? `Zone ${region.shorthand?.toUpperCase()}`
-            : `${region.shorthand?.toUpperCase()}`,
-      }))}
+      items={getDropdownItems()}
       formSx={{ width: '100%' }}
       SelectProps={{
-        value: regionShorthandRedux || '',
+        value: dropdownValue,
         onChange: updateRegionRedux,
         style: { textAlign: 'left' },
         sx: {
@@ -96,7 +184,7 @@ const PlantHardinessZone = ({ from }) => {
             borderWidth: '2.5px',
           },
         },
-        MenuProps: menuProps,
+        MenuProps: dropdownMenuProps,
         error: !regionShorthandRedux,
         'data-test': 'plant-hardiness-zone-dropdown',
       }}
@@ -110,7 +198,7 @@ const PlantHardinessZone = ({ from }) => {
           {plantHardinessZone()}
           {!regionShorthandRedux && (
             <Typography variant="body2" align="center" color="error" gutterBottom>
-              {`Please Select a ${councilLabelRedux === 'Midwest Cover Crops Council' ? 'County' : 'Zone'}`}
+              {`Please Select a ${getDropdownLabel()}`}
             </Typography>
           )}
         </ListItem>

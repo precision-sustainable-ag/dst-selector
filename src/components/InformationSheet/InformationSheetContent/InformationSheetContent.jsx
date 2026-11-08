@@ -6,8 +6,9 @@
 */
 
 import { Box, Grid, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import {
   PSAAccordion,
   PSAInfoSheetAttributeBox,
@@ -30,16 +31,31 @@ const InformationSheetContent = ({ crop }) => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
+  const myCoverCropListLocationRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
+  );
 
   const [expandedAccordions, setExpandedAccordions] = useState([]);
   const [dataDone, setDataDone] = useState(false);
   const [modalData, setModalData] = useState(null);
 
+  const location = useLocation();
+
   // Termination checks
   const durationTypes = ['Annual', 'Perennial'];
   const irrigationType = ['Rainfed', 'Irrigated'];
 
+  // filter out specific WCCC Termination Window attrs based on sidebar filter
   const checkTermination = (label) => {
+    // do not filter in these situations:
+    // - in WCCC browse page,
+    // - in WCCC my crops list && crops come from WCCC browse page
+    if (
+      location.pathname === '/explorer' ||
+      (location.pathname === '/my-cover-crop-list' && myCoverCropListLocationRedux === 'explorer')
+    )
+      return true;
+
     const labelSet = new Set(label.split(',').map((item) => item.trim()));
 
     if (selectedSeason.length > 0) {
@@ -69,7 +85,126 @@ const InformationSheetContent = ({ crop }) => {
     return true;
   };
 
-  const getAttributeData = (attribute, category) => {
+  const renderTerminationTable = (attribute) => {
+    // only displays subregion info in infosheet if:
+    // - in WCCC browse page,
+    // - in WCCC my crops list && crops come from WCCC browse page
+    const displaySubregionInfo =
+      councilShorthandRedux === 'WCCC' &&
+      (location.pathname === '/explorer' ||
+        (location.pathname === '/my-cover-crop-list' &&
+          myCoverCropListLocationRedux === 'explorer'));
+
+    const sectionsMap = new Map();
+
+    attribute?.values.forEach((value) => {
+      const valText = `${value.value}${attribute?.units ? ` ${attribute?.units}` : ''}`;
+      const colonIndex = valText.indexOf(':');
+      const prefix = colonIndex !== -1 ? valText.slice(0, colonIndex).trim() : valText;
+      const rest = colonIndex !== -1 ? valText.slice(colonIndex + 1).trim() : '';
+      const tags = value?.tags || [];
+
+      // filter based on selected tags associated with selected goals
+      const displayTags =
+        tagsRedux.length > 0 ? tags.filter((tag) => tagsRedux.includes(tag)) : tags;
+
+      let tagsToProcess = [];
+      if (displayTags.length > 0) {
+        tagsToProcess = displayTags;
+      } else if (tags.length === 0 && tagsRedux.length === 0) {
+        tagsToProcess = [null];
+      }
+
+      tagsToProcess.forEach((tag) => {
+        let sectionTitle = prefix;
+        let rowLabel = tag || prefix;
+
+        if (prefix.toLowerCase().startsWith('notes')) {
+          if (tag?.includes('-')) {
+            const dashIndex = tag.indexOf('-');
+            sectionTitle = `${prefix}: ${tag.slice(0, dashIndex).trim()}`;
+            rowLabel = tag.slice(dashIndex + 1).trim();
+          }
+        } else if (prefix.toLowerCase().includes('seed set')) {
+          sectionTitle = 'Seed Set';
+        }
+
+        if (!sectionsMap.has(sectionTitle)) {
+          sectionsMap.set(sectionTitle, []);
+        }
+        sectionsMap.get(sectionTitle).push({ label: rowLabel, value: rest });
+      });
+    });
+
+    if (sectionsMap.size === 0) {
+      return <Typography variant="body2">No Data</Typography>;
+    }
+
+    return (
+      <>
+        {displaySubregionInfo && (
+          <Typography variant="body2">
+            {`${attribute?.subregionType}: ${attribute?.subregions?.join(', ')}`}
+          </Typography>
+        )}
+        <table
+          style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+            backgroundColor: '#fff',
+            margin: '8px 0',
+          }}
+        >
+          <tbody>
+            {Array.from(sectionsMap.entries()).map(([sectionTitle, rows], sIdx) => (
+              <Fragment key={sectionTitle || sIdx}>
+                <tr>
+                  <th
+                    colSpan={2}
+                    style={{
+                      padding: '6px 8px',
+                      border: '1px solid #ccc',
+                      backgroundColor: '#f5f5f5',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {sectionTitle}
+                  </th>
+                </tr>
+                {rows.map((row) => (
+                  <tr key={`${row.label}-${row.value}`}>
+                    <td
+                      style={{
+                        width: '35%',
+                        padding: '6px 8px',
+                        border: '1px solid #ccc',
+                        fontWeight: 500,
+                        verticalAlign: 'top',
+                        textAlign: 'left',
+                      }}
+                    >
+                      {row.label}
+                    </td>
+                    <td
+                      style={{
+                        padding: '6px 8px',
+                        border: '1px solid #ccc',
+                        textAlign: 'left',
+                      }}
+                    >
+                      {row.value}
+                    </td>
+                  </tr>
+                ))}
+              </Fragment>
+            ))}
+          </tbody>
+        </table>
+      </>
+    );
+  };
+
+  const getAttributeData = (attribute) => {
     // handles no attribute
     if (!attribute) {
       return <Typography variant="body2">No Data</Typography>;
@@ -78,23 +213,76 @@ const InformationSheetContent = ({ crop }) => {
     if (attribute?.values[0]?.label) {
       return <Typography variant="body2">{attribute?.values[0]?.label}</Typography>;
     }
+
     const attributeValues = [];
     attribute?.values.forEach((value) => {
-      if (
-        councilShorthandRedux === 'WCCC' &&
-        category === 'Termination Window' &&
-        tagsRedux.length > 0
-      ) {
-        // filter attr by tags
-        const { tags } = value;
-        if (tags.some((tag) => tagsRedux.includes(tag))) attributeValues.push(value.value);
-      } else {
-        attributeValues.push(`${value.value}${attribute?.units ? ` ${attribute?.units}` : ''}`);
-      }
+      attributeValues.push(`${value.value}${attribute?.units ? ` ${attribute?.units}` : ''}`);
     });
     const dataType = attribute?.dataType.label;
     return extractData(attributeValues, dataType, attribute, councilShorthandRedux);
   };
+
+  const renderComment = (att, cat) => (
+    <Grid key={att.id} sx={{ padding: '6px 18px' }} size={12}>
+      <PSATooltip
+        placement="top-end"
+        enterTouchDelay={0}
+        title={att.description}
+        arrow
+        slotProps={{
+          popper: {
+            style: {
+              zIndex: 10000000,
+            },
+          },
+        }}
+        tooltipContent={
+          <Box xs={12} tabIndex="0">
+            <Typography
+              display="flex"
+              sx={{
+                fontWeight: 'bold',
+                justifyContent: cat.label !== 'Extended Comments' ? 'center' : 'left',
+              }}
+            >
+              {att.label}
+            </Typography>
+            <Typography
+              display="flex"
+              sx={{
+                justifyContent: cat.label !== 'Extended Comments' ? 'center' : 'left',
+              }}
+            >
+              {att.values[0]?.value}
+            </Typography>
+          </Box>
+        }
+      />
+    </Grid>
+  );
+
+  const renderTerminationWindow = (att) => (
+    <PSAInfoSheetAttributeBox
+      variant="texts"
+      key={att.id}
+      description={att.description}
+      label={att.label}
+      value={renderTerminationTable(att)}
+      sx={{
+        '@media print': {
+          breakInside: 'avoid',
+          pageBreakInside: 'avoid',
+          '&:not(:first-of-type) > .MuiBox-root, &:not(:first-of-type) > div': {
+            borderTop: '2px solid #555 !important',
+            paddingTop: '12px !important',
+          },
+        },
+        '& > .MuiBox-root': {
+          alignContent: 'flex-start',
+        },
+      }}
+    />
+  );
 
   const handleAccordion = (cat) => {
     if (expandedAccordions.includes(cat)) {
@@ -124,13 +312,15 @@ const InformationSheetContent = ({ crop }) => {
     <>
       <CoverCropInformation crop={modalData} />
       {modalData?.data.map((cat, index) => {
-        const isTermination =
-          councilShorthandRedux === 'WCCC' &&
-          (cat.label === 'Termination' || cat.label === 'Termination Window');
+        const isTerminationWindow =
+          councilShorthandRedux === 'WCCC' && cat.label === 'Termination Window';
+        const displayedAttributes = isTerminationWindow
+          ? cat.attributes.filter((att) => (att.order === 3 ? checkTermination(att.label) : true))
+          : cat.attributes;
         return (
           <Grid
             key={cat.id}
-            className={`avoid-break infosheetAccordion${index}`}
+            className={`${isTerminationWindow ? '' : 'avoid-break'} infosheetAccordion${index}`}
             sx={{ marginBottom: '16px' }}
             size={12}
           >
@@ -150,9 +340,11 @@ const InformationSheetContent = ({ crop }) => {
                   placement="bottom"
                   arrow
                   enterTouchDelay={0}
-                  PopperProps={{
-                    style: {
-                      zIndex: 10000000,
+                  slotProps={{
+                    popper: {
+                      style: {
+                        zIndex: 10000000,
+                      },
                     },
                   }}
                   title={cat.description}
@@ -171,61 +363,33 @@ const InformationSheetContent = ({ crop }) => {
               }
               detailsContent={
                 <Grid container>
-                  {cat.attributes.map((att) => {
-                    if (
-                      councilShorthandRedux === 'WCCC' &&
-                      att.order === 3 &&
-                      !checkTermination(att.label)
-                    ) {
-                      return null; // Return null to render nothing for this attribute
-                    }
-                    if (
-                      att.label.startsWith('Comments') ||
-                      att.label.startsWith('Notes:') ||
-                      cat.label === 'Extended Comments'
-                    ) {
+                  {isTerminationWindow && displayedAttributes.length === 0 ? (
+                    <Grid size={12} sx={{ padding: '16px', textAlign: 'center' }}>
+                      <Typography variant="body1">No available termination window.</Typography>
+                    </Grid>
+                  ) : (
+                    displayedAttributes.map((att) => {
+                      if (
+                        att.label.startsWith('Comments') ||
+                        att.label.startsWith('Notes:') ||
+                        cat.label === 'Extended Comments'
+                      ) {
+                        return renderComment(att, cat);
+                      }
+                      if (isTerminationWindow) {
+                        return renderTerminationWindow(att);
+                      }
                       return (
-                        <Grid key={att.id} sx={{ padding: '6px 18px' }} size={12}>
-                          <PSATooltip
-                            placement="top-end"
-                            enterTouchDelay={0}
-                            title={att.description}
-                            arrow
-                            tooltipContent={
-                              <Box xs={12} tabIndex="0">
-                                <Typography
-                                  display="flex"
-                                  justifyContent={
-                                    cat.label !== 'Extended Comments' ? 'center' : 'left'
-                                  }
-                                  sx={{ fontWeight: 'bold' }}
-                                >
-                                  {att.label}
-                                </Typography>
-                                <Typography
-                                  display="flex"
-                                  justifyContent={
-                                    cat.label !== 'Extended Comments' ? 'center' : 'left'
-                                  }
-                                >
-                                  {att.values[0]?.value}
-                                </Typography>
-                              </Box>
-                            }
-                          />
-                        </Grid>
+                        <PSAInfoSheetAttributeBox
+                          variant=""
+                          key={att.id}
+                          description={att.description}
+                          label={att.label}
+                          value={getAttributeData(att)}
+                        />
                       );
-                    }
-                    return (
-                      <PSAInfoSheetAttributeBox
-                        variant={isTermination ? 'texts' : ''}
-                        key={att.id}
-                        description={att.description}
-                        label={att.label}
-                        value={getAttributeData(att, cat.label)}
-                      />
-                    );
-                  })}
+                    })
+                  )}
                 </Grid>
               }
             />

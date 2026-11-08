@@ -22,6 +22,7 @@ import { reset } from '../../reduxStore/store';
 import { setUserHistoryList } from '../../reduxStore/userSlice';
 import { loadHistory } from '../../shared/api';
 import { setAuthToken } from '../../shared/authToken';
+import { CustomStyles } from '../../shared/constants';
 import { releaseNotesURL } from '../../shared/keys';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
@@ -404,7 +405,7 @@ const Header = () => {
       dispatchRedux(reset());
       history.replace('/');
     } else {
-      dispatchRedux(setMyCoverCropReset(true, false));
+      dispatchRedux(setMyCoverCropReset(true));
     }
   };
 
@@ -511,8 +512,26 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="static" component="header" sx={{ backgroundColor: 'white' }}>
-        <Box className="header" sx={{ m: 1 }}>
+      <AppBar
+        position="static"
+        component="header"
+        sx={{
+          backgroundColor: 'white',
+          '& img': {
+            maxHeight: '70px',
+            width: 'auto',
+          },
+        }}
+      >
+        <Box
+          className="header"
+          sx={{
+            m: 1,
+            maxWidth: CustomStyles().maxWidth,
+            width: '100%',
+            mx: 'auto',
+          }}
+        >
           <PSAHeader
             title="Cover Crop Selector"
             council={councilShorthandRedux}
@@ -532,6 +551,7 @@ const Header = () => {
       </AppBar>
 
       <Demo />
+      {/* api loaders */}
       <DataLoader />
       <MyCoverCropReset />
       {/* saving history here */}

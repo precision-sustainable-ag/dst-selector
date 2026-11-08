@@ -30,6 +30,7 @@ const SoilDrainage = ({ drainageOptions }) => {
   );
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const tileDrainageRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.tileDrainage);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   // useState vars
   const [showTiling, setShowTiling] = useState(false);
@@ -68,8 +69,12 @@ const SoilDrainage = ({ drainageOptions }) => {
     } else {
       setShowTiling(false);
     }
+    // tile drainage is disabled in Ontario
+    if (stateLabelRedux === 'Ontario') {
+      setShowTiling(false);
+    }
     window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.drainageClass));
-  }, [soilDataRedux?.drainageClass, tileDrainageRedux, drainageOptions]);
+  }, [soilDataRedux?.drainageClass, tileDrainageRedux, drainageOptions, stateLabelRedux]);
 
   const resetDrainageClasses = () => {
     // update history state here
@@ -122,7 +127,7 @@ const SoilDrainage = ({ drainageOptions }) => {
           <Grid sx={{ mr: '1rem' }}>
             <LocalDrinkOutlined />
           </Grid>
-          <Grid flexGrow={1}>
+          <Grid sx={{ flexGrow: 1 }}>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold' }}>Drainage Class</span>
               &nbsp;{' '}
@@ -155,7 +160,9 @@ const SoilDrainage = ({ drainageOptions }) => {
               />
             </Typography>
           </Grid>
-          {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
+          {(!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) ||
+            tileDrainageRedux ||
+            (newDrainage && newDrainage !== soilDataOriginalRedux?.drainageClass[0])) && (
             <Grid sx={{ pl: '0.5rem' }}>
               <PSAButton
                 buttonType="ValuesChanged"
@@ -215,7 +222,7 @@ const SoilDrainage = ({ drainageOptions }) => {
               </Grid>
               <Grid
                 container
-                direction="column"
+                sx={{ flexDirection: 'column' }}
                 size={{
                   xs: 6,
                   lg: 3,
