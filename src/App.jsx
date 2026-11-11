@@ -44,8 +44,6 @@ import configureStore from './reduxStore/store';
 import { CustomStyles } from './shared/constants';
 
 import './styles/App.scss';
-// bootstrap import
-import 'mdbreact/dist/css/mdb.css';
 import SiteConditions from './pages/SiteConditions/SiteConditions';
 import '@fontsource/ibm-plex-sans';
 import SkipContent from './components/SkipContent/SkipContent';
