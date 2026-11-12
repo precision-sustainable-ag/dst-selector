@@ -240,7 +240,7 @@ const Location = () => {
           `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${latitude}&lon=${longitude}`,
         )
           .then((data) => {
-            const query = data
+            const query = data.data
               .filter((i) => i?.id !== null && i?.id !== undefined)
               .map((i) => `regions=${i.id}`)
               .join('&');
