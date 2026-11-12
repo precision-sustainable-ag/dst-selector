@@ -86,7 +86,7 @@ const Landing = () => {
             callCoverCropApi(
               `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${lat}&lon=${lon}`,
             ).then((regionData) => {
-              const query = regionData
+              const query = regionData.data
                 .filter((i) => i?.id !== null && i?.id !== undefined)
                 .map((i) => `regions=${i.id}`)
                 .join('&');
