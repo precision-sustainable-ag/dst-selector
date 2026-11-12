@@ -18,16 +18,16 @@ const Attribution = () => {
   useEffect(() => {
     const url = `https://${
       /(localhost|dev)/i.test(window.location) ? 'developapi' : 'api'
-    }.covercrop-selector.org/v2/regions?locality=state&context=seed_calc`;
+    }.covercrop-selector.org/v3/attributions`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
         setAttributions({
-          General: data.attributions.generalStatement,
-          MCCC: data.attributions.MCCC?.withoutModifications,
-          NECCC: data.attributions.NECCC?.withoutModifications,
-          SCCC: data.attributions.SCCC?.withoutModifications,
-          WCCC: data.attributions.WCCC?.withoutModifications,
+          General: data.generalStatement,
+          MCCC: data.MCCC?.withoutModifications,
+          NECCC: data.NECCC?.withoutModifications,
+          SCCC: data.SCCC?.withoutModifications,
+          WCCC: data.WCCC?.withoutModifications,
         });
       });
   }, []);
