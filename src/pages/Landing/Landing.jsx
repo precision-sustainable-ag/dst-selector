@@ -221,7 +221,7 @@ const Landing = () => {
 
   // Load map data based on current enviorment
   useEffect(() => {
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then(
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v3/states`).then(
       (stateData) => {
         const productionCouncils = ['NECCC', 'SCCC', 'MCCC', 'WCCC'];
         const states = isDevEnvironment
