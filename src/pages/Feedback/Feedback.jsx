@@ -26,7 +26,7 @@ const Feedback = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   useEffect(() => {
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then(
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v3/states`).then(
       (stateData) => {
         const productionCouncils = ['NECCC', 'SCCC', 'MCCC', 'WCCC'];
         const states = stateData.data.filter((state) =>

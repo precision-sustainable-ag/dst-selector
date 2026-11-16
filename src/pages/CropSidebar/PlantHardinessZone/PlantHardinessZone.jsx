@@ -35,7 +35,7 @@ const PlantHardinessZone = ({ from }) => {
         callCoverCropApi(
           `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${activeRegion.valid_lat}&lon=${activeRegion.valid_lon}`,
         ).then((data) => {
-          const query = data
+          const query = data.data
             .filter(
               (i) =>
                 i?.id !== null &&
@@ -72,7 +72,7 @@ const PlantHardinessZone = ({ from }) => {
       callCoverCropApi(
         `https://${apiBaseUrlRedux}.covercrop-selector.org/v3/regions?lat=${region.valid_lat}&lon=${region.valid_lon}`,
       ).then((data) => {
-        const query = data
+        const query = data.data
           .filter(
             (i) =>
               i?.id !== null &&
