@@ -76,7 +76,12 @@ const Location = () => {
   // call back function that is passed to shared map to update local state variables
   const updateProperties = (properties) => {
     const newStateName = properties?.state?.STATE_NAME;
-    if (newStateName && newStateName !== stateLabelRedux) {
+    // allow DC and MD locations interchangeable since DC uses MD data
+    const isDcOrMd =
+      (stateLabelRedux === 'District of Columbia' &&
+        (newStateName === 'District of Columbia' || newStateName === 'Maryland')) ||
+      (stateLabelRedux === 'Maryland' && newStateName === 'District of Columbia');
+    if (newStateName && newStateName !== stateLabelRedux && !isDcOrMd) {
       // reset location if selected location is out of state
       setIsOpen(true);
       setLatLon(markersRedux ? markersRedux[0] : statesLatLongDict[stateLabelRedux]);
