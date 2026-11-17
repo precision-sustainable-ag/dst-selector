@@ -48,6 +48,7 @@ const Landing = () => {
 
   // redux vars
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
@@ -169,7 +170,7 @@ const Landing = () => {
   const applyState = (state) => {
     setSelectedState(state);
     localStorage.setItem('stateId', state.id);
-    if (stateIdRedux !== state.id) {
+    if (stateLabelRedux !== state.label) {
       dispatchRedux(
         updateStateInfo({
           stateLabel: state.label,
@@ -195,16 +196,16 @@ const Landing = () => {
 
   // when a state change is requested, check validity, history and crop list
   const requestStateChange = (state) => {
-    if (!state || !state?.id || state.id === selectedState?.id) return;
+    if (!state || !state?.label || state.label === selectedState?.label) return;
 
-    if (historyStateRedux === historyState.imported && stateIdRedux !== state.id) {
+    if (historyStateRedux === historyState.imported && stateLabelRedux !== state.label) {
       setMapState({});
       setMapKey((prev) => prev + 1);
       dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
       return;
     }
 
-    if (selectedCropIdsRedux.length > 0 && stateIdRedux && stateIdRedux !== state.id) {
+    if (selectedCropIdsRedux.length > 0 && stateLabelRedux && stateLabelRedux !== state.label) {
       setPendingState(state);
       dispatchRedux(setMyCoverCropReset(true));
       return;
@@ -227,6 +228,15 @@ const Landing = () => {
         const states = isDevEnvironment
           ? stateData.data
           : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
+
+        // For DC, use Maryland data
+        const md = states.find((state) => state.shorthand === 'MD');
+        states.push({
+          ...md,
+          label: 'District of Columbia',
+          shorthand: 'DC',
+        });
+        states.sort((a, b) => a.label.localeCompare(b.label));
         setAllStates(states);
       },
     );
@@ -245,7 +255,7 @@ const Landing = () => {
   // user history api/user click next and come back
   useEffect(() => {
     if (allStates.length) {
-      const state = allStates.find((s) => s.id === stateIdRedux);
+      const state = allStates.find((s) => s.label === stateLabelRedux);
       // handle stateIdRedux is null(click headerlogo in landing page)
       if (state) {
         setSelectedState(state);
@@ -266,6 +276,7 @@ const Landing = () => {
     }
   }, [
     stateIdRedux,
+    stateLabelRedux,
     allStates,
     resetStatusRedux,
     pendingState,

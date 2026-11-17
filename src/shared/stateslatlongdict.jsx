@@ -11,6 +11,7 @@ const statesLatLongDict = {
   Colorado: [39.739227, -104.984856],
   Connecticut: [41.764046, -72.682198],
   Delaware: [39.157307, -75.519722],
+  'District of Columbia': [38.8899, -77.009],
   Hawaii: [21.307442, -157.857376],
   Florida: [30.438118, -84.281296],
   Georgia: [33.749027, -84.388229],
