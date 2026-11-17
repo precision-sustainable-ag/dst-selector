@@ -278,7 +278,17 @@ const Location = () => {
           let { zone } = response;
 
           zone = zone.slice(0, -1);
-          const selectedRegion = regionsRedux.filter((region) => region.shorthand === zone)[0];
+          let selectedRegion = regionsRedux.filter((region) => region.shorthand === zone)[0];
+
+          // if zone is not found, use closest zone (+1 or -1) instead
+          if (!selectedRegion) {
+            const zoneNum = parseInt(zone, 10);
+            selectedRegion = regionsRedux?.find(
+              (region) =>
+                region.shorthand === `${zoneNum - 1}` || region.shorthand === `${zoneNum + 1}`,
+            );
+            zone = selectedRegion?.shorthand;
+          }
           // if selected crops exist and PHZ changed, show reset dialog
           if (
             selectedCropIdsRedux.length > 0 &&
