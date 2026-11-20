@@ -1,4 +1,4 @@
-import { mount } from 'cypress/react18';
+import { mount } from 'cypress/react';
 import { Provider } from 'react-redux';
 import { setAddressRedux } from '../../reduxStore/addressSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
