@@ -28,7 +28,7 @@ import {
 import pirschAnalytics from '../../shared/analytics';
 import { abbrRegion, callCoverCropApi, reverseGEO } from '../../shared/constants';
 import { mapboxToken } from '../../shared/keys';
-import { fetchSSURGOData, isSoilFarmable, logSSURGODataLegacyLocation } from '../../shared/ssurgo';
+import { fetchSSURGOData, isSoilFarmable } from '../../shared/ssurgo';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import StateChangeAlertDialog from './StateChangeAlertDialog/StateChangeAlertDialog';
@@ -182,7 +182,7 @@ const Location = () => {
         const farmable = isSoilFarmable(result);
         setIsFarmable(farmable);
       })
-      .catch((error) => console.error('[New SSURGO API] FETCH ERROR', error));
+      .catch((error) => console.error('SSURGO API FETCH ERROR', error));
   };
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
@@ -410,7 +410,6 @@ const Location = () => {
     // If WCCC, check is the land is farmable
     if (councilShorthandRedux === 'WCCC' && markersRedux) {
       getSSURGOData(markersRedux[0][0], markersRedux[0][1]);
-      logSSURGODataLegacyLocation(markersRedux[0][0], markersRedux[0][1]);
     }
   }, [markersRedux]);
 

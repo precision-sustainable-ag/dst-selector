@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PSALoadingSpinner } from 'shared-react-components/src';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
 import { historyState } from '../../../reduxStore/userSlice';
-import { fetchSSURGOData, formatSSURGOData, logSSURGODataLegacySoil } from '../../../shared/ssurgo';
+import { fetchSSURGOData, formatSSURGOData } from '../../../shared/ssurgo';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 
@@ -82,18 +82,14 @@ const SoilCondition = () => {
       window.Cypress
     )
       return;
-    const getSSURGOData = () => {
-      fetchSSURGOData(lat, lon)
-        .then((result) => {
-          const payload = formatSSURGOData(result, floodingOptions, { lat, lon });
-          dispatchRedux(updateSoilData(payload));
-          dispatchRedux(updateSoilDataOriginal(payload));
-        })
-        .catch((error) => console.error('[New SSURGO API] FETCH ERROR', error));
-    };
 
-    getSSURGOData();
-    logSSURGODataLegacySoil(markersRedux, floodingOptions);
+    fetchSSURGOData(lat, lon)
+      .then((result) => {
+        const payload = formatSSURGOData(result, floodingOptions, { lat, lon });
+        dispatchRedux(updateSoilData(payload));
+        dispatchRedux(updateSoilDataOriginal(payload));
+      })
+      .catch((error) => console.error('SSURGO API FETCH ERROR', error));
   }, [
     floodingOptions,
     markersRedux,
