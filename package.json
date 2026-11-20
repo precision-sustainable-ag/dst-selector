@@ -22,7 +22,6 @@
     "react-dom": "^18.2.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^5.1.2",
-    "react-swipeable-views-react-18-fix": "^0.14.1",
     "redux": "^5.0.1",
     "sass-mediaqueries": "^1.6.1",
     "shared-react-components": "github:precision-sustainable-ag/shared-react-components#upgrade/deps"
