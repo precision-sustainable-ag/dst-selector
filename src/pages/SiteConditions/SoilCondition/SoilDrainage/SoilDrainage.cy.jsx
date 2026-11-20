@@ -1,4 +1,4 @@
-import { mount } from 'cypress/react18';
+import { mount } from 'cypress/react';
 import { Provider } from 'react-redux';
 import configureStore from '../../../../reduxStore/store';
 import SoilDrainage from './SoilDrainage';
