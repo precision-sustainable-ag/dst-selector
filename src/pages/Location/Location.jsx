@@ -310,7 +310,6 @@ const Location = () => {
 
         const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
 
-        // call the frost url and then set frostFreeDays, averageFrostObject in store
         try {
           const frostResponse = await callCoverCropApi(frostUrl);
           const firstFrost = new Date(frostResponse.firstfrost);
@@ -332,14 +331,11 @@ const Location = () => {
             }),
           );
         } catch (error) {
-          // eslint-disable-next-line
           console.log(
             `Weather API error code: ${error?.response?.status} for getting frost dates.`,
           );
         }
 
-        // call the frost url and then set averagePrecipitationForCurrentMonth in store
-        // TODO annual and monthly are the same
         try {
           const rainForAMonthResponse = await callCoverCropApi(averageRainForAMonthURL);
           let averagePrecipitationForCurrentMonth =
@@ -356,7 +352,6 @@ const Location = () => {
           dispatchRedux(updateAvgPrecipCurrentMonth(null));
         }
 
-        // call the yearly precipitation API and then set annual precipitation in store
         try {
           const yearlyPrecipitationResponse = await callCoverCropApi(yearlyPrecipitationURL);
           let annualPrecipitation = yearlyPrecipitationResponse.rain;
