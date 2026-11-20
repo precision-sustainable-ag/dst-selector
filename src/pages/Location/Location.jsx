@@ -26,7 +26,7 @@ import {
   updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
 import pirschAnalytics from '../../shared/analytics';
-import { abbrRegion, callCoverCropApi, reverseGEO } from '../../shared/constants';
+import { callCoverCropApi } from '../../shared/constants';
 import { mapboxToken } from '../../shared/keys';
 import { fetchSSURGOData, isSoilFarmable } from '../../shared/ssurgo';
 import statesLatLongDict from '../../shared/stateslatlongdict';
@@ -297,46 +297,19 @@ const Location = () => {
   useEffect(() => {
     const getDetails = async () => {
       const weatherApiURL = 'https://weather.covercrop-data.org';
+      const [lat, lon] = markersRedux[0];
 
-      // update address on marker change
-      // ref forecastComponent
-      const lat = markersRedux[0][0];
-      const lon = markersRedux[0][1];
-
-      // since this updates with state; ideally, weather and soil info should be updated here
-      // get current lat long and get county, state and city
       if (progressRedux >= 1 && markersRedux.length > 0) {
-        const reverseGEOresult = await reverseGEO(lat, lon);
-        if (
-          reverseGEOresult?.features?.filter((feature) =>
-            feature?.place_type?.includes('region'),
-          )[0]?.text === undefined
-        )
-          return;
-        const abbrState = abbrRegion(
-          reverseGEOresult?.features?.filter((feature) =>
-            feature?.place_type?.includes('region'),
-          )[0]?.text,
-          'abbr',
-        ).toLowerCase();
-
-        const city = reverseGEOresult?.features
-          ?.filter((feature) => feature?.place_type?.includes('place'))[0]
-          ?.text?.toLowerCase();
-
         const currentMonthInt = moment().month() + 1;
+        const currentYear = moment().year();
 
-        // frost url
         const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}&email=selector@psa.org`;
-        // What was the 5-year average rainfall for city st during the month of currentMonthInt?
-        //  Dynamic dates ?
-        const averageRainUrl = `${weatherApiURL}/hourly?location=${city} ${abbrState}&start=2015-01-01&end=2019-12-31&email=selector@psa.org`;
-        const averageRainForAMonthURL = `${averageRainUrl}&where=month=${currentMonthInt}&stats=sum(precipitation)/5&output=json`;
-        // What was the 15-year average annual rainfall for this location?
+        const averageRainUrl = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=${currentYear - 5}-01-01&end=${currentYear - 1}-12-31&email=selector@psa.org`;
+        const averageRainForAMonthURL = `${averageRainUrl}&where=month=${currentMonthInt}&stats=sum(precipitation)/(5*25.4)&output=json`;
         const yearlyPrecipitationURL = `${weatherApiURL}/yearlyprecipitation?lat=${lat}&lon=${lon}`;
+
         const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
 
-        // call the frost url and then set frostFreeDays, averageFrostObject in store
         try {
           const frostResponse = await callCoverCropApi(frostUrl);
           const firstFrost = new Date(frostResponse.firstfrost);
@@ -358,39 +331,33 @@ const Location = () => {
             }),
           );
         } catch (error) {
-          // eslint-disable-next-line
           console.log(
             `Weather API error code: ${error?.response?.status} for getting frost dates.`,
           );
         }
 
-        // call the frost url and then set averagePrecipitationForCurrentMonth in store
-        // TODO annual and monthly are the same
         try {
           const rainForAMonthResponse = await callCoverCropApi(averageRainForAMonthURL);
           let averagePrecipitationForCurrentMonth =
-            rainForAMonthResponse[0]['sum(precipitation)/5'];
+            rainForAMonthResponse[0]['sum(precipitation)/(5*25.4)'];
           averagePrecipitationForCurrentMonth = parseFloat(
-            averagePrecipitationForCurrentMonth * 0.03937,
+            averagePrecipitationForCurrentMonth,
           ).toFixed(2);
 
           dispatchRedux(updateAvgPrecipCurrentMonth(averagePrecipitationForCurrentMonth));
         } catch (error) {
-          // eslint-disable-next-line no-console
           console.log(
             `Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`,
           );
           dispatchRedux(updateAvgPrecipCurrentMonth(null));
         }
 
-        // call the yearly precipitation API and then set annual precipitation in store
         try {
           const yearlyPrecipitationResponse = await callCoverCropApi(yearlyPrecipitationURL);
           let annualPrecipitation = yearlyPrecipitationResponse.rain;
           annualPrecipitation = parseFloat(annualPrecipitation).toFixed(2);
           dispatchRedux(updateAvgPrecipAnnual(annualPrecipitation));
         } catch (error) {
-          // eslint-disable-next-line no-console
           console.log(
             `Weather API error code: ${error?.response?.status} for getting 15 year average annual rainfall`,
           );
