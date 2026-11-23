@@ -30,7 +30,7 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
         payload: { regionId: 3, regionShorthand: '6' },
       });
 
-    cy.intercept('GET', '**/v1/states/36/crops?minimal=true&*').as('getCropsData');
+    cy.intercept('GET', '**/v1/states/36/crops?*').as('getCropsData');
     cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-test='next-btn']").first().click();

@@ -21,7 +21,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
 import HelpTooltip from '../../components/HelpTooltip/HelpTooltip';
@@ -118,12 +118,13 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
 
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
-  // For WA and Ecoregion 7
-  const hasAdditionalSoilDrainage =
-    councilShorthandRedux === 'WCCC' &&
-    queryStringRedux &&
-    queryStringRedux.includes('regions=51') &&
-    queryStringRedux.includes('regions=1302');
+  const hasAdditionalSoilDrainage = useMemo(
+    () =>
+      cropDataRedux?.some((crop) =>
+        crop.attributes?.some((a) => a.label === 'Additional Soil Drainage if Irrigated'),
+      ),
+    [cropDataRedux],
+  );
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
