@@ -1,4 +1,4 @@
-import { mount } from 'cypress/react18';
+import { mount } from 'cypress/react';
 import { Provider } from 'react-redux';
 import { updateLocation } from '../reduxStore/addressSlice';
 import { updateAllGoals } from '../reduxStore/goalSlice';
