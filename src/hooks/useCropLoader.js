@@ -14,7 +14,6 @@ const useCropLoader = () => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const queryStringRedux = useSelector((stateRedux) => stateRedux.sharedData.queryString);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
 
@@ -22,16 +21,7 @@ const useCropLoader = () => {
 
   const isExplorer = location.pathname.startsWith('/explorer');
 
-  // For WA and Ecoregion 7
-  const hasAdditionalSoilDrainage =
-    councilShorthandRedux === 'WCCC' &&
-    queryStringRedux &&
-    queryStringRedux.includes('regions=51') &&
-    queryStringRedux.includes('regions=1302');
-
-  const currentCropQuery = `${stateIdRedux}?${queryStringRedux}${
-    hasAdditionalSoilDrainage ? '&additional_soil_drainage=true' : ''
-  }`;
+  const currentCropQuery = `${stateIdRedux}?${queryStringRedux}`;
 
   // reset query ref on reset
   useEffect(() => {
@@ -49,8 +39,7 @@ const useCropLoader = () => {
 
       dispatch(setAjaxInProgress(true));
       callCoverCropApi(
-        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${queryStringRedux}` +
-          `${hasAdditionalSoilDrainage ? '&additional_soil_drainage=true' : ''}`,
+        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${queryStringRedux}`,
       )
         .then((data) => {
           const { startDate, endDate } = cashCropDataRedux.dateRange;
@@ -71,7 +60,6 @@ const useCropLoader = () => {
     queryStringRedux,
     currentCropQuery,
     apiBaseUrlRedux,
-    hasAdditionalSoilDrainage,
     cashCropDataRedux,
     dispatch,
   ]);

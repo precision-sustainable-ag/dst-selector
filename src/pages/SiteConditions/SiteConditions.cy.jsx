@@ -14,7 +14,7 @@ describe('<SiteConditions />', () => {
   let reduxStore;
   beforeEach(() => {
     reduxStore = configureStore({});
-
+    // FIXME: need to be updated
     cy.intercept('GET', /.*\/v2\/attribute\?filtered=false&slug=(flooding_frequency|ponding).*/, {
       statusCode: 200,
       body: {

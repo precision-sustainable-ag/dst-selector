@@ -31,7 +31,7 @@ describe('Test all possible interactions on the SCCC Crop Calendar Page', () => 
         payload: { regionId: 60, regionShorthand: '8' },
       });
 
-    cy.intercept('GET', '**/v1/states/37/crops?minimal=true&*').as('getCropsData');
+    cy.intercept('GET', '**/v1/states/37/crops?*').as('getCropsData');
     cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-test='next-btn']").first().click();
