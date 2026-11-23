@@ -40,6 +40,18 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - script: |
+        echo "=== Disk space BEFORE cleanup ==="
+        df -h /
+        # Stop any orphaned containers from previous interrupted runs
+        docker rm -f test-app cypress-runner || true
+        # Prune all unused Docker images, builder caches, and volumes from past builds
+        docker system prune -af --volumes || true
+        docker builder prune -af || true
+        echo "=== Disk space AFTER cleanup ==="
+        df -h /
+      displayName: "Reclaim Disk Space (Prune Docker)"
+
+    - script: |
         echo VITE_API_AUTH0_DOMAIN="$(VITE_API_AUTH0_DOMAIN)" >> $(Build.SourcesDirectory)/.env
         echo VITE_API_AUTH0_CLIENT_ID="$(VITE_API_AUTH0_CLIENT_ID)" >> $(Build.SourcesDirectory)/.env
         echo VITE_API_AUTH0_AUDIENCE="$(VITE_API_AUTH0_AUDIENCE)" >> $(Build.SourcesDirectory)/.env
@@ -100,6 +112,13 @@ stages:
 
     - upload: manifests
       artifact: manifests
+
+    - script: |
+        docker rm -f test-app cypress-runner || true
+        docker rmi -f cypress-tester || true
+        docker rmi -f $(containerRegistry)/$(imageRepository):$(tag) || true
+      displayName: "Clean Up Local Docker Test Containers & Images"
+      condition: always()
 
 - stage: Deploy
   displayName: Deploy stage
