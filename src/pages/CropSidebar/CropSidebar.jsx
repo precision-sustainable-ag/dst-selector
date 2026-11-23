@@ -51,6 +51,7 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag,
@@ -658,8 +659,8 @@ const CropSidebar = ({ comparisonView, listView, from, setGrowthWindow, style })
             <>
               {from === 'explorer' && (
                 <>
-                  {/* Disable ecoregion dropdown for Hawaii (ID 15) */}
-                  {stateIdRedux !== 15 && (
+                  {/* Disable ecoregion dropdown for Hawaii */}
+                  {stateLabelRedux !== 'Hawaii' && (
                     <List component="div" disablePadding sx={{ paddingBottom: '1rem' }}>
                       <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
                         <ListItemText
