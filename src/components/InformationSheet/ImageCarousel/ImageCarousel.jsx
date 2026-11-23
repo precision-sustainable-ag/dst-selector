@@ -6,7 +6,6 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { PSAButton } from 'shared-react-components/src';
 
 const ImageCarousel = ({ images }) => {
@@ -16,6 +15,7 @@ const ImageCarousel = ({ images }) => {
   const [imagesData, setImagesData] = useState([]);
   const [loaded, setLoaded] = useState([]);
   const [paused, setPaused] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
   const printing = useSelector((stateRedux) => stateRedux.sharedData.printing);
 
   useEffect(() => {
@@ -47,12 +47,32 @@ const ImageCarousel = ({ images }) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleStepChange = (step) => {
-    setActiveStep(step);
-  };
-
   const handlePauseToggle = () => {
     setPaused(!paused);
+  };
+
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e) => {
+    const deltaX = touchStartX - e.changedTouches[0].clientX;
+    const isRtl = theme.direction === 'rtl';
+    const swipeThreshold = 50;
+
+    if (deltaX > swipeThreshold) {
+      if (isRtl) {
+        if (activeStep > 0) handleBack();
+      } else if (activeStep < maxSteps - 1) {
+        handleNext();
+      }
+    } else if (deltaX < -swipeThreshold) {
+      if (isRtl) {
+        if (activeStep < maxSteps - 1) handleNext();
+      } else if (activeStep > 0) {
+        handleBack();
+      }
+    }
   };
 
   useEffect(() => {
@@ -73,53 +93,60 @@ const ImageCarousel = ({ images }) => {
   return (
     maxSteps > 0 && (
       <Box>
-        <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={activeStep}
-          onChangeIndex={handleStepChange}
-          enableMouseEvents
-          interval={5000}
+        <Box
+          sx={{ overflow: 'hidden', position: 'relative', width: '100%' }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
-          {imagesData.map((step, index) => (
-            <div key={step.imgPath}>
-              <div
-                className="info-sheet-image-container"
-                style={{
-                  justifyContent: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  height: '550px',
-                }}
-              >
-                <Box
-                  component="img"
-                  sx={{
-                    maxWidth: 400,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    fontSize: '8pt',
+          <Box
+            sx={{
+              display: 'flex',
+              transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              transform: `translateX(${(theme.direction === 'rtl' ? 1 : -1) * activeStep * 100}%)`,
+              width: '100%',
+            }}
+          >
+            {imagesData.map((step, index) => (
+              <Box key={step.imgPath} sx={{ width: '100%', flexShrink: 0 }}>
+                <div
+                  className="info-sheet-image-container"
+                  style={{
+                    justifyContent: 'center',
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '550px',
                   }}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    window.open(step.imgPath);
-                  }}
-                  onLoad={() => {
-                    const l = [...loaded];
-                    l[index] = true;
-                    setLoaded(l);
-                  }}
-                  src={step.imgPath}
-                  alt={step.label}
-                />
-              </div>
+                >
+                  <Box
+                    component="img"
+                    sx={{
+                      maxWidth: 400,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      fontSize: '8pt',
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      window.open(step.imgPath);
+                    }}
+                    onLoad={() => {
+                      const l = [...loaded];
+                      l[index] = true;
+                      setLoaded(l);
+                    }}
+                    src={step.imgPath}
+                    alt={step.label}
+                  />
+                </div>
 
-              <Typography style={{ alignContent: 'center', fontSize: '8pt' }}>
-                {imagesData[activeStep]?.label}
-              </Typography>
-            </div>
-          ))}
-        </SwipeableViews>
+                <Typography style={{ alignContent: 'center', fontSize: '8pt' }}>
+                  {step.label}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
 
         <MobileStepper
           steps={maxSteps}
