@@ -24,7 +24,7 @@
     "react-router-dom": "^5.1.2",
     "redux": "^5.0.1",
     "sass-mediaqueries": "^1.6.1",
-    "shared-react-components": "github:precision-sustainable-ag/shared-react-components#upgrade/deps"
+    "shared-react-components": "github:precision-sustainable-ag/shared-react-components#v1.0.0-alpha.2"
   },
   "type": "module",
   "scripts": {
