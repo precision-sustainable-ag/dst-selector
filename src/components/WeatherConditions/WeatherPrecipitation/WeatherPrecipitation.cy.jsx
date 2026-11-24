@@ -1,4 +1,4 @@
-import { mount } from 'cypress/react18';
+import { mount } from 'cypress/react';
 import moment from 'moment';
 import { Provider } from 'react-redux';
 import configureStore from '../../../reduxStore/store';
