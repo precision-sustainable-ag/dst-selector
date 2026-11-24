@@ -40,17 +40,6 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - script: |
-        echo "=== Disk space BEFORE cleanup ==="
-        df -h /
-        # Parallel cleanup unused SDKs
-        sudo rm -rf /usr/local/lib/android &
-        sudo rm -rf /usr/share/dotnet &
-        wait
-        echo "=== Disk space AFTER cleanup ==="
-        df -h /
-      displayName: "Free Disk Space"
-
-    - script: |
         echo VITE_API_AUTH0_DOMAIN="$(VITE_API_AUTH0_DOMAIN)" >> $(Build.SourcesDirectory)/.env
         echo VITE_API_AUTH0_CLIENT_ID="$(VITE_API_AUTH0_CLIENT_ID)" >> $(Build.SourcesDirectory)/.env
         echo VITE_API_AUTH0_AUDIENCE="$(VITE_API_AUTH0_AUDIENCE)" >> $(Build.SourcesDirectory)/.env
@@ -76,17 +65,18 @@ stages:
         tags: |
           $(tag)
 
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '20.x'
+      displayName: 'Use Node 20'
+
+    - script: npm ci
+      displayName: "Install Dependencies for Tests"
+
     - script: |
-        docker pull $(containerRegistry)/$(imageRepository):$(tag)
         docker run -d --name test-app --network="host" $(containerRegistry)/$(imageRepository):$(tag)
-        docker build -f Dockerfile.tester -t cypress-tester .
-
-        docker run --network="host" --name cypress-runner -e NODE_OPTIONS="--max-old-space-size=4096" cypress-tester || TEST_EXIT_CODE=$?
-        
-        docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/screenshots || true
-        docker cp cypress-runner:/e2e/cypress/videos ./cypress/videos || true
-
-        docker rm cypress-runner
+        CYPRESS_baseUrl="http://localhost/" NODE_OPTIONS="--max-old-space-size=4096" npm run test:all || TEST_EXIT_CODE=$?
+        docker rm -f test-app || true
         exit $TEST_EXIT_CODE
       displayName: "Run Cypress Tests"
 
