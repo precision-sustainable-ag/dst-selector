@@ -42,6 +42,12 @@ stages:
     - script: |
         echo "=== Disk space BEFORE cleanup ==="
         df -h /
+        # Remove unused pre-installed toolchains on ephemeral runner
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /opt/ghc
+        sudo rm -rf /usr/local/.ghcup
+        sudo rm -rf /usr/local/share/boost
         # Stop any orphaned containers from previous interrupted runs
         docker rm -f test-app cypress-runner || true
         # Prune all unused Docker images, builder caches, and volumes from past builds
@@ -49,7 +55,7 @@ stages:
         docker builder prune -af || true
         echo "=== Disk space AFTER cleanup ==="
         df -h /
-      displayName: "Reclaim Disk Space (Prune Docker)"
+      displayName: "Cleanup Disk Space"
 
     - script: |
         echo VITE_API_AUTH0_DOMAIN="$(VITE_API_AUTH0_DOMAIN)" >> $(Build.SourcesDirectory)/.env

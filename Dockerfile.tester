@@ -1,17 +1,19 @@
-# Use the official Cypress image with all dependencies included
-FROM cypress/included:latest
+# Use the official Cypress image matching package.json version
+FROM cypress/included:15.21.2
 
 # Set the working directory inside the container
 WORKDIR /e2e
 
-# Copy the entire project into the container
-COPY . .
+# Leverage Docker cache for dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# Install any additional dependencies (if required)
-RUN npm install
+# Copy the rest of the project
+COPY . .
 
 # Set the base URL for Cypress tests
 ENV CYPRESS_baseUrl="http://localhost/"
 
 # Run the bash script
 ENTRYPOINT ["npm", "run", "test:all"]
+
