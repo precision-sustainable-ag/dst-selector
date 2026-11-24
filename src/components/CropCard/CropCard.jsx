@@ -1,9 +1,10 @@
+import { Box } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PSACropCard } from 'shared-react-components/src';
 import useIsMobile from '../../hooks/useIsMobile';
-import { addCropToBasket } from '../../shared/constants';
+import { addCropToBasket, getNoxiousText, ReferenceTooltip } from '../../shared/constants';
 import { InfoSheetTitle } from '../InformationSheet/InformationSheet';
 import InformationSheetContent from '../InformationSheet/InformationSheetContent/InformationSheetContent';
 
@@ -54,9 +55,28 @@ const CropCard = ({ crop, dispatchRedux }) => {
 
   const placeHolderImg = 'https://placehold.co/260x140?text=Placeholder';
 
+  const speciesTitle = crop.noxious ? (
+    <Box
+      component="span"
+      sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 0.5,
+        flexWrap: 'wrap',
+        color: 'additional.error',
+        '& .MuiSvgIcon-root': { color: 'additional.error' },
+      }}
+    >
+      <span>{crop.label}</span>
+      <ReferenceTooltip type="text" content={getNoxiousText()} />
+    </Box>
+  ) : (
+    crop.label
+  );
+
   return (
     <PSACropCard
-      species={crop.label}
+      species={speciesTitle}
       scientific={crop.scientificName}
       details={<InformationSheetContent crop={crop} />}
       title={<InfoSheetTitle crop={crop} />}

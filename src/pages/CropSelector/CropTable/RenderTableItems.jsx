@@ -1,7 +1,13 @@
 import { Grid, TableCell, TableRow, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { PSAButton } from 'shared-react-components/src';
-import { CropImage, hasGoalRatingTwoOrLess, trimString } from '../../../shared/constants';
+import {
+  CropImage,
+  getNoxiousText,
+  hasGoalRatingTwoOrLess,
+  ReferenceTooltip,
+  trimString,
+} from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import useIsMobile from '../../../hooks/useIsMobile';
@@ -94,7 +100,10 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                 </Grid>
                 <Grid
                   sx={{
+                    display: 'flex',
+                    alignItems: 'center',
                     justifyContent: 'center',
+                    gap: 0.5,
                   }}
                 >
                   <PSAButton
@@ -103,7 +112,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     sx={{
                       fontWeight: 'bold',
                       textDecoration: 'underline',
-                      color: 'black',
+                      color: crop.noxious ? 'additional.error' : 'black',
                       fontSize: '0.rem',
                       textTransform: 'none',
                     }}
@@ -113,6 +122,11 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     data-test="crop-calendar-crop-name"
                     title={crop.label}
                   />
+                  {crop.noxious && (
+                    <Grid sx={{ '& .MuiSvgIcon-root': { color: 'additional.error' } }}>
+                      <ReferenceTooltip type="text" content={getNoxiousText()} />
+                    </Grid>
+                  )}
                 </Grid>
                 <Grid
                   size={{ xs: 12 }}

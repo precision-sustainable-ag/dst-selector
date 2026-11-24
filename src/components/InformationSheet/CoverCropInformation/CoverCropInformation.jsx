@@ -1,7 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { callCoverCropApi } from '../../../shared/constants';
+import { callCoverCropApi, getNoxiousText } from '../../../shared/constants';
 import ImageCarousel from '../ImageCarousel/ImageCarousel';
 
 const CoverCropInformation = ({ crop, className }) => {
@@ -49,6 +49,14 @@ const CoverCropInformation = ({ crop, className }) => {
             <Grid>
               <Typography variant="body1">{crop.description ? crop.description : ''}</Typography>
             </Grid>
+            {crop?.noxious && (
+              <Grid sx={{ mt: 1 }}>
+                <Typography variant="body1" sx={{ color: 'additional.error' }}>
+                  <b>Note: </b>
+                  {getNoxiousText()}
+                </Typography>
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Grid

@@ -7,8 +7,10 @@ import CropSelectorCalendarView from '../../../components/CropSelectorCalendarVi
 import {
   addCropToBasket,
   CropImage,
+  getNoxiousText,
   getRating,
   hasGoalRatingTwoOrLess,
+  ReferenceTooltip,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import useIsMobile from '../../../hooks/useIsMobile';
@@ -151,7 +153,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     sx={{
                       justifyContent: 'center',
                       textDecoration: 'underline',
-                      color: 'black',
+                      color: crop.noxious ? 'additional.error' : 'black',
                       textAlign: 'left',
                       textTransform: 'none',
                     }}
@@ -189,6 +191,11 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                         </button>
                       }
                     />
+                  </Grid>
+                )}
+                {crop.noxious && (
+                  <Grid sx={{ ml: 0.5, '& .MuiSvgIcon-root': { color: 'additional.error' } }}>
+                    <ReferenceTooltip type="text" content={getNoxiousText()} />
                   </Grid>
                 )}
               </Grid>

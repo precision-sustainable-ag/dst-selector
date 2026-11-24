@@ -126,6 +126,9 @@ export const DataTooltip = ({ data, placement = 'top-start' }) => (
   />
 );
 
+export const getNoxiousText = () =>
+  'This species is on some State Noxious Weed lists in this region.';
+
 export const zoneIcon = (w, h) => (
   <svg
     height={h}
